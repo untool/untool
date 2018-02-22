@@ -1,0 +1,74 @@
+{
+  "name": "untool",
+  "description": "tools suck. untool tries not to.",
+  "scripts": {
+    "test": "lerna run test --stream",
+    "lint": "eslint \"packages/**/*.js\"",
+    "fmt":
+      "prettier --write --ignore-path .gitignore '**/*.{js,json,css}' '**/README.md'",
+    "bootstrap": "lerna bootstrap",
+    "reset": "git clean -dfx && rm yarn.lock && yarn && lerna bootstrap",
+    "release": "lerna publish --conventional-commits",
+    "preinstall": "[ -z \"${npm_execpath##*yarn*}\" ] || exit 1",
+    "precommit": "lint-staged"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/untool/untool.git"
+  },
+  "keywords": ["react", "webpack", "express"],
+  "author": "dmbch <daniel@dmbch.net>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/untool/untool/issues"
+  },
+  "homepage": "https://github.com/untool/untool#readme",
+  "devDependencies": {
+    "babel-eslint": "^8.2.1",
+    "cz-conventional-changelog": "^2.1.0",
+    "eslint": "^4.17.0",
+    "eslint-config-prettier": "^2.9.0",
+    "eslint-plugin-prettier": "^2.6.0",
+    "husky": "^0.14.3",
+    "lerna": "^2.8.0",
+    "lint-staged": "^7.0.0",
+    "prettier": "1.10.2"
+  },
+  "engines": {
+    "node": ">8.6.0"
+  },
+  "private": true,
+  "workspaces": ["packages/*", "example"],
+  "prettier": {
+    "trailingComma": "es5",
+    "proseWrap": "never",
+    "singleQuote": true
+  },
+  "eslintConfig": {
+    "extends": ["eslint:recommended", "prettier"],
+    "plugins": ["prettier"],
+    "env": {
+      "node": true,
+      "es6": true
+    },
+    "parser": "babel-eslint",
+    "parserOptions": {
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "experimentalObjectRestSpread": true
+      }
+    },
+    "rules": {
+      "prettier/prettier": "error"
+    }
+  },
+  "lint-staged": {
+    "*.{js,json,css}": ["prettier --write", "git add"],
+    "**/README.md": ["prettier --write", "git add"]
+  },
+  "config": {
+    "commitizen": {
+      "path": "./node_modules/cz-conventional-changelog"
+    }
+  }
+}

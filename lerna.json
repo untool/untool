@@ -1,0 +1,14 @@
+{
+  "lerna": "2.8.0",
+  "npmClient": "yarn",
+  "useWorkspaces": true,
+  "version": "independent",
+  "registry": "https://registry.npmjs.org/",
+  "commands": {
+    "publish": {
+      "message": "chore: release %s",
+      "exact": true
+    }
+  },
+  "packages": ["packages/*"]
+}

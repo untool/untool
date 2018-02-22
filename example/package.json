@@ -1,0 +1,34 @@
+{
+  "name": "example",
+  "version": "0.0.0",
+  "description": "untool example",
+  "main": "index.js",
+  "scripts": {
+    "start": "un start",
+    "test": "echo \"Error: no test specified\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/untool/untool.git"
+  },
+  "author": "dmbch <daniel@dmbch.net>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/untool/untool/issues"
+  },
+  "homepage": "https://github.com/untool/untool#readme",
+  "dependencies": {
+    "@untool/core": "*",
+    "@untool/react": "*",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-helmet": "^5.2.0",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2"
+  },
+  "untool": {
+    "browsers": "last 1 Chrome versions",
+    "presets": ["@untool/react"]
+  },
+  "private": true
+}

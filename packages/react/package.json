@@ -1,0 +1,41 @@
+{
+  "name": "@untool/react",
+  "version": "0.0.0",
+  "description": "untool React preset and plugin",
+  "esnext:main": "lib/main.js",
+  "esnext:plugin:browser": "lib/plugin/browser.js",
+  "esnext:plugin:server": "lib/plugin/server.js",
+  "esnext:plugin:core": "lib/plugin/core.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/untool/untool.git"
+  },
+  "author": "dmbch <daniel@dmbch.net>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/untool/untool/issues"
+  },
+  "homepage": "https://github.com/untool/untool#readme",
+  "dependencies": {
+    "babel-plugin-transform-react-remove-prop-types": "^0.4.13",
+    "babel-preset-react": "^6.24.1",
+    "serialize-javascript": "^1.4.0"
+  },
+  "peerDependencies": {
+    "@untool/core": "0.0.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-helmet": "^5.2.0",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2"
+  },
+  "engines": {
+    "node": ">8.6.0"
+  },
+  "untool": {
+    "plugins": ["."]
+  }
+}
