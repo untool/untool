@@ -1,6 +1,6 @@
 {
   "name": "example",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "untool example",
   "main": "index.js",
   "scripts": {
@@ -18,8 +18,8 @@
   },
   "homepage": "https://github.com/untool/untool#readme",
   "dependencies": {
-    "@untool/core": "*",
-    "@untool/react": "*",
+    "@untool/core": "0.0.1",
+    "@untool/react": "0.0.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-helmet": "^5.2.0",
@@ -28,7 +28,9 @@
   },
   "untool": {
     "browsers": "last 1 Chrome versions",
-    "presets": ["@untool/react"]
+    "presets": [
+      "@untool/react"
+    ]
   },
   "private": true
 }
