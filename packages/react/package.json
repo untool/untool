@@ -2,6 +2,7 @@
   "name": "@untool/react",
   "version": "0.0.1",
   "description": "untool React preset and plugin",
+  "keywords": ["unplugin", "unpreset"],
   "esnext:main": "lib/main.js",
   "esnext:plugin:browser": "lib/plugin/browser.js",
   "esnext:plugin:server": "lib/plugin/server.js",
@@ -25,7 +26,7 @@
     "serialize-javascript": "^1.4.0"
   },
   "peerDependencies": {
-    "@untool/core": "0.0.0",
+    "@untool/core": "0.0.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-helmet": "^5.2.0",
@@ -36,8 +37,6 @@
     "node": ">8.6.0"
   },
   "untool": {
-    "plugins": [
-      "."
-    ]
+    "plugins": ["."]
   }
 }
