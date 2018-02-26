@@ -5,47 +5,32 @@ const exec = promisify(execAsync);
 const execFile = promisify(execFileAsync);
 
 const execute = (command, ...args) =>
-  exec(`which ${command}`).then(({ stdout, stderr }) => {
-    if (stderr) {
-      throw new Error(stderr);
-    }
-    return execFile(stdout.replace(/\s+$/, ''), args).then(
-      ({ stdout, stderr }) => {
-        if (stderr) {
-          throw new Error(stderr);
-        }
-        return stdout;
-      }
-    );
-  });
+  exec(`which ${command}`).then(({ stdout }) =>
+    execFile(stdout.replace(/\s+$/, ''), args).then(({ stdout }) => stdout)
+  );
 
-const executeNpm = (...args) => execute('npm', ...args);
-const executeYarn = (...args) => execute('yarn', ...args);
+exports.init = () => execute('npm', 'init', '--yes');
 
-exports.init = () => executeNpm('init', '--force');
-
-exports.info = module => executeNpm('info', '--json', module).then(JSON.parse);
+exports.info = module =>
+  execute('npm', 'info', '--json', module).then(JSON.parse);
 
 exports.search = (...queries) =>
-  executeNpm('search', '--json', ...queries).then(JSON.parse);
+  execute('npm', 'search', '--json', ...queries).then(JSON.parse);
 
 exports.install = (...modules) =>
-  executeYarn('add', ...modules).catch(() =>
-    executeNpm('install', '--save-prod', ...modules)
-  );
-
-exports.getPeerDependencies = (...modules) =>
-  modules.reduce(
-    (promise, module) =>
-      promise.then(dependencies =>
-        exports
-          .info(module)
-          .then(info => ({ ...dependencies, ...info.peerDependencies }))
-      ),
-    Promise.resolve({})
-  );
-
-exports
-  .getPeerDependencies('hops-react', 'hops-redux')
-  .then(console.log.bind(console))
-  .catch(console.log.bind(console));
+  modules
+    .reduce(
+      (promise, module) =>
+        promise.then(deps =>
+          exports
+            .info(module)
+            .then(info => ({ ...deps, ...info.peerDependencies }))
+        ),
+      Promise.resolve({})
+    )
+    .then(deps => Object.keys(deps).map(key => `${key}@${deps[key]}`))
+    .then(deps =>
+      execute('yarn', 'add', ...modules, ...deps).catch(() =>
+        execute('npm', 'install', '--save-prod', ...modules, ...deps)
+      )
+    );
