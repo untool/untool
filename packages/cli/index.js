@@ -46,8 +46,8 @@ const installUntool = manifest =>
     .then(log('! Looking up presets and modules...'))
     .then(() =>
       Promise.all([
-        pm.search('scope:untool', 'preset'),
-        pm.search('scope:untool', 'plugin'),
+        pm.search('scope:untool', 'keywords:unpreset'),
+        pm.search('scope:untool', 'keywords:unplugin'),
       ]).then(([allPresets, allPlugins]) =>
         inquirer
           .prompt([

@@ -2,10 +2,7 @@
   "name": "@untool/react",
   "version": "0.1.0",
   "description": "untool React preset and plugin",
-  "keywords": [
-    "unplugin",
-    "unpreset"
-  ],
+  "keywords": ["unplugin", "unpreset"],
   "esnext:main": "lib/main.js",
   "esnext:plugin:browser": "lib/plugin/browser.js",
   "esnext:plugin:server": "lib/plugin/server.js",
@@ -19,6 +16,9 @@
   },
   "author": "dmbch <daniel@dmbch.net>",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "bugs": {
     "url": "https://github.com/untool/untool/issues"
   },
@@ -40,8 +40,6 @@
     "node": ">8.6.0"
   },
   "untool": {
-    "plugins": [
-      "."
-    ]
+    "plugins": ["."]
   }
 }

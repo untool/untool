@@ -16,6 +16,9 @@
   },
   "author": "dmbch <daniel@dmbch.net>",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
   "bugs": {
     "url": "https://github.com/untool/untool/issues"
   },
