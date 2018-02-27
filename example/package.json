@@ -28,9 +28,7 @@
   },
   "untool": {
     "browsers": "last 1 Chrome versions",
-    "presets": [
-      "@untool/react"
-    ]
+    "presets": ["@untool/react"]
   },
   "private": true
 }
