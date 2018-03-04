@@ -9,7 +9,7 @@ import { async } from 'mixinable';
 import template from '../template';
 
 export default class ReactPlugin extends Plugin {
-  static definition = {
+  static hooks = {
     bootstrap: async.parallel,
     enhanceElement: async.compose,
     fetchData: async.pipe,

@@ -1,36 +1,38 @@
-import autoBind from 'auto-bind';
 import define, { override } from 'mixinable';
+import autoBind from 'auto-bind';
 
-import { getConfig, getPlugins } from '@@CONFIG@@';
+export class Plugin {
+  constructor(core, config) {
+    this.core = core;
+    this.config = config;
+    this.options = {};
+    if (typeof window === 'undefined') {
+      this.mode = 'server';
+    } else {
+      this.mode = 'browser';
+    }
+    autoBind(this);
+  }
+}
 
-export { default as Plugin } from './plugins/runtime';
-
-export const render = (...args) => {
-  const config = getConfig();
-  const mixins = getPlugins();
-
-  const definition = {
-    ...mixins.reduce((result, mixin) => ({ ...result, ...mixin.definition })),
-    render: override,
-    logInfo: override,
-    logWarn: override,
-    logError: override,
+export function render(...renderArgs) {
+  return (config, mixins) => {
+    const hooks = {
+      ...mixins.reduce((result, mixin) => ({ ...result, ...mixin.hooks }), {}),
+      render: override,
+    };
+    const createMixinable = define(hooks)(...mixins);
+    return (...callArgs) => {
+      const core = {};
+      const mixinable = createMixinable(core, config, ...renderArgs);
+      Object.keys(hooks).forEach(key =>
+        Object.defineProperty(core, key, {
+          enumerable: true,
+          configurable: true,
+          get: () => mixinable[key].bind(mixinable),
+        })
+      );
+      core.render(...callArgs);
+    };
   };
-
-  const mixin = define(definition);
-  const create = mixin(...mixins);
-
-  return (req, res, next) => {
-    const core = {};
-    const mixinable = autoBind(create(core, config, ...args));
-    Object.keys(definition).forEach(key =>
-      Object.defineProperty(core, key, {
-        enumerable: true,
-        configurable: true,
-        get: () => mixinable[key],
-      })
-    );
-    autoBind(core);
-    mixinable.render(req, res, next);
-  };
-};
+}

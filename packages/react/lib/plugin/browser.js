@@ -7,7 +7,7 @@ import { Plugin } from '@untool/core';
 import { async } from 'mixinable';
 
 export default class ReactPlugin extends Plugin {
-  static definition = {
+  static hooks = {
     bootstrap: async.parallel,
     enhanceElement: async.compose,
     fetchData: async.pipe,
