@@ -1,3 +1,5 @@
+import minimatch from 'minimatch';
+
 import { resolveAbsoluteFolder, stripTrailingSlash } from './uri';
 
 export default (options, config) => {
@@ -6,19 +8,35 @@ export default (options, config) => {
 
   const locations = config.locations
     .map(location => resolveAbsoluteFolder(basePath, location))
-    .sort((locationA, locationB) => locationB.length - locationA.length);
+    .sort((locA, locB) => locB.split('/').length - locA.split('/').length);
 
   const isAsset = url =>
     (assetPath !== basePath && url.startsWith(assetPath)) ||
     /\.[a-z0-9]+$/i.test(url);
 
-  const match = url => location =>
-    new RegExp(`^${stripTrailingSlash(location)}(?:(?:/|\\?).*)?$`).test(url);
-
   return (req, res, next) => {
     if (options.static && options.rewrite) {
       if (!res.locals.noRewrite && !isAsset(req.url)) {
-        const destination = locations.find(match(req.url));
+        const destination = locations.find(
+          location =>
+            console.log(
+              req.url,
+              stripTrailingSlash(location),
+              minimatch(req.url, stripTrailingSlash(location), {
+                nobrace: true,
+                nocomment: true,
+                noext: true,
+                nonegate: true,
+              })
+            ) ||
+            minimatch(req.url, stripTrailingSlash(location), {
+              nobrace: true,
+              nocomment: true,
+              noext: true,
+              nonegate: true,
+            })
+        );
+        console.log(destination);
         if (destination) {
           req.url = req.originalUrl = destination;
         }

@@ -31,7 +31,6 @@
     "babel-preset-env": "^1.6.1",
     "caniuse-lite": "^1.0.30000811",
     "css-loader": "^0.28.9",
-    "directory-index": "^0.1.0",
     "extract-text-webpack-plugin": "^4.0.0-alpha.0",
     "file-loader": "^1.1.6",
     "find-up": "^2.1.0",

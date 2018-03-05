@@ -75,24 +75,6 @@ export default class WebpackMixin extends ExpressMixin {
       ).run((error, stats) => (error ? reject(error) : resolve(stats)));
     });
   }
-  render() {
-    const index = require('directory-index');
-    const render = this.createRenderer();
-    const { basePath, locations } = this.config;
-    const { resolveAbsolute, resolveRelative } = ExpressMixin.uri;
-    return Promise.resolve().then(() => {
-      return Promise.all(
-        locations
-          .map(location => resolveAbsolute(basePath, location))
-          .map(location => render(location))
-      ).then(responses =>
-        responses.reduce((result, response, i) => {
-          const key = resolveRelative(basePath, index(locations[i]));
-          return { ...result, [key]: response };
-        }, {})
-      );
-    });
-  }
   getAssetPath(filePath) {
     const { config: { assetPath } } = this;
     const { uri: { resolveRelative } } = ExpressMixin;

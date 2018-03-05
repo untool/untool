@@ -1,7 +1,7 @@
 import define from 'mixinable';
-import autoBind from 'auto-bind';
 
 import { config } from './config';
+import { bindAll } from './util';
 
 export class Mixin {
   constructor(core, config) {
@@ -9,7 +9,7 @@ export class Mixin {
     this.config = config;
     this.options = {};
     this.mode = 'build';
-    autoBind(this);
+    bindAll(this);
   }
 }
 

@@ -1,5 +1,6 @@
 import define, { override } from 'mixinable';
-import autoBind from 'auto-bind';
+
+import { bindAll } from './util';
 
 export class Mixin {
   constructor(core, config) {
@@ -11,7 +12,7 @@ export class Mixin {
     } else {
       this.mode = 'browser';
     }
-    autoBind(this);
+    bindAll(this);
   }
 }
 

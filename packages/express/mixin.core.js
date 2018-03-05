@@ -25,6 +25,24 @@ export default class ExpressMixin extends Mixin {
     const { core, config } = this;
     return require('./lib/static').default(options, core, config);
   }
+  render() {
+    const index = require('directory-index');
+    const render = this.createRenderer();
+    const { basePath, locations } = this.config;
+    const { resolveAbsolute, resolveRelative } = uri;
+    return Promise.resolve().then(() => {
+      return Promise.all(
+        locations
+          .map(location => resolveAbsolute(basePath, location))
+          .map(location => render(location))
+      ).then(responses =>
+        responses.reduce((result, response, i) => {
+          const key = resolveRelative(basePath, index(locations[i]));
+          return { ...result, [key]: response };
+        }, {})
+      );
+    });
+  }
   registerCommands(yargs) {
     const { namespace } = this.config;
     return yargs.command({

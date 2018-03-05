@@ -25,7 +25,6 @@
     "@untool/express": "0.0.1",
     "@untool/webpack": "0.0.1",
     "@untool/yargs": "0.0.1",
-    "auto-bind": "^1.2.0",
     "cosmiconfig": "^4.0.0",
     "enhanced-resolve": "^4.0.0-beta.4",
     "flat": "^4.0.0",
