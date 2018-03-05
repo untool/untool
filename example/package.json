@@ -19,11 +19,7 @@
   "homepage": "https://github.com/untool/untool#readme",
   "dependencies": {
     "@untool/core": "0.0.2",
-    "@untool/defaults": "0.0.1",
-    "@untool/express": "0.0.1",
     "@untool/react": "0.1.0",
-    "@untool/webpack": "0.0.1",
-    "@untool/yargs": "0.0.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-helmet": "^5.2.0",
@@ -32,7 +28,7 @@
   },
   "untool": {
     "browsers": "last 1 Chrome versions",
-    "presets": ["@untool/defaults"],
+    "presets": ["@untool/core"],
     "mixins": ["@untool/react"]
   },
   "private": true

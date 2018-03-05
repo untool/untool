@@ -133,7 +133,7 @@ function getConfig(config, getAssetPath, configureWebpack, enhanceWebpack) {
         cacheGroups: {
           vendor: {
             chunks: 'initial',
-            test: config.moduleDir,
+            test: /node_modules/,
             name: config.vendorName,
             enforce: true,
           },
