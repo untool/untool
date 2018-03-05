@@ -3,7 +3,7 @@ import autoBind from 'auto-bind';
 
 import { config } from './config';
 
-export class Plugin {
+export class Mixin {
   constructor(core, config) {
     this.core = core;
     this.config = config;
@@ -14,14 +14,17 @@ export class Plugin {
 }
 
 export function bootstrap(...args) {
-  const mixins = config.getPlugins('core').map(mixin => require(mixin).default);
-  const hooks = {
-    ...mixins.reduce((result, mixin) => ({ ...result, ...mixin.hooks }), {}),
+  const mixins = config.getMixins('core').map(mixin => require(mixin).default);
+  const strategies = {
+    ...mixins.reduce(
+      (result, mixin) => ({ ...result, ...mixin.strategies }),
+      {}
+    ),
   };
-  const createMixinable = define(hooks)(...mixins);
+  const createMixinable = define(strategies)(...mixins);
   const core = {};
   const mixinable = createMixinable(core, config, ...args);
-  Object.keys(hooks).forEach(key =>
+  Object.keys(strategies).forEach(key =>
     Object.defineProperty(core, key, {
       enumerable: true,
       configurable: true,

@@ -3,17 +3,12 @@ import { renderToString } from 'react-dom/server';
 import { StaticRouter } from 'react-router';
 import { Helmet } from 'react-helmet';
 
-import { Plugin } from '@untool/core';
+import { Mixin } from '@untool/core';
 import { async } from 'mixinable';
 
-import template from '../template';
+import template from './lib/template';
 
-export default class ReactPlugin extends Plugin {
-  static hooks = {
-    bootstrap: async.parallel,
-    enhanceElement: async.compose,
-    fetchData: async.pipe,
-  };
+export default class ReactPlugin extends Mixin {
   constructor(core, config, element, options) {
     super(core, config);
     this.element = element;
@@ -78,3 +73,9 @@ export default class ReactPlugin extends Plugin {
     });
   }
 }
+
+ReactPlugin.strategies = {
+  bootstrap: async.parallel,
+  enhanceElement: async.compose,
+  fetchData: async.pipe,
+};

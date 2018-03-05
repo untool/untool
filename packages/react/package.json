@@ -1,12 +1,9 @@
 {
   "name": "@untool/react",
   "version": "0.1.0",
-  "description": "untool React preset and plugin",
-  "keywords": ["unplugin", "unpreset"],
-  "esnext:main": "lib/main.js",
-  "esnext:plugin:browser": "lib/plugin/browser.js",
-  "esnext:plugin:server": "lib/plugin/server.js",
-  "esnext:plugin:core": "lib/plugin/core.js",
+  "description": "untool react mixin",
+  "keywords": ["unmixin"],
+  "esnext": "lib/components.js",
   "scripts": {
     "test": "echo \"Error: no test specified\""
   },
@@ -39,8 +36,5 @@
   },
   "engines": {
     "node": ">8.6.0"
-  },
-  "untool": {
-    "plugins": ["."]
   }
 }

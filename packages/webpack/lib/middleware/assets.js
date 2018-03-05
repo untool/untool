@@ -9,9 +9,10 @@ const getAssetData = (locals = {}, config) => {
 };
 
 export default (config, assetData) => (req, res, next) => {
+  assetData = assetData && assetData.assets ? assetData : null;
   const { assetsByType, assetsByChunkName } = (res.locals = {
     ...res.locals,
-    ...(assetData.assets || getAssetData(res.locals, config)),
+    ...(assetData || getAssetData(res.locals, config)),
     assetsByType: config.assetTypes.reduce(
       (result, extension) => ({ ...result, [extension]: [] }),
       {}

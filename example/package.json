@@ -33,7 +33,7 @@
   "untool": {
     "browsers": "last 1 Chrome versions",
     "presets": ["@untool/defaults"],
-    "plugins": ["@untool/react"]
+    "mixins": ["@untool/react"]
   },
   "private": true
 }

@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "description": "untool default setup",
   "keywords": ["unpreset"],
-  "preset": "preset.js",
   "scripts": {
     "test": "echo \"Error: no test specified\""
   },

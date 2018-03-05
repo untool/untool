@@ -9,7 +9,7 @@ if (yargs.alias('p', 'production').argv.production) {
 }
 const { bootstrap } = require('@untool/core');
 
-module.exports = (customYargs, customChalk) => {
+exports.run = (customYargs, customChalk) => {
   const { registerCommands, logError } = bootstrap();
   const onError = error => void logError(error) || process.exit(1);
   process.on('uncaughtException', onError);
@@ -26,9 +26,9 @@ module.exports = (customYargs, customChalk) => {
         .strict()
         .demandCommand(1, ''),
     customChalk || chalk
-  ); /*.parse();*/
+  );
 };
 
 if (require.main === module) {
-  module.exports();
+  exports.run();
 }

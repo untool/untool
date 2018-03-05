@@ -2,9 +2,9 @@ import { promisify } from 'util';
 
 import { pipe, parallel } from 'mixinable';
 
-import Plugin from '@untool/express/plugin.core';
+import ExpressMixin from '@untool/express/mixin.core';
 
-export default class WebpackPlugin extends Plugin {
+export default class WebpackMixin extends ExpressMixin {
   createAssetsMiddleware() {
     const assetsMiddleware = require('./lib/middleware/assets').default;
     const { config, assets, assetsByChunkName } = this;
@@ -79,7 +79,7 @@ export default class WebpackPlugin extends Plugin {
     const index = require('directory-index');
     const render = this.createRenderer();
     const { basePath, locations } = this.config;
-    const { resolveAbsolute, resolveRelative } = this.uri;
+    const { resolveAbsolute, resolveRelative } = ExpressMixin.uri;
     return Promise.resolve().then(() => {
       return Promise.all(
         locations
@@ -95,7 +95,7 @@ export default class WebpackPlugin extends Plugin {
   }
   getAssetPath(filePath) {
     const { config: { assetPath } } = this;
-    const { uri: { resolveRelative } } = Plugin;
+    const { uri: { resolveRelative } } = ExpressMixin;
     return resolveRelative(assetPath, filePath);
   }
   setAssets(assets, assetsByChunkName) {
@@ -228,7 +228,7 @@ export default class WebpackPlugin extends Plugin {
   }
 }
 
-WebpackPlugin.hooks = {
+WebpackMixin.strategies = {
   configureWebpack: pipe,
   enhanceWebpack: parallel,
 };

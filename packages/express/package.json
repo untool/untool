@@ -1,9 +1,8 @@
 {
   "name": "@untool/express",
   "version": "0.0.1",
-  "description": "untool express plugin",
-  "keywords": ["unplugin"],
-  "esnext:plugin:core": "plugin.js",
+  "description": "untool express mixin",
+  "keywords": ["unmixin"],
   "scripts": {
     "test": "echo \"Error: no test specified\""
   },

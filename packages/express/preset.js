@@ -7,5 +7,5 @@ export default {
   assetPath: '<basePath>',
   buildDir: '<rootDir>/dist',
   serverFile: 'server.js',
-  plugins: [__dirname],
+  mixins: [__dirname],
 };

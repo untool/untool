@@ -6,5 +6,5 @@ export default {
   assetNames: ['<vendorName>', '<namespace>'],
   vendorName: 'vendor',
   cssModules: '[folder]-[name]-[local]-[hash:8]',
-  plugins: [__dirname],
+  mixins: [__dirname],
 };

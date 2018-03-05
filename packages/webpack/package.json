@@ -1,9 +1,8 @@
 {
   "name": "@untool/webpack",
   "version": "0.0.1",
-  "description": "untool webpack plugin",
-  "keywords": ["unplugin"],
-  "plugin:core": "plugin.js",
+  "description": "untool webpack mixin",
+  "keywords": ["unmixin"],
   "scripts": {
     "test": "echo \"Error: no test specified\""
   },

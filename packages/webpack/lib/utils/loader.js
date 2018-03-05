@@ -3,16 +3,16 @@ import { getOptions } from 'loader-utils';
 export default function() {
   this.cacheable();
   const { target, config } = getOptions(this);
-  const plugins = config
-    .getPlugins(target)
-    .map(plugin => `require('${plugin}').default`);
+  const mixins = config
+    .getMixins(target)
+    .map(mixin => `require('${mixin}').default`);
   if (target === 'server') {
     return `
       var path = require('path');
       var root = require('find-up').sync('package.json');
       var expand = path.join.bind(path, root);
       module.exports = {
-        getPlugins() { return [${plugins.join(',')}] },
+        getMixins() { return [${mixins.join(',')}] },
         getConfig() { return ${JSON.stringify(config).replace(
           new RegExp(`"${config.rootDir}([^"]*)"`, 'g'),
           'expand(".$1")'
@@ -22,7 +22,7 @@ export default function() {
   } else {
     return `
       module.exports = {
-        getPlugins() { return [${plugins.join(',')}] },
+        getMixins() { return [${mixins.join(',')}] },
         getConfig() { return ${JSON.stringify(
           Object.keys(config).reduce(
             (result, key) =>

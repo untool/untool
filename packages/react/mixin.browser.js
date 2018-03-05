@@ -3,10 +3,10 @@ import { createElement } from 'react';
 import { unmountComponentAtNode, hydrate, render } from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 
-import { Plugin } from '@untool/core';
+import { Mixin } from '@untool/core';
 import { async } from 'mixinable';
 
-export default class ReactPlugin extends Plugin {
+export default class ReactMixin extends Mixin {
   static hooks = {
     bootstrap: async.parallel,
     enhanceElement: async.compose,
@@ -39,3 +39,9 @@ export default class ReactPlugin extends Plugin {
       .then(element => (isMounted ? render : hydrate)(element, mountpoint));
   }
 }
+
+ReactMixin.strategies = {
+  bootstrap: async.parallel,
+  enhanceElement: async.compose,
+  fetchData: async.pipe,
+};

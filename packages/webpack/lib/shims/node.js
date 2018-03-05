@@ -9,4 +9,4 @@ if (entryPoint.__esModule) {
   entryPoint = entryPoint.default;
 }
 
-module.exports = entryPoint(config.getConfig(), config.getPlugins());
+module.exports = entryPoint(config.getConfig(), config.getMixins());

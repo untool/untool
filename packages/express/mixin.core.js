@@ -1,10 +1,10 @@
 import { parallel } from 'mixinable';
 
-import { Plugin } from '@untool/core';
+import { Mixin } from '@untool/core';
 
 import * as uri from './lib/uri';
 
-export default class ExpressPlugin extends Plugin {
+export default class ExpressMixin extends Mixin {
   runServer(options) {
     const { core, config } = this;
     return require('./lib/serve').default(options, core, config);
@@ -57,8 +57,8 @@ export default class ExpressPlugin extends Plugin {
   }
 }
 
-ExpressPlugin.uri = uri;
-ExpressPlugin.hooks = {
+ExpressMixin.uri = uri;
+ExpressMixin.strategies = {
   initializeServer: parallel,
   optimizeServer: parallel,
   finalizeServer: parallel,

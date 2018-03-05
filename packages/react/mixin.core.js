@@ -1,6 +1,6 @@
-import { Plugin } from '@untool/core';
+import { Mixin } from '@untool/core';
 
-export default class ReactPlugin extends Plugin {
+export default class ReactMixin extends Mixin {
   configureWebpack(webpackConfig, loaderConfigs, target) {
     const { fileLoaderConfig, jsLoaderConfig } = loaderConfigs;
 

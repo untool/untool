@@ -14,6 +14,6 @@ export default {
   version: pkgData.version,
   rootDir: rootDir,
   moduleDir: moduleDir,
-  plugins: ['@untool/yargs'],
+  mixins: ['@untool/yargs'],
   presets: ['@untool/express', '@untool/webpack'],
 };

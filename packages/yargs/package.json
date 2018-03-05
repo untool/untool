@@ -1,10 +1,8 @@
 {
   "name": "@untool/yargs",
   "version": "0.0.1",
-  "description": "untool yargs plugin",
-  "keywords": ["unplugin"],
-  "main": "index.js",
-  "plugin:core": "plugin.js",
+  "description": "untool yargs mixin",
+  "keywords": ["unmixin"],
   "bin": {
     "un": "index.js"
   },

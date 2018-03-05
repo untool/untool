@@ -23,28 +23,28 @@ function resolvePreset(...args) {
   }
 }
 
-function resolvePlugin(target, ...args) {
+function resolveMixin(target, ...args) {
   try {
     const config = {
       extensions: ['.mjs', '.js'],
-      mainFiles: [`plugin.${target}`, 'plugin'],
+      mainFiles: [`mixin.${target}`, 'mixin'],
       mainFields: [
-        `esnext:plugin:${target}`,
-        `jsnext:plugin:${target}`,
-        `plugin:${target}`,
-        'esnext:plugin',
-        'jsnext:plugin',
-        'plugin',
+        `esnext:mixin:${target}`,
+        `jsnext:mixin:${target}`,
+        `mixin:${target}`,
+        'esnext:mixin',
+        'jsnext:mixin',
+        'mixin',
       ],
     };
     if (target !== 'core') {
-      config.mainFiles.splice(1, 0, 'plugin.runtime');
+      config.mainFiles.splice(1, 0, 'mixin.runtime');
       config.mainFields.splice(
         3,
         0,
-        'esnext:plugin:runtime',
-        'jsnext:plugin:runtime',
-        'plugin:runtime'
+        'esnext:mixin:runtime',
+        'jsnext:mixin:runtime',
+        'mixin:runtime'
       );
     }
     return createResolver(config)(...args);
@@ -58,7 +58,7 @@ const rootDir = dirname(findUp('package.json'));
 function merge(...args) {
   return mergeWith({}, ...args, (objValue, srcValue, key) => {
     if (Array.isArray(objValue)) {
-      if ('plugins' === key) {
+      if ('mixins' === key) {
         return objValue.concat(srcValue);
       }
       return srcValue;
@@ -94,9 +94,9 @@ function loadPresets(parentContext, presets = []) {
     if (config.__esModule) {
       config = config.default;
     }
-    if (config.plugins) {
-      config.plugins = config.plugins.map(
-        plugin => (plugin.startsWith('.') ? join(context, plugin) : plugin)
+    if (config.mixins) {
+      config.mixins = config.mixins.map(
+        mixin => (mixin.startsWith('.') ? join(context, mixin) : mixin)
       );
     }
     return merge(result, loadPresets(context, config.presets), config);
@@ -142,10 +142,11 @@ delete rawConfig.env;
 
 export const config = resolvePlaceholders(rawConfig);
 
-const plugins = config.plugins || [];
-delete config.plugins;
+const mixins = config.mixins || [];
 
-config.getPlugins = target =>
-  plugins
-    .map(plugin => resolvePlugin(target, config.rootDir, plugin))
-    .filter(plugin => !!plugin);
+delete config.mixins;
+
+config.getMixins = target =>
+  mixins
+    .map(mixin => resolveMixin(target, config.rootDir, mixin))
+    .filter((mixin, index, self) => mixin && self.indexOf(mixin) === index);
