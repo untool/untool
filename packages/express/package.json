@@ -26,7 +26,7 @@
     "helmet": "^3.11.0",
     "mime": "^2.2.0",
     "minimatch": "^3.0.4",
-    "mixinable": "^1.3.0",
+    "mixinable": "^1.4.0",
     "node-mocks-http": "^1.6.6"
   },
   "engines": {
