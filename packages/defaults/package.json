@@ -1,11 +1,7 @@
 {
-  "name": "@untool/yargs",
+  "name": "@untool/defaults",
   "version": "0.0.1",
-  "description": "untool yargs mixin",
-  "keywords": ["unmixin"],
-  "bin": {
-    "un": "index.js"
-  },
+  "description": "untool defaults",
   "scripts": {
     "test": "echo \"Error: no test specified\""
   },
@@ -23,10 +19,10 @@
   },
   "homepage": "https://github.com/untool/untool#readme",
   "dependencies": {
-    "@untool/core": "0.0.2",
-    "chalk": "^2.3.1",
-    "mixinable": "^1.5.0",
-    "yargs": "^11.0.0"
+    "@untool/express": "0.0.1",
+    "@untool/webpack": "0.0.1",
+    "@untool/yargs": "0.0.1",
+    "find-up": "^2.1.0"
   },
   "engines": {
     "node": ">8.6.0"

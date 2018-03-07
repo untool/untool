@@ -1,9 +1,8 @@
-import express from 'express';
+const express = require('express');
 
-import { runServer } from './serve';
-import rewriteMiddleware from './rewrite';
+const rewriteMiddleware = require('./rewrite');
 
-export const createServer = (options, core, config) => {
+module.exports = (options, core, config) => {
   const app = express();
   core.initializeServer(app, 'develop');
   app.use(rewriteMiddleware(options, config));
@@ -11,6 +10,3 @@ export const createServer = (options, core, config) => {
   core.finalizeServer(app, 'develop');
   return app;
 };
-
-export default (options, core, config) =>
-  runServer(createServer(options, core, config), core, config);

@@ -1,14 +1,15 @@
-import { createElement } from 'react';
-import { renderToString } from 'react-dom/server';
-import { StaticRouter } from 'react-router';
-import { Helmet } from 'react-helmet';
+const { createElement } = require('react');
+const { renderToString } = require('react-dom/server');
+const { StaticRouter } = require('react-router');
+const { Helmet } = require('react-helmet');
 
-import { Mixin } from '@untool/core';
-import { async } from 'mixinable';
+const { async: { compose, parallel, pipe } } = require('mixinable');
 
-import template from './lib/template';
+const { Mixin } = require('@untool/core');
 
-export default class ReactPlugin extends Mixin {
+const template = require('./lib/template');
+
+class ReactPlugin extends Mixin {
   constructor(core, config, element, options) {
     super(core, config);
     this.element = element;
@@ -75,7 +76,9 @@ export default class ReactPlugin extends Mixin {
 }
 
 ReactPlugin.strategies = {
-  bootstrap: async.parallel,
-  enhanceElement: async.compose,
-  fetchData: async.pipe,
+  bootstrap: parallel,
+  enhanceElement: compose,
+  fetchData: pipe,
 };
+
+module.exports = ReactPlugin;

@@ -1,4 +1,4 @@
-export function getAllPropertyNames(obj) {
+exports.getAllPropertyNames = function getAllPropertyNames(obj) {
   const props = [];
   do {
     Object.getOwnPropertyNames(obj).forEach(prop => {
@@ -8,12 +8,12 @@ export function getAllPropertyNames(obj) {
     });
   } while ((obj = Object.getPrototypeOf(obj)));
   return props;
-}
+};
 
-export function bindAll(obj) {
-  getAllPropertyNames(obj).forEach(key => {
+exports.bindAll = function bindAll(obj) {
+  exports.getAllPropertyNames(obj).forEach(key => {
     if (typeof obj[key] === 'function') {
       obj[key] = obj[key].bind(obj);
     }
   });
-}
+};

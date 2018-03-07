@@ -1,22 +1,20 @@
-import { promisify } from 'util';
+const { sync: { pipe } } = require('mixinable');
 
-import { pipe, parallel } from 'mixinable';
+const ExpressMixin = require('@untool/express/mixin.core');
 
-import ExpressMixin from '@untool/express/mixin.core';
-
-export default class WebpackMixin extends ExpressMixin {
+class WebpackMixin extends ExpressMixin {
   createAssetsMiddleware() {
-    const assetsMiddleware = require('./lib/middleware/assets').default;
+    const assetsMiddleware = require('./lib/middleware/assets');
     const { config, assets, assetsByChunkName } = this;
     return assetsMiddleware(config, { assets, assetsByChunkName });
   }
   createRenderMiddleware() {
-    const renderMiddleware = require('./lib/middleware/render').default;
+    const renderMiddleware = require('./lib/middleware/render');
     const webpackConfig = this.getConfig('node');
     return renderMiddleware(webpackConfig);
   }
   createDevRenderMiddleware() {
-    const renderMiddleware = require('./lib/middleware/render').default;
+    const renderMiddleware = require('./lib/middleware/render');
     const webpackBrowserConfig = this.getConfig('develop');
     const webpackNodeConfig = this.getConfig('node');
     return renderMiddleware({
@@ -44,51 +42,70 @@ export default class WebpackMixin extends ExpressMixin {
     ];
   }
   createAssetsPlugin() {
-    const AssetsPlugin = require('./lib/plugins/assets').default;
-    const { options, config, setAssets } = this;
-    return new AssetsPlugin(options, config, setAssets);
+    const AssetsPlugin = require('./lib/plugins/assets');
+    const { options, config } = this;
+    return new AssetsPlugin(options, config, (assets, assetsByChunkName) =>
+      Object.assign(this, { assets, assetsByChunkName })
+    );
   }
   createRenderPlugin() {
-    const RenderPlugin = require('./lib/plugins/render').default;
+    const RenderPlugin = require('./lib/plugins/render');
     const { render } = this;
     return new RenderPlugin(render);
   }
   getConfig(target) {
-    const getConfig = require(`./lib/configs/${target}`).default;
-    const { configureWebpack, enhanceWebpack } = this.core;
-    return getConfig(
-      this.config,
-      this.getAssetPath,
-      (...args) => configureWebpack(...args, target),
-      (...args) => enhanceWebpack(...args, target)
+    const getConfig = require(`./lib/configs/${target}`);
+    const { configureWebpack } = this.core;
+    return getConfig(this.config, this.getAssetPath, (...args) =>
+      configureWebpack(...args, target)
     );
   }
   clean() {
+    const rimraf = require('rimraf');
     const { buildDir } = this.config;
-    return promisify(require('rimraf'))(buildDir);
+    return new Promise((resolve, reject) =>
+      rimraf(buildDir, error => (error ? reject(error) : resolve()))
+    );
   }
   build() {
+    const webpack = require('webpack');
     const { options: { static: isStatic }, getConfig } = this;
-    return new Promise((resolve, reject) => {
-      require('webpack')(
+    return new Promise((resolve, reject) =>
+      webpack(
         isStatic ? getConfig('build') : [getConfig('build'), getConfig('node')]
-      ).run((error, stats) => (error ? reject(error) : resolve(stats)));
-    });
+      ).run((error, stats) => (error ? reject(error) : resolve(stats)))
+    );
   }
-  getAssetPath(filePath) {
-    const { config: { assetPath } } = this;
-    const { uri: { resolveRelative } } = ExpressMixin;
-    return resolveRelative(assetPath, filePath);
+  configureWebpack(webpackConfig, loaderConfigs, target) {
+    const { plugins } = webpackConfig;
+    if (this.options.static && target === 'build') {
+      plugins.unshift(this.createRenderPlugin());
+    }
+    if (target !== 'node') {
+      plugins.unshift(this.createAssetsPlugin());
+    }
+    return webpackConfig;
   }
-  setAssets(assets, assetsByChunkName) {
-    return Object.assign(this, { assets, assetsByChunkName });
+  initializeServer(app, mode) {
+    if (mode === 'develop') {
+      app.use(...this.createDevWebpackMiddlewares());
+    }
+    app.use(this.createAssetsMiddleware());
+  }
+  optimizeServer(app, mode) {
+    if (mode === 'develop') {
+      app.use(this.createDevRenderMiddleware());
+    }
+    if (mode === 'static') {
+      app.use(this.createRenderMiddleware());
+    }
   }
   registerCommands(yargs) {
     const { namespace } = this.config;
     return yargs
       .command({
         command: 'start',
-        describe: `Builds and serves ${namespace}`,
+        describe: `Build and serve ${namespace}`,
         builder: {
           production: {
             alias: 'p',
@@ -105,7 +122,7 @@ export default class WebpackMixin extends ExpressMixin {
           rewrite: {
             alias: 'r',
             default: true,
-            describe: 'Rewrite requests to statically built locations',
+            describe: 'Rewrite to static locations',
             type: 'boolean',
           },
           clean: {
@@ -131,7 +148,7 @@ export default class WebpackMixin extends ExpressMixin {
       })
       .command({
         command: 'build',
-        describe: `Builds ${namespace}`,
+        describe: `Build ${namespace}`,
         builder: {
           production: {
             alias: 'p',
@@ -163,7 +180,7 @@ export default class WebpackMixin extends ExpressMixin {
       })
       .command({
         command: 'develop',
-        describe: `Serves ${namespace} in watch mode`,
+        describe: `Serve ${namespace} in watch mode`,
         builder: {
           static: {
             alias: 's',
@@ -174,7 +191,7 @@ export default class WebpackMixin extends ExpressMixin {
           rewrite: {
             alias: 'r',
             default: true,
-            describe: 'Rewrite requests to statically built locations',
+            describe: 'Rewrite to static locations',
             type: 'boolean',
           },
         },
@@ -184,33 +201,10 @@ export default class WebpackMixin extends ExpressMixin {
         },
       });
   }
-  configureWebpack(webpackConfig, loaderConfigs, target) {
-    const { plugins } = webpackConfig;
-    if (this.options.static && target === 'build') {
-      plugins.unshift(this.createRenderPlugin());
-    }
-    if (target !== 'node') {
-      plugins.unshift(this.createAssetsPlugin());
-    }
-    return webpackConfig;
-  }
-  initializeServer(app, mode) {
-    if (mode === 'develop') {
-      app.use(...this.createDevWebpackMiddlewares());
-    }
-    app.use(this.createAssetsMiddleware());
-  }
-  optimizeServer(app, mode) {
-    if (mode === 'develop') {
-      app.use(this.createDevRenderMiddleware());
-    }
-    if (mode === 'static') {
-      app.use(this.createRenderMiddleware());
-    }
-  }
 }
 
 WebpackMixin.strategies = {
   configureWebpack: pipe,
-  enhanceWebpack: parallel,
 };
+
+module.exports = WebpackMixin;

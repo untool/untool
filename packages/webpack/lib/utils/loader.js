@@ -1,11 +1,9 @@
-import { getOptions } from 'loader-utils';
+const { getOptions } = require('loader-utils');
 
-export default function() {
+module.exports = function() {
   this.cacheable();
   const { target, config } = getOptions(this);
-  const mixins = config
-    .getMixins(target)
-    .map(mixin => `require('${mixin}').default`);
+  const mixins = config.getMixins(target).map(mixin => `require('${mixin}')`);
   if (target === 'server') {
     return `
       var path = require('path');
@@ -33,4 +31,4 @@ export default function() {
       };
     `;
   }
-}
+};

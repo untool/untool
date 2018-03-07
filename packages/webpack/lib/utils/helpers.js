@@ -1,7 +1,7 @@
-import { readFileSync } from 'fs';
-import { dirname, isAbsolute } from 'path';
+const { readFileSync } = require('fs');
+const { dirname, isAbsolute } = require('path');
 
-import { sync as findUp } from 'find-up';
+const { sync: findUp } = require('find-up');
 
 const checkESNextPath = modPath =>
   modPath.indexOf('.mjs') === modPath.length - 4 ||
@@ -15,7 +15,7 @@ const checkESNextConfig = modPath =>
 
 const cache = {};
 
-export function checkESNext(modPath) {
+exports.checkESNext = function checkESNext(modPath) {
   if (!(modPath in cache)) {
     if (isAbsolute(modPath)) {
       cache[modPath] = checkESNextPath(modPath) || checkESNextConfig(modPath);
@@ -24,9 +24,9 @@ export function checkESNext(modPath) {
     }
   }
   return cache[modPath];
-}
+};
 
-export function resolve(target, defaults) {
+exports.getResolveConfig = function getResolveConfig(target, defaults) {
   return {
     ...defaults,
     extensions: ['.mjs', '.js'],
@@ -42,4 +42,4 @@ export function resolve(target, defaults) {
       'main',
     ],
   };
-}
+};

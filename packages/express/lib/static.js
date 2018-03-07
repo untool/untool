@@ -1,9 +1,9 @@
-import EventEmitter from 'events';
+const EventEmitter = require('events');
 
-import { Router } from 'express';
-import mocks from 'node-mocks-http';
+const { Router } = require('express');
+const mocks = require('node-mocks-http');
 
-export default (options, core) => {
+module.exports = (options, core) => {
   const app = new Router();
   core.initializeServer(app, 'static');
   core.optimizeServer(app, 'static');

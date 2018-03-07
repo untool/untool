@@ -1,4 +1,4 @@
-export default {
+module.exports = {
   browsers: '> 1%, last 2 versions, Firefox ESR',
   node: 'current',
   assetFile: 'assets.json',

@@ -75,7 +75,7 @@ const installUntool = manifest =>
                   yargs => require(yargs),
                   () => {
                     // eslint-disable-next-line no-console
-                    console.error('@untool/yargs not found. Exiting.');
+                    console.error('/o\\ @untool/yargs not found. Exiting.');
                     process.exit(1);
                   }
                 )
@@ -89,13 +89,13 @@ findUp('package.json')
   .then(pkgFile => (pkgFile ? new Manifest(pkgFile) : createManifest()))
   .then(manifest =>
     resolve(dirname(manifest.pkgFile), '@untool/yargs').then(
-      yargs => require(yargs),
+      untoolYargs => require(untoolYargs),
       () => installUntool(manifest)
     )
   )
-  .then(yargs => yargs.run())
+  .then(untoolYargs => untoolYargs.run())
   .catch(error => {
     // eslint-disable-next-line no-console
-    console.error(error.toString());
+    console.error(error.stack ? error.stack.toString() : error.toString());
     process.exit(1);
   });

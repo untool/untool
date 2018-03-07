@@ -1,6 +1,6 @@
-import { RawSource } from 'webpack-sources';
+const { RawSource } = require('webpack-sources');
 
-export default class WebpackRenderPlugin {
+module.exports = class WebpackRenderPlugin {
   constructor(render) {
     this.render = render;
   }
@@ -20,4 +20,4 @@ export default class WebpackRenderPlugin {
       })
     );
   }
-}
+};

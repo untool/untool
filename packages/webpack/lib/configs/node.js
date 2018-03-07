@@ -1,11 +1,11 @@
-import { resolve as resolvePath } from 'path';
+const { resolve } = require('path');
 
-import { EnvironmentPlugin, optimize } from 'webpack';
-import determineExternals from 'webpack-node-externals';
+const { EnvironmentPlugin, optimize } = require('webpack');
+const determineExternals = require('webpack-node-externals');
 
-import { checkESNext, resolve } from '../utils/helpers';
+const { checkESNext, getResolveConfig } = require('../utils/helpers');
 
-function getConfig(config, getAssetPath, configureWebpack, enhanceWebpack) {
+module.exports = function getConfig(config, getAssetPath, configureWebpack) {
   const jsLoaderConfig = {
     test: [/\.m?js$/],
     include: checkESNext,
@@ -83,10 +83,9 @@ function getConfig(config, getAssetPath, configureWebpack, enhanceWebpack) {
       pathinfo: true,
       filename: config.serverFile,
       libraryTarget: 'commonjs2',
-      devtoolModuleFilenameTemplate: info =>
-        resolvePath(info.absoluteResourcePath),
+      devtoolModuleFilenameTemplate: info => resolve(info.absoluteResourcePath),
     },
-    resolve: resolve('server', {
+    resolve: getResolveConfig('server', {
       alias: {
         untool: '@untool/core',
         '@untool/entrypoint': config.rootDir,
@@ -112,11 +111,6 @@ function getConfig(config, getAssetPath, configureWebpack, enhanceWebpack) {
       ],
     },
     plugins: [
-      {
-        apply(compiler) {
-          enhanceWebpack(compiler);
-        },
-      },
       new optimize.LimitChunkCountPlugin({
         maxChunks: 1,
       }),
@@ -139,6 +133,4 @@ function getConfig(config, getAssetPath, configureWebpack, enhanceWebpack) {
   };
 
   return configureWebpack(webpackConfig, loaderConfigs);
-}
-
-export default getConfig;
+};

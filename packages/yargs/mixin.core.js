@@ -1,9 +1,9 @@
 /* eslint-disable no-console */
-import { pipe, override } from 'mixinable';
+const { sync: { pipe, override } } = require('mixinable');
 
-import { Mixin } from '@untool/core';
+const { Mixin } = require('@untool/core');
 
-export default class YargsMixin extends Mixin {
+class YargsMixin extends Mixin {
   registerCommands(yargs, chalk) {
     const levels = ['info', 'warn', 'error', 'silent'];
     const index = levels.indexOf(yargs.alias('l', 'log').argv.log);
@@ -46,3 +46,5 @@ YargsMixin.strategies = {
   logError: override,
   logStats: override,
 };
+
+module.exports = YargsMixin;

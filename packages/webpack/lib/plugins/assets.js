@@ -1,6 +1,6 @@
-import { RawSource } from 'webpack-sources';
+const { RawSource } = require('webpack-sources');
 
-export default class WebpackAssetsPlugin {
+module.exports = class WebpackAssetsPlugin {
   constructor(options, config, setAssets) {
     this.config = config;
     this.options = options;
@@ -29,4 +29,4 @@ export default class WebpackAssetsPlugin {
       }
     });
   }
-}
+};

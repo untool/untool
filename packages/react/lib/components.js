@@ -1,7 +1,7 @@
-import { createElement } from 'react';
-import { withRouter } from 'react-router';
+const { createElement } = 'react';
+const { withRouter } = 'react-router';
 
-export function withServer(WrappedComponent) {
+exports.withServer = function withServer(WrappedComponent) {
   return withRouter(props =>
     createElement(WrappedComponent, {
       ...props,
@@ -20,19 +20,19 @@ export function withServer(WrappedComponent) {
       },
     })
   );
-}
+};
 
-export const Miss = withServer(({ setMiss }) => {
+exports.Miss = exports.withServer(({ setMiss }) => {
   setMiss();
   return null;
 });
 
-export const Status = withServer(({ setStatus, code }) => {
+exports.Status = exports.withServer(({ setStatus, code }) => {
   setStatus(code);
   return null;
 });
 
-export const Header = withServer(({ setHeader, name, value }) => {
+exports.Header = exports.withServer(({ setHeader, name, value }) => {
   setHeader(name, value);
   return null;
 });

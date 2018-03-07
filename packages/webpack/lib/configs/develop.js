@@ -1,17 +1,17 @@
-import { relative } from 'path';
+const { relative } = require('path');
 
-import {
+const {
   DefinePlugin,
   HotModuleReplacementPlugin,
   NamedModulesPlugin,
-} from 'webpack';
+} = require('webpack');
 
-import postcssImportPlugin from 'postcss-import';
-import postcssNextPlugin from 'postcss-cssnext';
+const postcssImportPlugin = require('postcss-import');
+const postcssNextPlugin = require('postcss-cssnext');
 
-import { checkESNext, resolve } from '../utils/helpers';
+const { checkESNext, getResolveConfig } = require('../utils/helpers');
 
-function getConfig(config, getAssetPath, configureWebpack, enhanceWebpack) {
+module.exports = function getConfig(config, getAssetPath, configureWebpack) {
   const jsLoaderConfig = {
     test: [/\.m?js$/],
     include: checkESNext,
@@ -112,7 +112,7 @@ function getConfig(config, getAssetPath, configureWebpack, enhanceWebpack) {
         return relative(config.rootDir, info.absoluteResourcePath);
       },
     },
-    resolve: resolve('browser', {
+    resolve: getResolveConfig('browser', {
       alias: {
         untool: '@untool/core',
         '@untool/entrypoint': config.rootDir,
@@ -132,11 +132,6 @@ function getConfig(config, getAssetPath, configureWebpack, enhanceWebpack) {
       ],
     },
     plugins: [
-      {
-        apply(compiler) {
-          enhanceWebpack(compiler);
-        },
-      },
       new HotModuleReplacementPlugin(),
       new NamedModulesPlugin(),
       new DefinePlugin({
@@ -162,6 +157,4 @@ function getConfig(config, getAssetPath, configureWebpack, enhanceWebpack) {
   };
 
   return configureWebpack(webpackConfig, loaderConfigs);
-}
-
-export default getConfig;
+};

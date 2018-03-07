@@ -1,4 +1,4 @@
-import { join, extname } from 'path';
+const { join, extname } = require('path');
 
 const getAssetData = (locals = {}, config) => {
   if (locals.webpackStats) {
@@ -8,7 +8,7 @@ const getAssetData = (locals = {}, config) => {
   return require(join(config.buildDir, config.assetFile));
 };
 
-export default (config, assetData) => (req, res, next) => {
+module.exports = (config, assetData) => (req, res, next) => {
   assetData = assetData && assetData.assets ? assetData : null;
   const { assetsByType, assetsByChunkName } = (res.locals = {
     ...res.locals,

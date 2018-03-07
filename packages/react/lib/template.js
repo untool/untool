@@ -1,6 +1,6 @@
-var esc = require('serialize-javascript');
+const esc = require('serialize-javascript');
 
-export default data =>
+module.exports = data =>
   `<!DOCTYPE html>
 <html ${data.helmet.htmlAttributes.toString()}>
   <head>

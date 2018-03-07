@@ -1,43 +1,43 @@
-export function resolve(...args) {
-  const basePath = stripTrailingSlash(args.shift());
+exports.resolve = function resolve(...args) {
+  const basePath = exports.stripTrailingSlash(args.shift());
   const pathSegments = args.map(segment =>
     segment.replace(/(?:^\/+|\/+$)/g, '')
   );
   return [basePath].concat(pathSegments).join('/');
-}
+};
 
-export function resolveFolder(...args) {
-  return resolve(...args).replace(/^(.*?)\/*$/, '$1/');
-}
+exports.resolveFolder = function resolveFolder(...args) {
+  return exports.resolve(...args).replace(/^(.*?)\/*$/, '$1/');
+};
 
-export function resolveAbsolute(...args) {
-  return addLeadingSlash(resolve(...args));
-}
+exports.resolveAbsolute = function resolveAbsolute(...args) {
+  return exports.addLeadingSlash(exports.resolve(...args));
+};
 
-export function resolveRelative(...args) {
-  return stripLeadingSlash(resolve(...args));
-}
+exports.resolveRelative = function resolveRelative(...args) {
+  return exports.stripLeadingSlash(exports.resolve(...args));
+};
 
-export function resolveAbsoluteFolder(...args) {
-  return addLeadingSlash(resolveFolder(...args));
-}
+exports.resolveAbsoluteFolder = function resolveAbsoluteFolder(...args) {
+  return exports.addLeadingSlash(exports.resolveFolder(...args));
+};
 
-export function resolveRelativeFolder(...args) {
-  return stripLeadingSlash(resolveFolder(...args));
-}
+exports.resolveRelativeFolder = function resolveRelativeFolder(...args) {
+  return exports.stripLeadingSlash(exports.resolveFolder(...args));
+};
 
-export function addLeadingSlash(location) {
+exports.addLeadingSlash = function addLeadingSlash(location) {
   return location.replace(/^\/+/, '/');
-}
+};
 
-export function addTrailingSlash(location) {
+exports.addTrailingSlash = function addTrailingSlash(location) {
   return location.replace(/\/+$/, '/');
-}
+};
 
-export function stripLeadingSlash(location) {
+exports.stripLeadingSlash = function stripLeadingSlash(location) {
   return location.replace(/^\/+/, '');
-}
+};
 
-export function stripTrailingSlash(location) {
+exports.stripTrailingSlash = function stripTrailingSlash(location) {
   return location.replace(/\/+$/, '');
-}
+};

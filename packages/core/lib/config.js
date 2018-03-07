@@ -1,15 +1,13 @@
-import { dirname, join } from 'path';
+const { dirname, join } = require('path');
 
-import { sync as findUp } from 'find-up';
-import cosmiconfig from 'cosmiconfig';
+const { sync: findUp } = require('find-up');
+const cosmiconfig = require('cosmiconfig');
+const mergeWith = require('lodash.mergewith');
+const isPlainObject = require('is-plain-object');
+const escapeRegExp = require('escape-string-regexp');
+const flatten = require('flat');
 
-import mergeWith from 'lodash.mergewith';
-import isPlainObject from 'is-plain-object';
-import flatten from 'flat';
-
-import enhancedResolve from 'enhanced-resolve';
-
-const { create: { sync: createResolver } } = enhancedResolve;
+const { create: { sync: createResolver } } = require('enhanced-resolve');
 
 function resolvePreset(...args) {
   try {
@@ -83,30 +81,25 @@ function loadSettings(...args) {
   return result ? result.config : {};
 }
 
-function loadPresets(parentContext, presets = []) {
+function loadPresets(context, presets = []) {
   return presets.reduce((result, preset) => {
-    let { config, filepath } =
-      loadConfig(parentContext, preset) ||
-      loadConfig(
-        dirname(resolvePreset(parentContext, join(preset, 'package.json')))
-      );
-    const context = dirname(filepath);
-    if (config.__esModule) {
-      config = config.default;
-    }
+    const { config, filepath } =
+      loadConfig(context, preset) ||
+      loadConfig(dirname(resolvePreset(context, join(preset, 'package.json'))));
+    const newContext = dirname(filepath);
     if (config.mixins) {
       config.mixins = config.mixins.map(
-        mixin => (mixin.startsWith('.') ? join(context, mixin) : mixin)
+        mixin => (mixin.startsWith('.') ? join(newContext, mixin) : mixin)
       );
     }
-    return merge(result, loadPresets(context, config.presets), config);
+    return merge(result, loadPresets(newContext, config.presets), config);
   }, {});
 }
 
 function resolvePlaceholders(config) {
   const flatConfig = flatten(config);
   const keys = Object.keys(flatConfig);
-  const regExp = new RegExp('<(' + keys.join('|') + ')>', 'g');
+  const regExp = new RegExp(`<(${keys.map(escapeRegExp).join('|')})>`, 'g');
   const replaceRecursive = item => {
     if (isPlainObject(item)) {
       return Object.keys(item).reduce((result, key) => {
@@ -140,13 +133,15 @@ const rawConfig = (config =>
 delete rawConfig.presets;
 delete rawConfig.env;
 
-export const config = resolvePlaceholders(rawConfig);
+const config = resolvePlaceholders(rawConfig);
 
 const mixins = config.mixins || [];
-
-delete config.mixins;
 
 config.getMixins = target =>
   mixins
     .map(mixin => resolveMixin(target, config.rootDir, mixin))
     .filter((mixin, index, self) => mixin && self.indexOf(mixin) === index);
+
+delete config.mixins;
+
+module.exports = config;

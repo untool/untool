@@ -2,7 +2,7 @@
   "name": "@untool/core",
   "version": "0.0.2",
   "description": "untool core",
-  "main": "index.js",
+  "main": "lib/core.js",
   "esnext:main": "lib/runtime.js",
   "scripts": {
     "test": "echo \"Error: no test specified\""
@@ -21,16 +21,13 @@
   },
   "homepage": "https://github.com/untool/untool#readme",
   "dependencies": {
-    "@std/esm": "^0.22.0",
-    "@untool/express": "0.0.1",
-    "@untool/webpack": "0.0.1",
-    "@untool/yargs": "0.0.1",
     "cosmiconfig": "^4.0.0",
     "enhanced-resolve": "^4.0.0-beta.4",
+    "find-up": "^2.1.0",
     "flat": "^4.0.0",
     "is-plain-object": "^2.0.4",
     "lodash.mergewith": "^4.6.1",
-    "mixinable": "^1.4.0"
+    "mixinable": "^1.5.0"
   },
   "engines": {
     "node": ">8.6.0"

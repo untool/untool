@@ -1,14 +1,19 @@
-import { relative } from 'path';
+const { relative } = require('path');
 
-import { EnvironmentPlugin, HashedModuleIdsPlugin, optimize } from 'webpack';
-import ExtractTextPlugin from 'extract-text-webpack-plugin';
+const {
+  EnvironmentPlugin,
+  HashedModuleIdsPlugin,
+  optimize,
+} = require('webpack');
 
-import postcssImportPlugin from 'postcss-import';
-import postcssNextPlugin from 'postcss-cssnext';
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
-import { checkESNext, resolve } from '../utils/helpers';
+const postcssImportPlugin = require('postcss-import');
+const postcssNextPlugin = require('postcss-cssnext');
 
-function getConfig(config, getAssetPath, configureWebpack, enhanceWebpack) {
+const { checkESNext, getResolveConfig } = require('../utils/helpers');
+
+module.exports = function getConfig(config, getAssetPath, configureWebpack) {
   const jsLoaderConfig = {
     test: [/\.m?js$/],
     include: checkESNext,
@@ -109,7 +114,7 @@ function getConfig(config, getAssetPath, configureWebpack, enhanceWebpack) {
         return relative(config.rootDir, info.absoluteResourcePath);
       },
     },
-    resolve: resolve('browser', {
+    resolve: getResolveConfig('browser', {
       alias: {
         untool: '@untool/core',
         '@untool/entrypoint': config.rootDir,
@@ -141,11 +146,6 @@ function getConfig(config, getAssetPath, configureWebpack, enhanceWebpack) {
       },
     },
     plugins: [
-      {
-        apply(compiler) {
-          enhanceWebpack(compiler);
-        },
-      },
       new ExtractTextPlugin({
         filename: getAssetPath('[name]-[contenthash:16].css'),
         allChunks: true,
@@ -167,7 +167,6 @@ function getConfig(config, getAssetPath, configureWebpack, enhanceWebpack) {
     fileLoaderConfig,
     allLoaderConfigs,
   };
-  return configureWebpack(webpackConfig, loaderConfigs);
-}
 
-export default getConfig;
+  return configureWebpack(webpackConfig, loaderConfigs);
+};

@@ -1,17 +1,13 @@
 /* eslint-env browser */
-import { createElement } from 'react';
-import { unmountComponentAtNode, hydrate, render } from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
+const { createElement } = require('react');
+const { unmountComponentAtNode, hydrate, render } = require('react-dom');
+const { BrowserRouter } = require('react-router-dom');
 
-import { Mixin } from '@untool/core';
-import { async } from 'mixinable';
+const { async: { compose, parallel, pipe } } = require('mixinable');
 
-export default class ReactMixin extends Mixin {
-  static hooks = {
-    bootstrap: async.parallel,
-    enhanceElement: async.compose,
-    fetchData: async.pipe,
-  };
+const { Mixin } = require('@untool/core');
+
+class ReactMixin extends Mixin {
   constructor(core, config, element, options) {
     super(core, config);
     this.element = element;
@@ -41,7 +37,9 @@ export default class ReactMixin extends Mixin {
 }
 
 ReactMixin.strategies = {
-  bootstrap: async.parallel,
-  enhanceElement: async.compose,
-  fetchData: async.pipe,
+  bootstrap: parallel,
+  enhanceElement: compose,
+  fetchData: pipe,
 };
+
+module.exports = ReactMixin;

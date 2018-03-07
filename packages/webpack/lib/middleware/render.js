@@ -1,13 +1,48 @@
-import { join } from 'path';
-import EventEmitter from 'events';
+const { join } = require('path');
+const EventEmitter = require('events');
 
-import webpack from 'webpack';
-import MemoryFS from 'memory-fs';
+const webpack = require('webpack');
+const MemoryFS = require('memory-fs');
 
-import sourceMapSupport from 'source-map-support';
-import requireFromString from 'require-from-string';
+const sourceMapSupport = require('source-map-support');
+const requireFromString = require('require-from-string');
 
-export function createTranspiler(webpackConfig) {
+module.exports = exports = function createRenderMiddleware(webpackConfig) {
+  const transpiler = exports.createTranspiler(webpackConfig);
+  let middleware, error;
+  transpiler.on('start', () => {
+    middleware = null;
+    error = null;
+  });
+  transpiler.on('success', result => {
+    middleware = result;
+    error = null;
+  });
+  transpiler.on('error', result => {
+    middleware = null;
+    error = result;
+  });
+  const getMiddlewarePromise = () => {
+    if (error) {
+      return Promise.reject(error);
+    }
+    if (middleware) {
+      return Promise.resolve(middleware);
+    }
+    return new Promise(resolve => {
+      transpiler.once('result', () => {
+        resolve(getMiddlewarePromise());
+      });
+    });
+  };
+  return (req, res, next) => {
+    getMiddlewarePromise()
+      .then(middleware => middleware(req, res, next))
+      .catch(next);
+  };
+};
+
+exports.createTranspiler = function createTranspiler(webpackConfig) {
   const emitter = new EventEmitter();
   const compiler = webpack(webpackConfig);
   compiler.outputFileSystem = new MemoryFS();
@@ -50,39 +85,4 @@ export function createTranspiler(webpackConfig) {
   }
   process.nextTick(emitter.emit.bind(emitter, 'start'));
   return emitter;
-}
-
-export default function createRenderMiddleware(webpackConfig) {
-  const transpiler = createTranspiler(webpackConfig);
-  let middleware, error;
-  transpiler.on('start', () => {
-    middleware = null;
-    error = null;
-  });
-  transpiler.on('success', result => {
-    middleware = result;
-    error = null;
-  });
-  transpiler.on('error', result => {
-    middleware = null;
-    error = result;
-  });
-  const getMiddlewarePromise = () => {
-    if (error) {
-      return Promise.reject(error);
-    }
-    if (middleware) {
-      return Promise.resolve(middleware);
-    }
-    return new Promise(resolve => {
-      transpiler.once('result', () => {
-        resolve(getMiddlewarePromise());
-      });
-    });
-  };
-  return (req, res, next) => {
-    getMiddlewarePromise()
-      .then(middleware => middleware(req, res, next))
-      .catch(next);
-  };
-}
+};

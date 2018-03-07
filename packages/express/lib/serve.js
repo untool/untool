@@ -1,17 +1,13 @@
-import { existsSync, readFileSync } from 'fs';
-import { join } from 'path';
-import { format } from 'url';
+const { existsSync } = require('fs');
+const { join } = require('path');
 
-import { createServer as createHTTPServer } from 'http';
-import { createServer as createHTTPSServer } from 'https';
+const express = require('express');
+const helmet = require('helmet');
+const mime = require('mime');
 
-import express from 'express';
-import helmet from 'helmet';
-import mime from 'mime';
+const rewriteMiddleware = require('./rewrite');
 
-import rewriteMiddleware from './rewrite';
-
-export const createServer = (options, core, config) => {
+module.exports = (options, core, config) => {
   const app = express();
   app.use((req, res, next) => {
     if (new RegExp(`/${config.serverFile}(?:\\?|$)`).test(req.url)) {
@@ -44,41 +40,3 @@ export const createServer = (options, core, config) => {
   core.finalizeServer(app, 'serve');
   return app;
 };
-
-export const runServer = (app, core, config) => {
-  let server;
-  if (config.https) {
-    server = createHTTPSServer(
-      {
-        key: readFileSync(
-          config.https.keyFile || join(__dirname, 'ssl', 'localhost.key')
-        ),
-        cert: readFileSync(
-          config.https.certFile || join(__dirname, 'ssl', 'localhost.cert')
-        ),
-      },
-      app
-    );
-  } else {
-    server = createHTTPServer(app);
-  }
-  server.listen(config.port, config.host, error => {
-    if (error) {
-      core.logError(error);
-    } else {
-      core.logInfo(
-        'server listening at ' +
-          format({
-            protocol: config.https ? 'https' : 'http',
-            hostname: config.host === '0.0.0.0' ? 'localhost' : config.host,
-            port: config.port,
-            pathname: config.basePath,
-          })
-      );
-    }
-  });
-  return server;
-};
-
-export default (options, core, config) =>
-  runServer(createServer(options, core, config), core, config);

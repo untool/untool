@@ -1,16 +1,16 @@
-import { dirname } from 'path';
+const { dirname } = require('path');
 
-import { sync as findUp } from 'find-up';
+const { sync: findUp } = require('find-up');
 
 const pkgFile = findUp('package.json');
 const rootDir = dirname(pkgFile);
 
 const { name, version } = require(pkgFile);
 
-export default {
+module.exports = {
   namespace: name,
   version: version,
   rootDir: rootDir,
-  mixins: ['@untool/yargs'],
+  mixins: ['@untool/yargs', '@untool/react'],
   presets: ['@untool/express', '@untool/webpack'],
 };

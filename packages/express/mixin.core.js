@@ -1,32 +1,32 @@
-import { parallel } from 'mixinable';
+const { sync: { sequence } } = require('mixinable');
 
-import { Mixin } from '@untool/core';
+const { Mixin } = require('@untool/core');
 
-import * as uri from './lib/uri';
+const uri = require('./lib/uri');
 
-export default class ExpressMixin extends Mixin {
+class ExpressMixin extends Mixin {
   runServer(options) {
     const { core, config } = this;
-    return require('./lib/serve').default(options, core, config);
+    return require('./lib/run')(this.createServer(options), core, config);
   }
   runDevServer(options) {
     const { core, config } = this;
-    return require('./lib/develop').default(options, core, config);
+    return require('./lib/run')(this.createDevServer(options), core, config);
   }
   createServer(options) {
     const { core, config } = this;
-    return require('./lib/serve').createServer(options, core, config);
+    return require('./lib/serve')(options, core, config);
   }
   createDevServer(options) {
     const { core, config } = this;
-    return require('./lib/develop').createServer(options, core, config);
+    return require('./lib/develop')(options, core, config);
   }
   createRenderer(options) {
     const { core, config } = this;
-    return require('./lib/static').default(options, core, config);
+    return require('./lib/static')(options, core, config);
   }
   render() {
-    const index = require('directory-index');
+    const indexFile = require('directory-index');
     const render = this.createRenderer();
     const { basePath, locations } = this.config;
     const { resolveAbsolute, resolveRelative } = uri;
@@ -37,17 +37,22 @@ export default class ExpressMixin extends Mixin {
           .map(location => render(location))
       ).then(responses =>
         responses.reduce((result, response, i) => {
-          const key = resolveRelative(basePath, index(locations[i]));
+          const key = resolveRelative(basePath, indexFile(locations[i]));
           return { ...result, [key]: response };
         }, {})
       );
     });
   }
+  getAssetPath(filePath) {
+    const { config: { assetPath } } = this;
+    const { resolveRelative } = uri;
+    return resolveRelative(assetPath, filePath);
+  }
   registerCommands(yargs) {
     const { namespace } = this.config;
     return yargs.command({
       command: 'serve',
-      describe: `Serves ${namespace}`,
+      describe: `Serve ${namespace}`,
       builder: {
         production: {
           alias: 'p',
@@ -58,13 +63,13 @@ export default class ExpressMixin extends Mixin {
         static: {
           alias: 's',
           default: false,
-          describe: 'Only serve statically built locations',
+          describe: 'Only serve static locations',
           type: 'boolean',
         },
         rewrite: {
           alias: 'r',
           default: true,
-          describe: 'Rewrite requests to statically built locations',
+          describe: 'Rewrite to static locations',
           type: 'boolean',
         },
       },
@@ -75,9 +80,10 @@ export default class ExpressMixin extends Mixin {
   }
 }
 
-ExpressMixin.uri = uri;
 ExpressMixin.strategies = {
-  initializeServer: parallel,
-  optimizeServer: parallel,
-  finalizeServer: parallel,
+  initializeServer: sequence,
+  optimizeServer: sequence,
+  finalizeServer: sequence,
 };
+
+module.exports = ExpressMixin;
