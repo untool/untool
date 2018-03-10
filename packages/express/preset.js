@@ -1,7 +1,8 @@
 module.exports = {
   https: false,
-  host: '0.0.0.0',
-  port: 8080,
+  ip: process.env.IP || '0.0.0.0',
+  port: process.env.PORT || 8080,
+  findPort: process.env.NODE_ENV !== 'production',
   locations: ['/**'],
   basePath: '',
   assetPath: '<basePath>',

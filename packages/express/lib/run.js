@@ -2,40 +2,58 @@ const { readFileSync } = require('fs');
 const { join } = require('path');
 const { format } = require('url');
 
+const { createServer: createNetServer } = require('net');
 const { createServer: createHTTPServer } = require('http');
 const { createServer: createHTTPSServer } = require('https');
 
-module.exports = (app, core, config) => {
-  let server;
-  if (config.https) {
-    server = createHTTPSServer(
-      {
-        key: readFileSync(
-          config.https.keyFile || join(__dirname, 'ssl', 'localhost.key')
-        ),
-        cert: readFileSync(
-          config.https.certFile || join(__dirname, 'ssl', 'localhost.cert')
-        ),
-      },
-      app
-    );
-  } else {
-    server = createHTTPServer(app);
-  }
-  server.listen(config.port, config.host, error => {
-    if (error) {
-      core.logError(error);
-    } else {
-      core.logInfo(
-        'server listening at ' +
-          format({
-            protocol: config.https ? 'https' : 'http',
-            hostname: config.host === '0.0.0.0' ? 'localhost' : config.host,
-            port: config.port,
-            pathname: config.basePath,
-          })
-      );
+const getPort = (ip, port, max) =>
+  new Promise((resolve, reject) => {
+    max = max || Math.min(65535, port + 10);
+    if (port > max) {
+      return reject(new Error('unable to find free port'));
     }
+    const server = createNetServer();
+    server.on('error', () => {
+      resolve(getPort(ip, port + 1, max));
+      server.close();
+    });
+    server.listen(port, ip, () => {
+      server.once('close', () => resolve(port));
+      server.close();
+    });
   });
-  return server;
+
+module.exports = (app, core, config) => {
+  const { port, ip, basePath, https, findPort } = config;
+  const server = https
+    ? createHTTPSServer(
+        {
+          key: readFileSync(
+            https.keyFile || join(__dirname, 'ssl', 'localhost.key')
+          ),
+          cert: readFileSync(
+            https.certFile || join(__dirname, 'ssl', 'localhost.cert')
+          ),
+        },
+        app
+      )
+    : createHTTPServer(app);
+  (findPort ? getPort(ip, port) : Promise.resolve(port)).then(port =>
+    server.listen(port, ip, error => {
+      if (error) {
+        core.logError(error);
+        server.close();
+      } else {
+        core.logInfo(
+          'server listening at %s',
+          format({
+            protocol: https ? 'https' : 'http',
+            hostname: ['0.0.0.0', '127.0.0.1'].includes(ip) ? 'localhost' : ip,
+            pathname: basePath,
+            port,
+          })
+        );
+      }
+    })
+  );
 };
