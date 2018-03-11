@@ -1,4 +1,4 @@
-const { sync: { pipe } } = require('mixinable');
+const { sync: { pipe, sequence } } = require('mixinable');
 
 const ExpressMixin = require('@untool/express/mixin.core');
 
@@ -34,7 +34,7 @@ class WebpackMixin extends ExpressMixin {
         watchOptions: webpackBrowserConfig.watchOptions,
         serverSideRender: true,
       }),
-      require('webpack-hot-middleware')(compiler),
+      require('webpack-hot-middleware')(compiler, { log: false }),
       (req, res, next) => {
         res.locals.noRewrite = req.url === '/__webpack_hmr';
         next();
@@ -69,12 +69,15 @@ class WebpackMixin extends ExpressMixin {
   }
   build() {
     const webpack = require('webpack');
-    const { options: { static: isStatic }, getConfig } = this;
+    const { core, options: { static: isStatic }, getConfig } = this;
+    const config = isStatic
+      ? getConfig('build')
+      : [getConfig('build'), getConfig('node')];
     return new Promise((resolve, reject) =>
-      webpack(
-        isStatic ? getConfig('build') : [getConfig('build'), getConfig('node')]
-      ).run((error, stats) => (error ? reject(error) : resolve(stats)))
-    );
+      webpack(config).run(
+        (error, stats) => (error ? reject(error) : resolve(stats))
+      )
+    ).then(stats => void core.inspectBuild(stats, config) || stats);
   }
   configureWebpack(webpackConfig, loaderConfigs, target) {
     const { plugins } = webpackConfig;
@@ -87,17 +90,19 @@ class WebpackMixin extends ExpressMixin {
     return webpackConfig;
   }
   initializeServer(app, mode) {
-    if (mode === 'develop') {
+    if (this.options._ && mode === 'develop') {
       app.use(...this.createDevWebpackMiddlewares());
     }
     app.use(this.createAssetsMiddleware());
   }
   optimizeServer(app, mode) {
-    if (mode === 'develop') {
-      app.use(this.createDevRenderMiddleware());
-    }
-    if (mode === 'static') {
-      app.use(this.createRenderMiddleware());
+    if (this.options._) {
+      if (mode === 'develop') {
+        app.use(this.createDevRenderMiddleware());
+      }
+      if (mode === 'static') {
+        app.use(this.createRenderMiddleware());
+      }
     }
   }
   registerCommands(yargs) {
@@ -205,6 +210,7 @@ class WebpackMixin extends ExpressMixin {
 
 WebpackMixin.strategies = {
   configureWebpack: pipe,
+  inspectBuild: sequence,
 };
 
 module.exports = WebpackMixin;

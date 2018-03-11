@@ -1,44 +1,60 @@
 {
   "name": "untool",
   "description": "tools suck. untool tries not to.",
+  "author": "dmbch <daniel@dmbch.net>",
+  "license": "MIT",
   "scripts": {
-    "test": "lerna run test --stream",
-    "lint": "eslint \"packages/**/*.js\"",
-    "fmt":
-      "prettier --write --ignore-path .gitignore '**/*.{js,json,css}' '**/README.md'",
+    "start": "yarn un start",
+    "test": "ava --verbose tests",
+    "lint": "eslint --ignore-path .gitignore '**/*.{mjs,js}'",
+    "fmt": "prettier --write --ignore-path .gitignore '**/*.{mjs,js,json,css}'",
     "bootstrap": "lerna bootstrap",
     "reset": "git clean -dfx && rm yarn.lock && yarn && lerna bootstrap",
     "release": "lerna publish --conventional-commits",
+    "update": "yarn upgrade-interactive --latest",
+    "un": "cd tests/fixtures/instrument; un",
     "preinstall": "[ -z \"${npm_execpath##*yarn*}\" ] || exit 1",
-    "precommit": "lint-staged"
+    "precommit": "lint-staged",
+    "posttest": "rimraf tests/fixtures/*-*"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/untool/untool.git"
   },
-  "keywords": ["react", "webpack", "express"],
-  "author": "dmbch <daniel@dmbch.net>",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/untool/untool/issues"
   },
   "homepage": "https://github.com/untool/untool#readme",
+  "workspaces": ["packages/*"],
   "devDependencies": {
+    "ava": "^0.25.0",
     "babel-eslint": "^8.2.1",
     "cz-conventional-changelog": "^2.1.0",
     "eslint": "^4.17.0",
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-prettier": "^2.6.0",
+    "flat": "^4.0.0",
     "husky": "^0.14.3",
+    "is-plain-object": "^2.0.4",
     "lerna": "^2.8.0",
     "lint-staged": "^7.0.0",
-    "prettier": "1.11.1"
+    "mkdirp": "^0.5.1",
+    "ncp": "^2.0.0",
+    "prettier": "1.11.1",
+    "puppeteer": "^1.1.1",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "react-helmet": "^5.2.0",
+    "react-router": "^4.2.0",
+    "react-router-dom": "^4.2.2",
+    "rimraf": "^2.6.2",
+    "supertest": "^3.0.0",
+    "uuid": "^3.2.1"
   },
   "engines": {
     "node": ">8.6.0"
   },
   "private": true,
-  "workspaces": ["packages/*", "example"],
   "prettier": {
     "trailingComma": "es5",
     "proseWrap": "never",
@@ -47,23 +63,20 @@
   "eslintConfig": {
     "extends": ["eslint:recommended", "prettier"],
     "plugins": ["prettier"],
+    "rules": {
+      "prettier/prettier": "error"
+    },
     "env": {
       "node": true,
       "es6": true
     },
     "parser": "babel-eslint",
     "parserOptions": {
-      "ecmaFeatures": {
-        "experimentalObjectRestSpread": true
-      }
-    },
-    "rules": {
-      "prettier/prettier": "error"
+      "ecmaVersion": 2018
     }
   },
   "lint-staged": {
-    "*.{js,json,css}": ["prettier --write", "git add"],
-    "**/README.md": ["prettier --write", "git add"]
+    "*.{mjs,js,json,css}": ["prettier --write", "git add"]
   },
   "config": {
     "commitizen": {

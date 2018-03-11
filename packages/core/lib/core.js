@@ -1,6 +1,6 @@
 const define = require('mixinable');
 
-const config = require('./config');
+const { getConfig } = require('./config');
 const { bindAll } = require('./util');
 
 exports.Mixin = class Mixin {
@@ -8,13 +8,13 @@ exports.Mixin = class Mixin {
     this.core = core;
     this.config = config;
     this.options = {};
-    this.mode = 'build';
     bindAll(this);
   }
 };
 
 exports.bootstrap = function bootstrap(...args) {
-  const mixins = config.getMixins('core').map(mixin => require(mixin));
+  const config = getConfig();
+  const mixins = config.mixins.core.map(mixin => require(mixin));
   const strategies = {
     ...mixins.reduce(
       (result, mixin) => ({ ...result, ...mixin.strategies }),

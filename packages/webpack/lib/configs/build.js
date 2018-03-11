@@ -7,6 +7,7 @@ const {
 } = require('webpack');
 
 const ExtractTextPlugin = require('extract-text-webpack-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
 const postcssImportPlugin = require('postcss-import');
 const postcssNextPlugin = require('postcss-cssnext');
@@ -124,7 +125,7 @@ module.exports = function getConfig(config, getAssetPath, configureWebpack) {
     module: {
       rules: [
         {
-          test: new RegExp(require.resolve('../shims/loader')),
+          test: require.resolve('../shims/loader'),
           loader: require.resolve('../utils/loader'),
           options: { target: 'browser', config },
         },
@@ -144,6 +145,16 @@ module.exports = function getConfig(config, getAssetPath, configureWebpack) {
           },
         },
       },
+      minimizer: [
+        new UglifyJsPlugin({
+          cache: true,
+          parallel: true,
+          sourceMap: true,
+          uglifyOptions: {
+            output: { comments: false },
+          },
+        }),
+      ],
     },
     plugins: [
       new ExtractTextPlugin({

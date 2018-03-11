@@ -1,4 +1,6 @@
-const { resolve } = require('path');
+const { join, dirname, resolve } = require('path');
+
+const { sync: findUp } = require('find-up');
 
 const { EnvironmentPlugin, optimize } = require('webpack');
 const determineExternals = require('webpack-node-externals');
@@ -6,6 +8,11 @@ const determineExternals = require('webpack-node-externals');
 const { checkESNext, getResolveConfig } = require('../utils/helpers');
 
 module.exports = function getConfig(config, getAssetPath, configureWebpack) {
+  const getModulesDir = () => {
+    const lernaFile = findUp('lerna.json');
+    const baseDir = lernaFile ? dirname(lernaFile) : config.rootDir;
+    return join(baseDir, 'node_modules');
+  };
   const jsLoaderConfig = {
     test: [/\.m?js$/],
     include: checkESNext,
@@ -93,15 +100,16 @@ module.exports = function getConfig(config, getAssetPath, configureWebpack) {
       },
     }),
     externals: [
+      /tests\/fixtures\//,
       determineExternals({
-        modulesDir: config.modulesDir,
+        modulesDir: getModulesDir(),
         whitelist: checkESNext,
       }),
     ],
     module: {
       rules: [
         {
-          test: new RegExp(require.resolve('../shims/loader')),
+          test: require.resolve('../shims/loader'),
           loader: require.resolve('../utils/loader'),
           options: { target: 'server', config },
         },

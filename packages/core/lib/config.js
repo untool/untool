@@ -1,4 +1,4 @@
-const { dirname, join } = require('path');
+const { basename, dirname, join } = require('path');
 
 const { sync: findUp } = require('find-up');
 const cosmiconfig = require('cosmiconfig');
@@ -50,8 +50,6 @@ function resolveMixin(target, ...args) {
     return null;
   }
 }
-
-const rootDir = dirname(findUp('package.json'));
 
 function merge(...args) {
   return mergeWith({}, ...args, (objValue, srcValue, key) => {
@@ -121,27 +119,40 @@ function resolvePlaceholders(config) {
   return replaceRecursive(config);
 }
 
-const settings = loadSettings(rootDir);
+exports.getConfig = () => {
+  const pkgFile = findUp('package.json');
+  const rootDir = dirname(pkgFile);
 
-const presets = loadPresets(rootDir, settings.presets);
+  const {
+    name: namespace = basename(rootDir),
+    version = '0.0.0',
+  } = require(pkgFile);
 
-const rawConfig = (config =>
-  config.env ? merge(config, config.env[process.env.NODE_ENV]) : config)(
-  merge(presets, settings)
-);
+  const defaults = { rootDir, namespace, version, mixins: [], presets: [] };
 
-delete rawConfig.presets;
-delete rawConfig.env;
+  const settings = loadSettings(rootDir);
 
-const config = resolvePlaceholders(rawConfig);
+  const presets = loadPresets(rootDir, settings.presets);
 
-const mixins = config.mixins || [];
+  const rawConfig = (config =>
+    config.env ? merge(config, config.env[process.env.NODE_ENV]) : config)(
+    merge(defaults, presets, settings)
+  );
 
-config.getMixins = target =>
-  mixins
-    .map(mixin => resolveMixin(target, config.rootDir, mixin))
-    .filter((mixin, index, self) => mixin && self.indexOf(mixin) === index);
+  delete rawConfig.presets;
+  delete rawConfig.env;
 
-delete config.mixins;
+  const config = resolvePlaceholders(rawConfig);
 
-module.exports = config;
+  config.mixins = ['core', 'server', 'browser'].reduce(
+    (result, key) => ({
+      ...result,
+      [key]: config.mixins
+        .map(mixin => resolveMixin(key, config.rootDir, mixin))
+        .filter((mixin, index, self) => mixin && self.indexOf(mixin) === index),
+    }),
+    {}
+  );
+
+  return config;
+};

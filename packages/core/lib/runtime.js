@@ -9,17 +9,13 @@ exports.Mixin = class Mixin {
     this.core = core;
     this.config = config;
     this.options = {};
-    if (typeof window === 'undefined') {
-      this.mode = 'server';
-    } else {
-      this.mode = 'browser';
-    }
     bindAll(this);
   }
 };
 
 exports.render = function render(...renderArgs) {
-  return (config, mixins) => {
+  return config => {
+    const { mixins } = config;
     const strategies = {
       ...mixins.reduce(
         (result, mixin) => ({ ...result, ...mixin.strategies }),

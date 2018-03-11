@@ -1,0 +1,65 @@
+const test = require('ava');
+
+const run = require('./helpers/run');
+const serve = require('./helpers/serve');
+const browse = require('./helpers/browse');
+
+test('core lifecycle hooks', t =>
+  run('start', '-p').then(api =>
+    Promise.all([
+      api.getArgTypes('constructor').then(args => t.snapshot(args)),
+      api.getArgTypes('registerCommands').then(args => t.snapshot(args)),
+      api.getArgTypes('initializeServer').then(args => t.snapshot(args)),
+      api.getArgTypes('optimizeServer').then(args => t.snapshot(args)),
+      api.getArgTypes('finalizeServer').then(args => t.snapshot(args)),
+      api.getArgTypes('inspectServer').then(args => t.snapshot(args)),
+
+      api.getArgTypes('configureWebpack').then(args => t.snapshot(args)),
+      api.getArgTypes('inspectBuild').then(args => t.snapshot(args)),
+
+      api.getMixin().then(mixin => t.snapshot(mixin)),
+      api.getCore().then(core => t.snapshot(core)),
+      api.getConfig().then(config => t.snapshot(config)),
+
+      api.getWebpackConfig('build').then(config => t.snapshot(config)),
+      api.getWebpackConfig('node').then(config => t.snapshot(config)),
+    ])
+  ));
+
+test('server lifecycle hooks', t =>
+  serve('start', '-p').then(api =>
+    Promise.all([
+      api.navigate('/').then(res => t.snapshot(res)),
+
+      api.getArgTypes('constructor').then(args => t.snapshot(args)),
+      api.getArgTypes('bootstrap').then(args => t.snapshot(args)),
+      api.getArgTypes('enhanceElement').then(args => t.snapshot(args)),
+      api.getArgTypes('fetchData').then(args => t.snapshot(args)),
+
+      api.getMixin().then(mixin => t.snapshot(mixin)),
+      api.getCore().then(core => t.snapshot(core)),
+      api.getConfig().then(config => t.snapshot(config)),
+    ])
+  ));
+
+test.serial('browser lifecycle hooks', t =>
+  browse('start', '-p').then(api =>
+    Promise.all([
+      api.navigate('/').then(res => t.snapshot(res)),
+
+      // The following tests are disabled on pupose: for some strange reason,
+      // during these tests, our server does not deliver the actual untool-*.js
+      // file, but rather the main index.html file.
+      // This appears to only happen if running multiple tests/servers
+
+      api.getArgTypes('constructor').then(args => t.snapshot(args)),
+      api.getArgTypes('bootstrap').then(args => t.snapshot(args)),
+      api.getArgTypes('enhanceElement').then(args => t.snapshot(args)),
+      api.getArgTypes('fetchData').then(args => t.snapshot(args)),
+
+      api.getMixin().then(mixin => t.snapshot(mixin)),
+      api.getCore().then(core => t.snapshot(core)),
+      api.getConfig().then(config => t.snapshot(config)),
+    ])
+  )
+);
