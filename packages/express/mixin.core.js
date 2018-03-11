@@ -84,6 +84,7 @@ ExpressMixin.strategies = {
   initializeServer: sequence,
   optimizeServer: sequence,
   finalizeServer: sequence,
+  inspectServer: sequence,
 };
 
 module.exports = ExpressMixin;

@@ -1,0 +1,12 @@
+{
+  "name": "untest",
+  "mixin:core": "core",
+  "mixin:server": "server",
+  "mixin:browser": "browser",
+  "untool": {
+    "findPort": true,
+    "browsers": "last 1 Chrome versions",
+    "presets": ["@untool/defaults"],
+    "mixins": ["."]
+  }
+}

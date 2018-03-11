@@ -2,11 +2,11 @@
 
 require('babel-polyfill');
 
-var config = require('@untool/config');
+var { getConfig } = require('@untool/config');
 var entryPoint = require('@untool/entrypoint');
 
 if (entryPoint.__esModule) {
   entryPoint = entryPoint.default;
 }
 
-module.exports = entryPoint(config.getConfig(), config.getMixins());
+module.exports = entryPoint(getConfig());

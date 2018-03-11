@@ -8,7 +8,7 @@ const { createServer: createHTTPSServer } = require('https');
 
 const getPort = (ip, port, max) =>
   new Promise((resolve, reject) => {
-    max = max || Math.min(65535, port + 10);
+    max = max || Math.min(65535, port + 50);
     if (port > max) {
       return reject(new Error('unable to find free port'));
     }
@@ -44,6 +44,7 @@ module.exports = (app, core, config) => {
         core.logError(error);
         server.close();
       } else {
+        core.inspectServer(server);
         core.logInfo(
           'server listening at %s',
           format({

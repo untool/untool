@@ -1,11 +1,22 @@
 const { join, extname } = require('path');
 
+const cachedAssetData = {};
+
 const getAssetData = (locals = {}, config) => {
   if (locals.webpackStats) {
     const { assets, assetsByChunkName } = locals.webpackStats.toJson();
     return { assets, assetsByChunkName };
   }
-  return require(join(config.buildDir, config.assetFile));
+  if (!cachedAssetData.assets) {
+    try {
+      const assetFile = join(config.buildDir, config.assetFile);
+      require.resolve(assetFile);
+      Object.assign(cachedAssetData, require(assetFile));
+    } catch (_) {
+      Object.assign(cachedAssetData, { assets: {}, assetsByChunkName: {} });
+    }
+  }
+  return cachedAssetData;
 };
 
 module.exports = (config, assetData) => (req, res, next) => {

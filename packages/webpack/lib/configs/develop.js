@@ -122,7 +122,7 @@ module.exports = function getConfig(config, getAssetPath, configureWebpack) {
     module: {
       rules: [
         {
-          test: new RegExp(require.resolve('../shims/loader')),
+          test: require.resolve('../shims/loader'),
           loader: require.resolve('../utils/loader'),
           options: { target: 'browser', config },
         },

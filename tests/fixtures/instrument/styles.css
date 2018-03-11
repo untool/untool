@@ -1,0 +1,11 @@
+:global {
+}
+
+body {
+  padding: 1em 2em;
+}
+
+.headline {
+  text-align: center;
+  color: crimson;
+}
