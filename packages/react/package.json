@@ -24,7 +24,6 @@
     "@untool/core": "0.0.2",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.13",
     "babel-preset-react": "^6.24.1",
-    "hoist-non-react-statics": "^2.5.0",
     "mixinable": "^1.5.0",
     "serialize-javascript": "^1.4.0"
   },

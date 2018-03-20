@@ -22,4 +22,4 @@ module.exports = data =>
       .join('')}
     ${data.assetsByType.js.map(js => `<script src="/${js}"></script>`).join('')}
   </body>
-</html>`;
+</html>`.replace(/(^\s*[\r\n]| (?=>))/gm, '');
