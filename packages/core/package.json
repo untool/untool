@@ -22,7 +22,7 @@
   "homepage": "https://github.com/untool/untool#readme",
   "dependencies": {
     "cosmiconfig": "^4.0.0",
-    "enhanced-resolve": "^4.0.0-beta.4",
+    "enhanced-resolve": "^4.0.0",
     "find-up": "^2.1.0",
     "flat": "^4.0.0",
     "is-plain-object": "^2.0.4",
