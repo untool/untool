@@ -6,8 +6,10 @@ const {
   optimize,
 } = require('webpack');
 
-const ExtractTextPlugin = require('extract-text-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+
+const ExtractCSSPlugin = require('mini-css-extract-plugin');
+const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 
 const postcssImportPlugin = require('postcss-import');
 const postcssNextPlugin = require('postcss-cssnext');
@@ -44,33 +46,31 @@ module.exports = function getConfig(config, getAssetPath, configureWebpack) {
 
   const cssLoaderConfig = {
     test: [/\.css$/],
-    use: ExtractTextPlugin.extract({
-      fallback: require.resolve('style-loader'),
-      use: [
-        {
-          loader: require.resolve('css-loader'),
-          options: {
-            importLoaders: 1,
-            camelCase: true,
-            modules: !!config.cssModules,
-            localIdentName: config.cssModules,
-            sourceMap: process.env.NODE_ENV !== 'production',
-          },
+    use: [
+      ExtractCSSPlugin.loader,
+      {
+        loader: require.resolve('css-loader'),
+        options: {
+          importLoaders: 1,
+          camelCase: true,
+          modules: !!config.cssModules,
+          localIdentName: config.cssModules,
+          sourceMap: process.env.NODE_ENV !== 'production',
         },
-        {
-          loader: require.resolve('postcss-loader'),
-          options: {
-            ident: 'postcss',
-            plugins: [
-              postcssImportPlugin(),
-              postcssNextPlugin({
-                browsers: config.browsers,
-              }),
-            ],
-          },
+      },
+      {
+        loader: require.resolve('postcss-loader'),
+        options: {
+          ident: 'postcss',
+          plugins: [
+            postcssImportPlugin(),
+            postcssNextPlugin({
+              browsers: config.browsers,
+            }),
+          ],
         },
-      ],
-    }),
+      },
+    ],
   };
 
   const urlLoaderConfig = {
@@ -154,19 +154,17 @@ module.exports = function getConfig(config, getAssetPath, configureWebpack) {
             output: { comments: false },
           },
         }),
+        new OptimizeCSSPlugin(),
       ],
     },
     plugins: [
-      new ExtractTextPlugin({
-        filename: getAssetPath('[name]-[contenthash:16].css'),
-        allChunks: true,
-        ignoreOrder: true,
-      }),
       new HashedModuleIdsPlugin(),
-      new EnvironmentPlugin({
-        NODE_ENV: 'development',
-      }),
       new optimize.ModuleConcatenationPlugin(),
+      new EnvironmentPlugin({ NODE_ENV: 'development' }),
+      new ExtractCSSPlugin({
+        filename: getAssetPath('[name]-[chunkhash:16].css'),
+        chunkFilename: getAssetPath('[name]-[id]-[chunkhash:16].css'),
+      }),
     ],
     devtool: 'source-map',
   };
