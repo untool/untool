@@ -20,7 +20,7 @@
   },
   "homepage": "https://github.com/untool/untool#readme",
   "dependencies": {
-    "@untool/core": "0.0.2",
+    "@untool/core": "^0.0.2",
     "directory-index": "^0.1.0",
     "express": "^4.16.2",
     "helmet": "^3.11.0",
