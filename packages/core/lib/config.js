@@ -128,7 +128,7 @@ exports.getConfig = () => {
     version = '0.0.0',
   } = require(pkgFile);
 
-  const defaults = { rootDir, namespace, version, mixins: [], presets: [] };
+  const defaults = { rootDir, namespace, version, mixins: [] };
 
   const settings = loadSettings(rootDir);
 
