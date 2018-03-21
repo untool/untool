@@ -47,11 +47,6 @@ test.serial('browser lifecycle hooks', t =>
     Promise.all([
       api.navigate('/').then(res => t.snapshot(res)),
 
-      // The following tests are disabled on pupose: for some strange reason,
-      // during these tests, our server does not deliver the actual untool-*.js
-      // file, but rather the main index.html file.
-      // This appears to only happen if running multiple tests/servers
-
       api.getArgTypes('constructor').then(args => t.snapshot(args)),
       api.getArgTypes('bootstrap').then(args => t.snapshot(args)),
       api.getArgTypes('enhanceElement').then(args => t.snapshot(args)),
