@@ -11,6 +11,8 @@
     "bootstrap": "lerna bootstrap",
     "reset": "git clean -dfx && yarn && lerna bootstrap",
     "release": "lerna publish --conventional-commits",
+    "release:major": "lerna publish --force-publish=* --cd-version=major",
+    "release:minor": "lerna publish --force-publish=* --cd-version=minor",
     "update": "yarn upgrade-interactive --latest",
     "un": "cd tests/fixtures/instrument; un",
     "preinstall": "[ -z \"${npm_execpath##*yarn*}\" ] || exit 1",
