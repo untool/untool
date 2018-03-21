@@ -18,19 +18,38 @@ exports.search = (...queries) =>
   execute('npm', 'search', '--json', ...queries).then(JSON.parse);
 
 exports.install = (...modules) =>
-  modules
-    .reduce(
-      (promise, module) =>
-        promise.then(deps =>
-          exports
-            .info(module)
-            .then(info => ({ ...deps, ...info.peerDependencies }))
-        ),
-      Promise.resolve({})
-    )
+  exports
+    .resolve(...modules)
     .then(deps => Object.keys(deps).map(key => `${key}@${deps[key]}`))
     .then(deps =>
       execute('yarn', 'add', ...modules, ...deps).catch(() =>
         execute('npm', 'install', '--save-prod', ...modules, ...deps)
       )
     );
+
+exports.resolve = (...modules) =>
+  modules.reduce(
+    (promise, module) =>
+      promise.then(allDeps =>
+        exports
+          .info(module)
+          .then(
+            ({
+              dependencies: deps = {},
+              peerDependencies: peerDeps = {},
+              keywords = [],
+            }) =>
+              (keywords.includes('unpreset')
+                ? exports.resolve(
+                    ...Object.keys(deps).map(key => `${key}@${deps[key]}`)
+                  )
+                : Promise.resolve()
+              ).then(depPeerDeps => ({
+                ...depPeerDeps,
+                ...peerDeps,
+                ...allDeps,
+              }))
+          )
+      ),
+    Promise.resolve({})
+  );

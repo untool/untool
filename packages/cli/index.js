@@ -23,7 +23,7 @@ const createManifest = () =>
       {
         type: 'confirm',
         name: 'init',
-        message: `Set up ${basename(process.cwd())} as new project?`,
+        message: `Initialize ${basename(process.cwd())} as new project?`,
         default: false,
       },
     ])
@@ -42,48 +42,63 @@ const installUntool = manifest =>
         default: true,
       },
     ])
-    .then(answers => answers.install || process.exit(0))
-    .then(log('! Looking up presets and modules...'))
+    .then(({ install }) => install || process.exit(0))
     .then(() =>
-      Promise.all([
-        pm.search('scope:untool', 'keywords:unpreset'),
-        pm.search('scope:untool', 'keywords:unmixin'),
-      ]).then(([allPresets, allMixins]) =>
-        inquirer
-          .prompt([
-            {
-              type: 'checkbox',
-              name: 'presets',
-              message: 'What presets do you want to install?',
-              choices: allPresets.map(({ name }) => ({ name })),
-            },
-            {
-              type: 'checkbox',
-              name: 'mixins',
-              message: 'What mixins do you want to install?',
-              choices: allMixins.map(({ name }) => ({ name })),
-            },
-          ])
-          .then(log('! Installing (this may take a while)...'))
-          .then(({ presets, mixins }) =>
-            pm
-              .install(...presets, ...mixins)
-              .then(() => manifest.add('untool', 'presets', presets))
-              .then(() => manifest.add('untool', 'mixins', mixins))
+      inquirer.prompt([
+        {
+          type: 'confirm',
+          name: 'defaults',
+          message: `Install untool default preset?`,
+          default: true,
+        },
+      ])
+    )
+    .then(
+      ({ defaults }) =>
+        defaults
+          ? { presets: ['@untool/defaults'], mixins: [] }
+          : Promise.resolve()
+              .then(log('! Looking up presets and modules...'))
               .then(() =>
-                resolve(process.cwd(), '@untool/yargs').then(
-                  yargs => require(yargs),
-                  () => {
-                    // eslint-disable-next-line no-console
-                    console.error('/o\\ @untool/yargs not found. Exiting.');
-                    process.exit(1);
-                  }
+                Promise.all([
+                  pm.search('keywords:unpreset'),
+                  pm.search('keywords:unmixin'),
+                ]).then(([allPresets, allMixins]) =>
+                  inquirer.prompt([
+                    {
+                      type: 'checkbox',
+                      name: 'presets',
+                      message: 'What presets do you want to install?',
+                      choices: allPresets.map(({ name }) => ({ name })),
+                    },
+                    {
+                      type: 'checkbox',
+                      name: 'mixins',
+                      message: 'What mixins do you want to install?',
+                      choices: allMixins.map(({ name }) => ({ name })),
+                    },
+                  ])
                 )
               )
-          )
-          .then(log('\\o/ All done!'))
+    )
+    .then(log('! Installing (this may take a while)...'))
+    .then(({ presets, mixins }) =>
+      pm
+        .install(...presets, ...mixins)
+        .then(() => manifest.add('untool', 'presets', presets))
+        .then(() => manifest.add('untool', 'mixins', mixins))
+    )
+    .then(() =>
+      resolve(process.cwd(), '@untool/yargs').then(
+        untoolYargs => require(untoolYargs),
+        () => {
+          // eslint-disable-next-line no-console
+          console.error('/o\\ @untool/yargs not found. Exiting.');
+          process.exit(1);
+        }
       )
-    );
+    )
+    .then(log('\\o/ All done!'));
 
 findUp('package.json')
   .then(pkgFile => (pkgFile ? new Manifest(pkgFile) : createManifest()))
