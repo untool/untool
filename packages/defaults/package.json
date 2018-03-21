@@ -1,7 +1,8 @@
 {
   "name": "@untool/defaults",
   "version": "0.0.1",
-  "description": "untool defaults",
+  "description": "untool default preset",
+  "keywords": ["unpreset"],
   "scripts": {
     "test": "echo \"Error: no test specified\""
   },
@@ -23,8 +24,7 @@
     "@untool/express": "^0.0.1",
     "@untool/react": "^0.1.0",
     "@untool/webpack": "^0.0.1",
-    "@untool/yargs": "^0.0.1",
-    "find-up": "^2.1.0"
+    "@untool/yargs": "^0.0.1"
   },
   "engines": {
     "node": ">8.6.0"
