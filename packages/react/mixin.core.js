@@ -9,7 +9,7 @@ module.exports = class ReactMixin extends Mixin {
     fileLoaderConfig.exclude.push(/\.jsx$/);
 
     jsLoaderConfig.test.push(/\.jsx$/);
-    jsLoaderConfig.options.presets.push(require.resolve('babel-preset-react'));
+    jsLoaderConfig.options.presets.push(require.resolve('@babel/preset-react'));
     if (target !== 'develop' && process.env.NODE_ENV === 'production') {
       jsLoaderConfig.options.plugins.push(
         require.resolve('babel-plugin-transform-react-remove-prop-types')
