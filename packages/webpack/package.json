@@ -2,10 +2,7 @@
   "name": "@untool/webpack",
   "version": "0.1.0",
   "description": "untool webpack mixin",
-  "keywords": [
-    "unmixin",
-    "unpreset"
-  ],
+  "keywords": ["unmixin", "unpreset"],
   "scripts": {
     "test": "echo \"Error: no test specified\""
   },
@@ -23,15 +20,15 @@
   },
   "homepage": "https://github.com/untool/untool#readme",
   "dependencies": {
+    "@babel/core": "^7.0.0-beta.42",
+    "@babel/plugin-proposal-class-properties": "^7.0.0-beta.42",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0-beta.42",
+    "@babel/plugin-syntax-dynamic-import": "^7.0.0-beta.42",
+    "@babel/preset-env": "^7.0.0-beta.42",
     "@untool/core": "0.1.0",
     "@untool/express": "0.1.0",
-    "babel-core": "^6.26.0",
-    "babel-loader": "^7.1.4",
+    "babel-loader": "^8.0.0-beta.2",
     "babel-plugin-dynamic-import-node": "^1.2.0",
-    "babel-plugin-syntax-dynamic-import": "^6.18.0",
-    "babel-plugin-transform-class-properties": "^6.24.1",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-env": "^1.6.1",
     "caniuse-lite": "^1.0.30000813",
     "css-loader": "^0.28.9",
     "file-loader": "^1.1.6",

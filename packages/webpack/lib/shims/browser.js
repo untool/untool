@@ -1,7 +1,5 @@
 'use strict';
 
-require('babel-polyfill');
-
 var { getConfig } = require('@untool/config');
 
 (function render() {

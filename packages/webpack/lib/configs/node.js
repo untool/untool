@@ -24,18 +24,18 @@ module.exports = function getConfig(config, getAssetPath, configureWebpack) {
       cacheIdentifier: `${process.env.NODE_ENV || 'development'}:node`,
       presets: [
         [
-          require.resolve('babel-preset-env'),
+          require.resolve('@babel/preset-env'),
           {
             modules: false,
-            useBuiltIns: true,
+            useBuiltIns: 'usage',
             targets: { node: config.node },
           },
         ],
       ],
       plugins: [
         require.resolve('babel-plugin-dynamic-import-node'),
-        require.resolve('babel-plugin-transform-class-properties'),
-        require.resolve('babel-plugin-transform-object-rest-spread'),
+        require.resolve('@babel/plugin-proposal-class-properties'),
+        require.resolve('@babel/plugin-proposal-object-rest-spread'),
       ],
     },
   };
