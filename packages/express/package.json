@@ -1,8 +1,11 @@
 {
   "name": "@untool/express",
-  "version": "0.1.0",
+  "version": "0.3.0",
   "description": "untool express mixin",
-  "keywords": ["unmixin", "unpreset"],
+  "keywords": [
+    "unmixin",
+    "unpreset"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\""
   },

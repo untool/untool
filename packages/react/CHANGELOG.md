@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.3.0"></a>
+# 0.3.0 (2018-03-22)
+
+
+### Features
+
+* **react:** add npm metadata ([f09ff82](https://github.com/untool/untool/commit/f09ff82))
+
+
+
+
 <a name="0.1.0"></a>
 # 0.1.0 (2018-02-26)
 
