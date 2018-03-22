@@ -44,11 +44,12 @@ exports.resolve = (...modules) =>
                     ...Object.keys(deps).map(key => `${key}@${deps[key]}`)
                   )
                 : Promise.resolve()
-              ).then(depPeerDeps => ({
-                ...depPeerDeps,
-                ...peerDeps,
-                ...allDeps,
-              }))
+              ).then(
+                depPeerDeps =>
+                  keywords.includes('unmixin') || keywords.includes('unpreset')
+                    ? { ...depPeerDeps, ...peerDeps, ...allDeps }
+                    : { ...allDeps }
+              )
           )
       ),
     Promise.resolve({})
