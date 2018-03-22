@@ -2,12 +2,11 @@
   "lerna": "2.8.0",
   "npmClient": "yarn",
   "useWorkspaces": true,
-  "version": "independent",
+  "version": "0.2.0",
   "registry": "https://registry.npmjs.org/",
   "commands": {
     "publish": {
-      "message": "chore: release",
-      "exact": true
+      "message": "chore: release %s"
     }
   },
   "packages": ["packages/*"]
