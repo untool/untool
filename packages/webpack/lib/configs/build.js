@@ -19,7 +19,7 @@ const { checkESNext, getResolveConfig } = require('../utils/helpers');
 module.exports = function getConfig(config, getAssetPath, configureWebpack) {
   const jsLoaderConfig = {
     test: [/\.m?js$/],
-    include: checkESNext,
+    include: checkESNext('browser'),
     loader: require.resolve('babel-loader'),
     options: {
       babelrc: false,

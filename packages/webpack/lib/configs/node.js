@@ -15,7 +15,7 @@ module.exports = function getConfig(config, getAssetPath, configureWebpack) {
   };
   const jsLoaderConfig = {
     test: [/\.m?js$/],
-    include: checkESNext,
+    include: checkESNext('server'),
     loader: require.resolve('babel-loader'),
     options: {
       babelrc: false,
@@ -103,7 +103,7 @@ module.exports = function getConfig(config, getAssetPath, configureWebpack) {
       /tests\/fixtures\//,
       determineExternals({
         modulesDir: getModulesDir(),
-        whitelist: checkESNext,
+        whitelist: checkESNext('server'),
       }),
     ],
     module: {

@@ -1,5 +1,5 @@
 module.exports = {
-  browsers: '> 1%, last 2 versions, Firefox ESR',
+  browsers: 'defaults',
   node: 'current',
   assetFile: 'assets.json',
   assetTypes: ['js', 'css'],
