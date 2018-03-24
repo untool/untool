@@ -23,11 +23,11 @@ const createManifest = () =>
       {
         type: 'confirm',
         name: 'init',
-        message: `Initialize ${basename(process.cwd())} as new project?`,
+        message: `Initialize ${basename(process.cwd())} as new untool project?`,
         default: false,
       },
     ])
-    .then(answers => answers.init || process.exit(0))
+    .then(({ init }) => init || process.exit(0))
     .then(log('! Initializing project...'))
     .then(() => pm.init())
     .then(() => new Manifest(`${process.cwd()}/package.json`));
@@ -37,22 +37,11 @@ const installUntool = manifest =>
     .prompt([
       {
         type: 'confirm',
-        name: 'install',
-        message: `Install untool in ${basename(process.cwd())}?`,
+        name: 'defaults',
+        message: `Install untool default preset?`,
         default: true,
       },
     ])
-    .then(({ install }) => install || process.exit(0))
-    .then(() =>
-      inquirer.prompt([
-        {
-          type: 'confirm',
-          name: 'defaults',
-          message: `Install untool default preset?`,
-          default: true,
-        },
-      ])
-    )
     .then(
       ({ defaults }) =>
         defaults
@@ -93,12 +82,12 @@ const installUntool = manifest =>
         untoolYargs => require(untoolYargs),
         () => {
           // eslint-disable-next-line no-console
-          console.error('/o\\ @untool/yargs not found. Exiting.');
+          console.error('\n', '/o\\ @untool/yargs not found. Exiting.', '\n');
           process.exit(1);
         }
       )
     )
-    .then(log('\\o/ All done!'));
+    .then(log('\n', '\\o/ All done!', '\n'));
 
 findUp('package.json')
   .then(pkgFile => (pkgFile ? new Manifest(pkgFile) : createManifest()))
