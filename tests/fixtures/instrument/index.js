@@ -4,4 +4,4 @@ import { render } from 'untool';
 
 import styles from './styles.css';
 
-export default render(<h1 className={styles.headline}>hullo test</h1>);
+export default render(<h1 className={styles.headline}>meep.</h1>);
