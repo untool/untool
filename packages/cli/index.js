@@ -23,7 +23,7 @@ const createManifest = () =>
       {
         type: 'confirm',
         name: 'init',
-        message: `Initialize ${basename(process.cwd())} as new untool project?`,
+        message: `Initialize ${basename(process.cwd())} as new project?`,
         default: false,
       },
     ])
@@ -58,7 +58,12 @@ const installUntool = manifest =>
                       type: 'checkbox',
                       name: 'presets',
                       message: 'What presets do you want to install?',
-                      choices: allPresets.map(({ name }) => ({ name })),
+                      choices: allPresets.map(
+                        ({ name }) =>
+                          name === '@untool/defaults'
+                            ? { checked: true, name }
+                            : { name }
+                      ),
                     },
                     {
                       type: 'checkbox',
@@ -70,7 +75,7 @@ const installUntool = manifest =>
                 )
               )
     )
-    .then(log('! Installing (this may take a while)...'))
+    .then(log('! Installing (this can take a while)...'))
     .then(({ presets, mixins }) =>
       pm
         .install(...presets, ...mixins)
@@ -78,26 +83,22 @@ const installUntool = manifest =>
         .then(() => manifest.add('untool', 'mixins', mixins))
     )
     .then(() =>
-      resolve(process.cwd(), '@untool/yargs').then(
-        untoolYargs => require(untoolYargs),
-        () => {
-          // eslint-disable-next-line no-console
-          console.error('\n', '/o\\ @untool/yargs not found. Exiting.', '\n');
-          process.exit(1);
-        }
-      )
+      resolve(process.cwd(), '@untool/yargs').catch(() => {
+        // eslint-disable-next-line no-console
+        console.error('\n/o\\ @untool/yargs not found. Exiting.\n');
+        process.exit(1);
+      })
     )
-    .then(log('\n', '\\o/ All done!', '\n'));
+    .then(log('\n\\o/ All done!\n'));
 
 findUp('package.json')
   .then(pkgFile => (pkgFile ? new Manifest(pkgFile) : createManifest()))
   .then(manifest =>
     resolve(dirname(manifest.pkgFile), '@untool/yargs').then(
-      untoolYargs => require(untoolYargs),
+      untoolYargs => require(untoolYargs).run(),
       () => installUntool(manifest)
     )
   )
-  .then(untoolYargs => untoolYargs.run())
   .catch(error => {
     // eslint-disable-next-line no-console
     console.error(error.stack ? error.stack.toString() : error.toString());
