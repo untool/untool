@@ -136,14 +136,7 @@ module.exports = function getConfig(config, getAssetPath, configureWebpack) {
     },
     optimization: {
       splitChunks: {
-        cacheGroups: {
-          vendor: {
-            chunks: 'initial',
-            test: /node_modules/,
-            name: config.vendorName,
-            enforce: true,
-          },
-        },
+        chunks: 'all',
       },
       minimizer: [
         new UglifyJsPlugin({

@@ -24,23 +24,21 @@ module.exports = (config, assetData) => (req, res, next) => {
   const { assetsByType, assetsByChunkName } = (res.locals = {
     ...res.locals,
     ...(assetData || getAssetData(res.locals, config)),
-    assetsByType: config.assetTypes.reduce(
-      (result, extension) => ({ ...result, [extension]: [] }),
-      {}
-    ),
+    assetsByType: { css: [], js: [] },
   });
-  config.assetNames.forEach(chunkName => {
-    const assets = Array.isArray(assetsByChunkName[chunkName])
-      ? assetsByChunkName[chunkName]
-      : [assetsByChunkName[chunkName]];
-    config.assetTypes.forEach(extension => {
-      const asset = assets.find(
-        asset => asset && extname(asset) === `.${extension}`
-      );
-      if (asset) {
-        assetsByType[extension].push(asset);
-      }
+  Object.keys(assetsByChunkName)
+    .filter(chunkName =>
+      new RegExp(`^(vendors~)?${config.namespace}$`).test(chunkName)
+    )
+    .forEach(chunkName => {
+      const assets = Array.isArray(assetsByChunkName[chunkName])
+        ? assetsByChunkName[chunkName]
+        : [assetsByChunkName[chunkName]];
+      Object.keys(assetsByType).forEach(extension => {
+        assetsByType[extension].push(
+          ...assets.filter(asset => asset && extname(asset) === `.${extension}`)
+        );
+      });
     });
-  });
   next();
 };
