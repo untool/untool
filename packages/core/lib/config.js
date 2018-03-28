@@ -12,9 +12,8 @@ const { create: { sync: createResolver } } = require('enhanced-resolve');
 function resolvePreset(...args) {
   try {
     return createResolver({
-      extensions: ['.mjs', '.js'],
       mainFiles: ['preset'],
-      mainFields: ['esnext:preset', 'jsnext:preset', 'preset'],
+      mainFields: ['preset'],
     })(...args);
   } catch (_) {
     throw new Error(`preset not found ${args[1]}`);
@@ -24,26 +23,12 @@ function resolvePreset(...args) {
 function resolveMixin(target, ...args) {
   try {
     const config = {
-      extensions: ['.mjs', '.js'],
       mainFiles: [`mixin.${target}`, 'mixin'],
-      mainFields: [
-        `esnext:mixin:${target}`,
-        `jsnext:mixin:${target}`,
-        `mixin:${target}`,
-        'esnext:mixin',
-        'jsnext:mixin',
-        'mixin',
-      ],
+      mainFields: [`mixin:${target}`, 'mixin'],
     };
     if (target !== 'core') {
       config.mainFiles.splice(1, 0, 'mixin.runtime');
-      config.mainFields.splice(
-        3,
-        0,
-        'esnext:mixin:runtime',
-        'jsnext:mixin:runtime',
-        'mixin:runtime'
-      );
+      config.mainFields.splice(1, 0, 'mixin:runtime');
     }
     return createResolver(config)(...args);
   } catch (_) {
@@ -62,20 +47,32 @@ function merge(...args) {
   });
 }
 
+function applyEnv(result) {
+  const env = process.env.UNTOOL_ENV || process.env.NODE_ENV;
+  const config = result && result.config;
+  return result
+    ? {
+        ...result,
+        config: config && config.env ? merge(config, config.env[env]) : config,
+      }
+    : result;
+}
+
 function loadConfig(context, preset) {
+  const nsp = process.env.UNTOOL_NSP || 'untool';
   try {
     const options = preset
       ? { configPath: resolvePreset(context, preset), sync: true }
       : { rcExtensions: true, stopDir: context, sync: true };
-    const explorer = cosmiconfig('untool', options);
-    return explorer.load(context);
+    const explorer = cosmiconfig(nsp, options);
+    return applyEnv(explorer.load(context));
   } catch (_) {
     return null;
   }
 }
 
-function loadSettings(...args) {
-  const result = loadConfig(...args);
+function loadSettings(context) {
+  const result = loadConfig(context);
   return result ? result.config : {};
 }
 
@@ -122,22 +119,15 @@ function resolvePlaceholders(config) {
 exports.getConfig = () => {
   const pkgFile = findUp('package.json');
   const rootDir = dirname(pkgFile);
-
   const {
     name: namespace = basename(rootDir),
     version = '0.0.0',
   } = require(pkgFile);
 
   const defaults = { rootDir, namespace, version, mixins: [] };
-
   const settings = loadSettings(rootDir);
-
   const presets = loadPresets(rootDir, settings.presets);
-
-  const rawConfig = (config =>
-    config.env ? merge(config, config.env[process.env.NODE_ENV]) : config)(
-    merge(defaults, presets, settings)
-  );
+  const rawConfig = merge(defaults, presets, settings);
 
   delete rawConfig.presets;
   delete rawConfig.env;
