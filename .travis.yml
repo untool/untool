@@ -6,12 +6,9 @@ before_install:
 install:
   - yarn install
 
-before_script:
-  - yarn bootstrap
-
 script:
-  - yarn test
   - yarn lint
+  - yarn test
 
 node_js:
   - '8'
