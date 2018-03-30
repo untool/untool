@@ -3,20 +3,16 @@
   "description": "tools suck. untool tries not to.",
   "author": "dmbch <daniel@dmbch.net>",
   "license": "MIT",
+  "private": true,
   "scripts": {
-    "start": "yarn un start",
+    "start": "cd tests/fixtures/instrument; un start",
     "test": "ava --verbose tests",
-    "lint": "eslint --ignore-path .gitignore '**/*.{mjs,js}'",
-    "fmt": "prettier --write --ignore-path .gitignore '**/*.{mjs,js,json,css}'",
-    "bootstrap": "lerna bootstrap",
-    "reset": "git clean -dfx && yarn && lerna bootstrap",
+    "lint": "eslint --ignore-path .gitignore '**/*.js'",
+    "fmt": "prettier --write --ignore-path .gitignore '**/*.{js,json,css}'",
     "release": "lerna publish --conventional-commits",
-    "release:all": "lerna publish --force-publish=*",
-    "release:major": "yarn release:all --cd-version=major",
-    "release:premajor": "yarn release:all --cd-version=premajor --npm-tag=next",
-    "release:pre": "lerna publish --cd-version=prerelease --npm-tag=next",
-    "update": "yarn upgrade-interactive --latest",
-    "un": "cd tests/fixtures/instrument; un",
+    "bump": "lerna publish --force-publish=* --cd-version=major",
+    "update": "yarn upgrade-interactive --latest && yarn fmt",
+    "reset": "git clean -dfx && yarn",
     "preinstall": "[ -z \"${npm_execpath##*yarn*}\" ] || exit 1",
     "precommit": "lint-staged",
     "posttest": "rimraf tests/fixtures/*-*"
@@ -40,14 +36,14 @@
     "flat": "^4.0.0",
     "husky": "^0.14.3",
     "is-plain-object": "^2.0.4",
-    "lerna": "^2.8.0",
-    "lint-staged": "^7.0.0",
+    "lerna": "^2.9.1",
+    "lint-staged": "^7.0.1",
     "mkdirp": "^0.5.1",
     "ncp": "^2.0.0",
     "prettier": "1.11.1",
     "puppeteer": "^1.1.1",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
+    "react": "^16.3.0",
+    "react-dom": "^16.3.0",
     "react-helmet": "^5.2.0",
     "react-router": "^4.2.0",
     "react-router-dom": "^4.2.2",
@@ -58,7 +54,6 @@
   "engines": {
     "node": ">8.6.0"
   },
-  "private": true,
   "prettier": {
     "trailingComma": "es5",
     "proseWrap": "never",
@@ -80,7 +75,7 @@
     }
   },
   "lint-staged": {
-    "*.{mjs,js,json,css}": ["prettier --write", "git add"]
+    "*.{js,json,css}": ["prettier --write", "git add"]
   },
   "config": {
     "commitizen": {
