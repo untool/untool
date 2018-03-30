@@ -6,26 +6,8 @@ const { createServer: createNetServer } = require('net');
 const { createServer: createHTTPServer } = require('http');
 const { createServer: createHTTPSServer } = require('https');
 
-const getPort = (ip, port, max) =>
-  new Promise((resolve, reject) => {
-    max = max || Math.min(65535, port + 50);
-    if (port > max) {
-      return reject(new Error('unable to find free port'));
-    }
-    const server = createNetServer();
-    server.on('error', () => {
-      resolve(getPort(ip, port + 1, max));
-      server.close();
-    });
-    server.listen(port, ip, () => {
-      server.once('close', () => resolve(port));
-      server.close();
-    });
-  });
-
-module.exports = (app, core, config) => {
-  const { port, ip, basePath, https, findPort } = config;
-  const server = https
+const createServer = (app, https) =>
+  https
     ? createHTTPSServer(
         {
           key: readFileSync(
@@ -38,7 +20,26 @@ module.exports = (app, core, config) => {
         app
       )
     : createHTTPServer(app);
-  (findPort ? getPort(ip, port) : Promise.resolve(port)).then(port =>
+
+const findPort = (ip, port, max) =>
+  new Promise((resolve, reject) => {
+    max = max || Math.min(65535, port + 50);
+    if (port > max) {
+      reject(new Error('unable to find free port'));
+    } else {
+      const server = createNetServer().unref();
+      server.on('error', () => resolve(findPort(ip, port + 1, max)));
+      server.listen(port, ip, () => server.close(() => resolve(port)));
+    }
+  });
+
+const getPort = (ip, port) =>
+  findPort(ip, ...(Array.isArray(port) ? port : [port || 8080, port]));
+
+module.exports = (app, core, config) => {
+  const { ip = '0.0.0.0', port, basePath, https } = config;
+  const server = createServer(app, https);
+  getPort(ip, port).then(port =>
     server.listen(port, ip, error => {
       if (error) {
         core.logError(error);
