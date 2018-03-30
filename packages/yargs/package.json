@@ -2,9 +2,7 @@
   "name": "@untool/yargs",
   "version": "0.3.0",
   "description": "untool yargs mixin",
-  "keywords": [
-    "unmixin"
-  ],
+  "keywords": ["unmixin"],
   "bin": {
     "un": "index.js"
   },
