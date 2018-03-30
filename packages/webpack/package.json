@@ -2,10 +2,7 @@
   "name": "@untool/webpack",
   "version": "0.3.2",
   "description": "untool webpack mixin",
-  "keywords": [
-    "unmixin",
-    "unpreset"
-  ],
+  "keywords": ["unmixin", "unpreset"],
   "scripts": {
     "test": "echo \"Error: no test specified\""
   },
@@ -33,13 +30,13 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
-    "caniuse-lite": "^1.0.30000813",
+    "caniuse-lite": "^1.0.30000821",
     "css-loader": "^0.28.9",
     "file-loader": "^1.1.6",
     "find-up": "^2.1.0",
     "loader-utils": "^1.1.0",
     "memory-fs": "^0.4.1",
-    "mini-css-extract-plugin": "^0.2.0",
+    "mini-css-extract-plugin": "^0.4.0",
     "mixinable": "^1.5.0",
     "optimize-css-assets-webpack-plugin": "^4.0.0",
     "postcss-cssnext": "^3.1.0",
@@ -51,8 +48,8 @@
     "style-loader": "^0.20.1",
     "uglifyjs-webpack-plugin": "^1.2.4",
     "url-loader": "^1.0.1",
-    "webpack": "^4.1.1",
-    "webpack-dev-middleware": "^3.0.1",
+    "webpack": "^4.4.1",
+    "webpack-dev-middleware": "^3.1.0",
     "webpack-hot-middleware": "^2.21.0",
     "webpack-node-externals": "^1.6.0",
     "webpack-sources": "^1.1.0"
