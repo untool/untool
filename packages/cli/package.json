@@ -4,6 +4,7 @@
   "description": "untool cli",
   "preferGlobal": true,
   "bin": {
+    "untool": "index.js",
     "un": "index.js"
   },
   "scripts": {
