@@ -9,18 +9,18 @@ const flatten = require('flat');
 
 const { create: { sync: createResolver } } = require('enhanced-resolve');
 
-function resolvePreset(...args) {
+function resolvePreset(context, preset) {
   try {
     return createResolver({
       mainFiles: ['preset'],
       mainFields: ['preset'],
-    })(...args);
+    })(context, preset);
   } catch (_) {
-    throw new Error(`preset not found ${args[1]}`);
+    throw new Error(`preset not found ${preset}`);
   }
 }
 
-function resolveMixin(target, ...args) {
+function resolveMixin(target, context, mixin) {
   try {
     const config = {
       mainFiles: [`mixin.${target}`, 'mixin'],
@@ -30,7 +30,7 @@ function resolveMixin(target, ...args) {
       config.mainFiles.splice(1, 0, 'mixin.runtime');
       config.mainFields.splice(1, 0, 'mixin:runtime');
     }
-    return createResolver(config)(...args);
+    return createResolver(config)(context, mixin);
   } catch (_) {
     return null;
   }
