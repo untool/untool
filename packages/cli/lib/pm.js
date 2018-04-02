@@ -6,7 +6,9 @@ const execFile = promisify(execFileAsync);
 
 const execute = (command, ...args) =>
   exec(`which ${command}`).then(({ stdout }) =>
-    execFile(stdout.replace(/\s+$/, ''), args).then(({ stdout }) => stdout)
+    execFile(stdout.replace(/\s+$/, ''), args, { maxBuffer: 1024 ** 2 }).then(
+      ({ stdout }) => stdout
+    )
   );
 
 exports.init = () => execute('npm', 'init', '--yes');
