@@ -20,6 +20,8 @@ module.exports = data =>
     ${data.globals
       .map(global => `<script>${global.name}=${esc(global.value)}</script>`)
       .join('')}
-    ${data.assetsByType.js.map(js => `<script src="/${js}"></script>`).join('')}
+    ${data.assetsByType.js
+      .map(js => `<script src="/${js}" async></script>`)
+      .join('')}
   </body>
 </html>`.replace(/(^\s*[\r\n]| (?=>))/gm, '');
