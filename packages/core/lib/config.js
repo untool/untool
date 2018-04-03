@@ -78,16 +78,21 @@ function loadSettings(context) {
 
 function loadPresets(context, presets = []) {
   return presets.reduce((result, preset) => {
-    const { config, filepath } =
+    const loadedConfig =
       loadConfig(context, preset) ||
       loadConfig(dirname(resolvePreset(context, join(preset, 'package.json'))));
-    const newContext = dirname(filepath);
-    if (config.mixins) {
-      config.mixins = config.mixins.map(
-        mixin => (mixin.startsWith('.') ? join(newContext, mixin) : mixin)
-      );
+    if (loadedConfig) {
+      const { config, filepath } = loadedConfig;
+      const newContext = dirname(filepath);
+      if (config.mixins) {
+        config.mixins = config.mixins.map(
+          mixin => (mixin.startsWith('.') ? join(newContext, mixin) : mixin)
+        );
+      }
+      return merge(result, loadPresets(newContext, config.presets), config);
+    } else {
+      throw new Error(`preset not found: ${preset}`);
     }
-    return merge(result, loadPresets(newContext, config.presets), config);
   }, {});
 }
 
@@ -135,10 +140,10 @@ exports.getConfig = () => {
   const config = resolvePlaceholders(rawConfig);
 
   config.mixins = ['core', 'server', 'browser'].reduce(
-    (result, key) => ({
+    (result, target) => ({
       ...result,
-      [key]: config.mixins
-        .map(mixin => resolveMixin(key, config.rootDir, mixin))
+      [target]: config.mixins
+        .map(mixin => resolveMixin(target, config.rootDir, mixin))
         .filter((mixin, index, self) => mixin && self.indexOf(mixin) === index),
     }),
     {}
