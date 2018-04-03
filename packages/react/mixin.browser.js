@@ -3,7 +3,7 @@ const { createElement } = require('react');
 const { unmountComponentAtNode, hydrate, render } = require('react-dom');
 const { BrowserRouter } = require('react-router-dom');
 
-const { async: { compose, parallel, pipe } } = require('mixinable');
+const { override, async: { compose, parallel, pipe } } = require('mixinable');
 
 const { Mixin } = require('@untool/core');
 
@@ -37,6 +37,7 @@ class ReactMixin extends Mixin {
 }
 
 ReactMixin.strategies = {
+  render: override,
   bootstrap: parallel,
   enhanceElement: compose,
   fetchData: pipe,

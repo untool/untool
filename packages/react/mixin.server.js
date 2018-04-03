@@ -3,7 +3,7 @@ const { renderToString } = require('react-dom/server');
 const { StaticRouter } = require('react-router');
 const { Helmet } = require('react-helmet');
 
-const { async: { compose, parallel, pipe } } = require('mixinable');
+const { override, async: { compose, parallel, pipe } } = require('mixinable');
 
 const { Mixin } = require('@untool/core');
 
@@ -76,6 +76,7 @@ class ReactPlugin extends Mixin {
 }
 
 ReactPlugin.strategies = {
+  render: override,
   bootstrap: parallel,
   enhanceElement: compose,
   fetchData: pipe,
