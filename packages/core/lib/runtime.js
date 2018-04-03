@@ -2,8 +2,6 @@ const define = require('mixinable');
 
 const { bindAll } = require('./util');
 
-const { override } = define;
-
 exports.Mixin = class Mixin {
   constructor(core, config) {
     this.core = core;
@@ -16,13 +14,10 @@ exports.Mixin = class Mixin {
 exports.render = function render(...renderArgs) {
   return config => {
     const { mixins } = config;
-    const strategies = {
-      ...mixins.reduce(
-        (result, mixin) => ({ ...result, ...mixin.strategies }),
-        {}
-      ),
-      render: override,
-    };
+    const strategies = mixins.reduce(
+      (result, mixin) => ({ ...result, ...mixin.strategies }),
+      {}
+    );
     const createMixinable = define(strategies)(...mixins);
     return (...callArgs) => {
       const core = {};
@@ -34,7 +29,7 @@ exports.render = function render(...renderArgs) {
           get: () => mixinable[key].bind(mixinable),
         })
       );
-      return core.render(...callArgs);
+      core.render(...callArgs);
     };
   };
 };
