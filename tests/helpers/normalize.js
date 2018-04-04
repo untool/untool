@@ -41,14 +41,14 @@ exports.normalizeWebpackConfig = config => {
 
 exports.normalizeResponse = res => {
   return JSON.parse(
-    JSON.stringify(res).replace(/(-[a-f0-9]{16}|blob:http:[a-z0-9/:-]+)/g, '')
+    JSON.stringify(res).replace(/(-[a-f0-9]{12}|blob:http:[a-z0-9/:-]+)/g, '')
   );
 };
 
 exports.normalizeArtefacts = dir =>
   readdirSync(dir).reduce((result, file) => {
     const path = join(dir, file);
-    const name = file.replace(/-[a-f0-9]{16}/, '');
+    const name = file.replace(/-[a-f0-9]{12}/, '');
     const stats = statSync(path);
     if (stats.isDirectory()) {
       return { ...result, [name]: exports.normalizeArtefacts(path) };
