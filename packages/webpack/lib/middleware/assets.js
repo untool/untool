@@ -1,22 +1,13 @@
+const { existsSync: exists } = require('fs');
 const { join, extname } = require('path');
-
-const cachedAssetData = {};
 
 const getAssetData = (locals = {}, config) => {
   if (locals.webpackStats) {
     const { assets, assetsByChunkName } = locals.webpackStats.toJson();
     return { assets, assetsByChunkName };
   }
-  if (!cachedAssetData.assets) {
-    try {
-      const assetFile = join(config.buildDir, config.assetFile);
-      require.resolve(assetFile);
-      Object.assign(cachedAssetData, require(assetFile));
-    } catch (_) {
-      Object.assign(cachedAssetData, { assets: {}, assetsByChunkName: {} });
-    }
-  }
-  return cachedAssetData;
+  const file = join(config.buildDir, config.assetFile);
+  return exists(file) ? require(file) : { assets: {}, assetsByChunkName: {} };
 };
 
 module.exports = (config, assetData) => (req, res, next) => {
@@ -31,9 +22,8 @@ module.exports = (config, assetData) => (req, res, next) => {
       new RegExp(`^(vendors~)?${config.namespace}$`).test(chunkName)
     )
     .forEach(chunkName => {
-      const assets = Array.isArray(assetsByChunkName[chunkName])
-        ? assetsByChunkName[chunkName]
-        : [assetsByChunkName[chunkName]];
+      const chunkAssets = assetsByChunkName[chunkName];
+      const assets = Array.isArray(chunkAssets) ? chunkAssets : [chunkAssets];
       Object.keys(assetsByType).forEach(extension => {
         assetsByType[extension].push(
           ...assets.filter(asset => asset && extname(asset) === `.${extension}`)

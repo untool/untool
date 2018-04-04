@@ -109,8 +109,8 @@ module.exports = function getConfig(config, getAssetPath, configureWebpack) {
       path: config.buildDir,
       publicPath: '/',
       pathinfo: true,
-      filename: getAssetPath('[name]-[chunkhash:16].js'),
-      chunkFilename: getAssetPath('[name]-[id]-[chunkhash:16].js'),
+      filename: getAssetPath('[name]-[contenthash:12].js'),
+      chunkFilename: getAssetPath('[name]-[contenthash:12].js'),
       devtoolModuleFilenameTemplate: function(info) {
         return relative(config.rootDir, info.absoluteResourcePath);
       },
@@ -155,8 +155,8 @@ module.exports = function getConfig(config, getAssetPath, configureWebpack) {
       new optimize.ModuleConcatenationPlugin(),
       new EnvironmentPlugin({ NODE_ENV: 'development' }),
       new ExtractCSSPlugin({
-        filename: getAssetPath('[name]-[chunkhash:16].css'),
-        chunkFilename: getAssetPath('[name]-[id]-[chunkhash:16].css'),
+        filename: getAssetPath('[name]-[contenthash:12].css'),
+        chunkFilename: getAssetPath('[name]-[contenthash:12].css'),
       }),
     ],
     devtool: 'source-map',

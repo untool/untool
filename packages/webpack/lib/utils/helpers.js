@@ -1,4 +1,4 @@
-const { readFileSync } = require('fs');
+const { readFileSync: readFile } = require('fs');
 const { join, dirname, isAbsolute } = require('path');
 
 const { sync: findUp } = require('find-up');
@@ -15,7 +15,7 @@ const checkESNextPath = modPath =>
 
 const checkESNextConfig = modPath =>
   /"(module|((e|j)snext(:(browser|server|main|mixin(:[a-z]+)?))?))":/m.test(
-    readFileSync(findUp('package.json', { cwd: dirname(modPath) }), 'utf8')
+    readFile(findUp('package.json', { cwd: dirname(modPath) }), 'utf8')
   );
 
 exports.checkESNext = function checkESNext(target, defaults) {

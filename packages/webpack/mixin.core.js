@@ -1,8 +1,16 @@
+const { existsSync: exists } = require('fs');
+const { join } = require('path');
+
 const { sync: { pipe, sequence } } = require('mixinable');
 
 const ExpressMixin = require('@untool/express/mixin.core');
 
 class WebpackMixin extends ExpressMixin {
+  loadPrebuiltMiddleware() {
+    const { buildDir, serverFile } = this.config;
+    const path = join(buildDir, serverFile);
+    return exists(path) ? require(path) : (req, res, next) => next();
+  }
   createAssetsMiddleware() {
     const assetsMiddleware = require('./lib/middleware/assets');
     const { config, assets, assetsByChunkName } = this;
@@ -90,19 +98,20 @@ class WebpackMixin extends ExpressMixin {
     return webpackConfig;
   }
   initializeServer(app, mode) {
-    if (this.options._ && mode === 'develop') {
+    if (mode === 'develop') {
       app.use(...this.createDevWebpackMiddlewares());
     }
     app.use(this.createAssetsMiddleware());
   }
-  optimizeServer(app, mode) {
-    if (this.options._) {
-      if (mode === 'develop') {
-        app.use(this.createDevRenderMiddleware());
-      }
-      if (mode === 'static') {
-        app.use(this.createRenderMiddleware());
-      }
+  finalizeServer(app, mode) {
+    if (mode === 'develop') {
+      app.use(this.createDevRenderMiddleware());
+    }
+    if (mode === 'static') {
+      app.use(this.createRenderMiddleware());
+    }
+    if (mode === 'serve') {
+      app.use(this.loadPrebuiltMiddleware());
     }
   }
   registerCommands(yargs) {
