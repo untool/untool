@@ -12,26 +12,30 @@ class YargsMixin extends Mixin {
     return yargs;
   }
   logInfo(...args) {
+    const { namespace } = this.config;
     if (this.levels && this.levels.includes('info')) {
-      console.log(this.chalk.bold('untool info'));
+      console.log(this.chalk.bold(`${namespace} info`));
       console.info(...args);
     }
   }
   logWarn(...args) {
+    const { namespace } = this.config;
     if (this.levels && this.levels.includes('warn')) {
-      console.log(this.chalk.yellow.bold('untool warn'));
+      console.log(this.chalk.yellow.bold(`${namespace} warn`));
       console.warn(...args);
     }
   }
   logError(error) {
+    const { namespace } = this.config;
     if (!this.levels || this.levels.includes('error')) {
-      console.log(this.chalk.red.bold('untool error'));
+      console.log(this.chalk.red.bold(`${namespace} error`));
       console.error(error.stack ? error.stack.toString() : error.toString());
     }
   }
   logStats(stats) {
+    const { namespace } = this.config;
     if (this.levels && this.levels.includes('info')) {
-      console.log(this.chalk.bold('untool stats'));
+      console.log(this.chalk.bold(`${namespace} stats`));
       console.info(
         stats.toString({ chunks: false, modules: false, entrypoints: false })
       );
