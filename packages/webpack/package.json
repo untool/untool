@@ -30,7 +30,7 @@
     "babel-plugin-transform-object-rest-spread": "^6.26.0",
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.6.1",
-    "caniuse-lite": "^1.0.30000821",
+    "caniuse-lite": "^1.0.30000823",
     "css-loader": "^0.28.9",
     "file-loader": "^1.1.6",
     "find-up": "^2.1.0",
@@ -48,10 +48,10 @@
     "style-loader": "^0.20.1",
     "uglifyjs-webpack-plugin": "^1.2.4",
     "url-loader": "^1.0.1",
-    "webpack": "^4.4.1",
+    "webpack": "^4.5.0",
     "webpack-dev-middleware": "^3.1.0",
     "webpack-hot-middleware": "^2.21.0",
-    "webpack-node-externals": "^1.6.0",
+    "webpack-node-externals": "^1.7.2",
     "webpack-sources": "^1.1.0"
   },
   "engines": {
