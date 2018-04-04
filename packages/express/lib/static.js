@@ -6,7 +6,6 @@ const mocks = require('node-mocks-http');
 module.exports = (options, core) => {
   const app = new Router();
   core.initializeServer(app, 'static');
-  core.optimizeServer(app, 'static');
   core.finalizeServer(app, 'static');
   return options => {
     if (typeof options === 'string') {

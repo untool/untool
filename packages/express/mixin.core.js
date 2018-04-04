@@ -30,23 +30,29 @@ class ExpressMixin extends Mixin {
     const render = this.createRenderer();
     const { basePath, locations } = this.config;
     const { resolveAbsolute, resolveRelative } = uri;
-    return Promise.resolve().then(() => {
-      return Promise.all(
-        locations
-          .map(location => resolveAbsolute(basePath, location))
-          .map(location => render(location))
-      ).then(responses =>
-        responses.reduce((result, response, i) => {
-          const key = resolveRelative(basePath, indexFile(locations[i]));
-          return { ...result, [key]: response };
-        }, {})
-      );
-    });
+    return Promise.all(
+      locations
+        .map(location => resolveAbsolute(basePath, location))
+        .map(location => render(location))
+    ).then(responses =>
+      responses.reduce((result, response, index) => {
+        const key = resolveRelative(basePath, indexFile(locations[index]));
+        return { ...result, [key]: response };
+      }, {})
+    );
   }
   getAssetPath(filePath) {
     const { config: { assetPath } } = this;
     const { resolveRelative } = uri;
     return resolveRelative(assetPath, filePath);
+  }
+  initializeServer(app, mode) {
+    const { compress } = this.config;
+    if (mode === 'serve' && compress) {
+      app.use(
+        require('compression')(typeof compress !== 'boolean' ? compress : {})
+      );
+    }
   }
   registerCommands(yargs) {
     const { namespace } = this.config;
@@ -82,7 +88,6 @@ class ExpressMixin extends Mixin {
 
 ExpressMixin.strategies = {
   initializeServer: sequence,
-  optimizeServer: sequence,
   finalizeServer: sequence,
   inspectServer: sequence,
 };

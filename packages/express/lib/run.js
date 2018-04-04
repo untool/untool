@@ -1,4 +1,4 @@
-const { readFileSync } = require('fs');
+const { readFileSync: readFile } = require('fs');
 const { join } = require('path');
 const { format } = require('url');
 
@@ -10,10 +10,10 @@ const createServer = (app, https) =>
   https
     ? createHTTPSServer(
         {
-          key: readFileSync(
+          key: readFile(
             https.keyFile || join(__dirname, 'ssl', 'localhost.key')
           ),
-          cert: readFileSync(
+          cert: readFile(
             https.certFile || join(__dirname, 'ssl', 'localhost.cert')
           ),
         },
@@ -25,7 +25,7 @@ const findPort = (ip, port, max) =>
   new Promise((resolve, reject) => {
     max = max || Math.min(65535, port + 50);
     if (port > max) {
-      reject(new Error('unable to find free port'));
+      reject(new Error('unable to open free port'));
     } else {
       const server = createNetServer().unref();
       server.on('error', () => resolve(findPort(ip, port + 1, max)));

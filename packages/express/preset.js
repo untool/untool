@@ -6,6 +6,10 @@ module.exports = {
   basePath: '',
   assetPath: '<basePath>',
   buildDir: '<rootDir>/dist',
-  serverFile: 'server.js',
+  env: {
+    production: {
+      compress: true,
+    },
+  },
   mixins: [__dirname],
 };
