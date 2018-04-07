@@ -48,8 +48,8 @@ module.exports = function getConfig(config, getAssetPath, configureWebpack) {
         options: {
           importLoaders: 1,
           camelCase: true,
-          modules: !!config.cssModules,
-          localIdentName: config.cssModules,
+          modules: true,
+          localIdentName: '[folder]-[name]-[local]-[hash:8]',
           sourceMap: process.env.NODE_ENV !== 'production',
         },
       },
