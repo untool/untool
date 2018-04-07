@@ -9,7 +9,7 @@ const flatten = require('flat');
 
 const { create: { sync: createResolver } } = require('enhanced-resolve');
 
-function resolvePreset(context, preset) {
+const resolvePreset = (context, preset) => {
   try {
     return createResolver({
       mainFiles: ['preset'],
@@ -18,9 +18,9 @@ function resolvePreset(context, preset) {
   } catch (_) {
     throw new Error(`preset not found ${preset}`);
   }
-}
+};
 
-function resolveMixin(target, context, mixin) {
+const resolveMixin = (target, context, mixin) => {
   try {
     const config = {
       mainFiles: [`mixin.${target}`, 'mixin'],
@@ -34,10 +34,10 @@ function resolveMixin(target, context, mixin) {
   } catch (_) {
     return null;
   }
-}
+};
 
-function merge(...args) {
-  return mergeWith({}, ...args, (objValue, srcValue, key) => {
+const merge = (...args) =>
+  mergeWith({}, ...args, (objValue, srcValue, key) => {
     if (Array.isArray(objValue)) {
       if ('mixins' === key) {
         return objValue.concat(srcValue);
@@ -45,9 +45,8 @@ function merge(...args) {
       return srcValue;
     }
   });
-}
 
-function applyEnv(result) {
+const applyEnv = result => {
   const env = process.env.UNTOOL_ENV || process.env.NODE_ENV;
   const config = result && result.config;
   return result
@@ -56,9 +55,9 @@ function applyEnv(result) {
         config: config && config.env ? merge(config, config.env[env]) : config,
       }
     : result;
-}
+};
 
-function loadConfig(context, preset) {
+const loadConfig = (context, preset) => {
   const nsp = process.env.UNTOOL_NSP || 'untool';
   try {
     const options = preset
@@ -69,15 +68,15 @@ function loadConfig(context, preset) {
   } catch (_) {
     return null;
   }
-}
+};
 
-function loadSettings(context) {
+const loadSettings = context => {
   const result = loadConfig(context);
   return result ? result.config : {};
-}
+};
 
-function loadPresets(context, presets = []) {
-  return presets.reduce((result, preset) => {
+const loadPresets = (context, presets = []) =>
+  presets.reduce((result, preset) => {
     const loadedConfig =
       loadConfig(context, preset) ||
       loadConfig(dirname(resolvePreset(context, join(preset, 'package.json'))));
@@ -94,21 +93,20 @@ function loadPresets(context, presets = []) {
       throw new Error(`preset not found: ${preset}`);
     }
   }, {});
-}
 
-function resolvePlaceholders(config) {
+const resolvePlaceholders = config => {
   const flatConfig = flatten(config);
   const keys = Object.keys(flatConfig);
   const regExp = new RegExp(`<(${keys.map(escapeRegExp).join('|')})>`, 'g');
   const replaceRecursive = item => {
+    if (Array.isArray(item)) {
+      return item.map(replaceRecursive);
+    }
     if (isPlainObject(item)) {
       return Object.keys(item).reduce((result, key) => {
         result[key] = replaceRecursive(item[key]);
         return result;
       }, {});
-    }
-    if (Array.isArray(item)) {
-      return item.map(replaceRecursive);
     }
     if (typeof item === 'string') {
       return item.replace(regExp, function(_, match) {
@@ -119,7 +117,7 @@ function resolvePlaceholders(config) {
     return item;
   };
   return replaceRecursive(config);
-}
+};
 
 exports.getConfig = () => {
   const pkgFile = findUp('package.json');
