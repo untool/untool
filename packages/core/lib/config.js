@@ -1,5 +1,6 @@
 const { basename, dirname, join } = require('path');
 
+const { create: { sync: createResolver } } = require('enhanced-resolve');
 const { sync: findUp } = require('find-up');
 const cosmiconfig = require('cosmiconfig');
 const mergeWith = require('lodash.mergewith');
@@ -7,7 +8,15 @@ const isPlainObject = require('is-plain-object');
 const escapeRegExp = require('escape-string-regexp');
 const flatten = require('flat');
 
-const { create: { sync: createResolver } } = require('enhanced-resolve');
+const merge = (...args) =>
+  mergeWith({}, ...args, (objValue, srcValue, key) => {
+    if (Array.isArray(objValue)) {
+      if ('mixins' === key) {
+        return objValue.concat(srcValue);
+      }
+      return srcValue;
+    }
+  });
 
 const resolvePreset = (context, preset) => {
   try {
@@ -35,16 +44,6 @@ const resolveMixin = (target, context, mixin) => {
     return null;
   }
 };
-
-const merge = (...args) =>
-  mergeWith({}, ...args, (objValue, srcValue, key) => {
-    if (Array.isArray(objValue)) {
-      if ('mixins' === key) {
-        return objValue.concat(srcValue);
-      }
-      return srcValue;
-    }
-  });
 
 const applyEnv = result => {
   const env = process.env.UNTOOL_ENV || process.env.NODE_ENV;
@@ -94,29 +93,29 @@ const loadPresets = (context, presets = []) =>
     }
   }, {});
 
-const resolvePlaceholders = config => {
+const substitutePlaceholders = config => {
   const flatConfig = flatten(config);
   const keys = Object.keys(flatConfig);
   const regExp = new RegExp(`<(${keys.map(escapeRegExp).join('|')})>`, 'g');
-  const replaceRecursive = item => {
+  const substituteRecursive = item => {
     if (Array.isArray(item)) {
-      return item.map(replaceRecursive);
+      return item.map(substituteRecursive);
     }
     if (isPlainObject(item)) {
       return Object.keys(item).reduce((result, key) => {
-        result[key] = replaceRecursive(item[key]);
+        result[key] = substituteRecursive(item[key]);
         return result;
       }, {});
     }
     if (typeof item === 'string') {
       return item.replace(regExp, function(_, match) {
         var result = flatConfig[match].toString();
-        return regExp.test(result) ? replaceRecursive(result) : result;
+        return regExp.test(result) ? substituteRecursive(result) : result;
       });
     }
     return item;
   };
-  return replaceRecursive(config);
+  return substituteRecursive(config);
 };
 
 exports.getConfig = () => {
@@ -135,7 +134,7 @@ exports.getConfig = () => {
   delete rawConfig.presets;
   delete rawConfig.env;
 
-  const config = resolvePlaceholders(rawConfig);
+  const config = substitutePlaceholders(rawConfig);
 
   config.mixins = ['core', 'server', 'browser'].reduce(
     (result, target) => ({
