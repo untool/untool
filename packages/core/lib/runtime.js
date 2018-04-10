@@ -1,15 +1,6 @@
 const define = require('mixinable');
 
-const { bindAll } = require('./util');
-
-exports.Mixin = class Mixin {
-  constructor(core, config) {
-    this.core = core;
-    this.config = config;
-    this.options = {};
-    bindAll(this);
-  }
-};
+exports.Mixin = require('./mixin');
 
 exports.render = function render(...renderArgs) {
   return config => {
