@@ -1,8 +1,14 @@
 # `@untool/core`
 
-[![snyk](https://snyk.io/test/github/untool/untool/badge.svg?targetFile=packages%2Fcore%2Fpackage.json)](https://snyk.io/test/github/untool/untool?targetFile=packages%2Fcore%2Fpackage.json)&nbsp;[![npm](https://img.shields.io/npm/v/@untool%2Fcore.svg)](https://www.npmjs.com/package/@untool%2Fcore)
+[![npm](https://img.shields.io/npm/v/@untool%2Fcore.svg)](https://www.npmjs.com/package/@untool%2Fcore)
 
 `@untool/core` is the functional foundation every other `untool` component is built upon. It contains a comprehensive configuration engine and a set of mixin base classes.
+
+### Installation
+
+```bash
+$ yarn add @untool/core # OR npm install @untool/core
+```
 
 ## Configuration
 
@@ -17,7 +23,7 @@ It allows you to set up mixins and pull in presets. Mixins provide extra functio
 }
 ```
 
-`@untool/core` comes with support for environment specific configuration. For example, you can pin `@untool/express`'s port to a specific value in production and have it search for a free port in develoment and test environments.
+`@untool/core` comes with support for environment specific configuration. For example, you can pin [`@untool/express`](https://github.com/untool/untool/blob/master/packages/express/README.md)'s port to a specific value in production and have it search for a free port in develoment and test environments.
 
 ```json
 {
@@ -165,22 +171,22 @@ Note that you cannot call any of the methods of the core object from inside your
 
 This function, that you are expected to call in your applications main entry file, is essentialy a shorthand: it creates and bootstraps a core mixin container and calls its `render` method.
 
-Whatever arguments it receives are being passed along to its container's mixins' constructors. For it to work, you need to register at least one mixin implementing the `render` method. The default render mixin is `@untool/react`.
+Whatever arguments it receives are being passed along to its container's mixins' constructors. For it to work, you need to register at least one mixin implementing the `render` method. The default render mixin is [`@untool/react`](https://github.com/untool/untool/blob/master/packages/react/README.md).
 
 Render mixins are expected to return functions from their render implementations: an [Express middleware](https://expressjs.com/en/guide/using-middleware.html) on the server or a function that bootstraps and starts a client side app in the browser.
 
 ```javascript
 import React from 'react';
-import { render } from 'untool';
+import { render } from '@untool/core';
 export default render(<h1>hello world</h1>);
 ```
 
-The render function serves two main purposes: 'universalifying' or 'isomorphizing' you application, i.e. making sure your app's code can run both on a server and in a browser, and harmonizing `untool`'s build and runtime environments.
+The render function serves two main purposes: 'universalifying' or 'isomorphizing' you application, i.e. making sure your app's code can run both on a server and in a browser, and integrating `untool`'s build and runtime environments.
 
 `Mixin` aside, `render` probably is the only part of `untool` you will directly interact with in your own code. It certainly is the only one of its APIs you will ever use within your application.
 
 ### `bootstrap([...args])` (build only)
 
-This is a semi-private function that is mainly being used internally, for example by `@untool/yargs`. It returns a proxy object mimicking the core mixin container and thus allowing you to call all defined mixin methods.
+This is a semi-private function that is mainly being used internally, for example by [`@untool/yargs`](https://github.com/untool/untool/blob/master/packages/yargs/README.md). It returns a proxy object mimicking the core mixin container and thus allowing you to call all defined mixin methods.
 
 You will only ever have to call it if you want to use `@untool/core` programmatically. Whatever arguments it receives are being passed along to the core container's mixins' constructors.
