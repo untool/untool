@@ -10,6 +10,12 @@
 $ yarn add @untool/core # OR npm install @untool/core
 ```
 
+#### Installation
+
+```bash
+$ yarn add @untool/core # OR npm install @untool/core
+```
+
 ## Configuration
 
 Apart from a couple of very basic properties (`namespace`, `version` and `rootDir`), `@untool/core` does not provide configuration of its own. It does, however, provide an elaborate configuration mechanism.
