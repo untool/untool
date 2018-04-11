@@ -1,21 +1,21 @@
 # untool
 
-[![travis](https://img.shields.io/travis/untool/untool.svg)](https://travis-ci.org/untool/untool)<br/>
+[![travis](https://img.shields.io/travis/untool/untool.svg)](https://travis-ci.org/untool/untool)
 
 `untool` is a JavaScript tool designed to streamline configuration and usage of other JavaScript tools. By default, it comes with a basic development and runtime environment for universal React applications. This environment is highly modular. Every one of its default modules is configurable and extensible - and completely optional.
 
 #### Installation
 
-Using npm:
-
-```text
-$ npm install --global untool
-```
-
 Using yarn:
 
 ```text
 $ yarn global add untool
+```
+
+Using npm:
+
+```text
+$ npm install --global untool
 ```
 
 #### Utilization
