@@ -51,25 +51,20 @@ const installUntool = manifest =>
               .then(() =>
                 Promise.all([
                   pm.search('keywords:unpreset'),
-                  pm.search('keywords:unmixin'),
+                  pm.search('keywords:unmixin', 'keywords:-unpreset'),
                 ]).then(([allPresets, allMixins]) =>
                   inquirer.prompt([
                     {
                       type: 'checkbox',
                       name: 'presets',
                       message: 'What presets do you want to install?',
-                      choices: allPresets.map(
-                        ({ name }) =>
-                          name === '@untool/defaults'
-                            ? { checked: true, name }
-                            : { name }
-                      ),
+                      choices: allPresets.map(({ name }) => ({ name })).sort(),
                     },
                     {
                       type: 'checkbox',
                       name: 'mixins',
                       message: 'What mixins do you want to install?',
-                      choices: allMixins.map(({ name }) => ({ name })),
+                      choices: allMixins.map(({ name }) => ({ name })).sort(),
                     },
                   ])
                 )
@@ -85,7 +80,7 @@ const installUntool = manifest =>
     .then(() =>
       resolve(process.cwd(), '@untool/yargs').catch(() => {
         // eslint-disable-next-line no-console
-        console.error('\n/o\\ @untool/yargs not found. Exiting.\n');
+        console.error('\n/o\\ @untool/yargs not found. Aborting.\n');
         process.exit(1);
       })
     )
