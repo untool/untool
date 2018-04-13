@@ -1,1 +1,205 @@
-# Coming soon.
+# `@untool/express`
+
+[![npm](https://img.shields.io/npm/v/@untool%2Fexpress.svg)](https://www.npmjs.com/package/@untool%2Fexpress)
+
+`@untool/express` provides both an `untool` [preset](https://github.com/untool/untool/blob/master/packages/core/README.md#presets) and a [mixin](https://github.com/untool/untool/blob/master/packages/core/README.md#mixins) to set up your project to work with [Express](https://expressjs.com).
+
+It does not only provide full featured development and production mode servers, but also a mechanism for rendering static files using Express style middlewares without having to launch an actual server.
+
+### Installation
+
+```bash
+$ yarn add @untool/express # OR npm install @untool/express
+```
+
+## CLI
+
+### `serve`
+
+`@untool/express` registers a single command using [`@untool/yargs`](https://github.com/untool/untool/blob/master/packages/yargs/README.md#registercommandsyargs-chalk-pipe): `serve`. As to be expected, this command launches a stand-alone Express server featuring [Helmet](https://helmetjs.github.io) and a [Express' static](https://expressjs.com/en/4x/api.html#express.static) file server middlewares.
+
+```bash
+$ un serve -ps
+```
+
+#### Arguments
+
+##### `-p` / `--production`
+
+If `un serve` is called with the `production` argument, `untool` itself sets the shell environment variable `$NODE_ENV` to `"production"`. This variable is generally used in lots of places, including [Express](https://expressjs.com/en/advanced/best-practice-performance.html) itself.
+
+```bash
+$ un serve -p # OR un serve --production
+```
+
+This is equivalent to manually setting `$NODE_ENV` before calling the actual command. Use whatever works best in your specific setting.
+
+```bash
+$ NODE_ENV=production un serve
+```
+
+##### `-s` / `--static`
+
+In static mode, `@untool/express` will rewrite request paths according to its `locations` configuration.
+
+```bash
+$ un serve -s # OR un serve --static
+```
+
+## API
+
+### `initializeServer(app, target)` ([sequence](https://github.com/untool/mixinable/blob/master/README.md#defineparallel))
+
+This is a mixin hook defined by `@untool/express` that allows you to register Express middlewares and generally do whatever you like with `app`, the [`Application`](https://expressjs.com/en/api.html#app) (or [`Router`](https://expressjs.com/en/api.html#router)) instance it is using under the hood, right after its creation, i.e. before URL rewriting and such.
+
+The second argument it is being called with is `target` and it can be one of the following: `develop`, `serve`, or `static`. If `target` is `static`, `app` will be a [`Router`](https://expressjs.com/en/api.html#router) instance, otherwise an [`Application`](https://expressjs.com/en/api.html#app).
+
+```javascript
+const { Mixin } = require('@untool/core');
+
+module.exports = class MyMixin extends Mixin {
+  initializeServer(app) {
+    app.use((req, res, next) => next());
+  }
+};
+```
+
+Implement this hook in your `@untool/core` [`core` mixin](https://github.com/untool/untool/blob/master/packages/core/README.md#mixins) and you will be able to set up Express in any way you like. This very module uses this hook to conditionally activate HTTP response compression.
+
+### `finalizeServer(app, target)` ([sequence](https://github.com/untool/mixinable/blob/master/README.md#defineparallel))
+
+This hook works exactly like the one described above, `initializeServer()`, only after everything else has been set up and configured. You can, for example, register an [error middleware](https://expressjs.com/en/guide/error-handling.html) here - just make sure your mixin is configured as the last one to implement `finalizeServer()`.
+
+### `inspectServer(app, target)` ([sequence](https://github.com/untool/mixinable/blob/master/README.md#defineparallel))
+
+This hook will give you a running, i.e. listening, instance of [`http.Server`](https://nodejs.org/api/http.html#http_class_http_server) or [`https.Server`](https://nodejs.org/api/https.html#https_class_https_server), depending on your `https` setting. The second argument, `target`, will only ever be one of `develop` and `serve`. You can, for example, use this hook to register your server with an external load balancing system.
+
+## Settings
+
+`@untool/express` defines a couple of settings as a preset for `@untool/core`'s [configuration engine](https://github.com/untool/untool/blob/master/packages/core/README.md#configuration). You can manage and access them using the mechanisms outlined there.
+
+| Property    | Type               | Default                       |
+| ----------- | ------------------ | ----------------------------- |
+| `https`     | `boolean`/`Object` | `false`                       |
+| `ip`        | `string`           | `process.env.IP || '0.0.0.0'` |
+| `port`      | `number`           | `process.env.PORT || 8080`    |
+| `locations` | `[string]`         | `['/**']`                     |
+| `basePath`  | `string`           | `''`                          |
+| `assetPath` | `string`           | `'<basePath>'`                |
+| `buildDir`  | `string`           | `'<rootDir>/dist'`            |
+| `compress`  | `boolean`/`Object` | `false`                       |
+
+### `https`
+
+`@untool/express` fully supports HTTPS and using this key, you can configure its SSL/TLS mode. You can either set it to `true` to enable SSL with the included insecure certificate. Or your can tell it to use a [proper](https://letsencrypt.org) SSL certificate.
+
+```json
+{
+  "https": true,
+  "env": {
+    "production": {
+      "https": {
+        "keyFile": "./ssl/foo.key",
+        "certFile": "./ssl/foo.cert"
+      }
+    }
+  }
+}
+```
+
+### `ip`
+
+The [IP address](https://en.wikipedia.org/wiki/IP_address) to bind the server to is, of course, configurable. By default, `@untool/express` tries to read an environment variable named `$IP` and falls back to `'0.0.0.0'`.
+
+```json
+{
+  "ip": "10.10.10.10"
+}
+```
+
+### `port`
+
+The [TCP port](https://en.wikipedia.org/wiki/Transmission_Control_Protocol#TCP_ports) the server will be listening on can be configured, too. By default, `@untool/express` tries to read an environment variable named `$PORT` and falls back to a dynamically chosen free port (>=8080).
+
+```json
+{
+  "port": 3000
+}
+```
+
+### `locations`
+
+Using this setting, you can define the locations used for prerendering of static HTML pages at build time. Simply list all URL paths you want to prerender and call `un build -ps`.
+
+```json
+{
+  "locations": ["/foo", "/bar"]
+}
+```
+
+`@untool/express` also allows you to create one or more generic pages that will be used for multiple paths. To configure these kinds of setups, you need just use [minimatch](https://github.com/isaacs/minimatch) syntax.
+
+```json
+{
+  "locations": ["/**", "/foo/*"]
+}
+```
+
+These minimatch patterns will not only be used for HTML generation, but also for URL rewriting. In static mode, by default, `@untool/express` will generate and serve a single static page for all URL paths (`/**`).
+
+### `basePath`
+
+This is the URL base path, i.e. subfolder, your application will be served from.
+
+```json
+{
+  "basePath": "<namespace>"
+}
+```
+
+### `assetPath`
+
+This is the URL base path, i.e. subfolder, your application's assets will be served from.
+
+```json
+{
+  "assetPath": "<basePath>/assets"
+}
+```
+
+### `buildDir`
+
+This is the file system path, i.e. subfolder, your application's assets will be served from.
+
+```json
+{
+  "buildDir": "<rootDir>/build"
+}
+```
+
+### `compress`
+
+With this setting, you can enable response compression in `@untool/express`. It is only enabled in production mode by default.
+
+```json
+{
+  "compress": false,
+  "env": {
+    "production": {
+      "compress": true
+    }
+  }
+}
+```
+
+Instead of just boolean values, `compress` also accepts plain objects containing [`compression` settings](https://github.com/expressjs/compression#options).
+
+```json
+{
+  "compress": {
+    "level": 9
+  }
+}
+```
+
+By default, `@untool/express` only compresses response bodies over 1KB in size. Using compression on smaller files can actually increase file size.
