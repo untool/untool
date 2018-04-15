@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/@untool%2Fcore.svg)](https://www.npmjs.com/package/@untool%2Fcore)
 
-`@untool/core` is the functional foundation every other `untool` component is built upon. It contains a comprehensive configuration engine and a set of mixin base classes.
+`@untool/core` is the functional foundation every other `untool` component is built upon. It contains a comprehensive configuration engine and a mixin base class.
 
 ### Installation
 
@@ -12,7 +12,7 @@ $ yarn add @untool/core # OR npm install @untool/core
 
 ## Configuration
 
-Apart from a couple of some very basic properties (`namespace`, `version` and `rootDir`), `@untool/core` does not provide configuration of its own. It does, however, provide an elaborate configuration mechanism.
+Apart from a couple of very basic properties (`namespace`, `version` and `rootDir`), `@untool/core` does not provide configuration of its own. It does, however, provide an elaborate configuration mechanism.
 
 It allows you to set up mixins and pull in presets. Mixins provide extra functionality. Presets provide configuration defaults and often additionally include custom mixins. Read more about mixins and presets below.
 
