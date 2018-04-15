@@ -30,13 +30,13 @@ module.exports = {
 };
 ```
 
-The code block above mirrors `@untool/defaults`' actual source code in its entirety. Please refer to the listed mixins and presets for more information. While `@untool/defaults` does not really provide any relevant settings of its own, `@untool/core` does:
+The code block above mirrors `@untool/defaults/preset.js`' actual source code in its entirety. Please refer to the listed mixins and presets for more information. While `@untool/defaults` does not really provide any relevant settings of its own, `@untool/core` does:
 
-| Property    | Type     | Default             |
-| ----------- | -------- | ------------------- |
-| `namespace` | `string` | `<package name>`    |
-| `version`   | `string` | `<package version>` |
-| `rootDir`   | `string` | `<package dir>`     |
+| Property    | Type     | Default                  |
+| ----------- | -------- | ------------------------ |
+| `namespace` | `string` | `PACKAGE_JSON_NAME`      |
+| `version`   | `string` | `PACKAGE_JSON_VERSION`   |
+| `rootDir`   | `string` | `PACKAGE_JSON_DIRECTORY` |
 
 ### `namespace`
 
