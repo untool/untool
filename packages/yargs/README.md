@@ -7,7 +7,7 @@
 ### Installation
 
 ```bash
-$ yarn add @untool/yarn # OR npm install @untool/yarn
+$ yarn add @untool/yargs # OR npm install @untool/yargs
 ```
 
 ## CLI
