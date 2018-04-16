@@ -118,6 +118,9 @@ module.exports = function getConfig(config, getAssetPath, configureWebpack) {
         },
       ],
     },
+    optimization: {
+      minimizer: [],
+    },
     plugins: [
       new optimize.LimitChunkCountPlugin({
         maxChunks: 1,
