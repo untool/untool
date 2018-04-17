@@ -54,6 +54,17 @@
   "engines": {
     "node": ">8.6.0"
   },
+  "renovate": {
+    "extends": ["config:base"],
+    "ignoreDeps": ["prettier"],
+    "lockFileMaintenance": {
+      "enabled": true
+    },
+    "pinVersions": false,
+    "prCreation": "not-pending",
+    "semanticCommits": true,
+    "semanticPrefix": "chore:"
+  },
   "prettier": {
     "trailingComma": "es5",
     "proseWrap": "never",
