@@ -13,9 +13,10 @@
     "bump": "lerna publish --force-publish=* --cd-version=major",
     "update": "yarn upgrade-interactive --latest && yarn fmt",
     "reset": "git clean -dfx && yarn",
-    "preinstall": "[ -z \"${npm_execpath##*yarn*}\" ] || exit 1",
+    "commitmsg": "commitlint -e $GIT_PARAMS",
     "precommit": "lint-staged",
-    "posttest": "rimraf tests/fixtures/*-*"
+    "posttest": "rimraf tests/fixtures/*-*",
+    "preinstall": "[ -z \"${npm_execpath##*yarn*}\" ] || exit 1"
   },
   "repository": {
     "type": "git",
@@ -27,6 +28,8 @@
   "homepage": "https://github.com/untool/untool#readme",
   "workspaces": ["packages/*"],
   "devDependencies": {
+    "@commitlint/cli": "^6.1.3",
+    "@commitlint/config-conventional": "^6.1.3",
     "ava": "^0.25.0",
     "babel-eslint": "^8.2.1",
     "cz-conventional-changelog": "^2.1.0",
@@ -87,6 +90,9 @@
   },
   "lint-staged": {
     "*.{js,json,css}": ["prettier --write", "git add"]
+  },
+  "commitlint": {
+    "extends": ["@commitlint/config-conventional"]
   },
   "config": {
     "commitizen": {
