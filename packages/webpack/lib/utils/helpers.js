@@ -9,16 +9,15 @@ const rootDir = dirname(pkgFile);
 
 const checkESNextPath = modPath =>
   modPath.indexOf(join(dirname(__dirname), 'shims')) === 0 ||
-  modPath.indexOf('.mjs') === modPath.length - 4 ||
   modPath.indexOf('node_modules') === -1 ||
   /mixin(\.[a-z]+)?\.js$/.test(modPath);
 
 const checkESNextConfig = modPath =>
-  /"(module|((e|j)snext(:(browser|server|main|mixin(:[a-z]+)?))?))":/m.test(
+  /"(e|j)snext(:(browser|server|main|mixin(:[a-z]+)?))?":/m.test(
     readFile(findUp('package.json', { cwd: dirname(modPath) }), 'utf8')
   );
 
-exports.checkESNext = function checkESNext(target, defaults) {
+exports.checkESNext = (target, defaults) => {
   const cache = {};
   const resolve = createResolver(exports.getResolveConfig(target, defaults));
   const check = modPath => {
@@ -34,20 +33,17 @@ exports.checkESNext = function checkESNext(target, defaults) {
   return check;
 };
 
-exports.getResolveConfig = function getResolveConfig(target, defaults) {
-  return {
-    ...defaults,
-    extensions: ['.mjs', '.js'],
-    mainFields: [
-      `esnext:${target}`,
-      `jsnext:${target}`,
-      `${target}`,
-      'esnext',
-      'jsnext',
-      'esnext:main',
-      'jsnext:main',
-      'module',
-      'main',
-    ],
-  };
-};
+exports.getResolveConfig = (target, defaults) => ({
+  ...defaults,
+  extensions: ['.js'],
+  mainFields: [
+    `esnext:${target}`,
+    `jsnext:${target}`,
+    `${target}`,
+    'esnext',
+    'jsnext',
+    'esnext:main',
+    'jsnext:main',
+    'main',
+  ],
+});
