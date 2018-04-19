@@ -5,27 +5,33 @@ const { Mixin } = require('@untool/core');
 const uri = require('./lib/uri');
 
 class ExpressMixin extends Mixin {
+  create(method, options) {
+    const create = require(`./lib/${method}`);
+    const { config, initializeServer, finalizeServer } = this;
+    return create(options, config, initializeServer, finalizeServer);
+  }
+  run(method, options) {
+    const run = require('./lib/run');
+    const { config, inspectServer, logInfo, logError } = this;
+    const app = this.create(method, options);
+    return run(app, config, inspectServer, logInfo, logError);
+  }
   runServer(options) {
-    const { config } = this;
-    return require('./lib/run')(this.createServer(options), this, config);
+    return this.run('serve', options);
   }
   runDevServer(options) {
-    const { config } = this;
-    return require('./lib/run')(this.createDevServer(options), this, config);
+    return this.run('develop', options);
   }
   createServer(options) {
-    const { config } = this;
-    return require('./lib/serve')(options, this, config);
+    return this.create('serve', options);
   }
   createDevServer(options) {
-    const { config } = this;
-    return require('./lib/develop')(options, this, config);
+    return this.create('develop', options);
   }
   createRenderer(options) {
-    const { config } = this;
-    return require('./lib/static')(options, this, config);
+    return this.create('static', options);
   }
-  render() {
+  renderLocations() {
     const indexFile = require('directory-index');
     const render = this.createRenderer();
     const { basePath, locations } = this.config;
