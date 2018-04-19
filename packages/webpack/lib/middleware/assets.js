@@ -26,7 +26,12 @@ module.exports = (config, assetData) => (req, res, next) => {
       const assets = Array.isArray(chunkAssets) ? chunkAssets : [chunkAssets];
       Object.keys(assetsByType).forEach(extension => {
         assetsByType[extension].push(
-          ...assets.filter(asset => asset && extname(asset) === `.${extension}`)
+          ...assets.filter(
+            asset =>
+              asset &&
+              extname(asset) === `.${extension}` &&
+              !asset.endsWith('.hot-update.js')
+          )
         );
       });
     });
