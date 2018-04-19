@@ -6,24 +6,24 @@ const uri = require('./lib/uri');
 
 class ExpressMixin extends Mixin {
   runServer(options) {
-    const { core, config } = this;
-    return require('./lib/run')(this.createServer(options), core, config);
+    const { config } = this;
+    return require('./lib/run')(this.createServer(options), this, config);
   }
   runDevServer(options) {
-    const { core, config } = this;
-    return require('./lib/run')(this.createDevServer(options), core, config);
+    const { config } = this;
+    return require('./lib/run')(this.createDevServer(options), this, config);
   }
   createServer(options) {
-    const { core, config } = this;
-    return require('./lib/serve')(options, core, config);
+    const { config } = this;
+    return require('./lib/serve')(options, this, config);
   }
   createDevServer(options) {
-    const { core, config } = this;
-    return require('./lib/develop')(options, core, config);
+    const { config } = this;
+    return require('./lib/develop')(options, this, config);
   }
   createRenderer(options) {
-    const { core, config } = this;
-    return require('./lib/static')(options, core, config);
+    const { config } = this;
+    return require('./lib/static')(options, this, config);
   }
   render() {
     const indexFile = require('directory-index');
