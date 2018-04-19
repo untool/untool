@@ -10,8 +10,8 @@ const { Mixin } = require('@untool/core');
 const template = require('./lib/template');
 
 class ReactPlugin extends Mixin {
-  constructor(core, config, element, options) {
-    super(core, config);
+  constructor(config, element, options) {
+    super(config);
     this.element = element;
     this.routerOptions = {
       context: {},
@@ -41,10 +41,10 @@ class ReactPlugin extends Mixin {
   }
   render(req, res, next) {
     Promise.resolve()
-      .then(() => this.core.bootstrap(req, res))
-      .then(() => this.core.enhanceElement(this.element))
+      .then(() => this.bootstrap(req, res))
+      .then(() => this.enhanceElement(this.element))
       .then(element =>
-        this.core.fetchData({}, element).then(data => ({ element, data }))
+        this.fetchData({}, element).then(data => ({ element, data }))
       )
       .then(result => {
         const { element, data } = result;

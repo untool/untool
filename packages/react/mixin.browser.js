@@ -8,8 +8,8 @@ const { override, async: { compose, parallel, pipe } } = require('mixinable');
 const { Mixin } = require('@untool/core');
 
 class ReactMixin extends Mixin {
-  constructor(core, config, element, options) {
-    super(core, config);
+  constructor(config, element, options) {
+    super(config);
     this.element = element;
     this.routerOptions = {
       basename: config.basePath,
@@ -29,9 +29,9 @@ class ReactMixin extends Mixin {
       mountpoint.setAttribute(attribute, '');
     }
     Promise.resolve()
-      .then(() => this.core.bootstrap())
-      .then(() => this.core.enhanceElement(this.element))
-      .then(element => this.core.fetchData(null, element).then(() => element))
+      .then(() => this.bootstrap())
+      .then(() => this.enhanceElement(this.element))
+      .then(element => this.fetchData(null, element).then(() => element))
       .then(element => (isMounted ? render : hydrate)(element, mountpoint));
   }
 }
