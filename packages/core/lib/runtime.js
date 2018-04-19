@@ -1,8 +1,7 @@
 const define = require('mixinable');
 
 exports.Mixin = class Mixin {
-  constructor(core, config) {
-    this.core = core;
+  constructor(config) {
     this.config = config;
     this.options = {};
   }
@@ -16,17 +15,7 @@ exports.render = function render(...renderArgs) {
       {}
     );
     const createMixinable = define(strategies)(...mixins);
-    return (...callArgs) => {
-      const core = {};
-      const mixinable = createMixinable(core, config, ...renderArgs);
-      Object.keys(strategies).forEach(key =>
-        Object.defineProperty(core, key, {
-          enumerable: true,
-          configurable: true,
-          get: () => mixinable[key],
-        })
-      );
-      core.render(...callArgs);
-    };
+    return (...callArgs) =>
+      createMixinable(config, ...renderArgs).render(...callArgs);
   };
 };
