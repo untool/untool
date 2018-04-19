@@ -17,7 +17,6 @@ test('core lifecycle hooks', t =>
       api.getArgTypes('inspectBuild').then(args => t.snapshot(args)),
 
       api.getMixin().then(mixin => t.snapshot(mixin)),
-      api.getCore().then(core => t.snapshot(core)),
       api.getConfig().then(config => t.snapshot(config)),
 
       api.getWebpackConfig('build').then(config => t.snapshot(config)),
@@ -36,7 +35,6 @@ test('server lifecycle hooks', t =>
       api.getArgTypes('fetchData').then(args => t.snapshot(args)),
 
       api.getMixin().then(mixin => t.snapshot(mixin)),
-      api.getCore().then(core => t.snapshot(core)),
       api.getConfig().then(config => t.snapshot(config)),
     ])
   ));
@@ -52,7 +50,6 @@ test('browser lifecycle hooks', t =>
       api.getArgTypes('fetchData').then(args => t.snapshot(args)),
 
       api.getMixin().then(mixin => t.snapshot(mixin)),
-      api.getCore().then(core => t.snapshot(core)),
       api.getConfig().then(config => t.snapshot(config)),
     ])
   ));

@@ -46,12 +46,9 @@ module.exports = (...args) =>
           .promiseArgs(...args)
           .then(args => normalizeArgTypes(args));
       },
-      getCore() {
-        return events.promiseArg('constructor', 1);
-      },
       getConfig() {
         return events
-          .promiseArg('constructor', 2)
+          .promiseArg('constructor', 1)
           .then(config => normalizeConfig(config));
       },
       getMixin() {
