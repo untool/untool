@@ -6,15 +6,15 @@ const { sync: { pipe, sequence } } = require('mixinable');
 const ExpressMixin = require('@untool/express/mixin.core');
 
 class WebpackMixin extends ExpressMixin {
-  loadPrebuiltMiddleware() {
-    const { buildDir, serverFile } = this.config;
-    const path = join(buildDir, serverFile);
-    return exists(path) ? require(path) : (req, res, next) => next();
-  }
   createAssetsMiddleware() {
     const assetsMiddleware = require('./lib/middleware/assets');
     const { config, assets, assetsByChunkName } = this;
     return assetsMiddleware(config, { assets, assetsByChunkName });
+  }
+  loadPrebuiltMiddleware() {
+    const { buildDir, serverFile } = this.config;
+    const path = join(buildDir, serverFile);
+    return exists(path) ? require(path) : (req, res, next) => next();
   }
   createRenderMiddleware() {
     const renderMiddleware = require('./lib/middleware/render');
@@ -58,8 +58,8 @@ class WebpackMixin extends ExpressMixin {
   }
   createRenderPlugin() {
     const RenderPlugin = require('./lib/plugins/render');
-    const { render } = this;
-    return new RenderPlugin(render);
+    const { renderLocations } = this;
+    return new RenderPlugin(renderLocations);
   }
   getConfig(target) {
     const getConfig = require(`./lib/configs/${target}`);
