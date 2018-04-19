@@ -18,7 +18,7 @@ const { checkESNext, getResolveConfig } = require('../utils/helpers');
 
 module.exports = function getConfig(config, getAssetPath, configureWebpack) {
   const jsLoaderConfig = {
-    test: [/\.m?js$/],
+    test: [/\.js$/],
     include: checkESNext('browser'),
     loader: require.resolve('babel-loader'),
     options: {
@@ -83,7 +83,7 @@ module.exports = function getConfig(config, getAssetPath, configureWebpack) {
   };
 
   const fileLoaderConfig = {
-    exclude: [/\.(?:m?js|html|json)$/],
+    exclude: [/\.(?:js|html|json)$/],
     loader: require.resolve('file-loader'),
     options: {
       name: getAssetPath('[name]-[hash:16].[ext]'),
