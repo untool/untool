@@ -63,7 +63,7 @@ class WebpackMixin extends ExpressMixin {
   }
   getConfig(target) {
     const getConfig = require(`./lib/configs/${target}`);
-    const { configureWebpack } = this.core;
+    const { configureWebpack } = this;
     return getConfig(this.config, this.getAssetPath, (...args) =>
       configureWebpack(...args, target)
     );
@@ -77,7 +77,7 @@ class WebpackMixin extends ExpressMixin {
   }
   build() {
     const webpack = require('webpack');
-    const { core, options: { static: isStatic }, getConfig } = this;
+    const { options: { static: isStatic }, getConfig, inspectBuild } = this;
     const config = isStatic
       ? getConfig('build')
       : [getConfig('build'), getConfig('node')];
@@ -85,7 +85,7 @@ class WebpackMixin extends ExpressMixin {
       webpack(config).run(
         (error, stats) => (error ? reject(error) : resolve(stats))
       )
-    ).then(stats => void core.inspectBuild(stats, config) || stats);
+    ).then(stats => void inspectBuild(stats, config) || stats);
   }
   configureWebpack(webpackConfig, loaderConfigs, target) {
     const { plugins } = webpackConfig;
@@ -147,14 +147,13 @@ class WebpackMixin extends ExpressMixin {
           },
         },
         handler: argv => {
-          const { logStats, logError } = this.core;
           Object.assign(this.options, argv);
           if (argv.production) {
             Promise.resolve(argv.clean && this.clean())
-              .then(() => this.build())
-              .then(logStats)
+              .then(this.build)
+              .then(this.logStats)
               .then(() => this.runServer(argv))
-              .catch(logError);
+              .catch(this.logError);
           } else {
             this.clean().then(() => this.runDevServer(argv));
           }
@@ -184,12 +183,11 @@ class WebpackMixin extends ExpressMixin {
           },
         },
         handler: argv => {
-          const { logStats, logError } = this.core;
           Object.assign(this.options, argv);
           Promise.resolve(argv.clean && this.clean())
-            .then(() => this.build())
-            .then(logStats)
-            .catch(logError);
+            .then(this.build)
+            .then(this.logStats)
+            .catch(this.logError);
         },
       })
       .command({
