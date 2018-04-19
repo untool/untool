@@ -35,11 +35,8 @@ module.exports = (...args) =>
           getArgTypes(...args) {
             return events.promiseArgs(...args);
           },
-          getCore() {
-            return events.promiseArg('constructor', 1);
-          },
           getConfig() {
-            return events.promiseArg('constructor', 2);
+            return events.promiseArg('constructor', 1);
           },
           getMixin() {
             return events.promiseArg('constructor', 0);
