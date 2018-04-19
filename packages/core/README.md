@@ -126,7 +126,7 @@ If you create custom mixins that define additional mixin strategies, you probabl
 
 ## API
 
-### `Mixin(core, config, [...args])`
+### `Mixin(config, [...args])`
 
 ```javascript
 import { Mixin } from '@untool/core';
@@ -140,19 +140,18 @@ export default MyMixin;
 
 `Mixin` is a base class to build custom mixins upon. As such, it only provides a class constructor that accepts and handles a couple of arguments. You do not, however, usually instantiate your mixins - `@untool/core` does that for you if configured to use them.
 
-The `Mixin` constructor expects at least two arguments: `core`, a proxy object mimicking the mixin container and thus allowing you to call all defined mixin methods and `config`, the main configuration object. Both arguments are made available as homonymous instance properties.
+The `Mixin` constructor expects at least one arguments: `config`, the main configuration object. This argument is made available as a homonymous instance property.
 
 ```javascript
 import { override } from 'mixinable';
 import { Mixin } from '@untool/core';
 
 class MyMixin extends Mixin {
-  constructor(core, config, ...args) {
-    super(core, config, ...args);
+  constructor(config, ...args) {
+    super(config, ...args);
   }
   myMethod(...args) {
-    const { myHookMethod } = this.core;
-    return myHookMethod(...args);
+    return this.myHookMethod(...args);
   }
 }
 
@@ -165,7 +164,7 @@ export default MyMixin;
 
 If inheriting from `Mixin`, all methods of your mixin are automatically bound to the repective instance, so you do not have to call `this.method.bind(this)` yourself even if you use them in asynchronous contexts.
 
-Note that you cannot call any of the methods of the core object from inside your mixin's custom `constructor` function: they only become available after all mixins have been instantiated.
+Note that you can call all defined mixinable methods directly on your mixin instance.
 
 ### `render([...args])` (runtime only)
 
@@ -187,6 +186,6 @@ The render function serves two main purposes: 'universalifying' or 'isomorphizin
 
 ### `bootstrap([...args])` (build only)
 
-This is a semi-private function that is mainly being used internally, for example by [`@untool/yargs`](https://github.com/untool/untool/blob/master/packages/yargs/README.md). It returns a proxy object mimicking the core mixin container and thus allowing you to call all defined mixin methods.
+This is a semi-private function that is mainly being used internally, for example by [`@untool/yargs`](https://github.com/untool/untool/blob/master/packages/yargs/README.md). It returns the core mixin container - this allows you to call all defined mixin methods.
 
 You will only ever have to call it if you want to use `@untool/core` programmatically. Whatever arguments it receives are being passed along to the core container's mixins' constructors.
