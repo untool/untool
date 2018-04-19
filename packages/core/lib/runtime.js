@@ -1,6 +1,12 @@
 const define = require('mixinable');
 
-exports.Mixin = require('./mixin');
+exports.Mixin = class Mixin {
+  constructor(core, config) {
+    this.core = core;
+    this.config = config;
+    this.options = {};
+  }
+};
 
 exports.render = function render(...renderArgs) {
   return config => {
@@ -17,7 +23,7 @@ exports.render = function render(...renderArgs) {
         Object.defineProperty(core, key, {
           enumerable: true,
           configurable: true,
-          get: () => mixinable[key].bind(mixinable),
+          get: () => mixinable[key],
         })
       );
       core.render(...callArgs);

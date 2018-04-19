@@ -2,7 +2,13 @@ const define = require('mixinable');
 
 const { getConfig } = require('./config');
 
-exports.Mixin = require('./mixin');
+exports.Mixin = class Mixin {
+  constructor(core, config) {
+    this.core = core;
+    this.config = config;
+    this.options = {};
+  }
+};
 
 exports.bootstrap = function bootstrap(...args) {
   const config = getConfig();
@@ -20,7 +26,7 @@ exports.bootstrap = function bootstrap(...args) {
     Object.defineProperty(core, key, {
       enumerable: true,
       configurable: true,
-      get: () => mixinable[key].bind(mixinable),
+      get: () => mixinable[key],
     })
   );
   return core;
