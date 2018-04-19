@@ -4,9 +4,9 @@ const mime = require('mime');
 
 const rewriteMiddleware = require('./rewrite');
 
-module.exports = (options, core, config) => {
+module.exports = (options, config, initializeServer, finalizeServer) => {
   const app = express();
-  core.initializeServer(app, 'serve');
+  initializeServer(app, 'serve');
   app.use(rewriteMiddleware(options, config));
   app.use(helmet());
   app.use(
@@ -21,6 +21,6 @@ module.exports = (options, core, config) => {
     })
   );
   app.use(helmet.noCache());
-  core.finalizeServer(app, 'serve');
+  finalizeServer(app, 'serve');
   return app;
 };

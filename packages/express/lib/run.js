@@ -36,17 +36,17 @@ const findPort = (ip, port, max) =>
 const getPort = (ip, port) =>
   findPort(ip, ...(Array.isArray(port) ? port : [port || 8080, port]));
 
-module.exports = (app, core, config) => {
+module.exports = (app, config, inspectServer, logInfo, logError) => {
   const { ip = '0.0.0.0', port, basePath, https } = config;
   const server = createServer(app, https);
   getPort(ip, port).then(port =>
     server.listen(port, ip, error => {
       if (error) {
-        core.logError(error);
+        logError(error);
         server.close();
       } else {
-        core.inspectServer(server);
-        core.logInfo(
+        inspectServer(server);
+        logInfo(
           'server listening at %s',
           format({
             protocol: https ? 'https' : 'http',

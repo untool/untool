@@ -2,10 +2,10 @@ const express = require('express');
 
 const rewriteMiddleware = require('./rewrite');
 
-module.exports = (options, core, config) => {
+module.exports = (options, config, initializeServer, finalizeServer) => {
   const app = express();
-  core.initializeServer(app, 'develop');
+  initializeServer(app, 'develop');
   app.use(rewriteMiddleware(options, config));
-  core.finalizeServer(app, 'develop');
+  finalizeServer(app, 'develop');
   return app;
 };
