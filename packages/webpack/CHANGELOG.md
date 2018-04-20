@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.4.1"></a>
+## [0.4.1](https://github.com/untool/untool/compare/v0.4.0...v0.4.1) (2018-04-20)
+
+
+### Bug Fixes
+
+* **webpack:** prevent hmr chunks from being inserted into the template ([86dbf12](https://github.com/untool/untool/commit/86dbf12))
+* **webpack:** remove ESM support from loader configs ([4cba48f](https://github.com/untool/untool/commit/4cba48f))
+* update dependency style-loader to ^0.21.0 ([3ad2cf6](https://github.com/untool/untool/commit/3ad2cf6))
+
+
+
+
 <a name="0.4.0"></a>
 # [0.4.0](https://github.com/untool/untool/compare/v0.3.2...v0.4.0) (2018-04-16)
 
