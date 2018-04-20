@@ -109,8 +109,8 @@ module.exports = function getConfig(config, getAssetPath, configureWebpack) {
       path: config.buildDir,
       publicPath: '/',
       pathinfo: true,
-      filename: getAssetPath('[name]-[contenthash:12].js'),
-      chunkFilename: getAssetPath('[name]-[contenthash:12].js'),
+      filename: getAssetPath('[name]-[chunkhash:12].js'),
+      chunkFilename: getAssetPath('[name]-[chunkhash:12].js'),
       devtoolModuleFilenameTemplate: function(info) {
         return relative(config.rootDir, info.absoluteResourcePath);
       },
