@@ -5,7 +5,6 @@ const { getConfig } = require('./config');
 exports.Mixin = class Mixin {
   constructor(config) {
     this.config = config;
-    this.options = {};
   }
 };
 

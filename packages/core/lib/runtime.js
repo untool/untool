@@ -3,7 +3,6 @@ const define = require('mixinable');
 exports.Mixin = class Mixin {
   constructor(config) {
     this.config = config;
-    this.options = {};
   }
 };
 
