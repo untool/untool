@@ -5,6 +5,10 @@ const { Mixin } = require('@untool/core');
 const uri = require('./lib/uri');
 
 class ExpressMixin extends Mixin {
+  constructor(...args) {
+    super(...args);
+    this.options = {};
+  }
   create(method, options) {
     const create = require(`./lib/${method}`);
     const { config, initializeServer, finalizeServer } = this;
