@@ -7,6 +7,7 @@ test('core lifecycle hooks', t =>
     Promise.all([
       api.getArgTypes('constructor').then(args => t.snapshot(args)),
       api.getArgTypes('registerCommands').then(args => t.snapshot(args)),
+      api.getArgTypes('handleArguments').then(args => t.snapshot(args)),
       api.getArgTypes('configureWebpack').then(args => t.snapshot(args)),
 
       api.getMixin().then(mixin => t.snapshot(mixin)),

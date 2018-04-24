@@ -53,7 +53,7 @@ exports.normalizeArtefacts = dir =>
     if (stats.isDirectory()) {
       return { ...result, [name]: exports.normalizeArtefacts(path) };
     }
-    return { ...result, [name]: stats.size > 0 };
+    return { ...result, [name]: true };
   }, {});
 
 exports.normalizeArgTypes = obj => {

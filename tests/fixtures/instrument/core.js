@@ -37,6 +37,10 @@ class InstrumentMixin extends Mixin {
     events.emit('registerCommands', ...args);
     return args[0];
   }
+  handleArguments(...args) {
+    events.emit('handleArguments', ...args);
+    return args[0];
+  }
 }
 
 InstrumentMixin.events = events;
