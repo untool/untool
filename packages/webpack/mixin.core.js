@@ -147,7 +147,6 @@ class WebpackMixin extends ExpressMixin {
           },
         },
         handler: argv => {
-          Object.assign(this.options, argv);
           if (argv.production) {
             Promise.resolve(argv.clean && this.clean())
               .then(this.build)
@@ -182,13 +181,11 @@ class WebpackMixin extends ExpressMixin {
             type: 'boolean',
           },
         },
-        handler: argv => {
-          Object.assign(this.options, argv);
+        handler: argv =>
           Promise.resolve(argv.clean && this.clean())
             .then(this.build)
             .then(this.logStats)
-            .catch(this.logError);
-        },
+            .catch(this.logError),
       })
       .command({
         command: 'develop',
@@ -207,11 +204,11 @@ class WebpackMixin extends ExpressMixin {
             type: 'boolean',
           },
         },
-        handler: argv => {
-          Object.assign(this.options, argv);
-          this.clean().then(() => this.runDevServer(argv));
-        },
+        handler: argv => this.clean().then(() => this.runDevServer(argv)),
       });
+  }
+  handleArguments(argv) {
+    Object.assign(this.options, argv);
   }
 }
 
