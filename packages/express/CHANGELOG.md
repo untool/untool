@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.4.3"></a>
+## [0.4.3](https://github.com/untool/untool/compare/v0.4.2...v0.4.3) (2018-04-24)
+
+
+### Bug Fixes
+
+* **express:** fix rare race condition ([9c9b7f5](https://github.com/untool/untool/commit/9c9b7f5))
+
+
+
+
 <a name="0.4.1"></a>
 ## [0.4.1](https://github.com/untool/untool/compare/v0.4.0...v0.4.1) (2018-04-20)
 
