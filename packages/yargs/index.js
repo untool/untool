@@ -2,16 +2,15 @@
 'use strict';
 
 const createYargs = require('yargs');
-const chalk = require('chalk');
 
 const { bootstrap } = require('@untool/core');
 
-exports.run = (...argv) => {
-  const yargs = argv.length ? createYargs(argv) : createYargs;
+exports.run = (...args) => {
+  const yargs = args.length ? createYargs(args) : createYargs;
   if (yargs.argv.production || yargs.argv.p) {
     process.env.NODE_ENV = 'production';
   }
-  const { registerCommands, logError } = bootstrap();
+  const { registerCommands, handleArguments, logError } = bootstrap();
 
   const onError = error => void logError(error) || process.exit(1);
   process.on('uncaughtException', onError);
@@ -25,9 +24,9 @@ exports.run = (...argv) => {
       .alias('help', 'h')
       .locale('en')
       .strict()
-      .demandCommand(1, ''),
-    chalk
-  );
+      .demandCommand(1, '')
+      .check(handleArguments)
+  ).parse();
 };
 
 if (require.main === module) {
