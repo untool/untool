@@ -27,9 +27,11 @@ const findPort = (ip, port, max) =>
     if (port > max) {
       reject(new Error('unable to open free port'));
     } else {
-      const server = createNetServer().unref();
-      server.on('error', () => resolve(findPort(ip, port + 1, max)));
-      server.listen(port, ip, () => server.close(() => resolve(port)));
+      process.nextTick(() => {
+        const server = createNetServer().unref();
+        server.on('error', () => resolve(findPort(ip, port + 1, max)));
+        server.listen(port, ip, () => server.close(() => resolve(port)));
+      });
     }
   });
 

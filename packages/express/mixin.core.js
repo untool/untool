@@ -89,9 +89,7 @@ class ExpressMixin extends Mixin {
           type: 'boolean',
         },
       },
-      handler: argv => {
-        this.runServer(argv);
-      },
+      handler: argv => this.runServer(argv),
     });
   }
 }
