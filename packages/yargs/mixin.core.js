@@ -5,11 +5,13 @@ const { Mixin } = require('@untool/core');
 
 class YargsMixin extends Mixin {
   registerCommands(yargs, chalk) {
-    const levels = ['debug', 'info', 'warn', 'error', 'silent'];
-    const index = levels.indexOf(yargs.alias('l', 'log').argv.log);
-    this.levels = levels.slice(Math.max(index, 0), -1);
     this.chalk = chalk;
     return yargs;
+  }
+  registerLogLevels(argv) {
+    const levels = ['debug', 'info', 'warn', 'error', 'silent'];
+    const index = levels.indexOf(argv.log);
+    this.levels = levels.slice(Math.max(index, 0), -1);
   }
   logDebug(...args) {
     const { namespace } = this.config;
@@ -52,6 +54,7 @@ class YargsMixin extends Mixin {
 
 YargsMixin.strategies = {
   registerCommands: pipe,
+  registerLogLevels: override,
   logDebug: override,
   logInfo: override,
   logWarn: override,

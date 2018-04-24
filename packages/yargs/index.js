@@ -11,7 +11,7 @@ exports.run = (...argv) => {
   if (yargs.argv.production || yargs.argv.p) {
     process.env.NODE_ENV = 'production';
   }
-  const { registerCommands, logError } = bootstrap();
+  const { registerCommands, registerLogLevels, logError } = bootstrap();
 
   const onError = error => void logError(error) || process.exit(1);
   process.on('uncaughtException', onError);
@@ -28,6 +28,8 @@ exports.run = (...argv) => {
       .demandCommand(1, ''),
     chalk
   );
+
+  registerLogLevels(yargs.alias('l', 'log').argv);
 };
 
 if (require.main === module) {
