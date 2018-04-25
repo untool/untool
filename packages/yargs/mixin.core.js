@@ -1,23 +1,22 @@
 /* eslint-disable no-console */
 const chalk = require('chalk');
 
-const { sync: { pipe, override } } = require('mixinable');
+const { sync: { pipe, sequence, override } } = require('mixinable');
 
 const { Mixin } = require('@untool/core');
 
 class YargsMixin extends Mixin {
   registerCommands(yargs) {
-    yargs.option('log', {
+    return yargs.option('log', {
       alias: 'l',
       default: 'info',
       describe: 'Define log level ()',
       type: 'string',
     });
-    return yargs;
   }
   handleArguments(argv) {
     const levels = ['debug', 'info', 'warn', 'error', 'silent'];
-    const index = levels.indexOf(argv.log || argv.l);
+    const index = levels.indexOf(argv.log);
     this.levels = levels.slice(Math.max(index, 0), -1);
   }
   logDebug(...args) {
@@ -61,10 +60,7 @@ class YargsMixin extends Mixin {
 
 YargsMixin.strategies = {
   registerCommands: pipe,
-  handleArguments: function(functions, ...args) {
-    functions.forEach(fn => fn(...args));
-    return true;
-  },
+  handleArguments: sequence,
   logDebug: override,
   logInfo: override,
   logWarn: override,
