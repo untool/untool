@@ -1,11 +1,11 @@
 const { existsSync: exists } = require('fs');
 const { join } = require('path');
 
-const { sync: { pipe, sequence } } = require('mixinable');
+const { sync: { pipe, sequence }, async: { override } } = require('mixinable');
 
-const ExpressMixin = require('@untool/express/mixin.core');
+const { Mixin } = require('@untool/core');
 
-class WebpackMixin extends ExpressMixin {
+class WebpackMixin extends Mixin {
   createAssetsMiddleware() {
     const assetsMiddleware = require('./lib/middleware/assets');
     const { config, assets, assetsByChunkName } = this;
@@ -67,6 +67,11 @@ class WebpackMixin extends ExpressMixin {
     return getConfig(this.config, this.getAssetPath, (...args) =>
       configureWebpack(...args, target)
     );
+  }
+  getAssetPath(filePath) {
+    const { config: { assetPath } } = this;
+    const segments = assetPath.concat('/', filePath).split('/');
+    return segments.filter(segment => segment).join('/');
   }
   clean() {
     const rimraf = require('rimraf');
@@ -151,10 +156,12 @@ class WebpackMixin extends ExpressMixin {
             Promise.resolve(argv.clean && this.clean())
               .then(this.build)
               .then(this.logStats)
-              .then(() => this.runServer(argv))
+              .then(this.runServer)
               .catch(this.logError);
           } else {
-            this.clean().then(() => this.runDevServer(argv));
+            this.clean()
+              .then(this.runDevServer)
+              .catch(this.logError);
           }
         },
       })
@@ -204,17 +211,22 @@ class WebpackMixin extends ExpressMixin {
             type: 'boolean',
           },
         },
-        handler: argv => this.clean().then(() => this.runDevServer(argv)),
+        handler: () =>
+          this.clean()
+            .then(this.runDevServer)
+            .catch(this.logError),
       });
   }
   handleArguments(argv) {
-    Object.assign(this.options, argv);
+    this.options = { ...this.options, ...argv };
   }
 }
 
 WebpackMixin.strategies = {
   configureWebpack: pipe,
   inspectBuild: sequence,
+  build: override,
+  clean: override,
 };
 
 module.exports = WebpackMixin;
