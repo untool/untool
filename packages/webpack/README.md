@@ -112,7 +112,15 @@ You can use whatever mechanism you like to modify the complicated structures Web
 
 ### `inspectBuild(stats, config)` ([sequence](https://github.com/untool/mixinable/blob/master/README.md#defineparallel))
 
-If you want to programmatically determine whether a build went well, your mixin can implement this method. It will be called with a Webpack [`stats`](https://github.com/webpack/docs/wiki/node.js-api#stats) object and the actual configuration used for the specific build you are inspecting.
+If you want to programmatically determine whether a build went well, your mixin can implement this method. It will be called with a Webpack [`stats`](https://webpack.js.org/api/node/#stats-object) object and the actual configuration used for the specific build you are inspecting.
+
+### `build()` ([override](https://github.com/untool/mixinable/blob/master/README.md#defineoverride))
+
+If you want to intialize a build of your application, you can do so using this utility mixin method. It returns a `Promise` resolving to a [`stats`](https://webpack.js.org/api/node/#stats-object) object.
+
+### `clean()` ([override](https://github.com/untool/mixinable/blob/master/README.md#defineoverride))
+
+Using this utility mixin method, you can delete your `buildDir` and all of its contents. It returns a `Promise`.
 
 ## Settings
 
