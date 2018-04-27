@@ -1,39 +1,38 @@
-const { sync: { sequence } } = require('mixinable');
+const {
+  sync: { sequence, override: overrideSync },
+  async: { override: overrideAsync },
+} = require('mixinable');
 
 const { Mixin } = require('@untool/core');
 
 const uri = require('./lib/uri');
 
 class ExpressMixin extends Mixin {
-  constructor(...args) {
-    super(...args);
-    this.options = {};
-  }
-  create(method, options) {
+  create(method) {
     const create = require(`./lib/${method}`);
-    const { config, initializeServer, finalizeServer } = this;
+    const { options, config, initializeServer, finalizeServer } = this;
     return create(options, config, initializeServer, finalizeServer);
   }
-  run(method, options) {
+  run(method) {
     const run = require('./lib/run');
     const { config, inspectServer, logInfo, logError } = this;
-    const app = this.create(method, options);
+    const app = this.create(method);
     return run(app, config, inspectServer, logInfo, logError);
   }
-  runServer(options) {
-    return this.run('serve', options);
+  runServer() {
+    return this.run('serve');
   }
-  runDevServer(options) {
-    return this.run('develop', options);
+  runDevServer() {
+    return this.run('develop');
   }
-  createServer(options) {
-    return this.create('serve', options);
+  createServer() {
+    return this.create('serve');
   }
-  createDevServer(options) {
-    return this.create('develop', options);
+  createDevServer() {
+    return this.create('develop');
   }
-  createRenderer(options) {
-    return this.create('static', options);
+  createRenderer() {
+    return this.create('static');
   }
   renderLocations() {
     const indexFile = require('directory-index');
@@ -51,11 +50,6 @@ class ExpressMixin extends Mixin {
       }, {})
     );
   }
-  getAssetPath(filePath) {
-    const { config: { assetPath } } = this;
-    const { resolveRelative } = uri;
-    return resolveRelative(assetPath, filePath);
-  }
   initializeServer(app, mode) {
     const { compress } = this.config;
     if (mode === 'serve' && compress) {
@@ -72,7 +66,7 @@ class ExpressMixin extends Mixin {
       builder: {
         production: {
           alias: 'p',
-          default: true,
+          default: false,
           describe: 'Enable production mode',
           type: 'boolean',
         },
@@ -89,8 +83,11 @@ class ExpressMixin extends Mixin {
           type: 'boolean',
         },
       },
-      handler: argv => this.runServer(argv),
+      handler: () => this.runServer(),
     });
+  }
+  handleArguments(argv) {
+    this.options = { ...this.options, ...argv };
   }
 }
 
@@ -98,6 +95,9 @@ ExpressMixin.strategies = {
   initializeServer: sequence,
   finalizeServer: sequence,
   inspectServer: sequence,
+  runServer: overrideSync,
+  runDevServer: overrideSync,
+  renderLocations: overrideAsync,
 };
 
 module.exports = ExpressMixin;
