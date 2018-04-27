@@ -74,6 +74,18 @@ This hook works exactly like the one described above, `initializeServer()`, only
 
 This hook will give you a running, i.e. listening, instance of [`http.Server`](https://nodejs.org/api/http.html#http_class_http_server) or [`https.Server`](https://nodejs.org/api/https.html#https_class_https_server), depending on your `https` setting. The second argument, `target`, will only ever be one of `develop` and `serve`. You can, for example, use this hook to register your server with an external load balancing system.
 
+### `runServer(options)` ([override](https://github.com/untool/mixinable/blob/master/README.md#defineoverride))
+
+If you want to programmatically start a production ready Express server set up using `@untool/express`' [config](https://github.com/untool/untool/blob/master/packages/express/README.md#settings), you can use this utility mixin method that accepts the same options as the CLI [`serve`](https://github.com/untool/untool/blob/master/packages/express/README.md#arguments) method.
+
+### `runDevServer(options)` ([override](https://github.com/untool/mixinable/blob/master/README.md#defineoverride))
+
+To start a development mode Express server programmatically, you can use this utility mixin method. It uses a [`static`](https://github.com/untool/untool/blob/master/packages/express/README.md#-s----static) option and `@untool/express`' [settings](https://github.com/untool/untool/blob/master/packages/express/README.md#settings) for its configuration.
+
+### `renderLocations()` ([override](https://github.com/untool/mixinable/blob/master/README.md#defineoverride))
+
+With this method you can render HTML pages for all configured [`locations`](https://github.com/untool/untool/blob/master/packages/express/README.md#locations) using a simulated Express server configured using `@untool/express`' [settings](https://github.com/untool/untool/blob/master/packages/express/README.md#settings). This method returns a `Promise` resolving to a hash containing the rendered paths.
+
 ## Settings
 
 `@untool/express` defines a couple of settings as a preset for `@untool/core`'s [configuration engine](https://github.com/untool/untool/blob/master/packages/core/README.md#configuration). You can manage and access them using the mechanisms outlined there.
