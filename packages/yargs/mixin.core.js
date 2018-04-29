@@ -10,7 +10,7 @@ class YargsMixin extends Mixin {
     return yargs.option('log', {
       alias: 'l',
       default: 'info',
-      describe: 'Define log level ()',
+      describe: 'Define log level',
       type: 'string',
     });
   }
