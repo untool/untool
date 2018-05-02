@@ -147,7 +147,14 @@ module.exports = function getConfig(config, getAssetPath, configureWebpack) {
             output: { comments: false },
           },
         }),
-        new OptimizeCSSPlugin(),
+        new OptimizeCSSPlugin({
+          cssProcessorOptions: {
+            reduceIdents: { disable: true },
+            zindex: { disable: true },
+            mergeIdents: { disable: true },
+            discardUnused: { disable: true },
+          },
+        }),
       ],
     },
     plugins: [
