@@ -3,10 +3,10 @@ const EventEmitter = require('events');
 const { Router } = require('express');
 const mocks = require('node-mocks-http');
 
-module.exports = (options, config, initializeServer, finalizeServer) => {
+module.exports = (method, options, config, initialize, finalize) => {
   const app = new Router();
-  initializeServer(app, 'static');
-  finalizeServer(app, 'static');
+  initialize(app, method);
+  finalize(app, method);
   return options => {
     if (typeof options === 'string') {
       options = { url: options };

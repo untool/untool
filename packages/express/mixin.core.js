@@ -9,9 +9,11 @@ const uri = require('./lib/uri');
 
 class ExpressMixin extends Mixin {
   create(method) {
-    const create = require(`./lib/${method}`);
+    const create = require(method === 'static'
+      ? './lib/static'
+      : './lib/serve');
     const { options, config, initializeServer, finalizeServer } = this;
-    return create(options, config, initializeServer, finalizeServer);
+    return create(method, options, config, initializeServer, finalizeServer);
   }
   run(method) {
     const run = require('./lib/run');
