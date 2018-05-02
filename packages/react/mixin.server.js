@@ -3,7 +3,11 @@ const { renderToString } = require('react-dom/server');
 const { StaticRouter } = require('react-router');
 const { Helmet } = require('react-helmet');
 
-const { override, async: { compose, parallel, pipe } } = require('mixinable');
+const {
+  override,
+  sync: { sequence },
+  async: { compose, parallel, pipe },
+} = require('mixinable');
 
 const { Mixin } = require('@untool/core');
 
@@ -39,6 +43,7 @@ class ReactPlugin extends Mixin {
       globals: [],
     };
   }
+
   render(req, res, next) {
     Promise.resolve()
       .then(() => this.bootstrap(req, res))
@@ -67,10 +72,15 @@ class ReactPlugin extends Mixin {
       .catch(next);
   }
   renderToString(element, data) {
+    const markup = renderToString(element);
     return template({
       ...data,
-      markup: renderToString(element),
+      markup,
       helmet: Helmet.renderStatic(),
+      appendHead: this.appendHead,
+      prependHead: this.prependHead,
+      appendBody: this.appendBody,
+      prependBody: this.prependBody,
     });
   }
 }
@@ -80,6 +90,11 @@ ReactPlugin.strategies = {
   bootstrap: parallel,
   enhanceElement: compose,
   fetchData: pipe,
+
+  prependHead: sequence,
+  appendHead: sequence,
+  prependBody: sequence,
+  appendBody: sequence,
 };
 
 module.exports = ReactPlugin;
