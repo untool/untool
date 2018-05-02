@@ -38,7 +38,7 @@ const findPort = (ip, port, max) =>
 const getPort = (ip, port) =>
   findPort(ip, ...(Array.isArray(port) ? port : [port || 8080, port]));
 
-module.exports = (app, config, inspectServer, logInfo, logError) => {
+module.exports = (app, config, inspect, logInfo, logError) => {
   const { ip = '0.0.0.0', port, basePath, https } = config;
   const server = createServer(app, https);
   getPort(ip, port).then(port =>
@@ -47,7 +47,7 @@ module.exports = (app, config, inspectServer, logInfo, logError) => {
         logError(error);
         server.close();
       } else {
-        inspectServer(server);
+        inspect(server);
         logInfo(
           'server listening at %s',
           format({
