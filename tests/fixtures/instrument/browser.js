@@ -20,6 +20,10 @@ class InstrumentMixin extends Mixin {
     console.log('fetchData', ...JSON.parse(JSON.stringify(args)));
     return args[0];
   }
+  enhanceData(...args) {
+    console.log('enhanceData', ...JSON.parse(JSON.stringify(args)));
+    return args[0];
+  }
 }
 
 module.exports = InstrumentMixin;

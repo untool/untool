@@ -21,6 +21,10 @@ class InstrumentMixin extends Mixin {
     events.emit('fetchData', ...args);
     return args[0];
   }
+  enhanceData(...args) {
+    events.emit('enhanceData', ...args);
+    return args[0];
+  }
 }
 
 InstrumentMixin.events = events;

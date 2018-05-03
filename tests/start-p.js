@@ -34,6 +34,7 @@ test('server lifecycle hooks', t =>
       api.getArgTypes('bootstrap').then(args => t.snapshot(args)),
       api.getArgTypes('enhanceElement').then(args => t.snapshot(args)),
       api.getArgTypes('fetchData').then(args => t.snapshot(args)),
+      api.getArgTypes('enhanceData').then(args => t.snapshot(args)),
 
       api.getMixin().then(mixin => t.snapshot(mixin)),
       api.getConfig().then(config => t.snapshot(config)),
@@ -49,6 +50,7 @@ test.serial('browser lifecycle hooks', t =>
       api.getArgTypes('bootstrap').then(args => t.snapshot(args)),
       api.getArgTypes('enhanceElement').then(args => t.snapshot(args)),
       api.getArgTypes('fetchData').then(args => t.snapshot(args)),
+      api.getArgTypes('enhanceData').then(args => t.snapshot(args)),
 
       api.getMixin().then(mixin => t.snapshot(mixin)),
       api.getConfig().then(config => t.snapshot(config)),
