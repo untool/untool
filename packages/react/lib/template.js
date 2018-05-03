@@ -6,19 +6,20 @@ const jsLink = js => `<script src="/${js}"></script>`;
 
 module.exports = data =>
   `<!DOCTYPE html>
-<html ${data.helmet.htmlAttributes.toString()}>
+<html ${data.fragments.htmlAttributes}>
   <head>
-    ${data.helmet.title.toString()}
-    ${data.helmet.base.toString()}
-    ${data.helmet.meta.toString()}
-    ${data.helmet.link.toString()}
+    ${data.fragments.headPrefix}
+    ${data.fragments.title}
+    ${data.fragments.meta}
+    ${data.fragments.link}
     ${data.assetsByType.css.map(cssLink).join('')}
-    ${data.helmet.style.toString()}
-    ${data.helmet.script.toString()}
+    ${data.fragments.style}
+    ${data.fragments.script}
+    ${data.fragments.headSuffix}
   </head>
-  <body ${data.helmet.bodyAttributes.toString()}>
+  <body ${data.fragments.bodyAttributes}>
     <div id="${data.mountpoint}">${data.markup}</div>
-    ${data.helmet.noscript.toString()}
+    ${data.fragments.noscript}
     ${data.globals.map(variable).join('')}
     ${data.assetsByType.js.map(jsLink).join('')}
   </body>

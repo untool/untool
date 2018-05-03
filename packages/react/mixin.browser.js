@@ -31,7 +31,11 @@ class ReactMixin extends Mixin {
     Promise.resolve()
       .then(() => this.bootstrap())
       .then(() => this.enhanceElement(this.element))
-      .then(element => this.fetchData(null, element).then(() => element))
+      .then(element =>
+        this.fetchData({}, element)
+          .then(data => this.enhanceData(data))
+          .then(() => element)
+      )
       .then(element => (isMounted ? render : hydrate)(element, mountpoint));
   }
 }
@@ -41,6 +45,7 @@ ReactMixin.strategies = {
   bootstrap: parallel,
   enhanceElement: compose,
   fetchData: pipe,
+  enhanceData: pipe,
 };
 
 module.exports = ReactMixin;
