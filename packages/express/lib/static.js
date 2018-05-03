@@ -7,6 +7,7 @@ module.exports = (method, options, config, initialize, finalize) => {
   const app = new Router();
   initialize(app, method);
   finalize(app, method);
+  app.use((req, res) => res.status(404).end());
   return options => {
     if (typeof options === 'string') {
       options = { url: options };
