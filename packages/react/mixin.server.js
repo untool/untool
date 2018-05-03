@@ -31,12 +31,19 @@ class ReactPlugin extends Mixin {
     };
     return createElement(StaticRouter, routerOptions, element);
   }
-  fetchData(data) {
+  enhanceData(data) {
     return {
       ...data,
       mountpoint: this.config.namespace,
       assetsByType: this.assetsByType,
       globals: [],
+      fragments: Object.keys(data.helmet).reduce(
+        (result, key) => ({
+          ...result,
+          [key]: data.helmet[key].toString(),
+        }),
+        { headPrefix: '', headSuffix: '' }
+      ),
     };
   }
   render(req, res, next) {
@@ -48,30 +55,28 @@ class ReactPlugin extends Mixin {
       )
       .then(result => {
         const { element, data } = result;
-        const document = this.renderToString(element, data);
-        const routerContext = this.routerContext;
-        if (routerContext.miss) {
-          next();
-        } else if (routerContext.url) {
-          res.status(routerContext.status || 301);
-          res.set('Location', routerContext.url);
-          routerContext.headers && res.set(routerContext.headers);
-          res.end();
-        } else {
-          res.status(routerContext.status || 200);
-          routerContext.headers && res.set(routerContext.headers);
-          res.type('html');
-          res.send(document);
-        }
+        const markup = renderToString(element);
+        const helmet = Helmet.renderStatic();
+        this.enhanceData({ ...data, markup, helmet })
+          .then(template)
+          .then(document => {
+            const routerContext = this.routerContext;
+            if (routerContext.miss) {
+              next();
+            } else if (routerContext.url) {
+              res.status(routerContext.status || 301);
+              res.set('Location', routerContext.url);
+              routerContext.headers && res.set(routerContext.headers);
+              res.end();
+            } else {
+              res.status(routerContext.status || 200);
+              routerContext.headers && res.set(routerContext.headers);
+              res.type('html');
+              res.send(document);
+            }
+          });
       })
       .catch(next);
-  }
-  renderToString(element, data) {
-    return template({
-      ...data,
-      markup: renderToString(element),
-      helmet: Helmet.renderStatic(),
-    });
   }
 }
 
@@ -80,6 +85,7 @@ ReactPlugin.strategies = {
   bootstrap: parallel,
   enhanceElement: compose,
   fetchData: pipe,
+  enhanceData: pipe,
 };
 
 module.exports = ReactPlugin;
