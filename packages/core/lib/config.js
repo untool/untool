@@ -58,14 +58,11 @@ const applyEnv = result => {
 
 const loadConfig = (context, preset) => {
   const nsp = process.env.UNTOOL_NSP || 'untool';
-  try {
-    const options = preset
-      ? { configPath: resolvePreset(context, preset), sync: true }
-      : { rcExtensions: true, stopDir: context, sync: true };
-    const explorer = cosmiconfig(nsp, options);
-    return applyEnv(explorer.load(context));
-  } catch (_) {
-    return null;
+  const explorer = cosmiconfig(nsp, { stopDir: context });
+  if (preset) {
+    return applyEnv(explorer.loadSync(resolvePreset(context, preset)));
+  } else {
+    return applyEnv(explorer.searchSync(context));
   }
 };
 
