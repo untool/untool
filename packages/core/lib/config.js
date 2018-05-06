@@ -19,14 +19,10 @@ const merge = (...args) =>
   });
 
 const resolvePreset = (context, preset) => {
-  try {
-    return createResolver({
-      mainFiles: ['preset'],
-      mainFields: ['preset'],
-    })(context, preset);
-  } catch (_) {
-    throw new Error(`preset not found ${preset}`);
-  }
+  return createResolver({
+    mainFiles: ['preset'],
+    mainFields: ['preset'],
+  })(context, preset);
 };
 
 const resolveMixin = (target, context, mixin) => {
@@ -58,12 +54,11 @@ const applyEnv = result => {
 
 const loadConfig = (context, preset) => {
   const nsp = process.env.UNTOOL_NSP || 'untool';
-  const explorer = cosmiconfig(nsp, { stopDir: context });
-  if (preset) {
-    return applyEnv(explorer.loadSync(resolvePreset(context, preset)));
-  } else {
-    return applyEnv(explorer.searchSync(context));
-  }
+  const explorer = cosmiconfig(nsp, { cache: false, stopDir: context });
+  const presetPath = preset && resolvePreset(context, preset);
+  return applyEnv(
+    presetPath ? explorer.loadSync(presetPath) : explorer.searchSync(context)
+  );
 };
 
 const loadSettings = context => {
@@ -71,23 +66,26 @@ const loadSettings = context => {
   return result ? result.config : {};
 };
 
+const loadPreset = (context, preset) => {
+  try {
+    return loadConfig(context, preset);
+  } catch (_) {
+    return loadConfig(
+      dirname(resolvePreset(context, `${preset}/package.json`))
+    );
+  }
+};
+
 const loadPresets = (context, presets = []) =>
-  presets.reduce((result, preset) => {
-    const loadedConfig =
-      loadConfig(context, preset) ||
-      loadConfig(dirname(resolvePreset(context, join(preset, 'package.json'))));
-    if (loadedConfig) {
-      const { config, filepath } = loadedConfig;
-      const newContext = dirname(filepath);
-      if (config.mixins) {
-        config.mixins = config.mixins.map(
-          mixin => (mixin.startsWith('.') ? join(newContext, mixin) : mixin)
-        );
-      }
-      return merge(result, loadPresets(newContext, config.presets), config);
-    } else {
-      throw new Error(`preset not found: ${preset}`);
+  presets.reduce((configs, preset) => {
+    const { config, filepath } = loadPreset(context, preset);
+    const newContext = dirname(filepath);
+    if (config.mixins) {
+      config.mixins = config.mixins.map(
+        mixin => (mixin.startsWith('.') ? join(newContext, mixin) : mixin)
+      );
     }
+    return merge(configs, loadPresets(newContext, config.presets), config);
   }, {});
 
 const substitutePlaceholders = config => {
