@@ -1,6 +1,6 @@
 {
   "name": "@untool/core",
-  "version": "0.4.3",
+  "version": "0.5.0",
   "description": "untool core",
   "main": "lib/core.js",
   "esnext:main": "lib/runtime.js",

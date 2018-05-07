@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.5.0"></a>
+# [0.5.0](https://github.com/untool/untool/compare/v0.4.3...v0.5.0) (2018-05-07)
+
+
+
+
+**Note:** Version bump only for package @untool/defaults
+
 <a name="0.4.3"></a>
 ## [0.4.3](https://github.com/untool/untool/compare/v0.4.2...v0.4.3) (2018-04-24)
 

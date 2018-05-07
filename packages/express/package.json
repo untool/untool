@@ -1,8 +1,11 @@
 {
   "name": "@untool/express",
-  "version": "0.4.3",
+  "version": "0.5.0",
   "description": "untool express mixin",
-  "keywords": ["unmixin", "unpreset"],
+  "keywords": [
+    "unmixin",
+    "unpreset"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\""
   },
@@ -20,8 +23,8 @@
   },
   "homepage": "https://github.com/untool/untool#readme",
   "dependencies": {
-    "@untool/core": "^0.4.3",
-    "@untool/yargs": "^0.4.3",
+    "@untool/core": "^0.5.0",
+    "@untool/yargs": "^0.5.0",
     "compression": "^1.7.2",
     "directory-index": "^0.1.0",
     "express": "^4.16.2",
