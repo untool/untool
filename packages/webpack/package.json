@@ -2,10 +2,7 @@
   "name": "@untool/webpack",
   "version": "0.5.0",
   "description": "untool webpack mixin",
-  "keywords": [
-    "unmixin",
-    "unpreset"
-  ],
+  "keywords": ["unmixin", "unpreset"],
   "scripts": {
     "test": "echo \"Error: no test specified\""
   },
@@ -36,8 +33,10 @@
     "babel-preset-env": "^1.6.1",
     "caniuse-lite": "^1.0.30000823",
     "css-loader": "^0.28.9",
+    "enhanced-resolve": "^4.0.0",
     "file-loader": "^1.1.6",
     "find-up": "^2.1.0",
+    "is-builtin-module": "^2.0.0",
     "loader-utils": "^1.1.0",
     "memory-fs": "^0.4.1",
     "mini-css-extract-plugin": "^0.4.0",

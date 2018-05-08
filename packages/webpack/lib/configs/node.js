@@ -1,21 +1,13 @@
-const { join, dirname, resolve } = require('path');
-
-const { sync: findUp } = require('find-up');
+const { resolve } = require('path');
 
 const { EnvironmentPlugin, optimize } = require('webpack');
-const determineExternals = require('webpack-node-externals');
 
-const { checkESNext, getResolveConfig } = require('../utils/helpers');
+const { isESNext, isExternal } = require('../utils/helpers');
 
 module.exports = function getConfig(config, getAssetPath, configureWebpack) {
-  const getModulesDir = () => {
-    const lernaFile = findUp('lerna.json');
-    const baseDir = lernaFile ? dirname(lernaFile) : config.rootDir;
-    return join(baseDir, 'node_modules');
-  };
   const jsLoaderConfig = {
     test: [/\.js$/],
-    include: checkESNext('server'),
+    include: isESNext(),
     loader: require.resolve('babel-loader'),
     options: {
       babelrc: false,
@@ -83,7 +75,9 @@ module.exports = function getConfig(config, getAssetPath, configureWebpack) {
     mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
     bail: process.env.NODE_ENV === 'production',
     context: config.rootDir,
-    entry: require.resolve('../shims/node'),
+    entry: {
+      [config.namespace]: require.resolve('../shims/node'),
+    },
     output: {
       path: config.buildDir,
       publicPath: '/',
@@ -92,20 +86,26 @@ module.exports = function getConfig(config, getAssetPath, configureWebpack) {
       libraryTarget: 'commonjs2',
       devtoolModuleFilenameTemplate: info => resolve(info.absoluteResourcePath),
     },
-    resolve: getResolveConfig('server', {
+    resolve: {
       alias: {
         untool: '@untool/core',
         '@untool/entrypoint': config.rootDir,
         '@untool/config': require.resolve('../shims/loader'),
       },
-    }),
-    externals: [
-      /tests\/fixtures\//,
-      determineExternals({
-        modulesDir: getModulesDir(),
-        whitelist: checkESNext('server'),
-      }),
-    ],
+      extensions: ['.js'],
+      mainFields: [
+        'esnext:server',
+        'jsnext:server',
+        'server',
+        'esnext',
+        'jsnext',
+        'esnext:main',
+        'jsnext:main',
+        'module',
+        'main',
+      ],
+    },
+    externals: isExternal(),
     module: {
       rules: [
         {

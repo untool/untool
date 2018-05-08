@@ -9,12 +9,12 @@ const {
 const postcssImportPlugin = require('postcss-import');
 const postcssNextPlugin = require('postcss-cssnext');
 
-const { checkESNext, getResolveConfig } = require('../utils/helpers');
+const { isESNext } = require('../utils/helpers');
 
 module.exports = function getConfig(config, getAssetPath, configureWebpack) {
   const jsLoaderConfig = {
     test: [/\.js$/],
-    include: checkESNext('browser'),
+    include: isESNext(),
     loader: require.resolve('babel-loader'),
     options: {
       babelrc: false,
@@ -112,13 +112,25 @@ module.exports = function getConfig(config, getAssetPath, configureWebpack) {
         return relative(config.rootDir, info.absoluteResourcePath);
       },
     },
-    resolve: getResolveConfig('browser', {
+    resolve: {
       alias: {
         untool: '@untool/core',
         '@untool/entrypoint': config.rootDir,
         '@untool/config': require.resolve('../shims/loader'),
       },
-    }),
+      extensions: ['.js'],
+      mainFields: [
+        'esnext:browser',
+        'jsnext:browser',
+        'browser',
+        'esnext',
+        'jsnext',
+        'esnext:main',
+        'jsnext:main',
+        'module',
+        'main',
+      ],
+    },
     module: {
       rules: [
         {

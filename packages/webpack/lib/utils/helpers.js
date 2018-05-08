@@ -1,49 +1,49 @@
 const { readFileSync: readFile } = require('fs');
-const { join, dirname, isAbsolute } = require('path');
+const { join, dirname } = require('path');
 
 const { sync: findUp } = require('find-up');
 const { create: { sync: createResolver } } = require('enhanced-resolve');
+const isBuiltin = require('is-builtin-module');
 
-const pkgFile = findUp('package.json');
-const rootDir = dirname(pkgFile);
-
-const checkESNextPath = modPath =>
-  modPath.indexOf(join(dirname(__dirname), 'shims')) === 0 ||
-  modPath.indexOf('node_modules') === -1 ||
-  /mixin(\.[a-z]+)?\.js$/.test(modPath);
-
-const checkESNextConfig = modPath =>
-  /"(e|j)snext(:(browser|server|main|mixin(:[a-z]+)?))?":/m.test(
-    readFile(findUp('package.json', { cwd: dirname(modPath) }), 'utf8')
+const isLocal = path => !path.includes('node_modules');
+const isShim = path => path.startsWith(join(dirname(__dirname), 'shims'));
+const isMixin = path => /mixin(\.[a-z]+)?\.js$/.test(path);
+const isModule = path =>
+  /"((e|j)snext(:[a-z]+)?|module|mixin(:[a-z]+)?)": ?"/m.test(
+    readFile(findUp('package.json', { cwd: dirname(path) }), 'utf8')
   );
+const isExpression = path => /[!?]/.test(path);
+const isFixture = path => /\/tests\/fixtures\/[a-z]+-[a-f0-9-]{36}/.test(path);
+const isAsset = path => !/.js(on)?$/.test(path);
 
-exports.checkESNext = (target, defaults) => {
+exports.isESNext = () => {
   const cache = {};
-  const resolve = createResolver(exports.getResolveConfig(target, defaults));
-  const check = modPath => {
-    if (!(modPath in cache)) {
-      if (isAbsolute(modPath)) {
-        cache[modPath] = checkESNextPath(modPath) || checkESNextConfig(modPath);
-      } else {
-        cache[modPath] = check(resolve(rootDir, modPath));
-      }
+  return path => {
+    if (!(path in cache)) {
+      cache[path] = [isLocal, isShim, isMixin, isModule].some(fn => fn(path));
     }
-    return cache[modPath];
+    return cache[path];
   };
-  return check;
 };
 
-exports.getResolveConfig = (target, defaults) => ({
-  ...defaults,
-  extensions: ['.js'],
-  mainFields: [
-    `esnext:${target}`,
-    `jsnext:${target}`,
-    `${target}`,
-    'esnext',
-    'jsnext',
-    'esnext:main',
-    'jsnext:main',
-    'main',
-  ],
-});
+exports.isExternal = () => {
+  const resolve = createResolver();
+  const isESNext = exports.isESNext();
+  const shouldBeBundled = (context, request) => {
+    if (isExpression(request)) return true;
+    if (isBuiltin(request) || isFixture(request)) return false;
+    try {
+      const resolved = resolve(context, request);
+      return isAsset(resolved) || isESNext(resolved);
+    } catch (_) {
+      return true;
+    }
+  };
+  return (context, request, callback) => {
+    if (shouldBeBundled(context, request)) {
+      callback();
+    } else {
+      callback(null, 'commonjs ' + request);
+    }
+  };
+};
