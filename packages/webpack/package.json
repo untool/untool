@@ -1,8 +1,11 @@
 {
   "name": "@untool/webpack",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "untool webpack mixin",
-  "keywords": ["unmixin", "unpreset"],
+  "keywords": [
+    "unmixin",
+    "unpreset"
+  ],
   "scripts": {
     "test": "echo \"Error: no test specified\""
   },

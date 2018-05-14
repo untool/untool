@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.5.1"></a>
+## [0.5.1](https://github.com/untool/untool/compare/v0.5.0...v0.5.1) (2018-05-14)
+
+
+### Bug Fixes
+
+* **react:** fix data.globals always being overridden ([6e45a91](https://github.com/untool/untool/commit/6e45a91))
+
+
+
+
 <a name="0.5.0"></a>
 # [0.5.0](https://github.com/untool/untool/compare/v0.4.3...v0.5.0) (2018-05-07)
 

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.5.1"></a>
+## [0.5.1](https://github.com/untool/untool/compare/v0.5.0...v0.5.1) (2018-05-14)
+
+
+### Bug Fixes
+
+* **webpack:** fix ES module detection by applying duck typing ([40a5992](https://github.com/untool/untool/commit/40a5992))
+* **webpack:** fix node externals detection ([87c12fc](https://github.com/untool/untool/commit/87c12fc))
+
+
+
+
 <a name="0.5.0"></a>
 # [0.5.0](https://github.com/untool/untool/compare/v0.4.3...v0.5.0) (2018-05-07)
 
