@@ -16,7 +16,7 @@ class ExpressMixin extends Mixin {
   }
   runServer(mode) {
     const run = require('./lib/run');
-    const app = typeof mode === 'string' ? this.createServer(mode) : mode;
+    const app = this.createServer(mode);
     const { config, inspectServer, logInfo, logError } = this;
     return run(app, config, inspectServer, logInfo, logError);
   }
