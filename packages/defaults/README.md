@@ -6,19 +6,29 @@
 
 ### Installation
 
-If you need to set up a new project using `@untool/defaults`, the most compelling way is to use [`untool`](https://github.com/untool/untool/blob/master/packages/cli/README.md)'s CLI:
-
-```bash
-$ yarn global add untool # OR npm install --global untool
-$ un # answer 'y' twice
-```
-
-After executing these two commands in an empty project folder, you only have to provide an entry file to your application and specify it in your `package.json` file's `main` field. By default, `untool` tries loading a file called `index.js`.
-
-If you want to install `@untool/defaults` into an existing project you can also, of course, just use the package manager of your choice.
+If you need to set up a new project using `@untool/defaults`, just use the package manager of your choice to install it:
 
 ```bash
 $ yarn add @untool/defaults # OR npm install @untool/defaults
+```
+
+Afterwards, you need to add a new `untool` section to your project's `package.json` file:
+
+```json
+{
+  "scripts": {
+    "start": "un start"
+  },
+  "untool": {
+    "presets": ["@untool/defaults"]
+  }
+}
+```
+
+Additionally you might want to add a start script using `untool`'s CLI functionality to be able to use your package manager to start your application:
+
+```bash
+$ yarn start -p # OR npm start -p
 ```
 
 ## Settings
@@ -40,7 +50,7 @@ The code block above mirrors `@untool/defaults/preset.js`' actual source code in
 
 ### `namespace`
 
-The application namespace; used throughout the `untool` ecosystem to individualize log output, asset file names, and even HTML IDs. This value is determined by checking your application's package.json file and falling back to your its directory name. **Do not override - simply update the `name` field in your `package.json` file.**
+The application namespace; used throughout the `untool` ecosystem to individualize log output, asset file names, and even HTML IDs. This value is determined by checking your application's package.json file and falling back to its directory name. **Do not override - simply update the `name` field in your `package.json` file.**
 
 ### `version`
 
