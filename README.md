@@ -38,47 +38,41 @@ The [`@untool/react`](https://github.com/untool/untool/tree/master/packages/reac
 
 ### Installation
 
-As `untool` is completely modular, there is no single best way to install its different parts. Installing its global [command line interface](https://github.com/untool/untool/blob/master/packages/cli/README.md) (CLI), however, is a sensible way to get you started.
+As `untool` is completely modular, there is no single best way to install its different parts. Installing its global [command line interface](https://github.com/untool/untool/blob/master/packages/cli/README.md) (CLI), however, is a sensible way to get started.
 
 ```bash
 $ yarn global add untool # OR npm install --global untool
 ```
 
-Having installed this global CLI package, you will be able to use it to set up your first `untool` project.
+Having installed this global CLI package, you can set up your first `untool` project. The easiest way to do so is to install the `@untool/defaults` package and its dependencies.
 
 ```text
 $ mkdir foo && cd $_
-
-$ un
-? Initialize foo as new project? Yes
-! Initializing project...
-? Install untool default preset? Yes
-! Installing (this can take a while)...
-
-\o/ All done!
-
-$ cat << EOT > index.js
-> import React from 'react';
-> import { render } from 'untool';
-> export default render(<h1>bar</h1>);
-> EOT
-
-$ un start
-untool info
-server listening at http://localhost:8080
-
-$ curl http://localhost:8080/
-<!DOCTYPE html>
-<html>
-  <head>
-    <title data-react-helmet="true"></title>
-  </head>
-  <body>
-    <div id="foo"><h1 data-reactroot="">bar</h1></div>
-    <script src="/foo.js"></script>
-  </body>
-</html>
+$ yarn init -y
+$ yarn add @untool/defaults react react-dom react-helmet react-router react-router-dom
 ```
+
+Finish the basic setup by adding a new `untool` section to your `package.json` file.
+
+```json
+{
+  "untool": {
+    "presets": ["@untool/defaults"]
+  }
+}
+```
+
+Now, start building your app. `untool` will pick up whatever is configured as your project's main entry point. The following lines will give you a minimal React app.
+
+```text
+$ cat << EOT > index.js
+import React from 'react';
+import { render } from 'untool';
+export default render(<h1>meep</h1>);
+EOT
+```
+
+After these steps, you are good to go: you can just run your app by executing the command `un start` inside your project folder.
 
 ### Utilization
 
