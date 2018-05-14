@@ -3,7 +3,8 @@
   "version": "0.5.1",
   "description": "untool react mixin",
   "keywords": ["unmixin", "unpreset"],
-  "esnext": "lib/components.js",
+  "main": "lib/core.js",
+  "esnext:main": "lib/components.js",
   "scripts": {
     "test": "echo \"Error: no test specified\""
   },
