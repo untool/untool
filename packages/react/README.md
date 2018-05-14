@@ -9,7 +9,8 @@ Its `runtime`, i.e. `browser` and `server`, mixins are a bit more interesting as
 ### Installation
 
 ```bash
-$ yarn add @untool/react # OR npm install @untool/react
+$ yarn add @untool/react react react-dom react-helmet react-router react-router-dom
+# OR npm install @untool/react react react-dom react-helmet react-router react-router-dom
 ```
 
 ## API
