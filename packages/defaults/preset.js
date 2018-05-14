@@ -1,4 +1,8 @@
 module.exports = {
-  mixins: ['@untool/yargs', '@untool/react'],
-  presets: ['@untool/express', '@untool/webpack'],
+  presets: [
+    '@untool/express',
+    '@untool/react',
+    '@untool/webpack',
+    '@untool/yargs',
+  ],
 };
