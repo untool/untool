@@ -6,7 +6,7 @@ var { getConfig } = require('@untool/config');
 
 (function render() {
   var entryPoint = require('@untool/entrypoint');
-  if (entryPoint.__esModule) {
+  if (typeof entryPoint.default === 'function') {
     entryPoint = entryPoint.default;
   }
   entryPoint(getConfig())();
