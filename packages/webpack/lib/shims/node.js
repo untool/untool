@@ -5,7 +5,7 @@ require('babel-polyfill');
 var { getConfig } = require('@untool/config');
 var entryPoint = require('@untool/entrypoint');
 
-if (entryPoint.__esModule) {
+if (typeof entryPoint.default === 'function') {
   entryPoint = entryPoint.default;
 }
 
