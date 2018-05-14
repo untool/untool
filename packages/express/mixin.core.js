@@ -8,37 +8,21 @@ const { Mixin } = require('@untool/core');
 const uri = require('./lib/uri');
 
 class ExpressMixin extends Mixin {
-  create(method) {
-    const create = require(method === 'static'
-      ? './lib/static'
-      : './lib/serve');
+  createServer(mode) {
+    const isStatic = mode === 'static';
+    const create = isStatic ? require('./lib/static') : require('./lib/serve');
     const { options, config, initializeServer, finalizeServer } = this;
-    return create(method, options, config, initializeServer, finalizeServer);
+    return create(mode, options, config, initializeServer, finalizeServer);
   }
-  run(method) {
+  runServer(mode) {
     const run = require('./lib/run');
+    const app = typeof mode === 'string' ? this.createServer(mode) : mode;
     const { config, inspectServer, logInfo, logError } = this;
-    const app = this.create(method);
     return run(app, config, inspectServer, logInfo, logError);
-  }
-  runServer() {
-    return this.run('serve');
-  }
-  runDevServer() {
-    return this.run('develop');
-  }
-  createServer() {
-    return this.create('serve');
-  }
-  createDevServer() {
-    return this.create('develop');
-  }
-  createRenderer() {
-    return this.create('static');
   }
   renderLocations() {
     const indexFile = require('directory-index');
-    const render = this.createRenderer();
+    const render = this.createServer('static');
     const { basePath, locations } = this.config;
     const { resolveAbsolute, resolveRelative } = uri;
     return Promise.all(
@@ -85,7 +69,7 @@ class ExpressMixin extends Mixin {
           type: 'boolean',
         },
       },
-      handler: () => this.runServer(),
+      handler: () => this.runServer('serve'),
     });
   }
   handleArguments(argv) {
@@ -97,8 +81,8 @@ ExpressMixin.strategies = {
   initializeServer: sequence,
   finalizeServer: sequence,
   inspectServer: sequence,
+  createServer: overrideSync,
   runServer: overrideSync,
-  runDevServer: overrideSync,
   renderLocations: overrideAsync,
 };
 
