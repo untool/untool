@@ -16,7 +16,7 @@ $ yarn add @untool/express # OR npm install @untool/express
 
 ### `serve`
 
-`@untool/express` registers a single command using [`@untool/yargs`](https://github.com/untool/untool/blob/master/packages/yargs/README.md#registercommandsyargs-chalk-pipe): `serve`. As to be expected, this command launches a stand-alone Express server featuring [Helmet](https://helmetjs.github.io) and a [Express' static](https://expressjs.com/en/4x/api.html#express.static) file server middlewares.
+`@untool/express` registers a single command using [`@untool/yargs`](https://github.com/untool/untool/blob/master/packages/yargs/README.md#registercommandsyargs-pipe): `serve`. As to be expected, this command launches a stand-alone Express server featuring [Helmet](https://helmetjs.github.io) and a [Express' static](https://expressjs.com/en/4x/api.html#express.static) file server middlewares.
 
 ```bash
 $ un serve -ps
@@ -74,13 +74,13 @@ This hook works exactly like the one described above, `initializeServer()`, only
 
 This hook will give you a running, i.e. listening, instance of [`http.Server`](https://nodejs.org/api/http.html#http_class_http_server) or [`https.Server`](https://nodejs.org/api/https.html#https_class_https_server), depending on your `https` setting. The second argument, `target`, will only ever be one of `develop` and `serve`. You can, for example, use this hook to register your server with an external load balancing system.
 
-### `runServer(options)` ([override](https://github.com/untool/mixinable/blob/master/README.md#defineoverride))
+### `createServer(mode)` ([override](https://github.com/untool/mixinable/blob/master/README.md#defineoverride))
 
-If you want to programmatically start a production ready Express server set up using `@untool/express`' [config](https://github.com/untool/untool/blob/master/packages/express/README.md#settings), you can use this utility mixin method that accepts the same options as the CLI [`serve`](https://github.com/untool/untool/blob/master/packages/express/README.md#arguments) method.
+To create an Express app to use in your own server, you can use this utility mixin method. It uses `@untool/express`' [settings](https://github.com/untool/untool/blob/master/packages/express/README.md#settings) for its configuration. It accepts a string: `serve`, `develop` or `static`.
 
-### `runDevServer(options)` ([override](https://github.com/untool/mixinable/blob/master/README.md#defineoverride))
+### `runServer(mode)` ([override](https://github.com/untool/mixinable/blob/master/README.md#defineoverride))
 
-To start a development mode Express server programmatically, you can use this utility mixin method. It uses a [`static`](https://github.com/untool/untool/blob/master/packages/express/README.md#-s----static) option and `@untool/express`' [settings](https://github.com/untool/untool/blob/master/packages/express/README.md#settings) for its configuration.
+If you want to programmatically start a production ready Express server set up using `@untool/express`' [config](https://github.com/untool/untool/blob/master/packages/express/README.md#settings), you can use this utility mixin method. It accepts a string: `serve` or `develop`.
 
 ### `renderLocations()` ([override](https://github.com/untool/mixinable/blob/master/README.md#defineoverride))
 
@@ -103,7 +103,7 @@ With this method you can render HTML pages for all configured [`locations`](http
 
 ### `https`
 
-`@untool/express` fully supports HTTPS and using this key, you can configure its SSL/TLS mode. You can either set it to `true` to enable SSL with the included insecure certificate. Or your can tell it to use a [proper](https://letsencrypt.org) SSL certificate.
+`@untool/express` fully supports HTTPS and using this key, you can configure its SSL/TLS mode. You can either set it to `true` to enable SSL with the included insecure certificate. Or you can tell it to use a [proper](https://letsencrypt.org) SSL certificate.
 
 ```json
 {
