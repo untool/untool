@@ -39,7 +39,7 @@ server listening at http://localhost:8080
 
 `@untool/yargs` exposes a couple of mixin hooks other mixins can implement, allowing them to alter or extend its functionality. These hooks will be called either by `@untool/yargs` itself or by others.
 
-### `registerCommands(yargs, chalk)` ([pipe](https://github.com/untool/mixinable/blob/master/README.md#definepipe))
+### `registerCommands(yargs)` ([pipe](https://github.com/untool/mixinable/blob/master/README.md#definepipe))
 
 This is the most relevant hook provided by `@untool/yargs`: it enables other mixins to register their respective commands. Implementations of this mixin method will receive two arguments: a [`yargs`](http://yargs.js.org) instance and the command line arguments `@untool/yargs` received. Implementations need to return the `yargs` instance that they were called with.
 
