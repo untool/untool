@@ -9,9 +9,13 @@ const {
 const postcssImportPlugin = require('postcss-import');
 const postcssNextPlugin = require('postcss-cssnext');
 
+const { uri: { resolveRelative } } = require('@untool/express');
+
 const { isESNext } = require('../utils/helpers');
 
-module.exports = function getConfig(config, getAssetPath, configureWebpack) {
+module.exports = function getConfig(config, configureWebpack) {
+  const getAssetPath = resolveRelative.bind(null, config.assetPath);
+
   const jsLoaderConfig = {
     test: [/\.js$/],
     include: isESNext(),

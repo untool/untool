@@ -64,14 +64,9 @@ class WebpackMixin extends Mixin {
   getConfig(target) {
     const getConfig = require(`./lib/configs/${target}`);
     const { configureWebpack } = this;
-    return getConfig(this.config, this.getAssetPath, (...args) =>
+    return getConfig(this.config, (...args) =>
       configureWebpack(...args, target)
     );
-  }
-  getAssetPath(filePath) {
-    const { config: { assetPath } } = this;
-    const segments = assetPath.concat('/', filePath).split('/');
-    return segments.filter(segment => segment).join('/');
   }
   clean() {
     const rimraf = require('rimraf');

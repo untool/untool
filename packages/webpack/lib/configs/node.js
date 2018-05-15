@@ -2,9 +2,13 @@ const { resolve } = require('path');
 
 const { EnvironmentPlugin, optimize } = require('webpack');
 
+const { uri: { resolveRelative } } = require('@untool/express');
+
 const { isESNext, isExternal } = require('../utils/helpers');
 
-module.exports = function getConfig(config, getAssetPath, configureWebpack) {
+module.exports = function getConfig(config, configureWebpack) {
+  const getAssetPath = resolveRelative.bind(null, config.assetPath);
+
   const jsLoaderConfig = {
     test: [/\.js$/],
     include: isESNext(),
