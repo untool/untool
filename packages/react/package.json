@@ -1,8 +1,11 @@
 {
   "name": "@untool/react",
-  "version": "0.5.1",
+  "version": "0.6.0",
   "description": "untool react mixin",
-  "keywords": ["unmixin", "unpreset"],
+  "keywords": [
+    "unmixin",
+    "unpreset"
+  ],
   "main": "lib/core.js",
   "esnext:main": "lib/components.js",
   "scripts": {

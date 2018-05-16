@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.6.0"></a>
+# [0.6.0](https://github.com/untool/untool/compare/v0.5.1...v0.6.0) (2018-05-16)
+
+
+### Bug Fixes
+
+* **webpack:** "rootDir" must point to a directory, not the package.json ([f151444](https://github.com/untool/untool/commit/f151444))
+* **webpack:** include all file-relative requests in bundle ([3c35cc7](https://github.com/untool/untool/commit/3c35cc7))
+
+
+### Features
+
+* **webpack:** add untool/webpack main export ([53c4243](https://github.com/untool/untool/commit/53c4243))
+
+
+
+
 <a name="0.5.1"></a>
 ## [0.5.1](https://github.com/untool/untool/compare/v0.5.0...v0.5.1) (2018-05-14)
 
