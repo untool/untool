@@ -13,6 +13,7 @@ const isModule = path =>
     readFile(findUp('package.json', { cwd: dirname(path) }), 'utf8')
   );
 const isExpression = path => /[!?]/.test(path);
+const isRelative = path => path.startsWith('.');
 const isFixture = path => /\/tests\/fixtures\/[a-z]+-[a-f0-9-]{36}/.test(path);
 const isAsset = path => !/.js(on)?$/.test(path);
 
@@ -30,7 +31,7 @@ exports.isExternal = () => {
   const resolve = createResolver();
   const isESNext = exports.isESNext();
   const shouldBeBundled = (context, request) => {
-    if (isExpression(request)) return true;
+    if (isExpression(request) || isRelative(request)) return true;
     if (isBuiltin(request) || isFixture(request)) return false;
     try {
       const resolved = resolve(context, request);
