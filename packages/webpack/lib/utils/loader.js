@@ -18,7 +18,7 @@ const getModule = (target, config) =>
   (target === 'server'
     ? [
         'var path = require("path");',
-        'var root = require("find-up").sync("package.json");',
+        'var root = path.dirname(require("find-up").sync("package.json"));',
         'var expand = path.join.bind(path, root);',
       ]
     : []
