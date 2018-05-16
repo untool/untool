@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "start": "cd tests/fixtures/instrument; un start",
-    "test": "NODE_ENV=test ava --verbose tests",
+    "test": "NODE_ENV=test ava --verbose --timeout=90s tests",
     "lint": "eslint --ignore-path .gitignore '**/*.js'",
     "fmt": "prettier --write --ignore-path .gitignore '**/*.{js,json,css}'",
     "release": "lerna publish --conventional-commits",
