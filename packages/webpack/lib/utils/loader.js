@@ -1,7 +1,9 @@
 const { getOptions } = require('loader-utils');
 
 const getMixins = (target, config) =>
-  config.mixins[target].map(mixin => `require('${mixin}')`);
+  config.mixins[target].map(
+    mixin => `(function(m) { return m.default || m })(require('${mixin}'))`
+  );
 
 const getConfig = (target, config) =>
   JSON.stringify(config)
