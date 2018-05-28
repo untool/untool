@@ -42,7 +42,8 @@ const resolveMixin = (target, context, mixin) => {
 };
 
 const applyEnv = result => {
-  const env = process.env.UNTOOL_ENV || process.env.NODE_ENV;
+  const nsp = process.env.UNTOOL_NSP || 'untool';
+  const env = process.env[nsp.toUpperCase() + '_ENV'] || process.env.NODE_ENV;
   const config = result && result.config;
   return result
     ? {
