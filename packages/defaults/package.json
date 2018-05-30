@@ -2,9 +2,7 @@
   "name": "@untool/defaults",
   "version": "0.6.0",
   "description": "untool default preset",
-  "keywords": [
-    "unpreset"
-  ],
+  "keywords": ["unpreset"],
   "scripts": {
     "test": "echo \"Error: no test specified\""
   },

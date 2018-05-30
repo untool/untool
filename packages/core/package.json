@@ -21,13 +21,13 @@
   },
   "homepage": "https://github.com/untool/untool#readme",
   "dependencies": {
-    "cosmiconfig": "^5.0.1",
+    "cosmiconfig": "^5.0.5",
     "enhanced-resolve": "^4.0.0",
     "find-up": "^2.1.0",
     "flat": "^4.0.0",
     "is-plain-object": "^2.0.4",
     "lodash.mergewith": "^4.6.1",
-    "mixinable": "^2.0.0"
+    "mixinable": "^3.0.0"
   },
   "engines": {
     "node": ">8.6.0"
