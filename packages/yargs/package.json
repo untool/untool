@@ -2,10 +2,7 @@
   "name": "@untool/yargs",
   "version": "0.6.0",
   "description": "untool yargs mixin",
-  "keywords": [
-    "unmixin",
-    "unpreset"
-  ],
+  "keywords": ["unmixin", "unpreset"],
   "bin": {
     "un": "index.js"
   },
@@ -28,7 +25,7 @@
   "dependencies": {
     "@untool/core": "^0.5.0",
     "chalk": "^2.3.1",
-    "mixinable": "^2.0.0",
+    "mixinable": "^3.0.0",
     "yargs": "^11.0.0"
   },
   "engines": {

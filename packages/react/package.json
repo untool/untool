@@ -2,10 +2,7 @@
   "name": "@untool/react",
   "version": "0.6.0",
   "description": "untool react mixin",
-  "keywords": [
-    "unmixin",
-    "unpreset"
-  ],
+  "keywords": ["unmixin", "unpreset"],
   "main": "lib/core.js",
   "esnext:main": "lib/components.js",
   "scripts": {
@@ -28,7 +25,7 @@
     "@untool/core": "^0.5.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.13",
     "babel-preset-react": "^6.24.1",
-    "mixinable": "^2.0.0",
+    "mixinable": "^3.0.0",
     "serialize-javascript": "^1.4.0"
   },
   "peerDependencies": {
