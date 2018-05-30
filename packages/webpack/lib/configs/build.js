@@ -12,7 +12,7 @@ const ExtractCSSPlugin = require('mini-css-extract-plugin');
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 
 const postcssImportPlugin = require('postcss-import');
-const postcssNextPlugin = require('postcss-cssnext');
+const postcssPresetEnv = require('postcss-preset-env');
 
 const { uri: { resolveRelative } } = require('@untool/express');
 
@@ -68,7 +68,7 @@ module.exports = function getConfig(config, configureWebpack) {
           ident: 'postcss',
           plugins: [
             postcssImportPlugin(),
-            postcssNextPlugin({
+            postcssPresetEnv({
               browsers: config.browsers,
             }),
           ],

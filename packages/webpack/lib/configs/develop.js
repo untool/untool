@@ -7,7 +7,7 @@ const {
 } = require('webpack');
 
 const postcssImportPlugin = require('postcss-import');
-const postcssNextPlugin = require('postcss-cssnext');
+const postcssPresetEnv = require('postcss-preset-env');
 
 const { uri: { resolveRelative } } = require('@untool/express');
 
@@ -63,7 +63,7 @@ module.exports = function getConfig(config, configureWebpack) {
           ident: 'postcss',
           plugins: [
             postcssImportPlugin(),
-            postcssNextPlugin({
+            postcssPresetEnv({
               browsers: config.browsers,
             }),
           ],
