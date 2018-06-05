@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.7.0"></a>
+# [0.7.0](https://github.com/untool/untool/compare/v0.4.0...v0.7.0) (2018-06-05)
+
+
+### Bug Fixes
+
+* update dependency cosmiconfig to v5 ([dc20aaf](https://github.com/untool/untool/commit/dc20aaf))
+
+
+### Features
+
+* **core:** make "UNTOOL" in UNTOOL_ENV configurable through UNTOOL_NSP ([20ecfbf](https://github.com/untool/untool/commit/20ecfbf))
+
+
+
+
 <a name="0.5.0"></a>
 # [0.5.0](https://github.com/untool/untool/compare/v0.4.3...v0.5.0) (2018-05-07)
 

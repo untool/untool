@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.7.0"></a>
+# [0.7.0](https://github.com/untool/untool/compare/v0.4.0...v0.7.0) (2018-06-05)
+
+
+### Bug Fixes
+
+* **yargs:** make sure all commands are registered ([623cfe9](https://github.com/untool/untool/commit/623cfe9)), closes [#15](https://github.com/untool/untool/issues/15)
+
+
+### Features
+
+* **yargs:** make untool/yargs a full-fledged preset ([817d76c](https://github.com/untool/untool/commit/817d76c))
+
+
+
+
 <a name="0.6.0"></a>
 # [0.6.0](https://github.com/untool/untool/compare/v0.5.1...v0.6.0) (2018-05-16)
 

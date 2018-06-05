@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.7.0"></a>
+# [0.7.0](https://github.com/untool/untool/compare/v0.4.0...v0.7.0) (2018-06-05)
+
+
+### Bug Fixes
+
+* update dependency style-loader to ^0.21.0 ([3ad2cf6](https://github.com/untool/untool/commit/3ad2cf6))
+* **webpack:** "rootDir" must point to a directory, not the package.json ([f151444](https://github.com/untool/untool/commit/f151444))
+* **webpack:** do not use css optimizations that assume concatenation ([92366b1](https://github.com/untool/untool/commit/92366b1))
+* **webpack:** fix ES module detection by applying duck typing ([40a5992](https://github.com/untool/untool/commit/40a5992))
+* **webpack:** fix node externals detection ([87c12fc](https://github.com/untool/untool/commit/87c12fc))
+* **webpack:** include all file-relative requests in bundle ([3c35cc7](https://github.com/untool/untool/commit/3c35cc7))
+* **webpack:** make ESM-style runtime mixins work ([c5bea5e](https://github.com/untool/untool/commit/c5bea5e))
+* **webpack:** prevent hmr chunks from being inserted into the template ([86dbf12](https://github.com/untool/untool/commit/86dbf12))
+* **webpack:** remove ESM support from loader configs ([4cba48f](https://github.com/untool/untool/commit/4cba48f))
+* **webpack:** use chunkhash in filenames ([4340e38](https://github.com/untool/untool/commit/4340e38))
+
+
+### Features
+
+* **webpack:** add untool/webpack main export ([53c4243](https://github.com/untool/untool/commit/53c4243))
+* **webpack:** swap out cssnext for preset-env ([6fa880e](https://github.com/untool/untool/commit/6fa880e))
+
+
+
+
 <a name="0.6.0"></a>
 # [0.6.0](https://github.com/untool/untool/compare/v0.5.1...v0.6.0) (2018-05-16)
 
