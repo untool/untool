@@ -19,6 +19,10 @@ class YargsMixin extends Mixin {
     const index = levels.indexOf(argv.log);
     this.levels = levels.slice(Math.max(index, 0), -1);
   }
+  handleError(error) {
+    this.logError(error);
+    process.exit(1);
+  }
   logDebug(...args) {
     const { namespace } = this.config;
     if (this.levels && this.levels.includes('debug')) {
@@ -61,6 +65,7 @@ class YargsMixin extends Mixin {
 YargsMixin.strategies = {
   registerCommands: pipe,
   handleArguments: sequence,
+  handleError: override,
   logDebug: override,
   logInfo: override,
   logWarn: override,
