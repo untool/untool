@@ -41,6 +41,27 @@ const resolveMixin = (target, context, mixin) => {
   }
 };
 
+const resolveMixins = ({ mixins, rootDir }) =>
+  mixins.reduce(
+    (result, mixin) => {
+      let found = false;
+      Object.keys(result).forEach(target => {
+        const targetMixin = resolveMixin(target, rootDir, mixin);
+        if (targetMixin) {
+          if (!result[target].includes(targetMixin)) {
+            result[target].push(targetMixin);
+          }
+          found = true;
+        }
+      });
+      if (!found) {
+        throw new Error(`Can't find mixin '${mixin}'`);
+      }
+      return result;
+    },
+    { core: [], server: [], browser: [] }
+  );
+
 const applyEnv = result => {
   const nsp = process.env.UNTOOL_NSP || 'untool';
   const env = process.env[nsp.toUpperCase() + '_ENV'] || process.env.NODE_ENV;
@@ -71,9 +92,13 @@ const loadPreset = (context, preset) => {
   try {
     return loadConfig(context, preset);
   } catch (_) {
-    return loadConfig(
-      dirname(resolvePreset(context, `${preset}/package.json`))
-    );
+    try {
+      return loadConfig(
+        dirname(resolvePreset(context, join(preset, 'package.json')))
+      );
+    } catch (_) {
+      throw new Error(`Can't find preset '${preset}'`);
+    }
   }
 };
 
@@ -124,7 +149,10 @@ exports.getConfig = () => {
 
   const defaults = { rootDir, namespace, version, mixins: [] };
   const settings = loadSettings(rootDir);
-  const presets = loadPresets(rootDir, settings.presets);
+  const presets = loadPresets(
+    rootDir,
+    settings.presets || [process.env.UNTOOL_PRESET || '@untool/defaults']
+  );
   const rawConfig = merge(defaults, presets, settings);
 
   delete rawConfig.presets;
@@ -132,15 +160,7 @@ exports.getConfig = () => {
 
   const config = substitutePlaceholders(rawConfig);
 
-  config.mixins = ['core', 'server', 'browser'].reduce(
-    (result, target) => ({
-      ...result,
-      [target]: config.mixins
-        .map(mixin => resolveMixin(target, config.rootDir, mixin))
-        .filter((mixin, index, self) => mixin && self.indexOf(mixin) === index),
-    }),
-    {}
-  );
+  config.mixins = resolveMixins(config);
 
   return config;
 };
