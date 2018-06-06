@@ -2,7 +2,7 @@ const { readFileSync: readFile } = require('fs');
 const { join, dirname } = require('path');
 
 const { sync: findUp } = require('find-up');
-const { create: { sync: createResolver } } = require('enhanced-resolve');
+const { sync: resolve } = require('enhanced-resolve');
 const isBuiltin = require('is-builtin-module');
 
 const isLocal = path => !path.includes('node_modules');
@@ -17,8 +17,9 @@ const isRelative = path => path.startsWith('.');
 const isFixture = path => /\/tests\/fixtures\/[a-z]+-[a-f0-9-]{36}/.test(path);
 const isAsset = path => !/.js(on)?$/.test(path);
 
+const cache = {};
+
 exports.isESNext = () => {
-  const cache = {};
   return path => {
     if (!(path in cache)) {
       cache[path] = [isLocal, isShim, isMixin, isModule].some(fn => fn(path));
@@ -28,7 +29,6 @@ exports.isESNext = () => {
 };
 
 exports.isExternal = () => {
-  const resolve = createResolver();
   const isESNext = exports.isESNext();
   const shouldBeBundled = (context, request) => {
     if (isExpression(request) || isRelative(request)) return true;

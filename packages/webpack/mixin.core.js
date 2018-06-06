@@ -152,11 +152,11 @@ class WebpackMixin extends Mixin {
               .then(this.build)
               .then(this.logStats)
               .then(this.runServer.bind(this, 'serve'))
-              .catch(this.logError);
+              .catch(this.handleError);
           } else {
             this.clean()
               .then(this.runServer.bind(this, 'develop'))
-              .catch(this.logError);
+              .catch(this.handleError);
           }
         },
       })
@@ -187,7 +187,7 @@ class WebpackMixin extends Mixin {
           Promise.resolve(argv.clean && this.clean())
             .then(this.build)
             .then(this.logStats)
-            .catch(this.logError),
+            .catch(this.handleError),
       })
       .command({
         command: 'develop',
@@ -209,7 +209,7 @@ class WebpackMixin extends Mixin {
         handler: () =>
           this.clean()
             .then(this.runServer.bind(this, 'develop'))
-            .catch(this.logError),
+            .catch(this.handleError),
       });
   }
   handleArguments(argv) {
