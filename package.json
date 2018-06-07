@@ -1,6 +1,6 @@
 {
   "name": "untool",
-  "description": "tools suck. untool tries not to.",
+  "description": "javascript tooling platform",
   "author": "dmbch <daniel@dmbch.net>",
   "license": "MIT",
   "private": true,
@@ -8,10 +8,10 @@
     "start": "cd tests/fixtures/instrument; un start",
     "test": "NODE_ENV=test ava --verbose --timeout=90s tests",
     "lint": "eslint --ignore-path .gitignore '**/*.js'",
-    "fmt": "prettier --write --ignore-path .gitignore '**/*.{js,json,css}'",
+    "fmt": "prettier --write --ignore-path .gitignore '**/*.{js,css}'",
     "release": "lerna publish --conventional-commits",
     "bump": "lerna publish --force-publish=* --cd-version=major",
-    "update": "yarn upgrade-interactive --latest && yarn fmt",
+    "update": "yarn upgrade-interactive --latest",
     "reset": "git clean -dfx && yarn",
     "commitmsg": "commitlint -e $GIT_PARAMS",
     "precommit": "lint-staged",
@@ -26,7 +26,9 @@
     "url": "https://github.com/untool/untool/issues"
   },
   "homepage": "https://github.com/untool/untool#readme",
-  "workspaces": ["packages/*"],
+  "workspaces": [
+    "packages/*"
+  ],
   "devDependencies": {
     "@commitlint/cli": "^7.0.0",
     "@commitlint/config-conventional": "^7.0.0",
@@ -43,7 +45,7 @@
     "lint-staged": "^7.1.2",
     "mkdirp": "^0.5.1",
     "ncp": "^2.0.0",
-    "prettier": "1.11.1",
+    "prettier": "1.13.4",
     "puppeteer": "^1.4.0",
     "react": "^16.4.0",
     "react-dom": "^16.4.0",
@@ -58,8 +60,12 @@
     "node": ">8.6.0"
   },
   "renovate": {
-    "extends": ["config:base"],
-    "ignoreDeps": ["prettier"],
+    "extends": [
+      "config:base"
+    ],
+    "ignoreDeps": [
+      "prettier"
+    ],
     "lockFileMaintenance": {
       "enabled": true
     },
@@ -69,13 +75,19 @@
     "semanticPrefix": "chore:"
   },
   "prettier": {
+    "arrowParens": "always",
     "trailingComma": "es5",
-    "proseWrap": "never",
-    "singleQuote": true
+    "singleQuote": true,
+    "proseWrap": "never"
   },
   "eslintConfig": {
-    "extends": ["eslint:recommended", "prettier"],
-    "plugins": ["prettier"],
+    "extends": [
+      "eslint:recommended",
+      "prettier"
+    ],
+    "plugins": [
+      "prettier"
+    ],
     "rules": {
       "prettier/prettier": "error"
     },
@@ -89,10 +101,15 @@
     }
   },
   "lint-staged": {
-    "*.{js,json,css}": ["prettier --write", "git add"]
+    "*.{js,css}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "commitlint": {
-    "extends": ["@commitlint/config-conventional"]
+    "extends": [
+      "@commitlint/config-conventional"
+    ]
   },
   "config": {
     "commitizen": {
