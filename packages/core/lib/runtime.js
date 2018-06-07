@@ -7,7 +7,7 @@ exports.Mixin = class Mixin {
 };
 
 exports.render = function render(...renderArgs) {
-  return config => {
+  return (config) => {
     const { mixins } = config;
     const strategies = mixins.reduce(
       (result, mixin) => ({ ...result, ...mixin.strategies }),

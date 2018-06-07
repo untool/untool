@@ -14,7 +14,9 @@ const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
 const postcssImportPlugin = require('postcss-import');
 const postcssPresetEnv = require('postcss-preset-env');
 
-const { uri: { resolveRelative } } = require('@untool/express');
+const {
+  uri: { resolveRelative },
+} = require('@untool/express');
 
 const { isESNext } = require('../utils/helpers');
 
@@ -115,9 +117,8 @@ module.exports = function getConfig(config, configureWebpack) {
       pathinfo: true,
       filename: getAssetPath('[name]-[chunkhash:12].js'),
       chunkFilename: getAssetPath('[name]-[chunkhash:12].js'),
-      devtoolModuleFilenameTemplate: function(info) {
-        return relative(config.rootDir, info.absoluteResourcePath);
-      },
+      devtoolModuleFilenameTemplate: (info) =>
+        relative(config.rootDir, info.absoluteResourcePath),
     },
     resolve: {
       alias: {

@@ -8,7 +8,7 @@ module.exports = (method, options, config, initialize, finalize) => {
   initialize(app, method);
   finalize(app, method);
   app.use((req, res) => res.status(404).end());
-  return options => {
+  return (options) => {
     if (typeof options === 'string') {
       options = { url: options };
     }
@@ -25,7 +25,7 @@ module.exports = (method, options, config, initialize, finalize) => {
           resolve(res._getData());
         }
       });
-      app.handle(req, res, error => {
+      app.handle(req, res, (error) => {
         if (error) {
           reject(error);
         }

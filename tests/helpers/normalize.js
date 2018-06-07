@@ -6,7 +6,7 @@ const isPlainObject = require('is-plain-object');
 const flatten = require('flat');
 const { unflatten } = flatten;
 
-const normalizePath = string =>
+const normalizePath = (string) =>
   string
     .replace(new RegExp(dirname(dirname(__dirname)), 'g'), '.')
     .replace(
@@ -14,15 +14,15 @@ const normalizePath = string =>
       ''
     );
 
-exports.normalizeConfig = config =>
+exports.normalizeConfig = (config) =>
   JSON.parse(normalizePath(JSON.stringify(config)));
 
-exports.normalizeMixin = mixin =>
+exports.normalizeMixin = (mixin) =>
   Object.assign(Object.create(mixin.constructor.prototype), mixin, {
     config: exports.normalizeConfig(mixin.config),
   });
 
-exports.normalizeWebpackConfig = config => {
+exports.normalizeWebpackConfig = (config) => {
   const flatConfig = flatten(config);
   return unflatten(
     Object.keys(flatConfig).reduce(
@@ -39,13 +39,13 @@ exports.normalizeWebpackConfig = config => {
   );
 };
 
-exports.normalizeResponse = res => {
+exports.normalizeResponse = (res) => {
   return JSON.parse(
     JSON.stringify(res).replace(/(-[a-f0-9]{12}|blob:http:[a-z0-9/:-]+)/g, '')
   );
 };
 
-exports.normalizeArtefacts = dir =>
+exports.normalizeArtefacts = (dir) =>
   readdirSync(dir).reduce((result, file) => {
     const path = join(dir, file);
     const name = file.replace(/-[a-f0-9]{12}/, '');
@@ -56,7 +56,7 @@ exports.normalizeArtefacts = dir =>
     return { ...result, [name]: true };
   }, {});
 
-exports.normalizeArgTypes = obj => {
+exports.normalizeArgTypes = (obj) => {
   if (typeof obj === 'function') {
     return `${typeof obj}:${obj.length}`;
   } else if (['boolean', 'number', 'string'].includes(typeof obj)) {
@@ -64,7 +64,7 @@ exports.normalizeArgTypes = obj => {
   } else if ([undefined, null].includes(obj)) {
     return `${obj}`;
   } else if (Array.isArray(obj)) {
-    return obj.map(_obj => exports.normalizeArgTypes(_obj));
+    return obj.map((_obj) => exports.normalizeArgTypes(_obj));
   } else if (isPlainObject(obj)) {
     return Object.keys(obj).reduce(
       (result, key) => ({

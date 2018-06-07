@@ -12,7 +12,7 @@ const {
 } = require('./normalize');
 
 module.exports = (...args) =>
-  run(...args).then(api => {
+  run(...args).then((api) => {
     const { events } = require(join(api.rootDir, 'server'));
     return {
       getArg(...args) {
@@ -24,26 +24,26 @@ module.exports = (...args) =>
       getArgTypes(...args) {
         return events
           .promiseArgs(...args)
-          .then(args => normalizeArgTypes(args));
+          .then((args) => normalizeArgTypes(args));
       },
       getConfig() {
         return events
           .promiseArg('constructor', 1)
-          .then(config => normalizeConfig(config));
+          .then((config) => normalizeConfig(config));
       },
       getMixin() {
         return events
           .promiseArg('constructor', 0)
-          .then(mixin => normalizeMixin(mixin));
+          .then((mixin) => normalizeMixin(mixin));
       },
       navigate(...args) {
-        return new Promise(resolve =>
+        return new Promise((resolve) =>
           process.nextTick(() =>
             resolve(
               api
                 .getServer()
-                .then(server => supertest(server))
-                .then(request => request.get(...args))
+                .then((server) => supertest(server))
+                .then((request) => request.get(...args))
                 .then(({ status, text: body }) =>
                   normalizeResponse({ status, body })
                 )

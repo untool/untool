@@ -9,7 +9,9 @@ const {
 const postcssImportPlugin = require('postcss-import');
 const postcssPresetEnv = require('postcss-preset-env');
 
-const { uri: { resolveRelative } } = require('@untool/express');
+const {
+  uri: { resolveRelative },
+} = require('@untool/express');
 
 const { isESNext } = require('../utils/helpers');
 
@@ -112,9 +114,8 @@ module.exports = function getConfig(config, configureWebpack) {
       pathinfo: true,
       filename: getAssetPath('[name].js'),
       chunkFilename: getAssetPath('[name]-[id].js'),
-      devtoolModuleFilenameTemplate: function(info) {
-        return relative(config.rootDir, info.absoluteResourcePath);
-      },
+      devtoolModuleFilenameTemplate: (info) =>
+        relative(config.rootDir, info.absoluteResourcePath),
     },
     resolve: {
       alias: {

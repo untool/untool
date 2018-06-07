@@ -27,9 +27,9 @@ class ExpressMixin extends Mixin {
     const { resolveAbsolute, resolveRelative } = uri;
     return Promise.all(
       locations
-        .map(location => resolveAbsolute(basePath, location))
-        .map(location => render(location))
-    ).then(responses =>
+        .map((location) => resolveAbsolute(basePath, location))
+        .map((location) => render(location))
+    ).then((responses) =>
       responses.reduce((result, response, index) => {
         const key = resolveRelative(basePath, indexFile(locations[index]));
         return { ...result, [key]: response };

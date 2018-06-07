@@ -2,7 +2,9 @@ const { resolve } = require('path');
 
 const { EnvironmentPlugin, optimize } = require('webpack');
 
-const { uri: { resolveRelative } } = require('@untool/express');
+const {
+  uri: { resolveRelative },
+} = require('@untool/express');
 
 const { isESNext, isExternal } = require('../utils/helpers');
 
@@ -88,7 +90,8 @@ module.exports = function getConfig(config, configureWebpack) {
       pathinfo: true,
       filename: config.serverFile,
       libraryTarget: 'commonjs2',
-      devtoolModuleFilenameTemplate: info => resolve(info.absoluteResourcePath),
+      devtoolModuleFilenameTemplate: (info) =>
+        resolve(info.absoluteResourcePath),
     },
     resolve: {
       alias: {

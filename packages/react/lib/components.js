@@ -2,7 +2,7 @@ const { createElement } = require('react');
 const { withRouter } = require('react-router');
 
 exports.withServer = function withServer(WrappedComponent) {
-  return withRouter(props =>
+  return withRouter((props) =>
     createElement(WrappedComponent, {
       ...props,
       setMiss() {

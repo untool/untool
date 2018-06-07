@@ -10,7 +10,7 @@ exports.Mixin = class Mixin {
 
 exports.bootstrap = function bootstrap(...args) {
   const config = getConfig();
-  const mixins = config.mixins.core.map(mixin => require(mixin));
+  const mixins = config.mixins.core.map((mixin) => require(mixin));
   const strategies = {
     ...mixins.reduce(
       (result, mixin) => ({ ...result, ...mixin.strategies }),
