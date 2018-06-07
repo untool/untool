@@ -3,7 +3,10 @@ const { renderToString } = require('react-dom/server');
 const { StaticRouter } = require('react-router');
 const { Helmet } = require('react-helmet');
 
-const { override, async: { compose, parallel, pipe } } = require('mixinable');
+const {
+  override,
+  async: { compose, parallel, pipe },
+} = require('mixinable');
 
 const { Mixin } = require('@untool/core');
 
@@ -50,16 +53,16 @@ class ReactPlugin extends Mixin {
     Promise.resolve()
       .then(() => this.bootstrap(req, res))
       .then(() => this.enhanceElement(this.element))
-      .then(element =>
-        this.fetchData({}, element).then(data => ({ element, data }))
+      .then((element) =>
+        this.fetchData({}, element).then((data) => ({ element, data }))
       )
-      .then(result => {
+      .then((result) => {
         const { element, data } = result;
         const markup = renderToString(element);
         const helmet = Helmet.renderStatic();
         this.enhanceData({ ...data, markup, helmet })
           .then(template)
-          .then(document => {
+          .then((document) => {
             const routerContext = this.routerContext;
             if (routerContext.miss) {
               next();

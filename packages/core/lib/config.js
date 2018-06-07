@@ -1,6 +1,8 @@
 const { basename, dirname, join } = require('path');
 
-const { create: { sync: createResolver } } = require('enhanced-resolve');
+const {
+  create: { sync: createResolver },
+} = require('enhanced-resolve');
 const { sync: findUp } = require('find-up');
 const cosmiconfig = require('cosmiconfig');
 const mergeWith = require('lodash.mergewith');
@@ -45,7 +47,7 @@ const resolveMixins = ({ mixins, rootDir }) =>
   mixins.reduce(
     (result, mixin) => {
       let found = false;
-      Object.keys(result).forEach(target => {
+      Object.keys(result).forEach((target) => {
         const targetMixin = resolveMixin(target, rootDir, mixin);
         if (targetMixin) {
           if (!result[target].includes(targetMixin)) {
@@ -62,7 +64,7 @@ const resolveMixins = ({ mixins, rootDir }) =>
     { core: [], server: [], browser: [] }
   );
 
-const applyEnv = result => {
+const applyEnv = (result) => {
   const nsp = process.env.UNTOOL_NSP || 'untool';
   const env = process.env[nsp.toUpperCase() + '_ENV'] || process.env.NODE_ENV;
   const config = result && result.config;
@@ -83,7 +85,7 @@ const loadConfig = (context, preset) => {
   );
 };
 
-const loadSettings = context => {
+const loadSettings = (context) => {
   const result = loadConfig(context);
   return result ? result.config : {};
 };
@@ -108,17 +110,17 @@ const loadPresets = (context, presets = []) =>
     const newContext = dirname(filepath);
     if (config.mixins) {
       config.mixins = config.mixins.map(
-        mixin => (mixin.startsWith('.') ? join(newContext, mixin) : mixin)
+        (mixin) => (mixin.startsWith('.') ? join(newContext, mixin) : mixin)
       );
     }
     return merge(configs, loadPresets(newContext, config.presets), config);
   }, {});
 
-const substitutePlaceholders = config => {
+const substitutePlaceholders = (config) => {
   const flatConfig = flatten(config);
   const keys = Object.keys(flatConfig);
   const regExp = new RegExp(`<(${keys.map(escapeRegExp).join('|')})>`, 'g');
-  const substituteRecursive = item => {
+  const substituteRecursive = (item) => {
     if (Array.isArray(item)) {
       return item.map(substituteRecursive);
     }

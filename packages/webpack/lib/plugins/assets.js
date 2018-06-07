@@ -7,7 +7,7 @@ module.exports = class WebpackAssetsPlugin {
     this.setAssets = setAssets;
   }
   apply(compiler) {
-    compiler.hooks.emit.tap('untool-assets', compilation => {
+    compiler.hooks.emit.tap('untool-assets', (compilation) => {
       const assets = Object.keys(compilation.assets);
       const chunkNames = Array.from(compilation.namedChunks.keys());
       const assetsByChunkName = chunkNames.reduce(

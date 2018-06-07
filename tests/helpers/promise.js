@@ -7,9 +7,9 @@ module.exports = class Promiser extends EventEmitter {
     );
   }
   promiseArg(topic, index) {
-    return this.promise(topic, resolve => (...args) => resolve(args[index]));
+    return this.promise(topic, (resolve) => (...args) => resolve(args[index]));
   }
   promiseArgs(topic) {
-    return this.promise(topic, resolve => (...args) => resolve(args));
+    return this.promise(topic, (resolve) => (...args) => resolve(args));
   }
 };

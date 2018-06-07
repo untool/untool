@@ -18,16 +18,16 @@ module.exports = (config, assetData) => (req, res, next) => {
     assetsByType: { css: [], js: [] },
   });
   Object.keys(assetsByChunkName)
-    .filter(chunkName =>
+    .filter((chunkName) =>
       new RegExp(`^(vendors~)?${config.namespace}$`).test(chunkName)
     )
-    .forEach(chunkName => {
+    .forEach((chunkName) => {
       const chunkAssets = assetsByChunkName[chunkName];
       const assets = Array.isArray(chunkAssets) ? chunkAssets : [chunkAssets];
-      Object.keys(assetsByType).forEach(extension => {
+      Object.keys(assetsByType).forEach((extension) => {
         assetsByType[extension].push(
           ...assets.filter(
-            asset =>
+            (asset) =>
               asset &&
               extname(asset) === `.${extension}` &&
               !asset.endsWith('.hot-update.js')

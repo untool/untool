@@ -1,6 +1,6 @@
 exports.resolve = function resolve(...args) {
   const basePath = exports.stripTrailingSlash(args.shift());
-  const pathSegments = args.map(segment =>
+  const pathSegments = args.map((segment) =>
     segment.replace(/(?:^\/+|\/+$)/g, '')
   );
   return [basePath].concat(pathSegments).join('/');

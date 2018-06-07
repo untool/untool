@@ -14,11 +14,11 @@ module.exports = exports = function createRenderMiddleware(webpackConfig) {
     middleware = null;
     error = null;
   });
-  transpiler.on('success', result => {
+  transpiler.on('success', (result) => {
     middleware = result;
     error = null;
   });
-  transpiler.on('error', result => {
+  transpiler.on('error', (result) => {
     middleware = null;
     error = result;
   });
@@ -29,7 +29,7 @@ module.exports = exports = function createRenderMiddleware(webpackConfig) {
     if (middleware) {
       return Promise.resolve(middleware);
     }
-    return new Promise(resolve => {
+    return new Promise((resolve) => {
       transpiler.once('result', () => {
         resolve(getMiddlewarePromise());
       });
@@ -37,7 +37,7 @@ module.exports = exports = function createRenderMiddleware(webpackConfig) {
   };
   return (req, res, next) => {
     getMiddlewarePromise()
-      .then(middleware => middleware(req, res, next))
+      .then((middleware) => middleware(req, res, next))
       .catch(next);
   };
 };

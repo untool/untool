@@ -1,7 +1,10 @@
 const { existsSync: exists } = require('fs');
 const { join } = require('path');
 
-const { sync: { pipe, sequence }, async: { override } } = require('mixinable');
+const {
+  sync: { pipe, sequence },
+  async: { override },
+} = require('mixinable');
 
 const { Mixin } = require('@untool/core');
 
@@ -72,12 +75,16 @@ class WebpackMixin extends Mixin {
     const rimraf = require('rimraf');
     const { buildDir } = this.config;
     return new Promise((resolve, reject) =>
-      rimraf(buildDir, error => (error ? reject(error) : resolve()))
+      rimraf(buildDir, (error) => (error ? reject(error) : resolve()))
     );
   }
   build() {
     const webpack = require('webpack');
-    const { options: { static: isStatic }, getConfig, inspectBuild } = this;
+    const {
+      options: { static: isStatic },
+      getConfig,
+      inspectBuild,
+    } = this;
     const config = isStatic
       ? getConfig('build')
       : [getConfig('build'), getConfig('node')];
@@ -85,7 +92,7 @@ class WebpackMixin extends Mixin {
       webpack(config).run(
         (error, stats) => (error ? reject(error) : resolve(stats))
       )
-    ).then(stats => void inspectBuild(stats, config) || stats);
+    ).then((stats) => void inspectBuild(stats, config) || stats);
   }
   configureWebpack(webpackConfig, loaderConfigs, target) {
     const { plugins } = webpackConfig;
@@ -146,7 +153,7 @@ class WebpackMixin extends Mixin {
             type: 'boolean',
           },
         },
-        handler: argv => {
+        handler: (argv) => {
           if (argv.production) {
             Promise.resolve(argv.clean && this.clean())
               .then(this.build)
@@ -183,7 +190,7 @@ class WebpackMixin extends Mixin {
             type: 'boolean',
           },
         },
-        handler: argv =>
+        handler: (argv) =>
           Promise.resolve(argv.clean && this.clean())
             .then(this.build)
             .then(this.logStats)

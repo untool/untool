@@ -5,8 +5,8 @@ module.exports = class WebpackRenderPlugin {
     this.render = render;
   }
   apply(compiler) {
-    compiler.hooks.emit.tapPromise('untool-render', compilation =>
-      this.render().then(pages => {
+    compiler.hooks.emit.tapPromise('untool-render', (compilation) =>
+      this.render().then((pages) => {
         Object.assign(
           compilation.assets,
           Object.keys(pages).reduce(

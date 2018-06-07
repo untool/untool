@@ -1,7 +1,9 @@
 /* eslint-disable no-console */
 const chalk = require('chalk');
 
-const { sync: { pipe, sequence, override } } = require('mixinable');
+const {
+  sync: { pipe, sequence, override },
+} = require('mixinable');
 
 const { Mixin } = require('@untool/core');
 

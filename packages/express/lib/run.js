@@ -41,8 +41,8 @@ const getPort = (ip, port) =>
 module.exports = (app, config, inspect, logInfo, logError) => {
   const { ip = '0.0.0.0', port, basePath, https } = config;
   const server = createServer(app, https);
-  getPort(ip, port).then(port =>
-    server.listen(port, ip, error => {
+  getPort(ip, port).then((port) =>
+    server.listen(port, ip, (error) => {
       if (error) {
         logError(error);
         server.close();

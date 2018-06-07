@@ -1,10 +1,10 @@
 const esc = require('serialize-javascript');
 
 const variable = ({ name, value }) => `<script>${name}=${esc(value)}</script>`;
-const cssLink = css => `<link rel="stylesheet" href="/${css}" />`;
-const jsLink = js => `<script src="/${js}"></script>`;
+const cssLink = (css) => `<link rel="stylesheet" href="/${css}" />`;
+const jsLink = (js) => `<script src="/${js}"></script>`;
 
-module.exports = data =>
+module.exports = (data) =>
   `<!DOCTYPE html>
 <html ${data.fragments.htmlAttributes}>
   <head>

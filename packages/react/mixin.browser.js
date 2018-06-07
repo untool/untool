@@ -3,7 +3,10 @@ const { createElement } = require('react');
 const { unmountComponentAtNode, hydrate, render } = require('react-dom');
 const { BrowserRouter } = require('react-router-dom');
 
-const { override, async: { compose, parallel, pipe } } = require('mixinable');
+const {
+  override,
+  async: { compose, parallel, pipe },
+} = require('mixinable');
 
 const { Mixin } = require('@untool/core');
 
@@ -31,12 +34,12 @@ class ReactMixin extends Mixin {
     Promise.resolve()
       .then(() => this.bootstrap())
       .then(() => this.enhanceElement(this.element))
-      .then(element =>
+      .then((element) =>
         this.fetchData({}, element)
-          .then(data => this.enhanceData(data))
+          .then((data) => this.enhanceData(data))
           .then(() => element)
       )
-      .then(element => (isMounted ? render : hydrate)(element, mountpoint));
+      .then((element) => (isMounted ? render : hydrate)(element, mountpoint));
   }
 }
 
