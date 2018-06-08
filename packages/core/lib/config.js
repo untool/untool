@@ -10,40 +10,42 @@ const isPlainObject = require('is-plain-object');
 const escapeRegExp = require('escape-string-regexp');
 const flatten = require('flat');
 
-const merge = (...args) =>
-  mergeWith({}, ...args, (objValue, srcValue, key) => {
-    if (Array.isArray(objValue)) {
-      if ('mixins' === key) {
-        return objValue.concat(srcValue);
-      }
-      return srcValue;
-    }
-  });
+const resolvePreset = createResolver({
+  mainFiles: ['preset'],
+  mainFields: ['preset'],
+});
 
-const resolvePreset = (context, preset) => {
-  return createResolver({
-    mainFiles: ['preset'],
-    mainFields: ['preset'],
-  })(context, preset);
-};
+const resolveCoreMixin = createResolver({
+  mainFiles: ['mixin.core', 'mixin'],
+  mainFields: ['mixin:core', 'mixin'],
+});
+
+const resolveServerMixin = createResolver({
+  mainFiles: ['mixin.server', 'mixin.runtime', 'mixin'],
+  mainFields: ['mixin:server', 'mixin:runtime', 'mixin'],
+});
+
+const resolveBrowserMixin = createResolver({
+  mainFiles: ['mixin.browser', 'mixin.runtime', 'mixin'],
+  mainFields: ['mixin:browser', 'mixin:runtime', 'mixin'],
+});
 
 const resolveMixin = (target, context, mixin) => {
   try {
-    const config = {
-      mainFiles: [`mixin.${target}`, 'mixin'],
-      mainFields: [`mixin:${target}`, 'mixin'],
-    };
-    if (target !== 'core') {
-      config.mainFiles.splice(1, 0, 'mixin.runtime');
-      config.mainFields.splice(1, 0, 'mixin:runtime');
+    switch (target) {
+      case 'core':
+        return resolveCoreMixin(context, mixin);
+      case 'server':
+        return resolveServerMixin(context, mixin);
+      case 'browser':
+        return resolveBrowserMixin(context, mixin);
     }
-    return createResolver(config)(context, mixin);
   } catch (_) {
-    return null;
+    return;
   }
 };
 
-const resolveMixins = ({ mixins, rootDir }) =>
+const resolveMixins = (mixins, rootDir) =>
   mixins.reduce(
     (result, mixin) => {
       let found = false;
@@ -63,6 +65,16 @@ const resolveMixins = ({ mixins, rootDir }) =>
     },
     { core: [], server: [], browser: [] }
   );
+
+const merge = (...args) =>
+  mergeWith({}, ...args, (objValue, srcValue, key) => {
+    if (Array.isArray(objValue)) {
+      if ('mixins' === key) {
+        return objValue.concat(srcValue);
+      }
+      return srcValue;
+    }
+  });
 
 const applyEnv = (result) => {
   const nsp = process.env.UNTOOL_NSP || 'untool';
@@ -87,19 +99,26 @@ const loadConfig = (context, preset) => {
 
 const loadSettings = (context) => {
   const result = loadConfig(context);
-  return result ? result.config : {};
+  return {
+    presets: ['@untool/defaults'],
+    ...(result ? result.config : {}),
+  };
 };
 
 const loadPreset = (context, preset) => {
+  const isResolveError = (error) =>
+    error && error.message && error.message.startsWith("Can't resolve");
   try {
     return loadConfig(context, preset);
-  } catch (_) {
+  } catch (error) {
+    if (!isResolveError(error)) throw error;
     try {
       return loadConfig(
         dirname(resolvePreset(context, join(preset, 'package.json')))
       );
-    } catch (_) {
-      throw new Error(`Can't find preset '${preset}'`);
+    } catch (error) {
+      if (!isResolveError(error)) throw error;
+      throw new Error(`Can't find preset '${preset}' in '${context}'`);
     }
   }
 };
@@ -107,13 +126,13 @@ const loadPreset = (context, preset) => {
 const loadPresets = (context, presets = []) =>
   presets.reduce((configs, preset) => {
     const { config, filepath } = loadPreset(context, preset);
-    const newContext = dirname(filepath);
+    const presetContext = dirname(filepath);
     if (config.mixins) {
       config.mixins = config.mixins.map(
-        (mixin) => (mixin.startsWith('.') ? join(newContext, mixin) : mixin)
+        (mixin) => (mixin.startsWith('.') ? join(presetContext, mixin) : mixin)
       );
     }
-    return merge(configs, loadPresets(newContext, config.presets), config);
+    return merge(configs, loadPresets(presetContext, config.presets), config);
   }, {});
 
 const substitutePlaceholders = (config) => {
@@ -131,7 +150,7 @@ const substitutePlaceholders = (config) => {
       }, {});
     }
     if (typeof item === 'string') {
-      return item.replace(regExp, function(_, match) {
+      return item.replace(regExp, (_, match) => {
         var result = flatConfig[match].toString();
         return regExp.test(result) ? substituteRecursive(result) : result;
       });
@@ -151,18 +170,14 @@ exports.getConfig = () => {
 
   const defaults = { rootDir, namespace, version, mixins: [] };
   const settings = loadSettings(rootDir);
-  const presets = loadPresets(
-    rootDir,
-    settings.presets || [process.env.UNTOOL_PRESET || '@untool/defaults']
-  );
-  const rawConfig = merge(defaults, presets, settings);
+  const presets = loadPresets(rootDir, settings.presets);
+  const config = merge(defaults, presets, settings);
 
-  delete rawConfig.presets;
-  delete rawConfig.env;
+  delete config.presets;
+  delete config.env;
 
-  const config = substitutePlaceholders(rawConfig);
-
-  config.mixins = resolveMixins(config);
-
-  return config;
+  return {
+    ...substitutePlaceholders(config),
+    mixins: resolveMixins(config.mixins, rootDir),
+  };
 };
