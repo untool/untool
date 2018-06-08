@@ -21,22 +21,22 @@ const createServer = (app, https) =>
       )
     : createHTTPServer(app);
 
-const findPort = (ip, port, max) =>
-  new Promise((resolve, reject) => {
-    max = max || Math.min(65535, port + 50);
-    if (port > max) {
-      reject(new Error('unable to open free port'));
-    } else {
-      process.nextTick(() => {
-        const server = createNetServer().unref();
-        server.on('error', () => resolve(findPort(ip, port + 1, max)));
-        server.listen(port, ip, () => server.close(() => resolve(port)));
-      });
-    }
-  });
-
-const getPort = (ip, port) =>
-  findPort(ip, ...(Array.isArray(port) ? port : [port || 8080, port]));
+const getPort = (ip, port) => {
+  const findPort = (ip, port, max) =>
+    new Promise((resolve, reject) => {
+      max = max || Math.min(65535, port + 50);
+      if (port > max) {
+        reject(new Error('unable to open free port'));
+      } else {
+        process.nextTick(() => {
+          const server = createNetServer().unref();
+          server.on('error', () => resolve(findPort(ip, port + 1, max)));
+          server.listen(port, ip, () => server.close(() => resolve(port)));
+        });
+      }
+    });
+  return findPort(ip, ...(Array.isArray(port) ? port : [port || 8080, port]));
+};
 
 module.exports = (app, config, inspect, logInfo, logError) => {
   const { ip = '0.0.0.0', port, basePath, https } = config;
