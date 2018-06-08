@@ -1,4 +1,4 @@
-const minimatch = require('minimatch');
+const micromatch = require('micromatch');
 
 const { resolveAbsoluteFolder, stripTrailingSlash } = require('./uri');
 
@@ -18,7 +18,7 @@ module.exports = (options, config) => {
     if (options.static && options.rewrite) {
       if (!res.locals.noRewrite && !isAsset(req.url)) {
         const destination = locations.find((location) =>
-          minimatch(req.url, stripTrailingSlash(location), {
+          micromatch(req.url, stripTrailingSlash(location), {
             nobrace: true,
             nocomment: true,
             noext: true,
