@@ -76,7 +76,10 @@ exports.createTranspiler = function createTranspiler(webpackConfig) {
     }
   };
   if (webpackConfig.devtool) {
-    sourceMapSupport.install({ hookRequire: true });
+    sourceMapSupport.install({
+      environment: 'node',
+      hookRequire: process.env.NODE_ENV !== 'production',
+    });
   }
   if (webpackConfig.watchOptions) {
     compiler.watch(webpackConfig.watchOptions, handleCompilation);
