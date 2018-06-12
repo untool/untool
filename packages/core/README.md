@@ -12,7 +12,7 @@ $ yarn add @untool/core # OR npm install @untool/core
 
 ## Configuration
 
-Apart from a couple of very basic properties (`namespace`, `version` and `rootDir`), `@untool/core` does not provide configuration of its own. It does, however, provide an elaborate configuration mechanism.
+Apart from a couple of very basic properties (`name`, `version` and `rootDir`), `@untool/core` does not provide configuration of its own. It does, however, provide an elaborate configuration mechanism.
 
 It allows you to set up mixins and pull in presets. Mixins provide extra functionality. Presets provide configuration defaults and often additionally include custom mixins. Read more about mixins and presets below.
 
@@ -50,10 +50,10 @@ You can even use placeholders everywhere throughout your configuration. Nested c
 
 `@untool/core` looks for configuration data in rather many places. It only uses the first config it finds, so make sure you do not have multiple configs lying around:
 
-* an `untool` property in your project's `package.json` file
-* an `.untoolrc` file in your project's root folder (JSON, YAML, or JS)
-* an `.untoolrc.{json,yaml,yml,js}` file in your project's root folder
-* an `untool.config.js` file in your project's root folder
+- an `untool` property in your project's `package.json` file
+- an `.untoolrc` file in your project's root folder (JSON, YAML, or JS)
+- an `.untoolrc.{json,yaml,yml,js}` file in your project's root folder
+- an `untool.config.js` file in your project's root folder
 
 We strongly encourage organizing and publishing reusable bits of configuration as custom presets. You can even use any other `untool` project as a preset: just install it (e.g. `yarn add <git remote url>`) and add it to the `presets` section in your project's `untool` configuration.
 
@@ -96,8 +96,8 @@ baz:
 
 In preset packages, `@untool/core` will try to load a config from the same places as in your project and in addition, it will look in two more places:
 
-* a file defined in the `preset` property in the preset's `package.json` file
-* a `preset.js` file in the preset package's root folder
+- a file defined in the `preset` property in the preset's `package.json` file
+- a `preset.js` file in the preset package's root folder
 
 If you want to not only override and extend config values, but rather provide actual features, you can include custom mixins directly in your preset. Some of `untool`'s default presets do just that.
 
@@ -109,12 +109,12 @@ You can even build custom mixins that provide hooks for others to tap into, exte
 
 `untool` uses a single config key for all three kinds of mixins: `mixins`. It expects an array of module path strings. `@untool/core` looks for mixins in the following places beneath those module paths:
 
-* a file defined in the `mixin:{core,server,browser}` property in the preset's `package.json` file
-* a file defined in the `mixin:runtime` property in the preset's `package.json` file (for `server`+`browser`)
-* a file defined in the `mixin` property in the preset's `package.json` file (for `core`+`server`+`browser`)
-* a `mixin.{core,server,browser}.js` file in the preset package's root folder
-* a `mixin.runtime.js` file in the preset package's root folder (for `server`+`browser`)
-* a `mixin.js` file in the preset package's root folder (for `core`+`server`+`browser`)
+- a file defined in the `mixin:{core,server,browser}` property in the preset's `package.json` file
+- a file defined in the `mixin:runtime` property in the preset's `package.json` file (for `server`+`browser`)
+- a file defined in the `mixin` property in the preset's `package.json` file (for `core`+`server`+`browser`)
+- a `mixin.{core,server,browser}.js` file in the preset package's root folder
+- a `mixin.runtime.js` file in the preset package's root folder (for `server`+`browser`)
+- a `mixin.js` file in the preset package's root folder (for `core`+`server`+`browser`)
 
 By using this mechanism, you can use a single NPM module to provide all three types of mixins, one mixin each for build and runtime or even a single mixin used for all contexts.
 
