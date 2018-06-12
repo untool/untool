@@ -122,11 +122,11 @@ class WebpackMixin extends Mixin {
     }
   }
   registerCommands(yargs) {
-    const { namespace } = this.config;
+    const { name } = this.config;
     return yargs
       .command({
         command: 'start',
-        describe: `Build and serve ${namespace}`,
+        describe: `Build and serve ${name}`,
         builder: {
           production: {
             alias: 'p',
@@ -169,7 +169,7 @@ class WebpackMixin extends Mixin {
       })
       .command({
         command: 'build',
-        describe: `Build ${namespace}`,
+        describe: `Build ${name}`,
         builder: {
           production: {
             alias: 'p',
@@ -198,7 +198,7 @@ class WebpackMixin extends Mixin {
       })
       .command({
         command: 'develop',
-        describe: `Serve ${namespace} in watch mode`,
+        describe: `Serve ${name} in watch mode`,
         builder: {
           static: {
             alias: 's',

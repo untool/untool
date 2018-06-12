@@ -103,7 +103,7 @@ module.exports = function getConfig(config, configureWebpack) {
     mode: 'development',
     context: config.rootDir,
     entry: {
-      [config.namespace]: [
+      [config.name]: [
         require.resolve('webpack-hot-middleware/client'),
         require.resolve('../shims/browser'),
       ],

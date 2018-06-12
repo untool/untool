@@ -19,7 +19,7 @@ module.exports = (config, assetData) => (req, res, next) => {
   });
   Object.keys(assetsByChunkName)
     .filter((chunkName) =>
-      new RegExp(`^(vendors~)?${config.namespace}$`).test(chunkName)
+      new RegExp(`^(vendors~)?${config.name}$`).test(chunkName)
     )
     .forEach((chunkName) => {
       const chunkAssets = assetsByChunkName[chunkName];

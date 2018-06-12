@@ -82,7 +82,7 @@ module.exports = function getConfig(config, configureWebpack) {
     bail: process.env.NODE_ENV === 'production',
     context: config.rootDir,
     entry: {
-      [config.namespace]: require.resolve('../shims/node'),
+      [config.name]: require.resolve('../shims/node'),
     },
     output: {
       path: config.buildDir,
