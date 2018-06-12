@@ -1,6 +1,7 @@
 const { basename, dirname, join } = require('path');
 
 const {
+  sync: resolve,
   create: { sync: createResolver },
 } = require('enhanced-resolve');
 const { sync: findUp } = require('find-up');
@@ -9,6 +10,16 @@ const mergeWith = require('lodash.mergewith');
 const isPlainObject = require('is-plain-object');
 const escapeRegExp = require('escape-string-regexp');
 const flatten = require('flat');
+
+const merge = (...args) =>
+  mergeWith({}, ...args, (objValue, srcValue, key) => {
+    if (Array.isArray(objValue)) {
+      if ('mixins' === key) {
+        return objValue.concat(srcValue);
+      }
+      return srcValue;
+    }
+  });
 
 const resolvePreset = createResolver({
   mainFiles: ['preset'],
@@ -30,7 +41,7 @@ const resolveBrowserMixin = createResolver({
   mainFields: ['mixin:browser', 'mixin:runtime', 'mixin'],
 });
 
-const resolveMixin = (target, context, mixin) => {
+const resolveMixin = (context, mixin, target) => {
   try {
     switch (target) {
       case 'core':
@@ -45,12 +56,12 @@ const resolveMixin = (target, context, mixin) => {
   }
 };
 
-const resolveMixins = (mixins, rootDir) =>
+const resolveMixins = (context, mixins) =>
   mixins.reduce(
     (result, mixin) => {
       let found = false;
       Object.keys(result).forEach((target) => {
-        const targetMixin = resolveMixin(target, rootDir, mixin);
+        const targetMixin = resolveMixin(context, mixin, target);
         if (targetMixin) {
           if (!result[target].includes(targetMixin)) {
             result[target].push(targetMixin);
@@ -66,34 +77,20 @@ const resolveMixins = (mixins, rootDir) =>
     { core: [], server: [], browser: [] }
   );
 
-const merge = (...args) =>
-  mergeWith({}, ...args, (objValue, srcValue, key) => {
-    if (Array.isArray(objValue)) {
-      if ('mixins' === key) {
-        return objValue.concat(srcValue);
-      }
-      return srcValue;
-    }
-  });
-
-const applyEnv = (result) => {
+const loadConfig = (context, config) => {
   const nsp = process.env.UNTOOL_NSP || 'untool';
   const env = process.env[nsp.toUpperCase() + '_ENV'] || process.env.NODE_ENV;
-  const config = result && result.config;
-  return result
-    ? {
-        ...result,
-        config: config && config.env ? merge(config, config.env[env]) : config,
-      }
-    : result;
-};
-
-const loadConfig = (context, preset) => {
-  const nsp = process.env.UNTOOL_NSP || 'untool';
-  const explorer = cosmiconfig(nsp, { cache: false, stopDir: context });
-  const presetPath = preset && resolvePreset(context, preset);
-  return applyEnv(
-    presetPath ? explorer.loadSync(presetPath) : explorer.searchSync(context)
+  const { loadSync, searchSync } = cosmiconfig(nsp, { stopDir: context });
+  const configPath = config && resolvePreset(context, config);
+  const result = configPath ? loadSync(configPath) : searchSync(context);
+  return (
+    result && {
+      ...result,
+      config:
+        result && result.config && result.config.env
+          ? merge(result.config, result.config.env[env])
+          : result.config,
+    }
   );
 };
 
@@ -113,9 +110,7 @@ const loadPreset = (context, preset) => {
   } catch (error) {
     if (!isResolveError(error)) throw error;
     try {
-      return loadConfig(
-        dirname(resolvePreset(context, join(preset, 'package.json')))
-      );
+      return loadConfig(dirname(resolve(context, `${preset}/package.json`)));
     } catch (error) {
       if (!isResolveError(error)) throw error;
       throw new Error(`Can't find preset '${preset}' in '${context}'`);
@@ -163,12 +158,9 @@ const substitutePlaceholders = (config) => {
 exports.getConfig = () => {
   const pkgFile = findUp('package.json');
   const rootDir = dirname(pkgFile);
-  const {
-    name: namespace = basename(rootDir),
-    version = '0.0.0',
-  } = require(pkgFile);
+  const { name = basename(rootDir), version = '0.0.0' } = require(pkgFile);
 
-  const defaults = { rootDir, namespace, version, mixins: [] };
+  const defaults = { rootDir, name, version, mixins: [] };
   const settings = loadSettings(rootDir);
   const presets = loadPresets(rootDir, settings.presets);
   const config = merge(defaults, presets, settings);
@@ -178,6 +170,6 @@ exports.getConfig = () => {
 
   return {
     ...substitutePlaceholders(config),
-    mixins: resolveMixins(config.mixins, rootDir),
+    mixins: resolveMixins(rootDir, config.mixins),
   };
 };
