@@ -46,15 +46,15 @@ module.exports = {
 
 The code block above mirrors `@untool/defaults/preset.js`' actual source code in its entirety. Please refer to the listed mixins and presets for more information. While `@untool/defaults` does not really provide any relevant settings of its own, `@untool/core` does:
 
-| Property    | Type     | Default                  |
-| ----------- | -------- | ------------------------ |
-| `namespace` | `string` | `PACKAGE_JSON_NAME`      |
-| `version`   | `string` | `PACKAGE_JSON_VERSION`   |
-| `rootDir`   | `string` | `PACKAGE_JSON_DIRECTORY` |
+| Property  | Type     | Default                  |
+| --------- | -------- | ------------------------ |
+| `name`    | `string` | `PACKAGE_JSON_NAME`      |
+| `version` | `string` | `PACKAGE_JSON_VERSION`   |
+| `rootDir` | `string` | `PACKAGE_JSON_DIRECTORY` |
 
-### `namespace`
+### `name`
 
-The application namespace; used throughout the `untool` ecosystem to individualize log output, asset file names, and even HTML IDs. This value is determined by checking your application's package.json file and falling back to its directory name. **Do not override - simply update the `name` field in your `package.json` file.**
+The application name; used throughout the `untool` ecosystem to individualize log output, asset file names, and even HTML IDs. This value is determined by checking your application's package.json file and falling back to its directory name. **Do not override - simply update the `name` field in your `package.json` file.**
 
 ### `version`
 
