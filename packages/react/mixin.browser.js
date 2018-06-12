@@ -23,9 +23,10 @@ class ReactMixin extends Mixin {
     return createElement(BrowserRouter, this.routerOptions, element);
   }
   render() {
-    var mountpoint = document.querySelector(`#${this.config.namespace}`);
-    var attribute = `data-${this.config.namespace}`;
-    var isMounted = mountpoint.hasAttribute(attribute);
+    const { name } = this.config;
+    const mountpoint = document.querySelector(`#${name}`);
+    const attribute = `data-${name}`;
+    const isMounted = mountpoint.hasAttribute(attribute);
     if (isMounted) {
       unmountComponentAtNode(mountpoint);
     } else {
