@@ -45,10 +45,10 @@ class ExpressMixin extends Mixin {
     }
   }
   registerCommands(yargs) {
-    const { namespace } = this.config;
+    const { name } = this.config;
     return yargs.command({
       command: 'serve',
-      describe: `Serve ${namespace}`,
+      describe: `Serve ${name}`,
       builder: {
         production: {
           alias: 'p',
