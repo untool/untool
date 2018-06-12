@@ -109,7 +109,7 @@ module.exports = function getConfig(config, configureWebpack) {
     bail: process.env.NODE_ENV === 'production',
     context: config.rootDir,
     entry: {
-      [config.namespace]: require.resolve('../shims/browser'),
+      [config.name]: require.resolve('../shims/browser'),
     },
     output: {
       path: config.buildDir,
