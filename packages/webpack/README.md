@@ -157,7 +157,7 @@ Path of your server output file, relative to [`buildDir`](https://github.com/unt
 
 ```json
 {
-  "serverFile": "<namespace>/server.js"
+  "serverFile": "server.js"
 }
 ```
 
@@ -167,6 +167,6 @@ Path of your assets manifest file, relative to [`buildDir`](https://github.com/u
 
 ```json
 {
-  "assetFile": "<namespace>/assets.json"
+  "assetFile": "assets.json"
 }
 ```
