@@ -37,7 +37,7 @@ class ReactPlugin extends Mixin {
   enhanceData(data) {
     return {
       ...data,
-      mountpoint: this.config.namespace,
+      mountpoint: this.config.name,
       assetsByType: this.assetsByType,
       globals: data.globals || [],
       fragments: Object.keys(data.helmet).reduce(
