@@ -26,37 +26,37 @@ class YargsMixin extends Mixin {
     process.exit(1);
   }
   logDebug(...args) {
-    const { namespace } = this.config;
+    const { name } = this.config;
     if (this.levels && this.levels.includes('debug')) {
-      console.log(chalk.bold(`${namespace} debug`));
+      console.log(chalk.bold(`${name} debug`));
       console.debug(...args);
     }
   }
   logInfo(...args) {
-    const { namespace } = this.config;
+    const { name } = this.config;
     if (this.levels && this.levels.includes('info')) {
-      console.log(chalk.bold(`${namespace} info`));
+      console.log(chalk.bold(`${name} info`));
       console.info(...args);
     }
   }
   logWarn(...args) {
-    const { namespace } = this.config;
+    const { name } = this.config;
     if (this.levels && this.levels.includes('warn')) {
-      console.log(chalk.yellow.bold(`${namespace} warn`));
+      console.log(chalk.yellow.bold(`${name} warn`));
       console.warn(...args);
     }
   }
   logError(error) {
-    const { namespace } = this.config;
+    const { name } = this.config;
     if (!this.levels || this.levels.includes('error')) {
-      console.log(chalk.red.bold(`${namespace} error`));
+      console.log(chalk.red.bold(`${name} error`));
       console.error(error.stack ? error.stack.toString() : error.toString());
     }
   }
   logStats(stats) {
-    const { namespace } = this.config;
+    const { name } = this.config;
     if (this.levels && this.levels.includes('info')) {
-      console.log(chalk.bold(`${namespace} stats`));
+      console.log(chalk.bold(`${name} stats`));
       console.info(
         stats.toString({ chunks: false, modules: false, entrypoints: false })
       );
