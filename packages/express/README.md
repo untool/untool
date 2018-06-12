@@ -165,7 +165,7 @@ This is the URL base path, i.e. subfolder, your application will be served from.
 
 ```json
 {
-  "basePath": "<namespace>"
+  "basePath": "<name>"
 }
 ```
 
