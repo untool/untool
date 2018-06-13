@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.8.0"></a>
+# [0.8.0](https://github.com/untool/untool/compare/v0.7.0...v0.8.0) (2018-06-13)
+
+
+### Features
+
+* **webpack:** enable node source map support in production ([7f12126](https://github.com/untool/untool/commit/7f12126))
+* **webpack:** improve error handling ([77fe413](https://github.com/untool/untool/commit/77fe413))
+
+
+
+
 <a name="0.7.0"></a>
 # [0.7.0](https://github.com/untool/untool/compare/v0.4.0...v0.7.0) (2018-06-05)
 

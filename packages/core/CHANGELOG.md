@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.8.0"></a>
+# [0.8.0](https://github.com/untool/untool/compare/v0.7.0...v0.8.0) (2018-06-13)
+
+
+### Features
+
+* **core:** add friendly error messages ([0ee61ee](https://github.com/untool/untool/commit/0ee61ee))
+
+
+
+
 <a name="0.7.0"></a>
 # [0.7.0](https://github.com/untool/untool/compare/v0.4.0...v0.7.0) (2018-06-05)
 
