@@ -90,16 +90,15 @@ With this method you can render HTML pages for all configured [`locations`](http
 
 `@untool/express` defines a couple of settings as a preset for `@untool/core`'s [configuration engine](https://github.com/untool/untool/blob/master/packages/core/README.md#configuration). You can manage and access them using the mechanisms outlined there.
 
-| Property    | Type               | Default                       |
-| ----------- | ------------------ | ----------------------------- |
-| `https`     | `boolean`/`Object` | `false`                       |
-| `ip`        | `string`           | `process.env.IP || '0.0.0.0'` |
-| `port`      | `number`           | `process.env.PORT || 8080`    |
-| `locations` | `[string]`         | `['/**']`                     |
-| `basePath`  | `string`           | `''`                          |
-| `assetPath` | `string`           | `'<basePath>'`                |
-| `buildDir`  | `string`           | `'<rootDir>/dist'`            |
-| `compress`  | `boolean`/`Object` | `false`                       |
+| Property    | Type               | Default                         |
+| ----------- | ------------------ | ------------------------------- |
+| `https`     | `boolean`/`Object` | `false`                         |
+| `host`      | `string`           | `process.env.HOST || '0.0.0.0'` |
+| `port`      | `number`           | `process.env.PORT || 8080`      |
+| `locations` | `[string]`         | `[]`                            |
+| `basePath`  | `string`           | `''`                            |
+| `assetPath` | `string`           | `'<basePath>'`                  |
+| `buildDir`  | `string`           | `'<rootDir>/dist'`              |
 
 ### `https`
 
@@ -119,13 +118,13 @@ With this method you can render HTML pages for all configured [`locations`](http
 }
 ```
 
-### `ip`
+### `host`
 
-The [IP address](https://en.wikipedia.org/wiki/IP_address) to bind the server to is, of course, configurable. By default, `@untool/express` tries to read an environment variable named `$IP` and falls back to `'0.0.0.0'`.
+The [hostname](https://en.wikipedia.org/wiki/Hostname) to bind the server to is, of course, configurable. By default, `@untool/express` tries to read an environment variable named `$HOST` and falls back to [`'0.0.0.0'`](https://en.wikipedia.org/wiki/0.0.0.0).
 
 ```json
 {
-  "ip": "10.10.10.10"
+  "host": "10.10.10.10"
 }
 ```
 
@@ -188,30 +187,3 @@ This is the file system path, i.e. subfolder, your application's assets will be 
   "buildDir": "<rootDir>/build"
 }
 ```
-
-### `compress`
-
-With this setting, you can enable response compression in `@untool/express`. It is only enabled in production mode by default.
-
-```json
-{
-  "compress": false,
-  "env": {
-    "production": {
-      "compress": true
-    }
-  }
-}
-```
-
-Instead of just boolean values, `compress` also accepts plain objects containing [`compression` settings](https://github.com/expressjs/compression#options).
-
-```json
-{
-  "compress": {
-    "level": 9
-  }
-}
-```
-
-By default, `@untool/express` only compresses response bodies over 1KB in size. Using compression on smaller files can actually increase file size.
