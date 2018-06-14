@@ -10,7 +10,7 @@ exports.render = function render(...renderArgs) {
   return (config) => {
     const { mixins } = config;
     const strategies = mixins.reduce(
-      (result, mixin) => ({ ...result, ...mixin.strategies }),
+      (result, mixin) => Object.assign({}, result, mixin.strategies),
       {}
     );
     const createMixinable = define(strategies)(...mixins);
