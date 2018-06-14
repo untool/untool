@@ -50,28 +50,8 @@ module.exports = class FooMixin extends Mixin {
   registerCommands(yargs) {
     return yargs.command({
       command: 'foo',
-      handler: argv => {},
+      handler: (argv) => {},
     });
   }
 };
 ```
-
-### `log{Debug,Info,Warn,Error}(...args)` ([override](https://github.com/untool/mixinable/blob/master/README.md#defineoverride))
-
-These are rather unusual mixin hooks, as they are basically utility methods that you can use in other mixins. They basically simply map to [`console.debug()`](https://nodejs.org/api/console.html#console_console_debug_data_args), [`console.info()`](https://nodejs.org/api/console.html#console_console_info_data_args), [`console.warn()`](https://nodejs.org/api/console.html#console_console_warn_data_args), [`console.error()`](https://nodejs.org/api/console.html#console_console_error_data_args).
-
-```javascript
-const { Mixin } = require('@untool/core');
-
-module.exports = class FooMixin extends Mixin {
-  foo() {
-    this.logInfo('foo!');
-  }
-};
-```
-
-You can override the default implementation of these hooks by defining the appropriate methods in a custom `@untool/core` [`core` mixin](https://github.com/untool/untool/blob/master/packages/core/README.md#mixins).
-
-### `logStats(stats)` ([override](https://github.com/untool/mixinable/blob/master/README.md#defineoverride))
-
-This is yet another utility, aimed specifically at printing [Webpack stats](https://webpack.js.org/configuration/stats/). It receives a [`stats`](https://github.com/webpack/docs/wiki/node.js-api#stats) object and its output to `stdout` is considered `info`. It uses [`console.info()`](https://nodejs.org/api/console.html#console_console_info_data_args) under the hood.
