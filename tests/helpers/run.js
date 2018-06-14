@@ -30,7 +30,7 @@ const bootstrap = () =>
 module.exports = (...args) =>
   bootstrap().then((rootDir) => {
     process.chdir(rootDir);
-    process.nextTick(() => run(...args, '--log=error'));
+    process.nextTick(() => run(...args));
 
     const { events } = require(join(rootDir, 'core'));
     const api = {
