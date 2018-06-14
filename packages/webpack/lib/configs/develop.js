@@ -6,9 +6,6 @@ const {
   NamedModulesPlugin,
 } = require('webpack');
 
-const postcssImportPlugin = require('postcss-import');
-const postcssPresetEnv = require('postcss-preset-env');
-
 const {
   uri: { resolveRelative },
 } = require('@untool/express');
@@ -37,41 +34,8 @@ module.exports = function getConfig(config, configureWebpack) {
           },
         ],
       ],
-      plugins: [
-        require.resolve('babel-plugin-syntax-dynamic-import'),
-        require.resolve('babel-plugin-transform-class-properties'),
-        require.resolve('babel-plugin-transform-object-rest-spread'),
-      ],
+      plugins: [require.resolve('babel-plugin-syntax-dynamic-import')],
     },
-  };
-
-  const cssLoaderConfig = {
-    test: [/\.css$/],
-    use: [
-      require.resolve('style-loader'),
-      {
-        loader: require.resolve('css-loader'),
-        options: {
-          importLoaders: 1,
-          camelCase: true,
-          modules: true,
-          localIdentName: '[folder]-[name]-[local]-[hash:8]',
-          sourceMap: process.env.NODE_ENV !== 'production',
-        },
-      },
-      {
-        loader: require.resolve('postcss-loader'),
-        options: {
-          ident: 'postcss',
-          plugins: [
-            postcssImportPlugin(),
-            postcssPresetEnv({
-              browsers: config.browsers,
-            }),
-          ],
-        },
-      },
-    ],
   };
 
   const urlLoaderConfig = {
@@ -91,12 +55,7 @@ module.exports = function getConfig(config, configureWebpack) {
     },
   };
 
-  const allLoaderConfigs = [
-    jsLoaderConfig,
-    cssLoaderConfig,
-    urlLoaderConfig,
-    fileLoaderConfig,
-  ];
+  const allLoaderConfigs = [jsLoaderConfig, urlLoaderConfig, fileLoaderConfig];
 
   const webpackConfig = {
     name: 'develop',
@@ -167,7 +126,6 @@ module.exports = function getConfig(config, configureWebpack) {
 
   const loaderConfigs = {
     jsLoaderConfig,
-    cssLoaderConfig,
     urlLoaderConfig,
     fileLoaderConfig,
     allLoaderConfigs,
