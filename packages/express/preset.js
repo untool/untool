@@ -1,15 +1,10 @@
 module.exports = {
   https: false,
-  ip: process.env.IP,
+  host: process.env.HOST,
   port: process.env.PORT,
-  locations: ['/**'],
+  locations: [],
   basePath: '',
   assetPath: '<basePath>',
   buildDir: '<rootDir>/dist',
-  env: {
-    production: {
-      compress: true,
-    },
-  },
   mixins: [__dirname],
 };

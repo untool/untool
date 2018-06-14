@@ -1,6 +1,5 @@
 const { readFileSync: readFile } = require('fs');
 const { join } = require('path');
-const { format } = require('url');
 
 const { createServer: createNetServer } = require('net');
 const { createServer: createHTTPServer } = require('http');
@@ -21,8 +20,8 @@ const createServer = (app, https) =>
       )
     : createHTTPServer(app);
 
-const getPort = (ip, port) => {
-  const findPort = (ip, port, max) =>
+const getPort = (host, port) => {
+  const findPort = (host, port, max) =>
     new Promise((resolve, reject) => {
       max = max || Math.min(65535, port + 50);
       if (port > max) {
@@ -30,33 +29,24 @@ const getPort = (ip, port) => {
       } else {
         process.nextTick(() => {
           const server = createNetServer().unref();
-          server.on('error', () => resolve(findPort(ip, port + 1, max)));
-          server.listen(port, ip, () => server.close(() => resolve(port)));
+          server.on('error', () => resolve(findPort(host, port + 1, max)));
+          server.listen(port, host, () => server.close(() => resolve(port)));
         });
       }
     });
-  return findPort(ip, ...(Array.isArray(port) ? port : [port || 8080, port]));
+  return findPort(host, ...(Array.isArray(port) ? port : [port || 8080, port]));
 };
 
-module.exports = (app, config, inspect, logInfo, logError) => {
-  const { ip = '0.0.0.0', port, basePath, https } = config;
+module.exports = (app, config, inspectServer, handleError) => {
+  const { host = '0.0.0.0', port, https } = config;
   const server = createServer(app, https);
-  getPort(ip, port).then((port) =>
-    server.listen(port, ip, (error) => {
+  getPort(host, port).then((port) =>
+    server.listen(port, host, (error) => {
       if (error) {
-        logError(error);
         server.close();
+        handleError(error);
       } else {
-        inspect(server);
-        logInfo(
-          'server listening at %s',
-          format({
-            protocol: https ? 'https' : 'http',
-            hostname: ['0.0.0.0', '127.0.0.1'].includes(ip) ? 'localhost' : ip,
-            pathname: basePath,
-            port,
-          })
-        );
+        inspectServer(server);
       }
     })
   );
