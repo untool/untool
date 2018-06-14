@@ -16,11 +16,13 @@ class ReactPlugin extends Mixin {
   constructor(config, element, options) {
     super(config);
     this.element = element;
-    this.routerOptions = {
-      context: {},
-      basename: config.basePath,
-      ...(options && options.router),
-    };
+    this.routerOptions = Object.assign(
+      {
+        context: {},
+        basename: config.basePath,
+      },
+      options && options.router
+    );
     this.routerContext = this.routerOptions.context;
   }
   bootstrap(req, res) {
@@ -28,26 +30,24 @@ class ReactPlugin extends Mixin {
     this.assetsByType = res.locals.assetsByType;
   }
   enhanceElement(element) {
-    const routerOptions = {
-      ...this.routerOptions,
+    const routerOptions = Object.assign({}, this.routerOptions, {
       location: this.location,
-    };
+    });
     return createElement(StaticRouter, routerOptions, element);
   }
   enhanceData(data) {
-    return {
-      ...data,
+    return Object.assign({}, data, {
       mountpoint: this.config.name,
       assetsByType: this.assetsByType,
       globals: data.globals || [],
       fragments: Object.keys(data.helmet).reduce(
-        (result, key) => ({
-          ...result,
-          [key]: data.helmet[key].toString(),
-        }),
+        (result, key) =>
+          Object.assign({}, result, {
+            [key]: data.helmet[key].toString(),
+          }),
         { headPrefix: '', headSuffix: '' }
       ),
-    };
+    });
   }
   render(req, res, next) {
     Promise.resolve()
@@ -60,7 +60,7 @@ class ReactPlugin extends Mixin {
         const { element, data } = result;
         const markup = renderToString(element);
         const helmet = Helmet.renderStatic();
-        this.enhanceData({ ...data, markup, helmet })
+        this.enhanceData(Object.assign({}, data, { markup, helmet }))
           .then(template)
           .then((document) => {
             const routerContext = this.routerContext;
