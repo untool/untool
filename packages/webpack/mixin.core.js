@@ -40,7 +40,7 @@ class WebpackMixin extends Mixin {
     return [
       require('webpack-dev-middleware')(compiler, {
         noInfo: true,
-        logLevel: 'warn',
+        logLevel: 'silent',
         publicPath: webpackBrowserConfig.output.publicPath,
         watchOptions: webpackBrowserConfig.watchOptions,
         serverSideRender: true,
@@ -157,7 +157,6 @@ class WebpackMixin extends Mixin {
           if (argv.production) {
             Promise.resolve(argv.clean && this.clean())
               .then(this.build)
-              .then(this.logStats)
               .then(this.runServer.bind(this, 'serve'))
               .catch(this.handleError);
           } else {
@@ -193,7 +192,6 @@ class WebpackMixin extends Mixin {
         handler: (argv) =>
           Promise.resolve(argv.clean && this.clean())
             .then(this.build)
-            .then(this.logStats)
             .catch(this.handleError),
       })
       .command({

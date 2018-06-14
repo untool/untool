@@ -30,22 +30,7 @@ module.exports = function getConfig(config, configureWebpack) {
           },
         ],
       ],
-      plugins: [
-        require.resolve('babel-plugin-dynamic-import-node'),
-        require.resolve('babel-plugin-transform-class-properties'),
-        require.resolve('babel-plugin-transform-object-rest-spread'),
-      ],
-    },
-  };
-
-  const cssLoaderConfig = {
-    test: [/\.css$/],
-    loader: require.resolve('css-loader/locals'),
-    options: {
-      camelCase: true,
-      modules: true,
-      localIdentName: '[folder]-[name]-[local]-[hash:8]',
-      sourceMap: process.env.NODE_ENV !== 'production',
+      plugins: [require.resolve('babel-plugin-dynamic-import-node')],
     },
   };
 
@@ -68,12 +53,7 @@ module.exports = function getConfig(config, configureWebpack) {
     },
   };
 
-  const allLoaderConfigs = [
-    jsLoaderConfig,
-    cssLoaderConfig,
-    urlLoaderConfig,
-    fileLoaderConfig,
-  ];
+  const allLoaderConfigs = [jsLoaderConfig, urlLoaderConfig, fileLoaderConfig];
 
   const webpackConfig = {
     name: 'node',
@@ -144,7 +124,6 @@ module.exports = function getConfig(config, configureWebpack) {
 
   const loaderConfigs = {
     jsLoaderConfig,
-    cssLoaderConfig,
     urlLoaderConfig,
     fileLoaderConfig,
     allLoaderConfigs,

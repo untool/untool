@@ -8,12 +8,6 @@ const {
 
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 
-const ExtractCSSPlugin = require('mini-css-extract-plugin');
-const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin');
-
-const postcssImportPlugin = require('postcss-import');
-const postcssPresetEnv = require('postcss-preset-env');
-
 const {
   uri: { resolveRelative },
 } = require('@untool/express');
@@ -42,41 +36,8 @@ module.exports = function getConfig(config, configureWebpack) {
           },
         ],
       ],
-      plugins: [
-        require.resolve('babel-plugin-syntax-dynamic-import'),
-        require.resolve('babel-plugin-transform-class-properties'),
-        require.resolve('babel-plugin-transform-object-rest-spread'),
-      ],
+      plugins: [require.resolve('babel-plugin-syntax-dynamic-import')],
     },
-  };
-
-  const cssLoaderConfig = {
-    test: [/\.css$/],
-    use: [
-      ExtractCSSPlugin.loader,
-      {
-        loader: require.resolve('css-loader'),
-        options: {
-          importLoaders: 1,
-          camelCase: true,
-          modules: true,
-          localIdentName: '[folder]-[name]-[local]-[hash:8]',
-          sourceMap: process.env.NODE_ENV !== 'production',
-        },
-      },
-      {
-        loader: require.resolve('postcss-loader'),
-        options: {
-          ident: 'postcss',
-          plugins: [
-            postcssImportPlugin(),
-            postcssPresetEnv({
-              browsers: config.browsers,
-            }),
-          ],
-        },
-      },
-    ],
   };
 
   const urlLoaderConfig = {
@@ -96,12 +57,7 @@ module.exports = function getConfig(config, configureWebpack) {
     },
   };
 
-  const allLoaderConfigs = [
-    jsLoaderConfig,
-    cssLoaderConfig,
-    urlLoaderConfig,
-    fileLoaderConfig,
-  ];
+  const allLoaderConfigs = [jsLoaderConfig, urlLoaderConfig, fileLoaderConfig];
 
   const webpackConfig = {
     name: 'build',
@@ -164,31 +120,18 @@ module.exports = function getConfig(config, configureWebpack) {
             output: { comments: false },
           },
         }),
-        new OptimizeCSSPlugin({
-          cssProcessorOptions: {
-            reduceIdents: { disable: true },
-            zindex: { disable: true },
-            mergeIdents: { disable: true },
-            discardUnused: { disable: true },
-          },
-        }),
       ],
     },
     plugins: [
       new HashedModuleIdsPlugin(),
       new optimize.ModuleConcatenationPlugin(),
       new EnvironmentPlugin({ NODE_ENV: 'development' }),
-      new ExtractCSSPlugin({
-        filename: getAssetPath('[name]-[contenthash:12].css'),
-        chunkFilename: getAssetPath('[name]-[contenthash:12].css'),
-      }),
     ],
     devtool: 'source-map',
   };
 
   const loaderConfigs = {
     jsLoaderConfig,
-    cssLoaderConfig,
     urlLoaderConfig,
     fileLoaderConfig,
     allLoaderConfigs,
