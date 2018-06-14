@@ -133,7 +133,7 @@ Using this utility mixin method, you can delete your `buildDir` and all of its c
 
 ### `browsers`
 
-This is a [`browserslist`](https://github.com/browserslist/browserslist) configuration that is being used in [CSS Next](http://cssnext.io) and Babel's [`preset-env`](https://babeljs.io/docs/plugins/preset-env/) to determine what language features need to be transpiled and/or polyfilled for your target platforms.
+This is a [`browserslist`](https://github.com/browserslist/browserslist) configuration that is being used and Babel's [`preset-env`](https://babeljs.io/docs/plugins/preset-env/) to determine what language features need to be transpiled and/or polyfilled for your target platforms.
 
 ```json
 {
