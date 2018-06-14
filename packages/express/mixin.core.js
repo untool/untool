@@ -17,8 +17,8 @@ class ExpressMixin extends Mixin {
   runServer(mode) {
     const run = require('./lib/run');
     const app = this.createServer(mode);
-    const { config, inspectServer, logInfo, logError } = this;
-    return run(app, config, inspectServer, logInfo, logError);
+    const { config, inspectServer, handleError } = this;
+    return run(app, config, inspectServer, handleError);
   }
   renderLocations() {
     const indexFile = require('directory-index');
@@ -35,14 +35,6 @@ class ExpressMixin extends Mixin {
         return { ...result, [key]: response };
       }, {})
     );
-  }
-  initializeServer(app, mode) {
-    const { compress } = this.config;
-    if (mode === 'serve' && compress) {
-      app.use(
-        require('compression')(typeof compress !== 'boolean' ? compress : {})
-      );
-    }
   }
   registerCommands(yargs) {
     const { name } = this.config;
