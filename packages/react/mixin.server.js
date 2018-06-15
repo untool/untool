@@ -16,33 +16,30 @@ class ReactPlugin extends Mixin {
   constructor(config, element, options) {
     super(config);
     this.element = element;
-    this.routerOptions = Object.assign(
+    this.options = Object.assign(
       {
         context: {},
         basename: config.basePath,
       },
       options && options.router
     );
-    this.routerContext = this.routerOptions.context;
   }
   bootstrap(req, res) {
-    this.location = req.path;
+    this.options.location = req.path;
     this.assetsByType = res.locals.assetsByType;
   }
   enhanceElement(element) {
-    const routerOptions = Object.assign({}, this.routerOptions, {
-      location: this.location,
-    });
-    return createElement(StaticRouter, routerOptions, element);
+    const { options } = this;
+    return createElement(StaticRouter, options, element);
   }
   enhanceData(data) {
-    return Object.assign({}, data, {
+    return Object.assign(data, {
       mountpoint: this.config.name,
       assetsByType: this.assetsByType,
       globals: data.globals || [],
       fragments: Object.keys(data.helmet).reduce(
         (result, key) =>
-          Object.assign({}, result, {
+          Object.assign(result, {
             [key]: data.helmet[key].toString(),
           }),
         { headPrefix: '', headSuffix: '' }
@@ -56,28 +53,25 @@ class ReactPlugin extends Mixin {
       .then((element) =>
         this.fetchData({}, element).then((data) => ({ element, data }))
       )
-      .then((result) => {
-        const { element, data } = result;
+      .then(({ element, data }) => {
         const markup = renderToString(element);
         const helmet = Helmet.renderStatic();
-        this.enhanceData(Object.assign({}, data, { markup, helmet }))
-          .then(template)
-          .then((document) => {
-            const routerContext = this.routerContext;
-            if (routerContext.miss) {
-              next();
-            } else if (routerContext.url) {
-              res.status(routerContext.status || 301);
-              res.set('Location', routerContext.url);
-              routerContext.headers && res.set(routerContext.headers);
-              res.end();
-            } else {
-              res.status(routerContext.status || 200);
-              routerContext.headers && res.set(routerContext.headers);
-              res.type('html');
-              res.send(document);
-            }
-          });
+        const { context = {} } = this.options;
+        if (context.miss) {
+          next();
+        } else if (context.url) {
+          res.status(context.status || 301);
+          res.set('Location', context.url);
+          context.headers && res.set(context.headers);
+          res.end();
+        } else {
+          res.status(context.status || 200);
+          context.headers && res.set(context.headers);
+          res.type('html');
+          return this.enhanceData(Object.assign(data, { markup, helmet })).then(
+            (data) => res.send(template(data))
+          );
+        }
       })
       .catch(next);
   }
