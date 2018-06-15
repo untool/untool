@@ -6,8 +6,6 @@
     "unmixin",
     "unpreset"
   ],
-  "main": "lib/core.js",
-  "esnext:main": "lib/components.js",
   "scripts": {
     "test": "echo \"Error: no test specified\""
   },

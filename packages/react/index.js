@@ -1,5 +1,5 @@
 module.exports = {
   get template() {
-    return require('./template');
+    return require('./lib/template');
   },
 };
