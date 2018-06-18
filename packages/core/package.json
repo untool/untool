@@ -23,7 +23,7 @@
   "dependencies": {
     "cosmiconfig": "^5.0.5",
     "enhanced-resolve": "^4.0.0",
-    "find-up": "^2.1.0",
+    "find-up": "^3.0.0",
     "flat": "^4.0.0",
     "is-plain-object": "^2.0.4",
     "lodash.mergewith": "^4.6.1",

@@ -22,6 +22,6 @@
   "homepage": "https://github.com/untool/untool#readme",
   "dependencies": {
     "enhanced-resolve": "^4.0.0",
-    "find-up": "^2.1.0"
+    "find-up": "^3.0.0"
   }
 }
