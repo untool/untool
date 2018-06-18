@@ -14,7 +14,7 @@ class ReactMixin extends Mixin {
   constructor(config, element, options) {
     super(config);
     this.element = element;
-    this.routerOptions = Object.assign(
+    this.options = Object.assign(
       {
         basename: config.basePath,
       },
@@ -22,7 +22,7 @@ class ReactMixin extends Mixin {
     );
   }
   enhanceElement(element) {
-    return createElement(BrowserRouter, this.routerOptions, element);
+    return createElement(BrowserRouter, this.options, element);
   }
   render() {
     const { name } = this.config;

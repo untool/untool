@@ -29,8 +29,7 @@ class ReactPlugin extends Mixin {
     this.assetsByType = res.locals.assetsByType;
   }
   enhanceElement(element) {
-    const { options } = this;
-    return createElement(StaticRouter, options, element);
+    return createElement(StaticRouter, this.options, element);
   }
   enhanceData(data) {
     return Object.assign(data, {
