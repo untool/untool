@@ -11,6 +11,7 @@ test('core lifecycle hooks', (t) =>
       api.getArgTypes('registerCommands').then((args) => t.snapshot(args)),
       api.getArgTypes('handleArguments').then((args) => t.snapshot(args)),
       api.getArgTypes('initializeServer').then((args) => t.snapshot(args)),
+      api.getArgTypes('optimizeServer').then((args) => t.snapshot(args)),
       api.getArgTypes('finalizeServer').then((args) => t.snapshot(args)),
       api.getArgTypes('inspectServer').then((args) => t.snapshot(args)),
 
