@@ -1,3 +1,4 @@
+const debug = require('debug')('untool:core');
 const define = require('mixinable');
 
 const { getConfig } = require('./config');
@@ -17,5 +18,8 @@ exports.bootstrap = function bootstrap(...args) {
       {}
     ),
   };
+
+  debug(mixins.map(({ name, strategies }) => ({ [name]: strategies })));
+
   return define(strategies)(...mixins)(config, ...args);
 };
