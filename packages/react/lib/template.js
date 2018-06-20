@@ -1,8 +1,18 @@
 const esc = require('serialize-javascript');
 
-const variable = ({ name, value }) => `<script>${name}=${esc(value)}</script>`;
 const cssLink = (css) => `<link rel="stylesheet" href="/${css}" />`;
 const jsLink = (js) => `<script src="/${js}"></script>`;
+
+const serializeGlobals = (globals) => {
+  const entries = Object.entries(globals);
+  if (!entries.length) {
+    return '';
+  }
+
+  var escaped = entries.map(([k, v]) => `${k}=${esc(v)}`);
+
+  return `<script>var ${escaped.join(',')};</script>`;
+};
 
 module.exports = (data) =>
   `<!DOCTYPE html>
@@ -20,7 +30,7 @@ module.exports = (data) =>
   <body ${data.fragments.bodyAttributes}>
     <div id="${data.mountpoint}">${data.markup}</div>
     ${data.fragments.noscript}
-    ${data.globals.map(variable).join('')}
+    ${serializeGlobals(data.globals)}
     ${data.assetsByType.js.map(jsLink).join('')}
   </body>
 </html>`.replace(/(^\s*[\r\n]| (?=>))/gm, '');
