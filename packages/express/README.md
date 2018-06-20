@@ -38,14 +38,6 @@ This is equivalent to manually setting `$NODE_ENV` before calling the actual com
 $ NODE_ENV=production un serve
 ```
 
-##### `-s` / `--static`
-
-In static mode, `@untool/express` will rewrite request paths according to its `locations` configuration.
-
-```bash
-$ un serve -s # OR un serve --static
-```
-
 ## API
 
 ### `initializeServer(app, target)` ([sequence](https://github.com/untool/mixinable/blob/master/README.md#defineparallel))
@@ -64,11 +56,15 @@ module.exports = class MyMixin extends Mixin {
 };
 ```
 
-Implement this hook in your `@untool/core` [`core` mixin](https://github.com/untool/untool/blob/master/packages/core/README.md#mixins) and you will be able to set up Express in any way you like. This very module uses this hook to conditionally activate HTTP response compression.
+Implement this hook in your `@untool/core` [`core` mixin](https://github.com/untool/untool/blob/master/packages/core/README.md#mixins) and you will be able to set up Express in any way you like.
 
-### `finalizeServer(app, target)` ([sequence](https://github.com/untool/mixinable/blob/master/README.md#defineparallel))
+### `optimizeServer(app, target)` ([sequence](https://github.com/untool/mixinable/blob/master/README.md#defineparallel))
 
-This hook works exactly like the one described above, `initializeServer()`, only after everything else has been set up and configured. You can, for example, register an [error middleware](https://expressjs.com/en/guide/error-handling.html) here - just make sure your mixin is configured as the last one to implement `finalizeServer()`.
+This hook works exactly like the one described above, but after all initialization middlewares have run and after static files have been taken care of.
+
+### `finalizeServer(app, target)` ([override](https://github.com/untool/mixinable/blob/master/README.md#defineoverride))
+
+This hook works similarly to the ones described above, only after everything else has been set up and configured. You can, for example, register a single [error middleware](https://expressjs.com/en/guide/error-handling.html) here - just make sure your mixin is configured as the last one to implement `finalizeServer()`.
 
 ### `inspectServer(app, target)` ([sequence](https://github.com/untool/mixinable/blob/master/README.md#defineparallel))
 
@@ -147,16 +143,6 @@ Using this setting, you can define the locations used for prerendering of static
   "locations": ["/foo", "/bar"]
 }
 ```
-
-`@untool/express` also allows you to create one or more generic pages that will be used for multiple paths. To configure these kinds of setups, you need just use [minimatch](https://github.com/isaacs/minimatch) syntax.
-
-```json
-{
-  "locations": ["/**", "/foo/*"]
-}
-```
-
-These minimatch patterns will not only be used for HTML generation, but also for URL rewriting. In static mode, by default, `@untool/express` will generate and serve a single static page for all URL paths (`/**`).
 
 ### `basePath`
 
