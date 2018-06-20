@@ -11,8 +11,14 @@ class ExpressMixin extends Mixin {
   createServer(mode) {
     const isStatic = mode === 'static';
     const create = isStatic ? require('./lib/static') : require('./lib/serve');
-    const { options, config, initializeServer, finalizeServer } = this;
-    return create(mode, options, config, initializeServer, finalizeServer);
+    return create(
+      mode,
+      this.options,
+      this.config,
+      this.initializeServer,
+      this.optimizeServer,
+      this.finalizeServer
+    );
   }
   runServer(mode) {
     const run = require('./lib/run');
@@ -48,18 +54,6 @@ class ExpressMixin extends Mixin {
           describe: 'Enable production mode',
           type: 'boolean',
         },
-        static: {
-          alias: 's',
-          default: false,
-          describe: 'Only serve static locations',
-          type: 'boolean',
-        },
-        rewrite: {
-          alias: 'r',
-          default: true,
-          describe: 'Rewrite to static locations',
-          type: 'boolean',
-        },
       },
       handler: () => this.runServer('serve'),
     });
@@ -71,7 +65,8 @@ class ExpressMixin extends Mixin {
 
 ExpressMixin.strategies = {
   initializeServer: sequence,
-  finalizeServer: sequence,
+  optimizeServer: sequence,
+  finalizeServer: overrideSync,
   inspectServer: sequence,
   createServer: overrideSync,
   runServer: overrideSync,

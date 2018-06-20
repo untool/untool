@@ -3,9 +3,10 @@ const EventEmitter = require('events');
 const { Router } = require('express');
 const mocks = require('node-mocks-http');
 
-module.exports = (method, options, config, initialize, finalize) => {
+module.exports = (method, options, config, initialize, optimize, finalize) => {
   const app = new Router();
   initialize(app, method);
+  optimize(app, method);
   finalize(app, method);
   app.use((req, res) => res.status(404).end());
   return (options) => {
