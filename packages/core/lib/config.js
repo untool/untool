@@ -1,3 +1,4 @@
+const debug = require('debug')('untool:config');
 const { basename, dirname, join } = require('path');
 
 const {
@@ -168,8 +169,12 @@ exports.getConfig = () => {
   delete config.presets;
   delete config.env;
 
-  return {
+  const result = {
     ...substitutePlaceholders(config),
     mixins: resolveMixins(rootDir, config.mixins),
   };
+
+  debug(result);
+
+  return result;
 };
