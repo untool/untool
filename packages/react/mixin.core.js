@@ -1,7 +1,7 @@
 const { Mixin } = require('@untool/core');
 
 module.exports = class ReactMixin extends Mixin {
-  configureWebpack(webpackConfig, loaderConfigs, target) {
+  configureBuild(webpackConfig, loaderConfigs, target) {
     const { fileLoaderConfig, jsLoaderConfig } = loaderConfigs;
 
     webpackConfig.resolve.extensions.push('.jsx');
