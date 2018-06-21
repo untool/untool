@@ -104,22 +104,19 @@ class WebpackMixin extends Mixin {
     }
     return webpackConfig;
   }
-  initializeServer(app, mode) {
+  configureServer(app, middlewares, mode) {
     if (mode === 'develop') {
-      app.use(...this.createDevWebpackMiddlewares());
-    }
-    app.use(this.createAssetsMiddleware());
-  }
-  finalizeServer(app, mode) {
-    if (mode === 'develop') {
-      app.use(this.createDevRenderMiddleware());
+      middlewares.initial.push(this.createDevWebpackMiddlewares());
+      middlewares.routes.push(this.createDevRenderMiddleware());
     }
     if (mode === 'static') {
-      app.use(this.createRenderMiddleware());
+      middlewares.routes.push(this.createRenderMiddleware());
     }
     if (mode === 'serve') {
-      app.use(this.loadPrebuiltMiddleware());
+      middlewares.routes.push(this.loadPrebuiltMiddleware());
     }
+    middlewares.preroutes.push(this.createAssetsMiddleware());
+    return app;
   }
   registerCommands(yargs) {
     const { name } = this.config;
