@@ -1,3 +1,4 @@
+const debug = require('debug')('untool:express');
 const express = require('express');
 
 module.exports = (mode, { configureServer }) => {
@@ -15,6 +16,7 @@ module.exports = (mode, { configureServer }) => {
   );
   const app = configureServer(express(), middlewares, mode);
   const { middlewareOrder } = middlewares;
+  debug(middlewares);
   middlewareOrder.forEach(
     (phase) =>
       Array.isArray(middlewares[phase]) &&
