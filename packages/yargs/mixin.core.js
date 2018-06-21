@@ -14,6 +14,7 @@ class YargsMixin extends Mixin {
 
 YargsMixin.strategies = {
   registerCommands: pipe,
+  configureCommand: pipe,
   handleArguments: sequence,
   handleError: override,
 };
