@@ -1,6 +1,7 @@
 const { existsSync: exists } = require('fs');
 const { join } = require('path');
 
+const debug = require('debug')('untool:webpack:stats');
 const {
   sync: { pipe, sequence },
   async: { override },
@@ -208,6 +209,11 @@ class WebpackMixin extends Mixin {
   }
   handleArguments(argv) {
     this.options = { ...this.options, ...argv };
+  }
+  inspectBuild(stats) {
+    debug(
+      stats.toString({ chunks: false, modules: false, entrypoints: false })
+    );
   }
 }
 

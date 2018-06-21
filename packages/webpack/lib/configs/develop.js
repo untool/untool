@@ -1,5 +1,6 @@
 const { relative } = require('path');
 
+const debug = require('debug')('untool:webpack:develop');
 const {
   DefinePlugin,
   HotModuleReplacementPlugin,
@@ -131,5 +132,9 @@ module.exports = function getConfig(config, configureBuild) {
     allLoaderConfigs,
   };
 
-  return configureBuild(webpackConfig, loaderConfigs);
+  const result = configureBuild(webpackConfig, loaderConfigs);
+
+  debug(result);
+
+  return result;
 };
