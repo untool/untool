@@ -110,7 +110,7 @@ class WebpackMixin extends Mixin {
     }
     app.use(this.createAssetsMiddleware());
   }
-  finalizeServer(app, mode) {
+  optimizeServer(app, mode) {
     if (mode === 'develop') {
       app.use(this.createDevRenderMiddleware());
     }
@@ -138,12 +138,6 @@ class WebpackMixin extends Mixin {
             alias: 's',
             default: false,
             describe: 'Statically build locations',
-            type: 'boolean',
-          },
-          rewrite: {
-            alias: 'r',
-            default: true,
-            describe: 'Rewrite to static locations',
             type: 'boolean',
           },
           clean: {
@@ -197,20 +191,6 @@ class WebpackMixin extends Mixin {
       .command({
         command: 'develop',
         describe: `Serve ${name} in watch mode`,
-        builder: {
-          static: {
-            alias: 's',
-            default: false,
-            describe: 'Statically build locations',
-            type: 'boolean',
-          },
-          rewrite: {
-            alias: 'r',
-            default: true,
-            describe: 'Rewrite to static locations',
-            type: 'boolean',
-          },
-        },
         handler: () =>
           this.clean()
             .then(this.runServer.bind(this, 'develop'))

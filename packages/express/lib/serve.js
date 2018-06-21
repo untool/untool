@@ -2,12 +2,9 @@ const express = require('express');
 const helmet = require('helmet');
 const mime = require('mime');
 
-const rewriteMiddleware = require('./rewrite');
-
-module.exports = (method, options, config, initialize, finalize) => {
+module.exports = (method, options, config, initialize, optimize, finalize) => {
   const app = express();
   initialize(app, method);
-  app.use(rewriteMiddleware(options, config));
   app.use(helmet());
   app.use(
     express.static(config.buildDir, {
@@ -24,6 +21,7 @@ module.exports = (method, options, config, initialize, finalize) => {
     })
   );
   app.use(helmet.noCache());
+  optimize(app, method);
   finalize(app, method);
   return app;
 };

@@ -4,7 +4,7 @@
   "mixin:server": "server",
   "mixin:browser": "browser",
   "untool": {
-    "locations": ["/**"],
+    "locations": ["/"],
     "browsers": "last 1 Chrome versions",
     "presets": ["@untool/defaults"],
     "mixins": ["."]
