@@ -12,7 +12,7 @@ const { Mixin } = require('@untool/core');
 
 const template = require('./lib/template');
 
-class ReactPlugin extends Mixin {
+class ReactMixin extends Mixin {
   constructor(config, element, options) {
     super(config);
     this.element = element;
@@ -76,7 +76,7 @@ class ReactPlugin extends Mixin {
   }
 }
 
-ReactPlugin.strategies = {
+ReactMixin.strategies = {
   render: override,
   bootstrap: parallel,
   enhanceElement: compose,
@@ -84,4 +84,4 @@ ReactPlugin.strategies = {
   enhanceData: pipe,
 };
 
-module.exports = ReactPlugin;
+module.exports = ReactMixin;
