@@ -21,8 +21,8 @@ class InstrumentMixin extends Mixin {
     events.emit('inspectServer', ...args);
     return args[0];
   }
-  configureWebpack(...args) {
-    events.emit('configureWebpack', ...args);
+  configureBuild(...args) {
+    events.emit('configureBuild', ...args);
     return args[0];
   }
   inspectBuild(...args) {

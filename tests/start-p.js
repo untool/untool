@@ -13,7 +13,7 @@ test('core lifecycle hooks', (t) =>
       api.getArgTypes('configureServer').then((args) => t.snapshot(args)),
       api.getArgTypes('inspectServer').then((args) => t.snapshot(args)),
 
-      api.getArgTypes('configureWebpack').then((args) => t.snapshot(args)),
+      api.getArgTypes('configureBuild').then((args) => t.snapshot(args)),
       api.getArgTypes('inspectBuild').then((args) => t.snapshot(args)),
 
       api.getMixin().then((mixin) => t.snapshot(mixin)),
