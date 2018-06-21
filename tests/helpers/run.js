@@ -66,7 +66,7 @@ module.exports = (...args) =>
       },
       getWebpackConfig(target) {
         return events.promise(
-          'configureWebpack',
+          'configureBuild',
           (resolve) => (webpackConfig, loaderConfigs, _target) =>
             resolve(
               target === _target
