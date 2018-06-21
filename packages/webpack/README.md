@@ -52,24 +52,6 @@ Using this command, you can start a full-featured development server that is as 
 $ un develop
 ```
 
-#### Arguments
-
-##### `-s` / `--static`
-
-In static mode, `@untool/express` will rewrite request paths according to its `locations` configuration. You will want this if you want to use a single HTML file for multiple browser [`locations`](https://github.com/untool/untool/blob/master/packages/express/README.md#locations).
-
-```bash
-$ un develop -s # OR un develop --static
-```
-
-##### `-r` / `--rewrite`
-
-Even in static mode, you can disable request path rewriting completely if you do not need `untool`'s location fallback mechanism.
-
-```bash
-$ un develop -sr=0 # OR un develop --static --no-rewrite`
-```
-
 ### `start`
 
 This is probably the `untool` command your will use most of the time - we certainly do. It is, essentially, just a shorthand for other `untool` commands.
@@ -90,9 +72,13 @@ Of course, once again, you can also manually set `$NODE_ENV`.
 $ NODE_ENV=production un start
 ```
 
+##### `-s` / `--static`
+
+In `static` mode, static HTML pages will be generated for the [`locations`](https://github.com/untool/untool/blob/master/packages/express/README.md#locations) configured for your application.
+
 ## API
 
-### `configureWebpack(webpackConfig, loaderConfigs, target)` ([pipe](https://github.com/untool/mixinable/blob/master/README.md#definepipe))
+### `configureBuild(webpackConfig, loaderConfigs, target)` ([pipe](https://github.com/untool/mixinable/blob/master/README.md#definepipe))
 
 If you implement this mixin hook in your `@untool/core` [`core` mixin](https://github.com/untool/untool/blob/master/packages/core/README.md#mixins), you will be able to modify the different Webpack configs `untool` uses in any way you like.
 
@@ -102,7 +88,7 @@ In addition to the actual `webpackConfig`, which, by the way, your implementatio
 const { Mixin } = require('@untool/core');
 
 module.exports = class MyMixin extends Mixin {
-  configureWebpack(webpackConfig, loaderConfigs, target) {
+  configureBuild(webpackConfig, loaderConfigs, target) {
     return webpackConfig;
   }
 };

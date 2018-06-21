@@ -66,10 +66,8 @@ class WebpackMixin extends Mixin {
   }
   getConfig(target) {
     const getConfig = require(`./lib/configs/${target}`);
-    const { configureWebpack } = this;
-    return getConfig(this.config, (...args) =>
-      configureWebpack(...args, target)
-    );
+    const { configureBuild } = this;
+    return getConfig(this.config, (...args) => configureBuild(...args, target));
   }
   clean() {
     const rimraf = require('rimraf');
@@ -94,7 +92,7 @@ class WebpackMixin extends Mixin {
       )
     ).then((stats) => void inspectBuild(stats, config) || stats);
   }
-  configureWebpack(webpackConfig, loaderConfigs, target) {
+  configureBuild(webpackConfig, loaderConfigs, target) {
     const { plugins } = webpackConfig;
     if (this.options.static && target === 'build') {
       plugins.unshift(this.createRenderPlugin());
@@ -214,7 +212,7 @@ class WebpackMixin extends Mixin {
 }
 
 WebpackMixin.strategies = {
-  configureWebpack: pipe,
+  configureBuild: pipe,
   inspectBuild: sequence,
   build: override,
   clean: override,

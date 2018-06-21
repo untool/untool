@@ -8,7 +8,7 @@ const {
 
 const { isESNext, isExternal } = require('../utils/helpers');
 
-module.exports = function getConfig(config, configureWebpack) {
+module.exports = function getConfig(config, configureBuild) {
   const getAssetPath = resolveRelative.bind(null, config.assetPath);
 
   const jsLoaderConfig = {
@@ -129,5 +129,5 @@ module.exports = function getConfig(config, configureWebpack) {
     allLoaderConfigs,
   };
 
-  return configureWebpack(webpackConfig, loaderConfigs);
+  return configureBuild(webpackConfig, loaderConfigs);
 };
