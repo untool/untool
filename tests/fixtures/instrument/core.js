@@ -13,12 +13,8 @@ class InstrumentMixin extends Mixin {
     events.emit('initializeServer', ...args);
     return args[0];
   }
-  optimizeServer(...args) {
-    events.emit('optimizeServer', ...args);
-    return args[0];
-  }
-  finalizeServer(...args) {
-    events.emit('finalizeServer', ...args);
+  configureServer(...args) {
+    events.emit('configureServer', ...args);
     return args[0];
   }
   inspectServer(...args) {
