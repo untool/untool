@@ -1,5 +1,6 @@
 const { resolve } = require('path');
 
+const debug = require('debug')('untool:webpack:node');
 const { EnvironmentPlugin, optimize } = require('webpack');
 
 const {
@@ -129,5 +130,9 @@ module.exports = function getConfig(config, configureBuild) {
     allLoaderConfigs,
   };
 
-  return configureBuild(webpackConfig, loaderConfigs);
+  const result = configureBuild(webpackConfig, loaderConfigs);
+
+  debug(result);
+
+  return result;
 };
