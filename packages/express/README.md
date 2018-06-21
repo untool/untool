@@ -48,27 +48,30 @@ $ un serve -s # OR un serve --static
 
 ## API
 
-### `initializeServer(app, target)` ([sequence](https://github.com/untool/mixinable/blob/master/README.md#defineparallel))
+### `configureServer(app, middlewares, mode)` ([pipe](https://github.com/untool/mixinable/blob/master/README.md#definepipe))
 
-This is a mixin hook defined by `@untool/express` that allows you to register Express middlewares and generally do whatever you like with `app`, the [`Application`](https://expressjs.com/en/api.html#app) (or [`Router`](https://expressjs.com/en/api.html#router)) instance it is using under the hood, right after its creation, i.e. before URL rewriting and such.
+This is a mixin hook defined by `@untool/express` that allows you to register Express middlewares and generally do whatever you like with `app`, the [`Application`](https://expressjs.com/en/api.html#app) instance it is using under the hood.
 
-The second argument it is being called with is `target` and it can be one of the following: `develop`, `serve`, or `static`. If `target` is `static`, `app` will be a [`Router`](https://expressjs.com/en/api.html#router) instance, otherwise an [`Application`](https://expressjs.com/en/api.html#app).
+The second argument it is being called with is `middleware`. It is a plain object containing middleware `Array`s sorted into phases: `initial`, `session`, `parse`, `files`, `routes`, and `final`. Additionally, each of these comes with `pre` and `post` variants.
+
+Its third argument is `mode`, and it can be one of the following: `develop`, `serve`, or `static`. Use it to conditionally register middlewares or reconfigure the app.
 
 ```javascript
 const { Mixin } = require('@untool/core');
 
 module.exports = class MyMixin extends Mixin {
-  initializeServer(app) {
-    app.use((req, res, next) => next());
+  configureServer(app, middlewares, mode) {
+    middlewares.routes.push((req, res, next) => next());
+    if (mode === 'serve') {
+      middlewares.preinitial.unshift((req, res, next) => next());
+      middlewares.postfinal.push((req, res, next) => next());
+    }
+    return app;
   }
 };
 ```
 
-Implement this hook in your `@untool/core` [`core` mixin](https://github.com/untool/untool/blob/master/packages/core/README.md#mixins) and you will be able to set up Express in any way you like. This very module uses this hook to conditionally activate HTTP response compression.
-
-### `finalizeServer(app, target)` ([sequence](https://github.com/untool/mixinable/blob/master/README.md#defineparallel))
-
-This hook works exactly like the one described above, `initializeServer()`, only after everything else has been set up and configured. You can, for example, register an [error middleware](https://expressjs.com/en/guide/error-handling.html) here - just make sure your mixin is configured as the last one to implement `finalizeServer()`.
+Implement this hook in your `@untool/core` [`core` mixin](https://github.com/untool/untool/blob/master/packages/core/README.md#mixins) and you will be able to set up Express in any way you like.
 
 ### `inspectServer(app, target)` ([sequence](https://github.com/untool/mixinable/blob/master/README.md#defineparallel))
 
@@ -147,16 +150,6 @@ Using this setting, you can define the locations used for prerendering of static
   "locations": ["/foo", "/bar"]
 }
 ```
-
-`@untool/express` also allows you to create one or more generic pages that will be used for multiple paths. To configure these kinds of setups, you need just use [minimatch](https://github.com/isaacs/minimatch) syntax.
-
-```json
-{
-  "locations": ["/**", "/foo/*"]
-}
-```
-
-These minimatch patterns will not only be used for HTML generation, but also for URL rewriting. In static mode, by default, `@untool/express` will generate and serve a single static page for all URL paths (`/**`).
 
 ### `basePath`
 
