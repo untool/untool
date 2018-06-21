@@ -121,98 +121,92 @@ class WebpackMixin extends Mixin {
   registerCommands(yargs) {
     const { name } = this.config;
     return yargs
-      .command({
-        command: 'start',
-        describe: `Build and serve ${name}`,
-        builder: {
-          production: {
-            alias: 'p',
-            default: false,
-            describe: 'Enable production mode',
-            type: 'boolean',
+      .command(
+        this.configureCommand({
+          command: 'start',
+          describe: `Build and serve ${name}`,
+          builder: {
+            production: {
+              alias: 'p',
+              default: false,
+              describe: 'Enable production mode',
+              type: 'boolean',
+            },
+            static: {
+              alias: 's',
+              default: false,
+              describe: 'Statically build locations',
+              type: 'boolean',
+            },
+            clean: {
+              alias: 'c',
+              default: true,
+              describe: 'Clean up before building',
+              type: 'boolean',
+            },
           },
-          static: {
-            alias: 's',
-            default: false,
-            describe: 'Statically build locations',
-            type: 'boolean',
+          handler: (argv) => {
+            if (argv.production) {
+              Promise.resolve(argv.clean && this.clean())
+                .then(this.build)
+                .then(this.runServer.bind(this, 'serve'))
+                .catch(this.handleError);
+            } else {
+              this.clean()
+                .then(this.runServer.bind(this, 'develop'))
+                .catch(this.handleError);
+            }
           },
-          rewrite: {
-            alias: 'r',
-            default: true,
-            describe: 'Rewrite to static locations',
-            type: 'boolean',
+        })
+      )
+      .command(
+        this.configureCommand({
+          command: 'build',
+          describe: `Build ${name}`,
+          builder: {
+            production: {
+              alias: 'p',
+              default: false,
+              describe: 'Enable production mode',
+              type: 'boolean',
+            },
+            static: {
+              alias: 's',
+              default: false,
+              describe: 'Statically build locations',
+              type: 'boolean',
+            },
+            clean: {
+              alias: 'c',
+              default: true,
+              describe: 'Clean up before building',
+              type: 'boolean',
+            },
           },
-          clean: {
-            alias: 'c',
-            default: true,
-            describe: 'Clean up before building',
-            type: 'boolean',
-          },
-        },
-        handler: (argv) => {
-          if (argv.production) {
+          handler: (argv) =>
             Promise.resolve(argv.clean && this.clean())
               .then(this.build)
-              .then(this.runServer.bind(this, 'serve'))
-              .catch(this.handleError);
-          } else {
+              .catch(this.handleError),
+        })
+      )
+      .command(
+        this.configureCommand({
+          command: 'develop',
+          describe: `Serve ${name} in watch mode`,
+          builder: {
+            static: {
+              alias: 's',
+              default: false,
+              describe: 'Statically build locations',
+              type: 'boolean',
+            },
+          },
+          handler: () =>
             this.clean()
               .then(this.runServer.bind(this, 'develop'))
-              .catch(this.handleError);
-          }
-        },
-      })
-      .command({
-        command: 'build',
-        describe: `Build ${name}`,
-        builder: {
-          production: {
-            alias: 'p',
-            default: false,
-            describe: 'Enable production mode',
-            type: 'boolean',
-          },
-          static: {
-            alias: 's',
-            default: false,
-            describe: 'Statically build locations',
-            type: 'boolean',
-          },
-          clean: {
-            alias: 'c',
-            default: true,
-            describe: 'Clean up before building',
-            type: 'boolean',
-          },
-        },
-        handler: (argv) =>
-          Promise.resolve(argv.clean && this.clean())
-            .then(this.build)
-            .catch(this.handleError),
-      })
-      .command({
-        command: 'develop',
-        describe: `Serve ${name} in watch mode`,
-        builder: {
-          static: {
-            alias: 's',
-            default: false,
-            describe: 'Statically build locations',
-            type: 'boolean',
-          },
-          rewrite: {
-            alias: 'r',
-            default: true,
-            describe: 'Rewrite to static locations',
-            type: 'boolean',
-          },
-        },
-        handler: () =>
-          this.clean()
-            .then(this.runServer.bind(this, 'develop'))
-            .catch(this.handleError),
-      });
+              .catch(this.handleError),
+        })
+      );
   }
   handleArguments(argv) {
     this.options = { ...this.options, ...argv };
