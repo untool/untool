@@ -67,31 +67,21 @@ class ExpressMixin extends Mixin {
   }
   registerCommands(yargs) {
     const { name } = this.config;
-    return yargs.command({
-      command: 'serve',
-      describe: `Serve ${name}`,
-      builder: {
-        production: {
-          alias: 'p',
-          default: false,
-          describe: 'Enable production mode',
-          type: 'boolean',
+    return yargs.command(
+      this.configureCommand({
+        command: 'serve',
+        describe: `Serve ${name}`,
+        builder: {
+          production: {
+            alias: 'p',
+            default: false,
+            describe: 'Enable production mode',
+            type: 'boolean',
+          },
         },
-        static: {
-          alias: 's',
-          default: false,
-          describe: 'Only serve static locations',
-          type: 'boolean',
-        },
-        rewrite: {
-          alias: 'r',
-          default: true,
-          describe: 'Rewrite to static locations',
-          type: 'boolean',
-        },
-      },
-      handler: () => this.runServer('serve'),
-    });
+        handler: () => this.runServer('serve'),
+      })
+    );
   }
   handleArguments(argv) {
     this.options = { ...this.options, ...argv };
