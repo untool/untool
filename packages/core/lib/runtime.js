@@ -1,3 +1,4 @@
+const debug = require('debug')('untool:runtime');
 const define = require('mixinable');
 
 exports.Mixin = class Mixin {
@@ -13,7 +14,11 @@ exports.render = function render(...renderArgs) {
       (result, mixin) => Object.assign({}, result, mixin.strategies),
       {}
     );
+
+    debug(mixins.map(({ name, strategies }) => ({ [name]: strategies })));
+
     const createMixinable = define(strategies)(...mixins);
+
     return (...callArgs) =>
       createMixinable(config, ...renderArgs).render(...callArgs);
   };
