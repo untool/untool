@@ -1,5 +1,5 @@
 const {
-  sync: { sequence, override: overrideSync },
+  sync: { sequence, pipe, override: overrideSync },
   async: { override: overrideAsync },
 } = require('mixinable');
 
@@ -9,20 +9,40 @@ const uri = require('./lib/uri');
 
 class ExpressMixin extends Mixin {
   createServer(mode) {
-    const isStatic = mode === 'static';
-    const create = isStatic ? require('./lib/static') : require('./lib/serve');
-    const { options, config, initializeServer, finalizeServer } = this;
-    return create(mode, options, config, initializeServer, finalizeServer);
+    const create = require('./lib/serve');
+    return create(mode, this);
   }
   runServer(mode) {
     const run = require('./lib/run');
     const app = this.createServer(mode);
-    const { config, inspectServer, handleError } = this;
-    return run(app, config, inspectServer, handleError);
+    return run(app, this);
+  }
+  createRenderer() {
+    const create = require('./lib/static');
+    const app = this.createServer('static');
+    return create(app);
+  }
+  createStaticMiddleware() {
+    const express = require('express');
+    const helmet = require('helmet');
+    const mime = require('mime');
+    const { buildDir } = this.config;
+    return express.static(buildDir, {
+      maxAge: '1y',
+      setHeaders: (res, filePath) => {
+        if (
+          (res && res.locals && res.locals.noCache) ||
+          mime.getType(filePath) === 'text/html'
+        ) {
+          helmet.noCache()(null, res, () => {});
+        }
+      },
+      redirect: false,
+    });
   }
   renderLocations() {
     const indexFile = require('directory-index');
-    const render = this.createServer('static');
+    const render = this.createRenderer();
     const { basePath, locations } = this.config;
     const { resolveAbsolute, resolveRelative } = uri;
     return Promise.all(
@@ -35,6 +55,15 @@ class ExpressMixin extends Mixin {
         return { ...result, [key]: response };
       }, {})
     );
+  }
+  configureServer(app, middlewares, mode) {
+    if (mode !== 'static') {
+      const helmet = require('helmet');
+      middlewares.initial.push(helmet());
+      middlewares.files.push(this.createStaticMiddleware());
+      middlewares.postfiles.push(helmet.noCache());
+    }
+    return app;
   }
   registerCommands(yargs) {
     const { name } = this.config;
@@ -70,8 +99,7 @@ class ExpressMixin extends Mixin {
 }
 
 ExpressMixin.strategies = {
-  initializeServer: sequence,
-  finalizeServer: sequence,
+  configureServer: pipe,
   inspectServer: sequence,
   createServer: overrideSync,
   runServer: overrideSync,
