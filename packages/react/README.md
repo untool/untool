@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/@untool%2Freact.svg)](https://www.npmjs.com/package/@untool%2Freact)
 
-`@untool/react` provides all three types of `@untool/core` [mixins](https://github.com/untool/untool/blob/master/packages/core/README.md#mixins). Its `core` mixin uses `@untool/webpack`'s [`configureWebpack`](https://github.com/untool/untool/blob/master/packages/webpack/README.md#configurewebpackwebpackconfig-loaderconfigs-target-pipe) hook to add some settings specific to [React](https://reactjs.org), for example support for [JSX](https://reactjs.org/docs/introducing-jsx.html) syntax.
+`@untool/react` provides all three types of `@untool/core` [mixins](https://github.com/untool/untool/blob/master/packages/core/README.md#mixins). Its `core` mixin uses `@untool/webpack`'s [`configureBuild`](https://github.com/untool/untool/blob/master/packages/webpack/README.md#configurebuildwebpackconfig-loaderconfigs-target-pipe) hook to add some settings specific to [React](https://reactjs.org), for example support for [JSX](https://reactjs.org/docs/introducing-jsx.html) syntax.
 
 Its `runtime`, i.e. `browser` and `server`, mixins are a bit more interesting as they are `untool`'s only default [`render`](https://github.com/untool/untool/blob/master/packages/core/README.md#renderargs-runtime-only) mixins. They set up [React](https://reactjs.org) for client- and server-side rendering. Additionally, they provide mixin hooks of their own to allow you to add your own features, for example [Redux](https://redux.js.org) support.
 
