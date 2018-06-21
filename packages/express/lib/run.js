@@ -37,7 +37,7 @@ const getPort = (host, port) => {
   return findPort(host, ...(Array.isArray(port) ? port : [port || 8080, port]));
 };
 
-module.exports = (app, config, inspectServer, handleError) => {
+module.exports = (app, { config, inspectServer, handleError }) => {
   const { host = '0.0.0.0', port, https } = config;
   const server = createServer(app, https);
   getPort(host, port).then((port) =>

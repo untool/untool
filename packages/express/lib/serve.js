@@ -1,29 +1,29 @@
 const express = require('express');
-const helmet = require('helmet');
-const mime = require('mime');
 
-const rewriteMiddleware = require('./rewrite');
-
-module.exports = (method, options, config, initialize, finalize) => {
-  const app = express();
-  initialize(app, method);
-  app.use(rewriteMiddleware(options, config));
-  app.use(helmet());
-  app.use(
-    express.static(config.buildDir, {
-      maxAge: '1y',
-      setHeaders: function(res, filePath) {
-        if (
-          (res && res.locals && res.locals.noCache) ||
-          mime.getType(filePath) === 'text/html'
-        ) {
-          helmet.noCache()(null, res, function() {});
-        }
-      },
-      redirect: false,
-    })
+module.exports = (mode, { configureServer }) => {
+  const phases = ['initial', 'session', 'parse', 'files', 'routes', 'final'];
+  const middlewares = phases.reduce(
+    (result, key) => {
+      const additions = { [`pre${key}`]: [], [key]: [], [`post${key}`]: [] };
+      return {
+        ...result,
+        ...additions,
+        middlewareOrder: result.middlewareOrder.concat(Object.keys(additions)),
+      };
+    },
+    { middlewareOrder: [] }
   );
-  app.use(helmet.noCache());
-  finalize(app, method);
+  const app = configureServer(express(), middlewares, mode);
+  const { middlewareOrder } = middlewares;
+  middlewareOrder.forEach(
+    (phase) =>
+      Array.isArray(middlewares[phase]) &&
+      middlewares[phase].forEach(
+        (middleware) =>
+          Array.isArray(middleware)
+            ? app.use(...middleware)
+            : app.use(middleware)
+      )
+  );
   return app;
 };
