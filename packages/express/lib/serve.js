@@ -2,7 +2,7 @@ const debug = require('debug')('untool:express');
 const express = require('express');
 
 module.exports = (mode, { configureServer }) => {
-  const phases = ['initial', 'session', 'parse', 'files', 'routes', 'final'];
+  const phases = ['initial', 'files', 'parse', 'routes', 'final'];
   const middlewares = phases.reduce(
     (result, key) => {
       const additions = { [`pre${key}`]: [], [key]: [], [`post${key}`]: [] };
