@@ -22,7 +22,7 @@ class ExpressMixin extends Mixin {
     const app = this.createServer('static');
     return create(app);
   }
-  createStaticMiddleware() {
+  createFilesMiddleware() {
     const express = require('express');
     const helmet = require('helmet');
     const mime = require('mime');
@@ -60,7 +60,7 @@ class ExpressMixin extends Mixin {
     if (mode !== 'static') {
       const helmet = require('helmet');
       middlewares.initial.push(helmet());
-      middlewares.files.push(this.createStaticMiddleware());
+      middlewares.files.push(this.createFilesMiddleware());
       middlewares.postfiles.push(helmet.noCache());
     }
     return app;

@@ -52,7 +52,7 @@ $ un serve -s # OR un serve --static
 
 This is a mixin hook defined by `@untool/express` that allows you to register Express middlewares and generally do whatever you like with `app`, the [`Application`](https://expressjs.com/en/api.html#app) instance it is using under the hood.
 
-The second argument it is being called with is `middleware`. It is a plain object containing middleware `Array`s sorted into phases: `initial`, `session`, `parse`, `files`, `routes`, and `final`. Additionally, each of these comes with `pre` and `post` variants.
+The second argument it is being called with is `middlewares`. It is a plain object containing middleware `Array`s sorted into phases: `initial`, `files`, `parse`, `routes`, and `final`. Additionally, each of these comes with `pre` and `post` variants.
 
 Its third argument is `mode`, and it can be one of the following: `develop`, `serve`, or `static`. Use it to conditionally register middlewares or reconfigure the app.
 
