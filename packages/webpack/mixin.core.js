@@ -47,10 +47,6 @@ class WebpackMixin extends Mixin {
         serverSideRender: true,
       }),
       require('webpack-hot-middleware')(compiler, { log: false }),
-      (req, res, next) => {
-        res.locals.noRewrite = req.url === '/__webpack_hmr';
-        next();
-      },
     ];
   }
   createAssetsPlugin() {
