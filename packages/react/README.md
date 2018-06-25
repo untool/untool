@@ -83,16 +83,18 @@ module.exports = class FooMixin extends Mixin {
 };
 ```
 
-### `enhanceData(data)` ([pipe](https://github.com/untool/mixinable/blob/master/README.md#definepipe))
+### `getTemplateData(data)` ([pipe](https://github.com/untool/mixinable/blob/master/README.md#definepipe), Server Only)
 
-In case you need to gather additional data after rendering, e.g. if you are using [styled components](https://www.styled-components.com) for server-side rendering, you can add the required template data by implementing this hook in your custom mixin. To do asynchronously, have this method return a [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) resolving to the extended data.
+In case you need to gather additional template data after React rendering, e.g. if you are using [styled components](https://www.styled-components.com), you can add the required data by implementing this hook in your custom mixin. To do so asynchronously, have this method return a [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) resolving to the extended data.
 
 ```javascript
 const { Mixin } = require('@untool/core');
 
 module.exports = class FooMixin extends Mixin {
-  enhanceData(data) {
+  getTemplateData(data) {
     return { ...data, baz: 'qux' };
   }
 };
 ```
+
+This hook is only used for server-side rendering, i.e. it will not be called in the browser.
