@@ -26,8 +26,8 @@ class ReactMixin extends Mixin {
   }
   render() {
     const { name } = this.config;
-    const mountpoint = document.querySelector(`#${name}`);
     const attribute = `data-${name}`;
+    const mountpoint = document.querySelector(`#${name}`);
     const isMounted = mountpoint.hasAttribute(attribute);
     if (isMounted) {
       unmountComponentAtNode(mountpoint);
@@ -38,11 +38,10 @@ class ReactMixin extends Mixin {
       .then(() => this.bootstrap())
       .then(() => this.enhanceElement(this.element))
       .then((element) =>
-        this.fetchData({}, element)
-          .then((data) => this.enhanceData(data))
-          .then(() => element)
-      )
-      .then((element) => (isMounted ? render : hydrate)(element, mountpoint));
+        this.fetchData({}, element).then(() =>
+          (isMounted ? render : hydrate)(element, mountpoint)
+        )
+      );
   }
 }
 
@@ -51,7 +50,6 @@ ReactMixin.strategies = {
   bootstrap: parallel,
   enhanceElement: compose,
   fetchData: pipe,
-  enhanceData: pipe,
 };
 
 module.exports = ReactMixin;
