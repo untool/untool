@@ -21,8 +21,8 @@ class InstrumentMixin extends Mixin {
     events.emit('fetchData', ...args);
     return args[0];
   }
-  enhanceData(...args) {
-    events.emit('enhanceData', ...args);
+  getTemplateData(...args) {
+    events.emit('getTemplateData', ...args);
     return args[0];
   }
 }
