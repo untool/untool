@@ -1,36 +1,34 @@
 const esc = require('serialize-javascript');
 
-const cssLink = (css) => `<link rel="stylesheet" href="/${css}" />`;
-const jsLink = (js) => `<script src="/${js}"></script>`;
+const renderCSS = ({ css }) =>
+  css.map((asset) => `<link rel="stylesheet" href="/${asset}" />`).join('');
 
-const serializeGlobals = (globals) => {
-  const entries = Object.entries(globals);
-  if (!entries.length) {
-    return '';
-  }
+const renderJS = ({ js }) =>
+  js.map((asset) => `<script src="/${asset}"></script>`).join('');
 
-  var escaped = entries.map(([k, v]) => `${k}=${esc(v)}`);
-
-  return `<script>var ${escaped.join(',')};</script>`;
+const renderGlobals = (globals) => {
+  const entries = Object.entries(globals).map(([k, v]) => `${k}=${esc(v)}`);
+  return entries.length ? `<script>var ${entries.join(',')};</script>` : '';
 };
 
-module.exports = (data) =>
+module.exports = ({ fragments, assetsByType, mountpoint, markup, globals }) =>
   `<!DOCTYPE html>
-<html ${data.fragments.htmlAttributes}>
+<html ${fragments.htmlAttributes}>
   <head>
-    ${data.fragments.headPrefix}
-    ${data.fragments.title}
-    ${data.fragments.meta}
-    ${data.fragments.link}
-    ${data.assetsByType.css.map(cssLink).join('')}
-    ${data.fragments.style}
-    ${data.fragments.script}
-    ${data.fragments.headSuffix}
+    ${fragments.headPrefix}
+    ${fragments.title}
+    ${fragments.base}
+    ${fragments.meta}
+    ${fragments.link}
+    ${renderCSS(assetsByType)}
+    ${fragments.style}
+    ${fragments.script}
+    ${fragments.headSuffix}
   </head>
-  <body ${data.fragments.bodyAttributes}>
-    <div id="${data.mountpoint}">${data.markup}</div>
-    ${data.fragments.noscript}
-    ${serializeGlobals(data.globals)}
-    ${data.assetsByType.js.map(jsLink).join('')}
+  <body ${fragments.bodyAttributes}>
+    <div id="${mountpoint}">${markup}</div>
+    ${fragments.noscript}
+    ${renderGlobals(globals)}
+    ${renderJS(assetsByType)}
   </body>
 </html>`.replace(/(^\s*[\r\n]| (?=>))/gm, '');

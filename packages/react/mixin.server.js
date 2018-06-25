@@ -31,7 +31,7 @@ class ReactMixin extends Mixin {
   enhanceElement(element) {
     return createElement(StaticRouter, this.options, element);
   }
-  enhanceData(data) {
+  getTemplateData(data) {
     return Object.assign(data, {
       mountpoint: this.config.name,
       assetsByType: this.assetsByType,
@@ -52,23 +52,20 @@ class ReactMixin extends Mixin {
       .then((element) =>
         this.fetchData({}, element).then((data) => ({ element, data }))
       )
-      .then(({ element, data }) => {
+      .then(({ element, data: fetchedData }) => {
         const markup = renderToString(element);
         const helmet = Helmet.renderStatic();
-        const { context = {} } = this.options;
+        const { context } = this.options;
         if (context.miss) {
           next();
         } else if (context.url) {
-          res.status(context.status || 301);
-          res.set('Location', context.url);
           context.headers && res.set(context.headers);
-          res.end();
+          res.redirect(context.status || 301, context.url);
         } else {
-          res.status(context.status || 200);
           context.headers && res.set(context.headers);
-          res.type('html');
-          return this.enhanceData(Object.assign(data, { markup, helmet })).then(
-            (data) => res.send(template(data))
+          res.status(context.status || 200);
+          return this.getTemplateData({ fetchedData, markup, helmet }).then(
+            (templateData) => res.send(template(templateData))
           );
         }
       })
@@ -81,7 +78,7 @@ ReactMixin.strategies = {
   bootstrap: parallel,
   enhanceElement: compose,
   fetchData: pipe,
-  enhanceData: pipe,
+  getTemplateData: pipe,
 };
 
 module.exports = ReactMixin;
