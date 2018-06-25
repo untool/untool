@@ -1,6 +1,6 @@
 {
   "name": "@untool/react",
-  "version": "0.8.2",
+  "version": "0.9.0",
   "description": "untool react mixin",
   "keywords": [
     "unmixin",
@@ -23,7 +23,7 @@
   },
   "homepage": "https://github.com/untool/untool#readme",
   "dependencies": {
-    "@untool/core": "^0.8.2",
+    "@untool/core": "^0.9.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.13",
     "babel-preset-react": "^6.24.1",
     "mixinable": "^3.0.0",

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.9.0"></a>
+# [0.9.0](https://github.com/untool/untool/compare/v0.8.2...v0.9.0) (2018-06-25)
+
+
+### Features
+
+* **yargs:** add `configureCommand` hook ([c1f93f4](https://github.com/untool/untool/commit/c1f93f4))
+
+
+
+
 <a name="0.8.2"></a>
 ## [0.8.2](https://github.com/untool/untool/compare/v0.8.1...v0.8.2) (2018-06-21)
 
