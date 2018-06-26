@@ -14,14 +14,12 @@ module.exports = (app) => (options) =>
     });
     res.on('finish', () => {
       if (res.statusCode !== 200) {
-        reject(new Error('invalid status code: ' + res.statusCode));
+        reject(new Error(`invalid status code: ${res.statusCode}`));
       } else {
         resolve(res._getData());
       }
     });
     app.handle(req, res, (error) => {
-      if (error) {
-        reject(error);
-      }
+      reject(error || new Error(`no response for: ${req.url}`));
     });
   });
