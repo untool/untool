@@ -35,7 +35,7 @@
     "ava": "^0.25.0",
     "babel-eslint": "^8.2.1",
     "cz-conventional-changelog": "^2.1.0",
-    "eslint": "^4.17.0",
+    "eslint": "^5.0.0",
     "eslint-config-prettier": "^2.9.0",
     "eslint-plugin-prettier": "^2.6.0",
     "flat": "^4.0.0",
