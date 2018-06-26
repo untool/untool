@@ -19,7 +19,8 @@ exports.render = function render(...renderArgs) {
 
     const createMixinable = define(strategies)(...mixins);
 
-    return (...callArgs) =>
+    return function universalRenderMiddleware(...callArgs) {
       createMixinable(config, ...renderArgs).render(...callArgs);
+    };
   };
 };

@@ -35,7 +35,7 @@ module.exports = exports = function createRenderMiddleware(webpackConfig) {
       });
     });
   };
-  return (req, res, next) => {
+  return function webpackRenderMiddleware(req, res, next) {
     getMiddlewarePromise()
       .then((middleware) => middleware(req, res, next))
       .catch(next);
