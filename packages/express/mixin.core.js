@@ -93,6 +93,7 @@ ExpressMixin.strategies = {
   inspectServer: sequence,
   createServer: overrideSync,
   runServer: overrideSync,
+  createRenderer: overrideSync,
   renderLocations: overrideAsync,
 };
 
