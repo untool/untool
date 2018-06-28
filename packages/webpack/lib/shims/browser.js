@@ -2,14 +2,17 @@
 
 require('babel-polyfill');
 
-var { getConfig } = require('@untool/config');
+const { getConfigAndMixins } = require('@untool/config');
 
 (function render() {
-  var entryPoint = require('@untool/entrypoint');
+  let entryPoint = require('@untool/entrypoint');
   if (typeof entryPoint.default === 'function') {
     entryPoint = entryPoint.default;
   }
-  entryPoint(getConfig())();
+
+  const { config, mixins } = getConfigAndMixins();
+  entryPoint(config, mixins)();
+
   if (module.hot) {
     module.hot.accept(require.resolve('@untool/entrypoint'), function() {
       setTimeout(render);

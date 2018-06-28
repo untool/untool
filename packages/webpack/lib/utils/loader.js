@@ -1,23 +1,26 @@
 const { getOptions } = require('loader-utils');
 
 const getMixins = (target, config) =>
-  config.mixins[target].map(
-    (mixin) => `(function(m) { return m.default || m })(require('${mixin}'))`
-  );
+  `[${(config.mixins[target] || [])
+    .map(
+      (mixin) => `(function(m) { return m.default || m })(require('${mixin}'))`
+    )
+    .join(',')}]`;
 
 const getConfig = (target, config) =>
-  JSON.stringify(config)
-    .replace(
-      new RegExp(`"${config.rootDir}(.*?)"`, 'g'),
-      target === 'server' ? 'expand(".$1")' : '".$1"'
-    )
-    .replace(
-      /"mixins":{.*?}/,
-      `"mixins":[${getMixins(target, config).join(', ')}]`
-    );
+  JSON.stringify(
+    Object.assign({}, config._config, { mixins: undefined })
+  ).replace(
+    new RegExp(`"${config.rootDir}(.*?)"`, 'g'),
+    target === 'server' ? 'expand(".$1")' : '".$1"'
+  );
 
-const getModule = (target, config) =>
-  (target === 'server'
+const getConfigAndMixins = (...args) =>
+  `{ config: ${getConfig(...args)}, mixins: ${getMixins(...args)} }`;
+
+const getModule = (target, config) => {
+  const configAndMixins = getConfigAndMixins(target, config);
+  return (target === 'server'
     ? [
         'var path = require("path");',
         'var root = path.dirname(require("find-up").sync("package.json"));',
@@ -26,9 +29,10 @@ const getModule = (target, config) =>
     : []
   )
     .concat(
-      `exports.getConfig = function () { return ${getConfig(target, config)} };`
+      `exports.getConfigAndMixins = function () { return ${configAndMixins} };`
     )
     .join('\n');
+};
 
 module.exports = function() {
   this.cacheable();
