@@ -79,20 +79,13 @@ const resolveMixins = (context, mixins) =>
   );
 
 const loadConfig = (context, config) => {
-  const nsp = process.env.UNTOOL_NSP || 'untool';
-  const env = process.env[nsp.toUpperCase() + '_ENV'] || process.env.NODE_ENV;
-  const { loadSync, searchSync } = cosmiconfig(nsp, { stopDir: context });
-  const configPath = config && resolvePreset(context, config);
-  const result = configPath ? loadSync(configPath) : searchSync(context);
-  return (
-    result && {
-      ...result,
-      config:
-        result && result.config && result.config.env
-          ? merge(result.config, result.config.env[env])
-          : result.config,
-    }
+  const { loadSync, searchSync } = cosmiconfig(
+    process.env.UNTOOL_NSP || 'untool',
+    { stopDir: context }
   );
+  return config
+    ? loadSync(resolvePreset(context, config))
+    : searchSync(context);
 };
 
 const loadSettings = (context) => {
@@ -131,29 +124,29 @@ const loadPresets = (context, presets = []) =>
     return merge(configs, loadPresets(presetContext, config.presets), config);
   }, {});
 
-const substitutePlaceholders = (config) => {
+const placeholdify = (config) => {
   const flatConfig = flatten(config);
-  const keys = Object.keys(flatConfig);
-  const regExp = new RegExp(`<(${keys.map(escapeRegExp).join('|')})>`, 'g');
-  const substituteRecursive = (item) => {
+  const flatKeys = Object.keys(flatConfig);
+  const regExp = new RegExp(`<(${flatKeys.map(escapeRegExp).join('|')})>`, 'g');
+  const replaceRecursive = (item) => {
     if (Array.isArray(item)) {
-      return item.map(substituteRecursive);
+      return item.map(replaceRecursive);
     }
     if (isPlainObject(item)) {
       return Object.keys(item).reduce((result, key) => {
-        result[key] = substituteRecursive(item[key]);
+        result[key] = replaceRecursive(item[key]);
         return result;
       }, {});
     }
-    if (typeof item === 'string') {
-      return item.replace(regExp, (_, match) => {
-        var result = flatConfig[match].toString();
-        return regExp.test(result) ? substituteRecursive(result) : result;
+    if (regExp.test(item)) {
+      return item.replace(regExp, (_, key) => {
+        const result = flatConfig[key] || '';
+        return regExp.test(result) ? replaceRecursive(result) : result;
       });
     }
     return item;
   };
-  return substituteRecursive(config);
+  return replaceRecursive(config);
 };
 
 exports.getConfig = () => {
@@ -170,7 +163,7 @@ exports.getConfig = () => {
   delete config.env;
 
   const result = {
-    ...substitutePlaceholders(config),
+    ...placeholdify(config),
     mixins: resolveMixins(rootDir, config.mixins),
   };
 
