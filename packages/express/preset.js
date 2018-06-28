@@ -1,7 +1,7 @@
 module.exports = {
   https: false,
-  host: process.env.HOST,
-  port: process.env.PORT,
+  host: '[HOST]',
+  port: '[PORT]',
   locations: [],
   basePath: '',
   assetPath: '<basePath>',

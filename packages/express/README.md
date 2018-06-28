@@ -93,15 +93,15 @@ With this method you can render HTML pages for all configured [`locations`](http
 
 `@untool/express` defines a couple of settings as a preset for `@untool/core`'s [configuration engine](https://github.com/untool/untool/blob/master/packages/core/README.md#configuration). You can manage and access them using the mechanisms outlined there.
 
-| Property    | Type               | Default                         |
-| ----------- | ------------------ | ------------------------------- |
-| `https`     | `boolean`/`Object` | `false`                         |
-| `host`      | `string`           | `process.env.HOST || '0.0.0.0'` |
-| `port`      | `number`           | `process.env.PORT || 8080`      |
-| `locations` | `[string]`         | `[]`                            |
-| `basePath`  | `string`           | `''`                            |
-| `assetPath` | `string`           | `'<basePath>'`                  |
-| `buildDir`  | `string`           | `'<rootDir>/dist'`              |
+| Property    | Type               | Default            |
+| ----------- | ------------------ | ------------------ |
+| `https`     | `boolean`/`Object` | `false`            |
+| `host`      | `string`           | `[HOST]`           |
+| `port`      | `number`           | `[PORT]`           |
+| `locations` | `[string]`         | `[]`               |
+| `basePath`  | `string`           | `''`               |
+| `assetPath` | `string`           | `'<basePath>'`     |
+| `buildDir`  | `string`           | `'<rootDir>/dist'` |
 
 ### `https`
 
