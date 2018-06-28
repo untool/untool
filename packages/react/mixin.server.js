@@ -35,7 +35,7 @@ class ReactMixin extends Mixin {
     return Object.assign(data, {
       mountpoint: this.config.name,
       assetsByType: this.assetsByType,
-      globals: Object.assign({}, data.globals),
+      globals: Object.assign({ _env: this.config._env }, data.globals),
       fragments: Object.keys(data.helmet).reduce(
         (result, key) =>
           Object.assign(result, {
