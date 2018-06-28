@@ -118,7 +118,12 @@ module.exports = function getConfig(config, configureBuild) {
           parallel: true,
           sourceMap: true,
           uglifyOptions: {
-            output: { comments: false },
+            compress: {
+              inline: 1, // https://github.com/mishoo/UglifyJS2/issues/2842
+            },
+            output: {
+              comments: false,
+            },
           },
         }),
       ],
