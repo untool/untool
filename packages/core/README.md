@@ -23,20 +23,21 @@ It allows you to set up mixins and pull in presets. Mixins provide extra functio
 }
 ```
 
-`@untool/core` comes with support for environment specific configuration. For example, you can pin [`@untool/express`](https://github.com/untool/untool/blob/master/packages/express/README.md)'s port to a specific value in production and have it search for a free port in develoment and test environments.
+`@untool/core` comes with support for environment specific configuration. For example, [`@untool/express`](https://github.com/untool/untool/blob/master/packages/express/README.md) uses this placeholder based mechanism to bind the server port to the value of an environment variable.
 
 ```json
 {
-  "port": null,
-  "env": {
-    "production": {
-      "port": 12345
-    }
-  }
+  "port": "[PORT]"
 }
 ```
 
-You can even use placeholders everywhere throughout your configuration. Nested configuration structures will be flattened before being used for placeholder substitution.
+Now if you start your app in an environment in which the corresponding variable is defined, it will be picked up _at runtime_.
+
+```bash
+$ PORT=12345 un start
+```
+
+There is another kind of placeholders. It can be used to reference other configuration values. Nested structures will be flattened before being used for placeholder substitution.
 
 ```json
 {
@@ -48,7 +49,7 @@ You can even use placeholders everywhere throughout your configuration. Nested c
 }
 ```
 
-`@untool/core` looks for configuration data in rather many places. It only uses the first config it finds, so make sure you do not have multiple configs lying around:
+`@untool/core` looks for configuration data in a couple of places. It only uses the first config it finds, so make sure you do not have multiple configs lying around:
 
 - an `untool` property in your project's `package.json` file
 - an `.untoolrc` file in your project's root folder (JSON, YAML, or JS)
