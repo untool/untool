@@ -23,6 +23,7 @@
   "dependencies": {
     "cosmiconfig": "^5.0.5",
     "debug": "^3.1.0",
+    "dotenv": "^6.0.0",
     "enhanced-resolve": "^4.0.0",
     "escape-string-regexp": "^1.0.5",
     "find-up": "^3.0.0",
