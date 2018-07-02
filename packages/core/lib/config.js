@@ -1,16 +1,18 @@
 const debug = require('debug')('untool:config');
+
 const { basename, dirname, join } = require('path');
 
+const mergeWith = require('lodash.mergewith');
 const {
   sync: resolve,
   create: { sync: createResolver },
 } = require('enhanced-resolve');
 const { sync: findUp } = require('find-up');
 const cosmiconfig = require('cosmiconfig');
-const mergeWith = require('lodash.mergewith');
-const isPlainObject = require('is-plain-object');
-const escapeRegExp = require('escape-string-regexp');
 const flatten = require('flat');
+const escapeRegExp = require('escape-string-regexp');
+const isPlainObject = require('is-plain-object');
+const { load: loadEnv } = require('dotenv');
 
 const merge = (...args) =>
   mergeWith({}, ...args, (objValue, srcValue, key) => {
@@ -153,8 +155,10 @@ exports.getConfig = () => {
   const pkgFile = findUp('package.json');
   const rootDir = dirname(pkgFile);
   const { name = basename(rootDir), version = '0.0.0' } = require(pkgFile);
-
   const defaults = { rootDir, name, version, mixins: [] };
+
+  loadEnv({ path: join(rootDir, '.env') });
+
   const settings = loadSettings(rootDir);
   const presets = loadPresets(rootDir, settings.presets);
   const config = merge(defaults, presets, settings);
