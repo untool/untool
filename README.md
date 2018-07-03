@@ -80,12 +80,12 @@ To use `untool`, you certainly do not have to learn about all the parts and conc
 
 If you need to extend its features, you will want to take a peek into the black box, though. To become acquainted with `untool`'s innards, it certainly makes sense to dive into its README files. This is the recommended reading order:
 
-* [`@untool/core`](https://github.com/untool/untool/blob/master/packages/core/README.md): central base module all other components rely upon
-* [`@untool/defaults`](https://github.com/untool/untool/blob/master/packages/defaults/README.md): default preset incorporating all other core packages
-* [`@untool/yargs`](https://github.com/untool/untool/blob/master/packages/yargs/README.md): extensible, project-local command line interface
-* [`@untool/express`](https://github.com/untool/untool/blob/master/packages/express/README.md): extensible development and production server implementation
-* [`@untool/webpack`](https://github.com/untool/untool/blob/master/packages/webpack/README.md): extensible webpack setup (including Babel and PostCSS)
-* [`@untool/react`](https://github.com/untool/untool/blob/master/packages/react/README.md): extensible, universal React implementation
+- [`@untool/core`](https://github.com/untool/untool/blob/master/packages/core/README.md): central base module all other packages rely upon
+- [`@untool/defaults`](https://github.com/untool/untool/blob/master/packages/defaults/README.md): default preset incorporating all other main packages
+- [`@untool/yargs`](https://github.com/untool/untool/blob/master/packages/yargs/README.md): project-local command line interface
+- [`@untool/express`](https://github.com/untool/untool/blob/master/packages/express/README.md): development and production server implementation
+- [`@untool/webpack`](https://github.com/untool/untool/blob/master/packages/webpack/README.md): webpack setup (including Babel)
+- [`@untool/react`](https://github.com/untool/untool/blob/master/packages/react/README.md): universal React implementation
 
 At some point, though, you will have to read our source files: if, for example, merely configuring [`@untool/webpack`](https://github.com/untool/untool/blob/master/packages/webpack/README.md) and using its existing hooks does not suffice for your requirements, you will probably want extend it.
 
