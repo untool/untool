@@ -8,7 +8,7 @@
     "start": "cd tests/fixtures/instrument; un start",
     "test": "NODE_ENV=test ava --verbose --timeout=90s tests",
     "lint": "eslint --ignore-path .gitignore '**/*.js'",
-    "fmt": "prettier --write --ignore-path .gitignore '**/*.{js,css}'",
+    "fmt": "prettier --write --ignore-path .gitignore '**/*.js'",
     "release": "lerna publish --conventional-commits",
     "bump": "lerna publish --force-publish=* --cd-version=major",
     "update": "yarn upgrade-interactive --latest",
@@ -32,6 +32,8 @@
   "devDependencies": {
     "@commitlint/cli": "^7.0.0",
     "@commitlint/config-conventional": "^7.0.0",
+    "@commitlint/config-lerna-scopes": "^7.0.0",
+    "@commitlint/travis-cli": "^7.0.0",
     "ava": "^0.25.0",
     "babel-eslint": "^8.2.1",
     "cz-conventional-changelog": "^2.1.0",
@@ -101,14 +103,15 @@
     }
   },
   "lint-staged": {
-    "*.{js,css}": [
+    "*.js": [
       "prettier --write",
       "git add"
     ]
   },
   "commitlint": {
     "extends": [
-      "@commitlint/config-conventional"
+      "@commitlint/config-conventional",
+      "@commitlint/config-lerna-scopes"
     ]
   },
   "config": {
