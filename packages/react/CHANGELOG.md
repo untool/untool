@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.11.0"></a>
+# [0.11.0](https://github.com/untool/untool/compare/v0.10.0...v0.11.0) (2018-07-03)
+
+
+### Features
+
+* **react:** add env specific config placeholders ([d82b5fe](https://github.com/untool/untool/commit/d82b5fe))
+
+
+
+
 <a name="0.10.0"></a>
 # [0.10.0](https://github.com/untool/untool/compare/v0.9.0...v0.10.0) (2018-06-26)
 

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.11.0"></a>
+# [0.11.0](https://github.com/untool/untool/compare/v0.10.0...v0.11.0) (2018-07-03)
+
+
+### Bug Fixes
+
+* **webpack:** turn off function inlining to avoid const reassignment ([3c72190](https://github.com/untool/untool/commit/3c72190))
+
+
+### Features
+
+* **webpack:** add env specific config placeholders ([d4d57e2](https://github.com/untool/untool/commit/d4d57e2))
+
+
+
+
 <a name="0.10.0"></a>
 # [0.10.0](https://github.com/untool/untool/compare/v0.9.0...v0.10.0) (2018-06-26)
 
