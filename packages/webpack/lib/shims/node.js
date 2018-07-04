@@ -2,7 +2,7 @@
 
 require('babel-polyfill');
 
-const { getConfigAndMixins } = require('@untool/config');
+const { getConfigAndMixins } = require('./loader');
 
 let entryPoint = require('@untool/entrypoint');
 if (typeof entryPoint.default === 'function') {
