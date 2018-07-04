@@ -34,7 +34,7 @@ const getPort = (host, port) => {
         });
       }
     });
-  return findPort(host || '0.0.0.0', Number(port || '8080'), Number(port));
+  return findPort(host, Number(port || '8080'), Number(port));
 };
 
 module.exports = (app, { config, inspectServer, handleError }) => {
