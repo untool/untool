@@ -34,12 +34,11 @@ const getPort = (host, port) => {
         });
       }
     });
-  return findPort(host, ...[Number(port) || 8080, port]);
+  return findPort(host || '0.0.0.0', Number(port || '8080'), Number(port));
 };
 
 module.exports = (app, { config, inspectServer, handleError }) => {
-  let { host, port, https } = config;
-  host = host || '0.0.0.0';
+  const { host, port, https } = config;
   const server = createServer(app, https);
   getPort(host, port).then((port) =>
     server.listen(port, host, (error) => {
