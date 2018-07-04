@@ -38,7 +38,8 @@ const getPort = (host, port) => {
 };
 
 module.exports = (app, { config, inspectServer, handleError }) => {
-  const { host = '0.0.0.0', port, https } = config;
+  let { host, port, https } = config;
+  host = host || '0.0.0.0';
   const server = createServer(app, https);
   getPort(host, port).then((port) =>
     server.listen(port, host, (error) => {
