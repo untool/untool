@@ -38,7 +38,3 @@ Options:
   --version   Show version number                                     [boolean]
   --help, -h  Show help                                               [boolean]
 ```
-
-### API
-
-`untool` does not provide an API. [`@untool/webpack`](https://github.com/untool/untool/blob/master/packages/webpack/README.md), however, defines `untool` as an alias for [`@untool/core`](https://github.com/untool/untool/blob/master/packages/core/README.md) for your convenience: if you `import 'untool'` in your application, what you get are actually [`@untool/core`](https://github.com/untool/untool/blob/master/packages/core/README.md)'s `exports`.

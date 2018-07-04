@@ -76,9 +76,7 @@ module.exports = function getConfig(config, configureBuild) {
     },
     resolve: {
       alias: {
-        untool: '@untool/core',
         '@untool/entrypoint': config.rootDir,
-        '@untool/config': require.resolve('../shims/loader'),
       },
       extensions: ['.js'],
       mainFields: [
