@@ -90,12 +90,17 @@ const loadConfig = (context, config) => {
     : searchSync(context);
 };
 
-const loadSettings = (context) => {
+const loadSettings = (context, { dependencies }) => {
   const result = loadConfig(context);
-  return {
-    presets: ['@untool/defaults'],
+  const settings = {
     ...(result ? result.config : {}),
   };
+  if (!settings.presets) {
+    settings.presets = Object.keys(dependencies).filter((key) =>
+      loadConfig(context, key)
+    );
+  }
+  return settings;
 };
 
 const loadPreset = (context, preset) => {
@@ -153,25 +158,25 @@ const placeholdify = (config) => {
 
 exports.getConfig = () => {
   const pkgFile = findUp('package.json');
+  const pkgData = require(pkgFile);
   const rootDir = dirname(pkgFile);
-  const { name = basename(rootDir), version = '0.0.0' } = require(pkgFile);
-  const defaults = { rootDir, name, version, mixins: [] };
+
+  const { name = basename(rootDir), version = '0.0.0' } = pkgData;
 
   loadEnv({ path: join(rootDir, '.env') });
 
-  const settings = loadSettings(rootDir);
+  const defaults = { rootDir, name, version, mixins: [] };
+  const settings = loadSettings(rootDir, pkgData);
   const presets = loadPresets(rootDir, settings.presets);
-  const config = merge(defaults, presets, settings);
 
-  delete config.presets;
-  delete config.env;
+  const raw = merge(defaults, presets, settings);
+  delete raw.presets;
 
-  const result = {
-    ...placeholdify(config),
-    mixins: resolveMixins(rootDir, config.mixins),
+  const config = {
+    ...placeholdify(raw),
+    mixins: resolveMixins(rootDir, raw.mixins),
   };
 
-  debug(result);
-
-  return result;
+  debug(config);
+  return config;
 };
