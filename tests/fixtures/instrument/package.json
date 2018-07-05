@@ -6,7 +6,9 @@
   "untool": {
     "locations": ["/"],
     "browsers": "last 1 Chrome versions",
-    "presets": ["@untool/defaults"],
     "mixins": ["."]
+  },
+  "dependencies": {
+    "@untool/defaults": "*"
   }
 }
