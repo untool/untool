@@ -31,7 +31,7 @@ It allows you to set up mixins and pull in presets. Mixins provide extra functio
 }
 ```
 
-Now if you start your app in an environment in which the corresponding variable is defined, it will be picked up _at runtime_.
+Now if you start your app in an environment in which the corresponding variable is defined, it will be picked up _at runtime_. To streamline development workflows, `@untool/core` comes with built-in support for [`dotenv`](https://github.com/motdotla/dotenv).
 
 ```bash
 $ PORT=12345 un start
