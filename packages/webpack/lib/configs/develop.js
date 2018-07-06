@@ -85,6 +85,7 @@ module.exports = function getConfig(config, configureBuild) {
       mainFields: [
         'esnext:browser',
         'jsnext:browser',
+        'module-browser',
         'browser',
         'esnext',
         'jsnext',
