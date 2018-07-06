@@ -44,22 +44,12 @@ As `untool` is completely modular, there is no single best way to install its di
 $ yarn global add untool # OR npm install --global untool
 ```
 
-Having installed this global CLI package, you can set up your first `untool` project. The easiest way to do so is to install the `@untool/defaults` package and its dependencies.
+Having installed this global CLI package, you can set up your first `untool` project. The easiest way to do so is to install the `@untool/defaults` package and its (dependencies') dependencies.
 
 ```text
 $ mkdir foo && cd $_
 $ yarn init -y
 $ yarn add @untool/defaults react react-dom react-helmet react-router react-router-dom
-```
-
-Finish the basic setup by adding a new `untool` section to your `package.json` file.
-
-```json
-{
-  "untool": {
-    "presets": ["@untool/defaults"]
-  }
-}
 ```
 
 Now, start building your app. `untool` will pick up whatever is configured as your project's main entry point. The following lines will give you a minimal React app.
