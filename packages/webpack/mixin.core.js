@@ -10,44 +10,48 @@ const {
 const { Mixin } = require('@untool/core');
 
 class WebpackMixin extends Mixin {
-  createAssetsMiddleware() {
-    const assetsMiddleware = require('./lib/middleware/assets');
-    const { config, assets, assetsByChunkName } = this;
-    return assetsMiddleware(config, { assets, assetsByChunkName });
-  }
-  loadPrebuiltMiddleware() {
+  loadRenderMiddleware() {
     const { buildDir, serverFile } = this.config;
     const path = join(buildDir, serverFile);
     return exists(path) ? require(path) : (req, res, next) => next();
   }
   createRenderMiddleware() {
     const renderMiddleware = require('./lib/middleware/render');
-    const webpackConfig = this.getConfig('node');
+    const webpackConfig = this.createConfig('node');
     return renderMiddleware(webpackConfig);
   }
   createDevRenderMiddleware() {
     const renderMiddleware = require('./lib/middleware/render');
-    const webpackBrowserConfig = this.getConfig('develop');
-    const webpackNodeConfig = this.getConfig('node');
+    const browserConfig = this.createConfig('develop');
+    const nodeConfig = this.createConfig('node');
     return renderMiddleware({
-      ...webpackNodeConfig,
-      watchOptions:
-        webpackNodeConfig.watchOptions || webpackBrowserConfig.watchOptions,
+      ...nodeConfig,
+      watchOptions: nodeConfig.watchOptions || browserConfig.watchOptions,
     });
   }
-  createDevWebpackMiddlewares() {
-    const webpackBrowserConfig = this.getConfig('develop');
-    const compiler = require('webpack')(webpackBrowserConfig);
+  createAssetsMiddleware() {
+    const assetsMiddleware = require('./lib/middleware/assets');
+    const { config, assets, assetsByChunkName } = this;
+    return assetsMiddleware(config, { assets, assetsByChunkName });
+  }
+  createDevAssetsMiddlewares() {
+    const browserConfig = this.createConfig('develop');
+    const compiler = require('webpack')(browserConfig);
     return [
       require('webpack-dev-middleware')(compiler, {
         noInfo: true,
         logLevel: 'silent',
-        publicPath: webpackBrowserConfig.output.publicPath,
-        watchOptions: webpackBrowserConfig.watchOptions,
+        publicPath: browserConfig.output.publicPath,
+        watchOptions: browserConfig.watchOptions,
         serverSideRender: true,
       }),
       require('webpack-hot-middleware')(compiler, { log: false }),
     ];
+  }
+  createRenderPlugin() {
+    const RenderPlugin = require('./lib/plugins/render');
+    const { renderLocations } = this;
+    return new RenderPlugin(renderLocations);
   }
   createAssetsPlugin() {
     const AssetsPlugin = require('./lib/plugins/assets');
@@ -56,15 +60,12 @@ class WebpackMixin extends Mixin {
       Object.assign(this, { assets, assetsByChunkName })
     );
   }
-  createRenderPlugin() {
-    const RenderPlugin = require('./lib/plugins/render');
-    const { renderLocations } = this;
-    return new RenderPlugin(renderLocations);
-  }
-  getConfig(target) {
-    const getConfig = require(`./lib/configs/${target}`);
+  createConfig(target) {
+    const createConfig = require(`./lib/configs/${target}`);
     const { configureBuild } = this;
-    return getConfig(this.config, (...args) => configureBuild(...args, target));
+    return createConfig(this.config, (...args) =>
+      configureBuild(...args, target)
+    );
   }
   clean() {
     const rimraf = require('rimraf');
@@ -77,12 +78,12 @@ class WebpackMixin extends Mixin {
     const webpack = require('webpack');
     const {
       options: { static: isStatic },
-      getConfig,
+      createConfig,
       inspectBuild,
     } = this;
     const config = isStatic
-      ? getConfig('build')
-      : [getConfig('build'), getConfig('node')];
+      ? createConfig('build')
+      : [createConfig('build'), createConfig('node')];
     return new Promise((resolve, reject) =>
       webpack(config).run(
         (error, stats) => (error ? reject(error) : resolve(stats))
@@ -101,14 +102,14 @@ class WebpackMixin extends Mixin {
   }
   configureServer(app, middlewares, mode) {
     if (mode === 'develop') {
-      middlewares.initial.push(this.createDevWebpackMiddlewares());
+      middlewares.initial.push(this.createDevAssetsMiddlewares());
       middlewares.routes.push(this.createDevRenderMiddleware());
     }
     if (mode === 'static') {
       middlewares.routes.push(this.createRenderMiddleware());
     }
     if (mode === 'serve') {
-      middlewares.routes.push(this.loadPrebuiltMiddleware());
+      middlewares.routes.push(this.loadRenderMiddleware());
     }
     middlewares.preroutes.push(this.createAssetsMiddleware());
     return app;
