@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.12.0"></a>
+# [0.12.0](https://github.com/untool/untool/compare/v0.11.0...v0.12.0) (2018-07-06)
+
+
+### Bug Fixes
+
+* **express:** cast port to number before doing math operations on it ([25cdbcb](https://github.com/untool/untool/commit/25cdbcb))
+* **express:** default host to '0.0.0.0' when env var is empty ([c05098e](https://github.com/untool/untool/commit/c05098e))
+
+
+
+
 <a name="0.11.0"></a>
 # [0.11.0](https://github.com/untool/untool/compare/v0.10.0...v0.11.0) (2018-07-03)
 

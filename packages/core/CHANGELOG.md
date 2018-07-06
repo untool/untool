@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.12.0"></a>
+# [0.12.0](https://github.com/untool/untool/compare/v0.11.0...v0.12.0) (2018-07-06)
+
+
+### Features
+
+* **core:** add dotenv support ([b9dc59a](https://github.com/untool/untool/commit/b9dc59a)), closes [/github.com/untool/untool/pull/61#pullrequestreview-133535159](https://github.com//github.com/untool/untool/pull/61/issues/pullrequestreview-133535159)
+* **core:** use installed presets if none configured ([a8064f7](https://github.com/untool/untool/commit/a8064f7))
+
+
+
+
 <a name="0.11.0"></a>
 # [0.11.0](https://github.com/untool/untool/compare/v0.10.0...v0.11.0) (2018-07-03)
 
