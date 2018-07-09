@@ -44,6 +44,9 @@ const resolveBrowserMixin = createResolver({
   mainFields: ['mixin:browser', 'mixin:runtime', 'mixin'],
 });
 
+const isResolveError = (error) =>
+  error && error.message && error.message.startsWith("Can't resolve");
+
 const resolveMixin = (context, mixin, target) => {
   try {
     switch (target) {
@@ -96,16 +99,19 @@ const loadSettings = (context, { dependencies }) => {
     ...(result ? result.config : {}),
   };
   if (!settings.presets) {
-    settings.presets = Object.keys(dependencies).filter((key) =>
-      loadConfig(context, key)
-    );
+    settings.presets = Object.keys(dependencies).filter((key) => {
+      try {
+        return loadConfig(context, key);
+      } catch (error) {
+        if (!isResolveError(error)) throw error;
+        return null;
+      }
+    });
   }
   return settings;
 };
 
 const loadPreset = (context, preset) => {
-  const isResolveError = (error) =>
-    error && error.message && error.message.startsWith("Can't resolve");
   try {
     return loadConfig(context, preset);
   } catch (error) {
