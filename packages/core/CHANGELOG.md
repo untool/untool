@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.12.1"></a>
+## [0.12.1](https://github.com/untool/untool/compare/v0.12.0...v0.12.1) (2018-07-09)
+
+
+### Bug Fixes
+
+* **core:** catch resolve errors when searching for presets ([45b3e6c](https://github.com/untool/untool/commit/45b3e6c))
+
+
+
+
 <a name="0.12.0"></a>
 # [0.12.0](https://github.com/untool/untool/compare/v0.11.0...v0.12.0) (2018-07-06)
 
