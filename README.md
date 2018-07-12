@@ -49,7 +49,7 @@ Having installed this global CLI package, you can set up your first `untool` pro
 ```text
 $ mkdir foo && cd $_
 $ yarn init -y
-$ yarn add @untool/defaults react react-dom react-helmet react-router react-router-dom
+$ yarn add @untool/defaults react react-dom react-router-dom react-helmet
 ```
 
 Now, start building your app. `untool` will pick up whatever is configured as your project's main entry point. The following lines will give you a minimal React app.
