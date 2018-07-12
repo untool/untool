@@ -9,7 +9,8 @@
 If you need to set up a new project using `@untool/defaults`, just use the package manager of your choice to install it:
 
 ```bash
-$ yarn add @untool/defaults # OR npm install @untool/defaults
+$ yarn add @untool/defaults react react-dom react-router-dom react-helmet
+# OR npm install @untool/defaults react react-dom react-router-dom react-helmet
 ```
 
 Afterwards, you need to add a new `untool` section to your project's `package.json` file:
