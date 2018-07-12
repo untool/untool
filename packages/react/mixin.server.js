@@ -1,6 +1,6 @@
 const { createElement } = require('react');
 const { renderToString } = require('react-dom/server');
-const { StaticRouter } = require('react-router');
+const { StaticRouter } = require('react-router-dom');
 const { Helmet } = require('react-helmet');
 
 const {
