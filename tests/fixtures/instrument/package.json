@@ -3,9 +3,9 @@
   "mixin:core": "core",
   "mixin:server": "server",
   "mixin:browser": "browser",
+  "browserslist": "last 1 Chrome versions",
   "untool": {
     "locations": ["/"],
-    "browsers": "last 1 Chrome versions",
     "mixins": ["."]
   },
   "dependencies": {
