@@ -1,6 +1,7 @@
 const { relative } = require('path');
 
 const debug = require('debug')('untool:webpack:develop');
+const { loadConfig } = require('browserslist/node');
 const {
   DefinePlugin,
   HotModuleReplacementPlugin,
@@ -31,7 +32,7 @@ module.exports = function getConfig(config, configureBuild) {
           {
             modules: false,
             useBuiltIns: true,
-            targets: { browsers: config.browsers },
+            targets: { browsers: loadConfig({ path: config.rootDir }) },
           },
         ],
       ],

@@ -27,7 +27,7 @@ module.exports = function getConfig(config, configureBuild) {
           {
             modules: false,
             useBuiltIns: true,
-            targets: { node: config.node },
+            targets: { node: 'current' },
           },
         ],
       ],
