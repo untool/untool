@@ -112,30 +112,8 @@ Using this utility mixin method, you can delete your `buildDir` and all of its c
 
 | Property     | Type     | Default         |
 | ------------ | -------- | --------------- |
-| `browsers`   | `string` | `'defaults'`    |
-| `node`       | `string` | `'current'`     |
 | `serverFile` | `string` | `'server.js'`   |
 | `assetFile`  | `string` | `'assets.json'` |
-
-### `browsers`
-
-This is a [`browserslist`](https://github.com/browserslist/browserslist) configuration that is being used and Babel's [`preset-env`](https://babeljs.io/docs/plugins/preset-env/) to determine what language features need to be transpiled and/or polyfilled for your target platforms.
-
-```json
-{
-  "browsers": "last 1 Chrome versions"
-}
-```
-
-### `node`
-
-This is the target Node.js version Babel's [`preset-env`](https://babeljs.io/docs/plugins/preset-env/) transpiles features for. Usually you will want to keep its default, as it is best practice to develop and build your application on the same Node version as you run in production.
-
-```json
-{
-  "node": "8.10"
-}
-```
 
 ### `serverFile`
 
