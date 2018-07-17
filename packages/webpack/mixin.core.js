@@ -37,7 +37,6 @@ class WebpackMixin extends Mixin {
   }
   createDevWebpackMiddlewares() {
     const webpackBrowserConfig = this.getBuildConfig('develop');
-
     const compiler = require('webpack')(webpackBrowserConfig);
     return [
       require('webpack-dev-middleware')(compiler, {
@@ -189,14 +188,7 @@ class WebpackMixin extends Mixin {
         this.configureCommand({
           command: 'develop',
           describe: `Serve ${name} in watch mode`,
-          builder: {
-            static: {
-              alias: 's',
-              default: false,
-              describe: 'Statically build locations',
-              type: 'boolean',
-            },
-          },
+          builder: {},
           handler: () =>
             this.clean()
               .then(this.runServer.bind(this, 'develop'))
@@ -217,9 +209,9 @@ class WebpackMixin extends Mixin {
 WebpackMixin.strategies = {
   configureBuild: pipe,
   inspectBuild: sequence,
+  getBuildConfig: overrideSync,
   build: overrideAsync,
   clean: overrideAsync,
-  getBuildConfig: overrideSync,
 };
 
 module.exports = WebpackMixin;
