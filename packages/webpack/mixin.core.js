@@ -3,8 +3,8 @@ const { join } = require('path');
 
 const debug = require('debug')('untool:webpack:stats');
 const {
-  sync: { pipe, sequence },
-  async: { override },
+  sync: { pipe, sequence, override: overrideSync },
+  async: { override: overrideAsync },
 } = require('mixinable');
 
 const { Mixin } = require('@untool/core');
@@ -22,13 +22,13 @@ class WebpackMixin extends Mixin {
   }
   createRenderMiddleware() {
     const renderMiddleware = require('./lib/middleware/render');
-    const webpackConfig = this.getConfig('node');
+    const webpackConfig = this.getBuildConfig('node');
     return renderMiddleware(webpackConfig);
   }
   createDevRenderMiddleware() {
     const renderMiddleware = require('./lib/middleware/render');
-    const webpackBrowserConfig = this.getConfig('develop');
-    const webpackNodeConfig = this.getConfig('node');
+    const webpackBrowserConfig = this.getBuildConfig('develop');
+    const webpackNodeConfig = this.getBuildConfig('node');
     return renderMiddleware({
       ...webpackNodeConfig,
       watchOptions:
@@ -36,7 +36,8 @@ class WebpackMixin extends Mixin {
     });
   }
   createDevWebpackMiddlewares() {
-    const webpackBrowserConfig = this.getConfig('develop');
+    const webpackBrowserConfig = this.getBuildConfig('develop');
+
     const compiler = require('webpack')(webpackBrowserConfig);
     return [
       require('webpack-dev-middleware')(compiler, {
@@ -61,7 +62,7 @@ class WebpackMixin extends Mixin {
     const { renderLocations } = this;
     return new RenderPlugin(renderLocations);
   }
-  getConfig(target) {
+  getBuildConfig(target) {
     const getConfig = require(`./lib/configs/${target}`);
     const { configureBuild } = this;
     return getConfig(this.config, (...args) => configureBuild(...args, target));
@@ -77,12 +78,12 @@ class WebpackMixin extends Mixin {
     const webpack = require('webpack');
     const {
       options: { static: isStatic },
-      getConfig,
+      getBuildConfig,
       inspectBuild,
     } = this;
     const config = isStatic
-      ? getConfig('build')
-      : [getConfig('build'), getConfig('node')];
+      ? getBuildConfig('build')
+      : [getBuildConfig('build'), getBuildConfig('node')];
     return new Promise((resolve, reject) =>
       webpack(config).run(
         (error, stats) => (error ? reject(error) : resolve(stats))
@@ -216,8 +217,9 @@ class WebpackMixin extends Mixin {
 WebpackMixin.strategies = {
   configureBuild: pipe,
   inspectBuild: sequence,
-  build: override,
-  clean: override,
+  build: overrideAsync,
+  clean: overrideAsync,
+  getBuildConfig: overrideSync,
 };
 
 module.exports = WebpackMixin;
