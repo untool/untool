@@ -1,6 +1,6 @@
 {
   "name": "@untool/defaults",
-  "version": "0.12.1",
+  "version": "0.13.0",
   "description": "untool default preset",
   "keywords": [
     "unpreset"
@@ -24,8 +24,8 @@
   "dependencies": {
     "@untool/core": "^0.12.1",
     "@untool/express": "^0.12.1",
-    "@untool/react": "^0.12.1",
-    "@untool/webpack": "^0.12.1",
+    "@untool/react": "^0.13.0",
+    "@untool/webpack": "^0.13.0",
     "@untool/yargs": "^0.12.1"
   },
   "engines": {
