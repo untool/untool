@@ -101,14 +101,9 @@ With this method you can render HTML pages for all configured [`locations`](http
 
 ```json
 {
-  "https": true,
-  "env": {
-    "production": {
-      "https": {
-        "keyFile": "./ssl/foo.key",
-        "certFile": "./ssl/foo.cert"
-      }
-    }
+  "https": {
+    "keyFile": "./ssl/foo.key",
+    "certFile": "./ssl/foo.cert"
   }
 }
 ```
