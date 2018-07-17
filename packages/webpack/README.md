@@ -108,6 +108,10 @@ If you want to intialize a build of your application, you can do so using this u
 
 Using this utility mixin method, you can delete your `buildDir` and all of its contents. It returns a `Promise`.
 
+### `getBuildConfig(target)` ([override](https://github.com/untool/mixinable/blob/master/README.md#defineoverride))
+
+Returns the webpack config after `configureBuild` has been applied. `target` argument can be `build`, `develop`, or `node`.
+
 ## Settings
 
 | Property     | Type     | Default         |
