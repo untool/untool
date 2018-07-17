@@ -38,14 +38,6 @@ This is equivalent to manually setting `$NODE_ENV` before calling the actual com
 $ NODE_ENV=production un serve
 ```
 
-##### `-s` / `--static`
-
-In static mode, `@untool/express` will rewrite request paths according to its `locations` configuration.
-
-```bash
-$ un serve -s # OR un serve --static
-```
-
 ## API
 
 ### `configureServer(app, middlewares, mode)` ([pipe](https://github.com/untool/mixinable/blob/master/README.md#definepipe))
