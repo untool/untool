@@ -27,11 +27,11 @@ exports.resolveRelativeFolder = function resolveRelativeFolder(...args) {
 };
 
 exports.addLeadingSlash = function addLeadingSlash(location) {
-  return location.replace(/^\/+/, '/');
+  return location.replace(/^\/*/, '/');
 };
 
 exports.addTrailingSlash = function addTrailingSlash(location) {
-  return location.replace(/\/+$/, '/');
+  return location.replace(/\/*$/, '/');
 };
 
 exports.stripLeadingSlash = function stripLeadingSlash(location) {
