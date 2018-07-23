@@ -93,20 +93,26 @@ const loadConfig = (context, config) => {
     : searchSync(context);
 };
 
-const loadSettings = (context, { dependencies }) => {
+const loadSettings = (context, { dependencies = {}, devDependencies = {} }) => {
   const result = loadConfig(context);
   const settings = {
     ...(result ? result.config : {}),
   };
   if (!settings.presets) {
-    settings.presets = Object.keys(dependencies).filter((key) => {
-      try {
-        return loadConfig(context, key);
-      } catch (error) {
-        if (!isResolveError(error)) throw error;
-        return null;
-      }
-    });
+    settings.presets = Object.keys(dependencies)
+      .concat(
+        process.env.NODE_ENV !== 'production'
+          ? Object.keys(devDependencies)
+          : []
+      )
+      .filter((key) => {
+        try {
+          return loadConfig(context, key);
+        } catch (error) {
+          if (!isResolveError(error)) throw error;
+          return null;
+        }
+      });
   }
   return settings;
 };
