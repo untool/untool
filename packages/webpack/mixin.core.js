@@ -3,8 +3,8 @@ const { join } = require('path');
 
 const debug = require('debug')('untool:webpack:stats');
 const {
-  sync: { pipe, sequence, override: overrideSync },
-  async: { override: overrideAsync },
+  sync: { pipe, sequence, callable: callableSync },
+  async: { callable: callableAsync },
 } = require('mixinable');
 
 const { Mixin } = require('@untool/core');
@@ -215,9 +215,9 @@ class WebpackMixin extends Mixin {
 WebpackMixin.strategies = {
   configureBuild: pipe,
   inspectBuild: sequence,
-  getBuildConfig: overrideSync,
-  build: overrideAsync,
-  clean: overrideAsync,
+  getBuildConfig: callableSync,
+  build: callableAsync,
+  clean: callableAsync,
 };
 
 module.exports = WebpackMixin;
