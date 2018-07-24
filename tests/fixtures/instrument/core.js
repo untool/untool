@@ -9,10 +9,6 @@ class InstrumentMixin extends Mixin {
     super(...args);
     events.emit('constructor', this, ...args);
   }
-  initializeServer(...args) {
-    events.emit('initializeServer', ...args);
-    return args[0];
-  }
   configureServer(...args) {
     events.emit('configureServer', ...args);
     return args[0];
