@@ -30,7 +30,7 @@
     "flat": "^4.0.0",
     "is-plain-object": "^2.0.4",
     "lodash.mergewith": "^4.6.1",
-    "mixinable": "^3.0.0",
+    "mixinable": "^3.1.2",
     "supports-color": "^5.4.0"
   },
   "engines": {

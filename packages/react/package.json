@@ -26,7 +26,7 @@
     "@untool/core": "^0.12.1",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.13",
     "babel-preset-react": "^6.24.1",
-    "mixinable": "^3.0.0",
+    "mixinable": "^3.1.2",
     "serialize-javascript": "^1.4.0"
   },
   "peerDependencies": {
