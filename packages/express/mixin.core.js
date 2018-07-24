@@ -1,6 +1,6 @@
 const {
-  sync: { sequence, pipe, override: overrideSync },
-  async: { override: overrideAsync },
+  sync: { sequence, pipe, callable: callableSync },
+  async: { callable: callableAsync },
 } = require('mixinable');
 
 const { Mixin } = require('@untool/core');
@@ -8,19 +8,35 @@ const { Mixin } = require('@untool/core');
 const uri = require('./lib/uri');
 
 class ExpressMixin extends Mixin {
-  createServer(mode) {
-    const create = require('./lib/serve');
-    return create(mode, this);
-  }
   runServer(mode) {
     const run = require('./lib/run');
     const app = this.createServer(mode);
     return run(app, this);
   }
+  createServer(mode) {
+    const create = require('./lib/serve');
+    return create(mode, this);
+  }
   createRenderer() {
     const create = require('./lib/static');
     const app = this.createServer('static');
     return create(app);
+  }
+  renderLocations() {
+    const indexFile = require('directory-index');
+    const render = this.createRenderer();
+    const { basePath, locations } = this.config;
+    const { resolveAbsolute, resolveRelative } = uri;
+    return Promise.all(
+      locations
+        .map((location) => resolveAbsolute(basePath, location))
+        .map((location) => render(location))
+    ).then((responses) =>
+      responses.reduce((result, response, index) => {
+        const key = resolveRelative(basePath, indexFile(locations[index]));
+        return { ...result, [key]: response };
+      }, {})
+    );
   }
   createFilesMiddleware() {
     const express = require('express');
@@ -39,22 +55,6 @@ class ExpressMixin extends Mixin {
       },
       redirect: false,
     });
-  }
-  renderLocations() {
-    const indexFile = require('directory-index');
-    const render = this.createRenderer();
-    const { basePath, locations } = this.config;
-    const { resolveAbsolute, resolveRelative } = uri;
-    return Promise.all(
-      locations
-        .map((location) => resolveAbsolute(basePath, location))
-        .map((location) => render(location))
-    ).then((responses) =>
-      responses.reduce((result, response, index) => {
-        const key = resolveRelative(basePath, indexFile(locations[index]));
-        return { ...result, [key]: response };
-      }, {})
-    );
   }
   configureServer(app, middlewares, mode) {
     if (mode !== 'static') {
@@ -91,10 +91,10 @@ class ExpressMixin extends Mixin {
 ExpressMixin.strategies = {
   configureServer: pipe,
   inspectServer: sequence,
-  createServer: overrideSync,
-  runServer: overrideSync,
-  createRenderer: overrideSync,
-  renderLocations: overrideAsync,
+  runServer: callableSync,
+  createServer: callableSync,
+  createRenderer: callableSync,
+  renderLocations: callableAsync,
 };
 
 module.exports = ExpressMixin;
