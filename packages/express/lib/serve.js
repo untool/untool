@@ -1,31 +1,24 @@
 const debug = require('debug')('untool:express');
 const express = require('express');
 
+const { Router } = express;
+
 module.exports = (mode, { configureServer }) => {
-  const phases = ['initial', 'files', 'parse', 'routes', 'final'];
-  const middlewares = phases.reduce(
-    (result, key) => {
-      const additions = { [`pre${key}`]: [], [key]: [], [`post${key}`]: [] };
-      return {
-        ...result,
-        ...additions,
-        middlewareOrder: result.middlewareOrder.concat(Object.keys(additions)),
-      };
-    },
-    { middlewareOrder: [] }
+  const phases = ['initial', 'files', 'parse', 'routes', 'final'].reduce(
+    (result, key) => result.concat(`pre${key}`, key, `post${key}`),
+    []
   );
-  const app = configureServer(express(), middlewares, mode);
-  const { middlewareOrder } = middlewares;
+  const middlewares = phases.reduce(
+    (result, key) => ({ ...result, [key]: [] }),
+    { phases }
+  );
+  const router = new Router();
+  const app = configureServer(express().use(router), middlewares, mode);
   debug(middlewares);
-  middlewareOrder.forEach(
-    (phase) =>
-      Array.isArray(middlewares[phase]) &&
-      middlewares[phase].forEach(
-        (middleware) =>
-          Array.isArray(middleware)
-            ? app.use(...middleware)
-            : app.use(middleware)
-      )
+  phases.forEach((phase) =>
+    middlewares[phase].forEach((middleware) =>
+      (/final/.test(phase) ? app : router).use(...[].concat(middleware))
+    )
   );
   return app;
 };
