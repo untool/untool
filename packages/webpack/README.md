@@ -100,17 +100,23 @@ You can use whatever mechanism you like to modify the complicated structures Web
 
 If you want to programmatically determine whether a build went well, your mixin can implement this method. It will be called with a Webpack [`stats`](https://webpack.js.org/api/node/#stats-object) object and the actual configuration used for the specific build you are inspecting.
 
-### `build()` ([override](https://github.com/untool/mixinable/blob/master/README.md#defineoverride))
+### `build()` ([callable](https://github.com/untool/mixinable/blob/master/README.md#defineoverride))
 
 If you want to intialize a build of your application, you can do so using this utility mixin method. It returns a `Promise` resolving to a [`stats`](https://webpack.js.org/api/node/#stats-object) object.
 
-### `clean()` ([override](https://github.com/untool/mixinable/blob/master/README.md#defineoverride))
+_This method is also exported so that you can use it in your own, non-mixin code. Import it like so: `import { build } from '@untool/webpack';`. In this mode, it also accepts another argument, `options`, which you can pass any CLI argument to._
+
+### `clean()` ([callable](https://github.com/untool/mixinable/blob/master/README.md#defineoverride))
 
 Using this utility mixin method, you can delete your `buildDir` and all of its contents. It returns a `Promise`.
 
-### `getBuildConfig(target)` ([override](https://github.com/untool/mixinable/blob/master/README.md#defineoverride))
+_This method is also exported so that you can use it in your own, non-mixin code. Import it like so: `import { clean } from '@untool/webpack';`. In this mode, it also accepts another argument, `options`, which you can pass any CLI argument to._
+
+### `getBuildConfig(target)` ([callable](https://github.com/untool/mixinable/blob/master/README.md#defineoverride))
 
 Returns the webpack config after `configureBuild` has been applied. `target` argument can be `build`, `develop`, or `node`.
+
+_This method is also exported so that you can use it in your own, non-mixin code. Import it like so: `import { getBuildConfig } from '@untool/webpack';`. In this mode, it also accepts another argument, `options`, which you can pass any CLI argument to._
 
 ## Settings
 
