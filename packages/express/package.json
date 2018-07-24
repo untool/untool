@@ -31,7 +31,7 @@
     "helmet": "^3.12.1",
     "micromatch": "^3.1.10",
     "mime": "^2.2.2",
-    "mixinable": "^3.0.0",
+    "mixinable": "^3.1.2",
     "node-mocks-http": "^1.7.0",
     "supports-color": "^5.4.0"
   },
