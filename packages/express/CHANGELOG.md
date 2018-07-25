@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.14.0"></a>
+# [0.14.0](https://github.com/untool/untool/compare/v0.13.0...v0.14.0) (2018-07-25)
+
+
+### Bug Fixes
+
+* **express:** fix `add{Leading,Trailing}Slash` utils ([11f91cd](https://github.com/untool/untool/commit/11f91cd))
+* **express:** make sure `{pre,post}final` hooks can handle misses ([b774eb5](https://github.com/untool/untool/commit/b774eb5))
+
+
+### Features
+
+* **express:** add `createRenderer()` export ([5a93368](https://github.com/untool/untool/commit/5a93368))
+
+
+
+
 <a name="0.12.1"></a>
 ## [0.12.1](https://github.com/untool/untool/compare/v0.12.0...v0.12.1) (2018-07-09)
 
