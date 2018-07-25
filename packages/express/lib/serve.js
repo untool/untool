@@ -13,7 +13,7 @@ module.exports = (mode, { configureServer }) => {
     { phases }
   );
   const router = new Router();
-  const app = configureServer(express().use(router), middlewares, mode);
+  const app = configureServer(express(), middlewares, mode).use(router);
   debug(middlewares);
   phases.forEach((phase) =>
     middlewares[phase].forEach((middleware) =>
