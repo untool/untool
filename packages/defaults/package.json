@@ -1,6 +1,6 @@
 {
   "name": "@untool/defaults",
-  "version": "0.14.0",
+  "version": "0.14.1",
   "description": "untool default preset",
   "keywords": [
     "unpreset"
@@ -23,9 +23,9 @@
   "homepage": "https://github.com/untool/untool#readme",
   "dependencies": {
     "@untool/core": "^0.14.0",
-    "@untool/express": "^0.14.0",
+    "@untool/express": "^0.14.1",
     "@untool/react": "^0.14.0",
-    "@untool/webpack": "^0.14.0",
+    "@untool/webpack": "^0.14.1",
     "@untool/yargs": "^0.14.0"
   },
   "engines": {

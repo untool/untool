@@ -1,6 +1,6 @@
 {
   "name": "@untool/webpack",
-  "version": "0.14.0",
+  "version": "0.14.1",
   "description": "untool webpack mixin",
   "keywords": [
     "unmixin",
@@ -24,7 +24,7 @@
   "homepage": "https://github.com/untool/untool#readme",
   "dependencies": {
     "@untool/core": "^0.14.0",
-    "@untool/express": "^0.14.0",
+    "@untool/express": "^0.14.1",
     "@untool/yargs": "^0.14.0",
     "babel-core": "^6.26.0",
     "babel-loader": "^7.1.4",
