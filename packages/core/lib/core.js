@@ -10,8 +10,8 @@ exports.Mixin = class Mixin {
   }
 };
 
-exports.bootstrap = function bootstrap(...args) {
-  const config = environmentalize(getConfig());
+exports.bootstrap = function bootstrap(overrides, ...args) {
+  const config = environmentalize(getConfig(overrides));
   const mixins = config.mixins.core.map((mixin) => require(mixin));
   const strategies = {
     ...mixins.reduce(
