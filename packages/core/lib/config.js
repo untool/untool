@@ -168,7 +168,7 @@ const placeholdify = (config) => {
   return replaceRecursive(config);
 };
 
-exports.getConfig = () => {
+exports.getConfig = (overrides) => {
   const pkgFile = findUp('package.json');
   const pkgData = require(pkgFile);
   const rootDir = dirname(pkgFile);
@@ -181,7 +181,11 @@ exports.getConfig = () => {
   const settings = loadSettings(rootDir, pkgData);
   const presets = loadPresets(rootDir, settings.presets);
 
-  const raw = merge(defaults, presets, settings);
+  const mergeAndOverride = (...args) =>
+    typeof overrides === 'function'
+      ? overrides(merge(...args))
+      : merge(...args, overrides);
+  const raw = mergeAndOverride(defaults, presets, settings);
   delete raw.presets;
 
   const config = {
