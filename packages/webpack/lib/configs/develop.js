@@ -90,7 +90,6 @@ module.exports = function getConfig(config, configureBuild) {
         'jsnext',
         'esnext:main',
         'jsnext:main',
-        'module',
         'main',
       ],
     },
