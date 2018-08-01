@@ -4,6 +4,8 @@
 
 `untool` is a JavaScript tool designed to streamline configuration and usage of other JavaScript tools. By default, it comes with a basic development and runtime environment for universal React applications. This environment is highly modular. Every one of its default modules is configurable and extensible - and entirely optional.
 
+`untool` is not really meant to be used on its own, but extended and built upon. To get everything you need to develop and deploy a production grade web application, please check out [Hops](https://github.com/xing/hops).
+
 ## Why?
 
 JavaScript tooling is amazing nowadays. There are tons of bundlers, transpilers, analyzers, optimizers, minifiers, formatters, linters, build-, command- and test-runners, package managers... and then, of course, there are gazillions of frameworks, libraries, modules, components, extensions, plugins, addons, mixins...
