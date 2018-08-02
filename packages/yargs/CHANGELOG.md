@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.15.0"></a>
+# [0.15.0](https://github.com/untool/untool/compare/v0.14.2...v0.15.0) (2018-08-02)
+
+
+
+
+**Note:** Version bump only for package @untool/yargs
+
 <a name="0.14.0"></a>
 # [0.14.0](https://github.com/untool/untool/compare/v0.13.0...v0.14.0) (2018-07-25)
 

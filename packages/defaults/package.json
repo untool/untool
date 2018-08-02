@@ -1,6 +1,6 @@
 {
   "name": "@untool/defaults",
-  "version": "0.14.2",
+  "version": "0.15.0",
   "description": "untool default preset",
   "keywords": [
     "unpreset"
@@ -22,11 +22,11 @@
   },
   "homepage": "https://github.com/untool/untool#readme",
   "dependencies": {
-    "@untool/core": "^0.14.0",
-    "@untool/express": "^0.14.1",
-    "@untool/react": "^0.14.0",
-    "@untool/webpack": "^0.14.2",
-    "@untool/yargs": "^0.14.0"
+    "@untool/core": "^0.15.0",
+    "@untool/express": "^0.15.0",
+    "@untool/react": "^0.15.0",
+    "@untool/webpack": "^0.15.0",
+    "@untool/yargs": "^0.15.0"
   },
   "engines": {
     "node": ">8.6.0"
