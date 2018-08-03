@@ -9,7 +9,9 @@ const { sync: resolve } = require('enhanced-resolve');
 try {
   const pkgFile = findUp('package.json');
   const yargsPath = resolve(dirname(pkgFile), '@untool/yargs');
-  require(yargsPath).run({ mixins: [__dirname] });
+  require(yargsPath)
+    .configure({ mixins: [__dirname] })
+    .run();
 } catch (_) {
   // eslint-disable-next-line no-console
   console.error("Error: Can't find @untool/yargs \n");
