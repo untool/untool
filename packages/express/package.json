@@ -1,6 +1,6 @@
 {
   "name": "@untool/express",
-  "version": "0.15.0",
+  "version": "0.15.1",
   "description": "untool express mixin",
   "keywords": [
     "unmixin",
@@ -23,8 +23,8 @@
   },
   "homepage": "https://github.com/untool/untool#readme",
   "dependencies": {
-    "@untool/core": "^0.15.0",
-    "@untool/yargs": "^0.15.0",
+    "@untool/core": "^0.15.1",
+    "@untool/yargs": "^0.15.1",
     "debug": "^3.1.0",
     "directory-index": "^0.1.0",
     "express": "^4.16.2",
