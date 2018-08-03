@@ -158,10 +158,9 @@ const placeholdify = (config) => {
       }, {});
     }
     if (regExp.test(item)) {
-      return item.replace(regExp, (_, key) => {
-        const result = flatConfig[key] || '';
-        return regExp.test(result) ? replaceRecursive(result) : result;
-      });
+      return item.replace(regExp, (_, key) =>
+        replaceRecursive(flatConfig[key] || '')
+      );
     }
     return item;
   };
