@@ -185,8 +185,8 @@ The render function serves two main purposes: 'universalifying' or 'isomorphizin
 
 `Mixin` aside, `render` probably is the only part of `untool` you will directly interact with in your own code. It certainly is the only one of its APIs you will ever use within your application.
 
-### `bootstrap([...args])` (build only)
+### `bootstrap([overrides], [...args])` (build only)
 
 This is a semi-private function that is mainly being used internally, for example by [`@untool/yargs`](https://github.com/untool/untool/blob/master/packages/yargs/README.md). It returns the core mixin container - this allows you to call all defined mixin methods.
 
-You will only ever have to call it if you want to use `@untool/core` programmatically. Whatever arguments it receives are being passed along to the core container's mixins' constructors.
+You will only ever have to call it if you want to use `@untool/core` programmatically. You can pass it an `overrides` object that will be merged into the main config object. Whatever other arguments it receives are being passed along to the core container's mixins' constructors.
