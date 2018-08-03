@@ -29,11 +29,17 @@ Options:
   --help, -h  Show help                                               [boolean]
 
 $ un start
-foo info
-server listening at http://localhost:8080
+foo listening at http://localhost:8080
+foo built successfully in 1.4s
 ```
 
-`@untool/yargs` does not define any commands of its own, but takes care of basically setting up [`yargs`](http://yargs.js.org) and logging to [`stdout`](<https://en.wikipedia.org/wiki/Standard_streams#Standard_output_(stdout)>) and [`stderr`](<https://en.wikipedia.org/wiki/Standard_streams#Standard_error_(stderr)>). You can call `un` with an optional `-l` or `--log` command line argument with one of the following values to control its output: `debug`, `info`, `warn`, `error`, `silent`
+`@untool/yargs` does not define any commands of its own, but takes care of basically setting up [`yargs`](http://yargs.js.org). In addition to the arguments defined by specific commands, it accepts `--config:*` arguments. Using these, options defined by active presets can be overridden.
+
+```text
+$ un start --config:port 9090
+foo listening at http://localhost:9090
+foo built successfully in 1.3s
+```
 
 ## API
 
