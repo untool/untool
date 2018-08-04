@@ -15,10 +15,9 @@ exports.environmentalize = (_config) => {
       }, {});
     }
     if (regExp.test(item)) {
-      return item.replace(regExp, (_, key) => {
-        const result = (_env[key] = env[key] || '');
-        return regExp.test(result) ? replaceRecursive(result) : result;
-      });
+      return item.replace(regExp, (_, key) =>
+        replaceRecursive((_env[key] = env[key] || ''))
+      );
     }
     return item;
   };
