@@ -1,6 +1,6 @@
 {
   "name": "untool",
-  "version": "0.15.0",
+  "version": "0.16.0",
   "description": "untool cli",
   "preferGlobal": true,
   "bin": {
