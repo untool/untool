@@ -23,7 +23,7 @@ exports.configure = (overrides) => ({
       process.nextTick(() =>
         registerCommands(
           yargs
-            .version(require('./package.json').version)
+            .version(false)
             .usage('Usage: $0 <command> [options]')
             .help('h')
             .alias('help', 'h')
