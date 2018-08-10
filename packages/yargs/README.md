@@ -25,7 +25,6 @@ Commands:
   un develop  Serve foo in watch mode
 
 Options:
-  --version   Show version number                                     [boolean]
   --help, -h  Show help                                               [boolean]
 ```
 
