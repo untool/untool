@@ -44,10 +44,64 @@ const { Mixin } = require('@untool/core');
 
 module.exports = class FooMixin extends Mixin {
   registerCommands(yargs) {
-    return yargs.command({
-      command: 'foo',
-      handler: (argv) => {},
-    });
+    return yargs.command(
+      this.configureCommand({
+        command: 'foo',
+        builder: {},
+        handler: (argv) => {},
+      })
+    );
+  }
+};
+```
+
+### `configureCommand(definition)` ([pipe](https://github.com/untool/mixinable/blob/master/README.md#definepipe))
+
+By implemention this method, your mixin can intercept and alter command configuration. Its main purpose is to enable you to add arguments to commands defined by other mixins.
+
+```javascript
+const { Mixin } = require('@untool/core');
+
+module.exports = class FooBarMixin extends Mixin {
+  configureCommand(definition) {
+    if (definition.command === 'foo') {
+      command.builder.bar = {
+        alias: 'b',
+        default: false,
+        describe: 'Enable bar',
+        type: 'boolean',
+      };
+    }
+    return definition;
+  }
+};
+```
+
+### `handleArguments(argv)` ([sequence](https://github.com/untool/mixinable/blob/master/README.md#defineparallel))
+
+Your mixin's implementation of this method will receive the parsed CLI arguments passed to `@untool/yargs`. You may want to implement it if you need to alter mixin behaviour according to these args.
+
+```javascript
+const { Mixin } = require('@untool/core');
+
+module.exports = class FooMixin extends Mixin {
+  handleArguments(argv) {
+    this.options = { ...this.options, ...argv };
+  }
+};
+```
+
+### `handleError(error)` ([override](https://github.com/untool/mixinable/blob/master/README.md#defineoverride))
+
+By implementing this method, you can intercept uncaught errors and unhandled promise rejections. **Make sure you terminate the process in which this method is being called.**
+
+```javascript
+const { Mixin } = require('@untool/core');
+const { logError } = require('./logger');
+
+module.exports = class FooMixin extends Mixin {
+  handleError(error) {
+    logError(error).then(() => process.exit(1));
   }
 };
 ```
