@@ -15,7 +15,7 @@ $ yarn add @untool/yargs # OR npm install @untool/yargs
 `@untool/yargs` can either be used with `untool`'s global [command line interface](https://github.com/untool/untool/blob/master/packages/cli/README.md) or directly, within `package.json` [scripts](https://docs.npmjs.com/cli/run-script) of the project it is installed in: it locally installs an `un` command.
 
 ```text
-$ un
+$ ./node_modules/.bin/un
 Usage: un <command> [options]
 
 Commands:
@@ -27,19 +27,9 @@ Commands:
 Options:
   --version   Show version number                                     [boolean]
   --help, -h  Show help                                               [boolean]
-
-$ un start
-foo listening at http://localhost:8080
-foo built successfully in 1.4s
 ```
 
-`@untool/yargs` does not define any commands of its own, but takes care of basically setting up [`yargs`](http://yargs.js.org). In addition to the arguments defined by specific commands, it accepts `--config:*` arguments. Using these, options defined by active presets can be overridden.
-
-```text
-$ un start --config:port 9090
-foo listening at http://localhost:9090
-foo built successfully in 1.3s
-```
+`@untool/yargs` does not define any commands of its own, but takes care of basically setting up [`yargs`](http://yargs.js.org).
 
 ## API
 
