@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/untool.svg)](https://www.npmjs.com/package/untool)
 
-`untool` is our main, global command line interface. It serves a single purposes: it can be used to to control `untool` projects. To do so, it provides the terminal command `un`.
+`untool` is our main, global command line interface. It serves a single purposes: it can be used to to control `untool` projects. To do so, it provides the terminal command `un`. Additionally, `untool` provides a bare-bones logging facility that can be disabled by providing a `-q` (or `--quiet`) CLI argument.
 
 ### Installation
 
@@ -18,8 +18,9 @@ $ yarn global add untool # OR npm install --global untool
 
 ```text
 $ un start -s
-foo info
-server listening at http://localhost:8080
+[foo] started in development mode
+[foo] listening at http://localhost:8080
+[foo] built successfully in 1.4s
 ```
 
 You can also call it without arguments to see a list of available commands. This list will vary depending on the mixins you installed in every individual project.
@@ -35,6 +36,6 @@ Commands:
   un develop  Serve foo in watch mode
 
 Options:
-  --version   Show version number                                     [boolean]
-  --help, -h  Show help                                               [boolean]
+  --quiet, -q  Suppress log output                                    [boolean]
+  --help, -h   Show help                                              [boolean]
 ```
