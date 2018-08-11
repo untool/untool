@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
   browsers: 'defaults',
   node: 'current',

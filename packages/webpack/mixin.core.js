@@ -1,3 +1,5 @@
+'use strict';
+
 const { existsSync: exists } = require('fs');
 const { join } = require('path');
 

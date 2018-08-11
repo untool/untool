@@ -1,3 +1,5 @@
+'use strict';
+
 const { RawSource } = require('webpack-sources');
 
 module.exports = class WebpackAssetsPlugin {

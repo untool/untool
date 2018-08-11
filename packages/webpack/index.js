@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
   clean(options = {}) {
     const core = require('@untool/core').bootstrap();
