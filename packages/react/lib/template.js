@@ -1,3 +1,5 @@
+'use strict';
+
 const esc = require('serialize-javascript');
 
 const renderCSS = ({ css }) =>

@@ -1,4 +1,7 @@
+'use strict';
+
 /* eslint-env browser */
+
 const { createElement } = require('react');
 const { unmountComponentAtNode, hydrate, render } = require('react-dom');
 const { BrowserRouter } = require('react-router-dom');

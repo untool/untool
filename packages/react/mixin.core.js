@@ -1,3 +1,5 @@
+'use strict';
+
 const { Mixin } = require('@untool/core');
 
 module.exports = class ReactMixin extends Mixin {

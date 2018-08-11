@@ -1,3 +1,5 @@
+'use strict';
+
 const { createElement } = require('react');
 const { renderToString } = require('react-dom/server');
 const { StaticRouter } = require('react-router-dom');
