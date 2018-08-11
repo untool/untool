@@ -1,3 +1,5 @@
+'use strict';
+
 const { getOptions } = require('loader-utils');
 
 const getMixins = (target, config) =>

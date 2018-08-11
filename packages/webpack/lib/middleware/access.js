@@ -1,3 +1,5 @@
+'use strict';
+
 const {
   uri: { addLeadingSlash },
 } = require('@untool/express');

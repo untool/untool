@@ -1,3 +1,5 @@
+'use strict';
+
 const { relative } = require('path');
 
 const debug = require('debug')('untool:webpack:build');

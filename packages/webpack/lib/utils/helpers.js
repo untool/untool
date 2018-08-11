@@ -1,3 +1,5 @@
+'use strict';
+
 const { readFileSync: readFile } = require('fs');
 const { join, dirname } = require('path');
 
