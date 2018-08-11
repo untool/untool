@@ -1,6 +1,3 @@
-#!/usr/bin/env node
-'use strict';
-
 const createYargs = require('yargs');
 
 const { bootstrap } = require('@untool/core');
@@ -42,7 +39,3 @@ exports.configure = (overrides) => ({
 });
 
 exports.run = exports.configure().run;
-
-if (require.main === module) {
-  exports.run();
-}

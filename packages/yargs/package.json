@@ -6,9 +6,6 @@
     "unmixin",
     "unpreset"
   ],
-  "bin": {
-    "un": "index.js"
-  },
   "scripts": {
     "test": "echo \"Error: no test specified\""
   },
