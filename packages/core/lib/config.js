@@ -1,3 +1,5 @@
+'use strict';
+
 const debug = require('debug')('untool:config');
 
 const { basename, dirname, join } = require('path');

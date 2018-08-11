@@ -1,3 +1,5 @@
+'use strict';
+
 const isPlainObject = require('is-plain-object');
 
 exports.environmentalize = (_config) => {

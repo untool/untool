@@ -1,3 +1,5 @@
+'use strict';
+
 const debug = require('debug')('untool:runtime');
 const define = require('mixinable');
 
