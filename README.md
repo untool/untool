@@ -74,7 +74,7 @@ If you need to extend its features, you will want to take a peek into the black 
 
 - [`@untool/core`](https://github.com/untool/untool/blob/master/packages/core/README.md): central base module all other packages rely upon
 - [`@untool/defaults`](https://github.com/untool/untool/blob/master/packages/defaults/README.md): default preset incorporating all other main packages
-- [`@untool/yargs`](https://github.com/untool/untool/blob/master/packages/yargs/README.md): project-local command line interface
+- [`@untool/yargs`](https://github.com/untool/untool/blob/master/packages/yargs/README.md): command line interface engine
 - [`@untool/express`](https://github.com/untool/untool/blob/master/packages/express/README.md): development and production server implementation
 - [`@untool/webpack`](https://github.com/untool/untool/blob/master/packages/webpack/README.md): webpack setup (including Babel)
 - [`@untool/react`](https://github.com/untool/untool/blob/master/packages/react/README.md): universal React implementation
