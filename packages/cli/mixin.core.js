@@ -1,3 +1,5 @@
+'use strict';
+
 const { format } = require('url');
 
 const prettyMS = require('pretty-ms');
