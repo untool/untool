@@ -1,3 +1,5 @@
+'use strict';
+
 const debug = require('debug')('untool:express');
 const express = require('express');
 

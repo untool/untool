@@ -1,3 +1,5 @@
+'use strict';
+
 const EventEmitter = require('events');
 
 const mocks = require('node-mocks-http');
