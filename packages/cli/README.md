@@ -2,19 +2,25 @@
 
 [![npm](https://img.shields.io/npm/v/untool.svg)](https://www.npmjs.com/package/untool)
 
-`untool` is our main, global command line interface. It serves a single purposes: it can be used to to control `untool` projects. To do so, it provides the terminal command `un`. Additionally, `untool` provides a bare-bones logging facility that can be disabled by providing a `-q` (or `--quiet`) CLI argument.
+`untool` is our main command line interface. It serves a single purposes: it can be used to to control `untool` projects. To do so, it provides the terminal command `un`. Additionally, `untool` provides a bare-bones logging facility that can be disabled by providing a `-q` (or `--quiet`) CLI argument.
 
 ### Installation
 
-`untool` is meant to be installed globally, not inside specific projects. If you want to add a local command line interface to your project to be used in `package.json` scripts, please just use [`@untool/yargs`](https://github.com/untool/untool/blob/master/packages/yargs/README.md) directly.
+`untool` is meant to be installed globally or inside specific projects. If you install it globally, you can directly call it inside any `untool` powered project.
 
 ```bash
 $ yarn global add untool # OR npm install --global untool
 ```
 
+If you want to add a local command line interface to your project to be used in `package.json` [scripts](https://docs.npmjs.com/cli/run-script), simply add it to that project.
+
+```bash
+$ yarn add untool # OR npm install untool
+```
+
 ### Utilization
 
-`untools`'s mode of operation is that it will find a locally installed [`@untool/yargs`](https://github.com/untool/untool/blob/master/packages/yargs/README.md) and execute it. It will act as a very minimal wrapper around it.
+`untools`'s mode of operation is that it will find a locally installed [`@untool/yargs`](https://github.com/untool/untool/blob/master/packages/yargs/README.md) and control it, acting as a very minimal wrapper around it.
 
 ```text
 $ un start -s
