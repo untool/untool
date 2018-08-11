@@ -1,7 +1,5 @@
 'use strict';
 
-module.exports = {
-  get template() {
-    return require('./lib/template');
-  },
-};
+exports.template = require('./lib/template');
+
+exports.configure = () => exports;
