@@ -2,7 +2,6 @@
   "name": "untool",
   "version": "0.16.0",
   "description": "untool cli",
-  "preferGlobal": true,
   "bin": {
     "untool": "index.js",
     "un": "index.js"
