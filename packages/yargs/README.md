@@ -2,7 +2,7 @@
 
 [![npm](https://img.shields.io/npm/v/@untool%2Fyargs.svg)](https://www.npmjs.com/package/@untool%2Fyargs)
 
-`@untool/yargs` is a [core mixin](https://github.com/untool/untool/blob/master/packages/core/README.md#mixins) providing `untool`'s actual command line interface, allowing other mixins to define their own commands. These custom commands will work exactly as those defined by `untool`'s own modules and can be called using a local or global `un` executable.
+`@untool/yargs` is a [core mixin](https://github.com/untool/untool/blob/master/packages/core/README.md#mixins) powering `untool`'s command line interface and allowing other mixins to define their own commands. These custom commands will work exactly as those defined by `untool`'s own modules and can be called using a local or global `un` executable.
 
 ### Installation
 
@@ -12,23 +12,7 @@ $ yarn add @untool/yargs # OR npm install @untool/yargs
 
 ## CLI
 
-`@untool/yargs` can either be used with `untool`'s global [command line interface](https://github.com/untool/untool/blob/master/packages/cli/README.md) or directly, within `package.json` [scripts](https://docs.npmjs.com/cli/run-script) of the project it is installed in: it locally installs an `un` command.
-
-```text
-$ ./node_modules/.bin/un
-Usage: un <command> [options]
-
-Commands:
-  un serve    Serve foo
-  un start    Build and serve foo
-  un build    Build foo
-  un develop  Serve foo in watch mode
-
-Options:
-  --help, -h  Show help                                               [boolean]
-```
-
-`@untool/yargs` does not define any commands of its own, but takes care of basically setting up [`yargs`](http://yargs.js.org).
+`@untool/yargs` can either be used with `untool`'s own [command line interface](https://github.com/untool/untool/blob/master/packages/cli/README.md) or with another CLI frontend. It does not define any commands of its own, but only takes care of basically setting up [`yargs`](http://yargs.js.org).
 
 ## API
 
