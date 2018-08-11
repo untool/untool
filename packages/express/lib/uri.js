@@ -1,3 +1,5 @@
+'use strict';
+
 exports.resolve = function resolve(...args) {
   const basePath = exports.stripTrailingSlash(args.shift());
   const pathSegments = args.map((segment) =>

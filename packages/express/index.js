@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
   get uri() {
     return require('./lib/uri');

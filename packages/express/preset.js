@@ -1,3 +1,5 @@
+'use strict';
+
 module.exports = {
   https: false,
   host: '[HOST]',

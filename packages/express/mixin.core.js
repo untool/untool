@@ -1,3 +1,5 @@
+'use strict';
+
 const {
   sync: { sequence, pipe, callable: callableSync },
   async: { callable: callableAsync },
