@@ -1,27 +1,24 @@
 'use strict';
 
-module.exports = {
-  get uri() {
-    return require('./lib/uri');
+const { bootstrap } = require('@untool/core');
+
+const uri = require('./lib/uri');
+
+const configure = (config, options) => ({
+  runServer(...args) {
+    return bootstrap(config, options).runServer(...args);
   },
-  runServer(mode, options = {}) {
-    const core = require('@untool/core').bootstrap();
-    core.handleArguments(options);
-    return core.runServer(mode);
+  createServer(...args) {
+    return bootstrap(config, options).createServer(...args);
   },
-  createServer(mode, options = {}) {
-    const core = require('@untool/core').bootstrap();
-    core.handleArguments(options);
-    return core.createServer(mode);
+  createRenderer(...args) {
+    return bootstrap(config, options).createRenderer(...args);
   },
-  createRenderer(options = {}) {
-    const core = require('@untool/core').bootstrap();
-    core.handleArguments(options);
-    return core.createRenderer();
+  renderLocations(...args) {
+    return bootstrap(config, options).renderLocations(...args);
   },
-  renderLocations(options = {}) {
-    const core = require('@untool/core').bootstrap();
-    core.handleArguments(options);
-    return core.renderLocations();
-  },
-};
+  configure,
+  uri,
+});
+
+module.exports = configure();
