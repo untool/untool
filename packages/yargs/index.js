@@ -4,7 +4,7 @@ const createYargs = require('yargs');
 
 const { bootstrap } = require('@untool/core');
 
-exports.configure = (overrides) => ({
+const configure = (config, options) => ({
   run(...args) {
     try {
       const yargs = args.length ? createYargs(args) : createYargs;
@@ -12,7 +12,8 @@ exports.configure = (overrides) => ({
         process.env.NODE_ENV = 'production';
       }
       const { registerCommands, handleArguments, handleError } = bootstrap(
-        overrides
+        config,
+        options
       );
       if (!(registerCommands && handleArguments && handleError)) {
         throw new Error("Can't use @untool/yargs mixin");
@@ -38,6 +39,7 @@ exports.configure = (overrides) => ({
       process.exit(1);
     }
   },
+  configure,
 });
 
-exports.run = exports.configure().run;
+module.exports = configure();
