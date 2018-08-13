@@ -1,19 +1,18 @@
 'use strict';
 
-module.exports = {
-  clean(options = {}) {
-    const core = require('@untool/core').bootstrap();
-    core.handleArguments(options);
-    return core.clean();
+const { bootstrap } = require('@untool/core');
+
+const configure = (config, options) => ({
+  clean(...args) {
+    return bootstrap(config, options).clean(...args);
   },
-  build(options = {}) {
-    const core = require('@untool/core').bootstrap();
-    core.handleArguments(options);
-    return core.build();
+  build(...args) {
+    return bootstrap(config, options).build(...args);
   },
-  getBuildConfig(target, options = {}) {
-    const core = require('@untool/core').bootstrap();
-    core.handleArguments(options);
-    return core.getBuildConfig(target);
+  getBuildConfig(...args) {
+    return bootstrap(config, options).getBuildConfig(...args);
   },
-};
+  configure,
+});
+
+module.exports = configure();
