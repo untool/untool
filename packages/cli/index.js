@@ -12,19 +12,29 @@ const getRootDir = () => {
   return dirname(pkgFile);
 };
 
-try {
-  const rootDir = getRootDir();
-  const yargsPath = resolve(rootDir, '@untool/yargs');
-  require(yargsPath)
-    .configure({ mixins: [__dirname] })
-    .run();
-} catch (error) {
-  if (error.message && error.message.startsWith("Can't resolve")) {
-    // eslint-disable-next-line no-console
-    console.error("Error: Can't find @untool/yargs \n");
-  } else {
-    // eslint-disable-next-line no-console
-    console.error(error.stack ? error.stack.toString() : error.toString());
-  }
-  process.exit(1);
+const configure = (config = { mixins: [__dirname] }, options) => ({
+  run() {
+    try {
+      const rootDir = getRootDir();
+      const yargsPath = resolve(rootDir, '@untool/yargs');
+      const { configure: configureYargs } = require(yargsPath);
+      configureYargs(config, options).run();
+    } catch (error) {
+      if (error.message && error.message.startsWith("Can't resolve")) {
+        // eslint-disable-next-line no-console
+        console.error("Error: Can't find @untool/yargs \n");
+      } else {
+        // eslint-disable-next-line no-console
+        console.error(error.stack ? error.stack.toString() : error.toString());
+      }
+      process.exit(1);
+    }
+  },
+  configure,
+});
+
+module.exports = configure();
+
+if (module === require.main) {
+  module.exports.run();
 }
