@@ -7,13 +7,14 @@ const { getConfig } = require('./config');
 const { environmentalize } = require('./env');
 
 exports.Mixin = class Mixin {
-  constructor(config) {
+  constructor(config, options) {
     this.config = config;
+    this.options = options;
   }
 };
 
-exports.bootstrap = function bootstrap(overrides, ...args) {
-  const config = environmentalize(getConfig(overrides));
+exports.bootstrap = function bootstrap(configOverrides = {}, options = {}) {
+  const config = environmentalize(getConfig(configOverrides));
   const mixins = config.mixins.core.map((mixin) => require(mixin));
   const strategies = {
     ...mixins.reduce(
@@ -23,5 +24,5 @@ exports.bootstrap = function bootstrap(overrides, ...args) {
   };
   debug(mixins.map(({ name, strategies }) => ({ [name]: strategies })));
 
-  return define(strategies)(...mixins)(config, ...args);
+  return define(strategies)(...mixins)(config, options);
 };
