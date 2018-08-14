@@ -32,9 +32,9 @@
   "devDependencies": {
     "@commitlint/cli": "^7.0.0",
     "@commitlint/config-conventional": "^7.0.0",
-    "@commitlint/config-lerna-scopes": "^7.0.0",
     "@commitlint/travis-cli": "^7.0.0",
     "ava": "^0.25.0",
+    "babel-core": "^6.26.3",
     "babel-eslint": "^8.2.1",
     "cz-conventional-changelog": "^2.1.0",
     "eslint": "^5.0.0",
@@ -109,9 +109,24 @@
   },
   "commitlint": {
     "extends": [
-      "@commitlint/config-conventional",
-      "@commitlint/config-lerna-scopes"
-    ]
+      "@commitlint/config-conventional"
+    ],
+    "rules": {
+      "scope-enum": [
+        2,
+        "always",
+        [
+          "cli",
+          "core",
+          "defaults",
+          "express",
+          "react",
+          "webpack",
+          "yargs",
+          "untool"
+        ]
+      ]
+    }
   },
   "config": {
     "commitizen": {
