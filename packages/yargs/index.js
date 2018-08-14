@@ -11,10 +11,8 @@ const configure = (config, options) => ({
       if (yargs.argv.production || yargs.argv.p) {
         process.env.NODE_ENV = 'production';
       }
-      const { registerCommands, handleArguments, handleError } = bootstrap(
-        config,
-        options
-      );
+      const core = bootstrap(config, options);
+      const { registerCommands, handleArguments, handleError } = core;
       if (!(registerCommands && handleArguments && handleError)) {
         throw new Error("Can't use @untool/yargs mixin");
       }
@@ -25,7 +23,6 @@ const configure = (config, options) => ({
           yargs
             .version(false)
             .usage('Usage: $0 <command> [options]')
-            .help('h')
             .alias('help', 'h')
             .locale('en')
             .strict()
