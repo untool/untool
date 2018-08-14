@@ -16,6 +16,8 @@ $ yarn add @untool/yargs # OR npm install @untool/yargs
 
 ## API
 
+`@untool/yargs` only has a couple of semi-private exports. Please check out [`untool`](https://github.com/untool/untool/blob/master/packages/cli/index.js), our main CLI package, to see how you can use them.
+
 `@untool/yargs` exposes a couple of mixin hooks other mixins can implement, allowing them to alter or extend its functionality. These hooks will be called either by `@untool/yargs` itself or by others.
 
 ### `registerCommands(yargs)` ([pipe](https://github.com/untool/mixinable/blob/master/README.md#definepipe))
