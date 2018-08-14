@@ -5,8 +5,9 @@ const { format } = require('url');
 const prettyMS = require('pretty-ms');
 
 module.exports = class CLIMixin {
-  constructor(config) {
+  constructor(config, options) {
     this.config = config;
+    this.options = options;
   }
   registerCommands(yargs) {
     return yargs.option('quiet', {
