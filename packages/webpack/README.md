@@ -78,6 +78,23 @@ In `static` mode, static HTML pages will be generated for the [`locations`](http
 
 ## API
 
+`@untool/webpack` provides a couple of configurable exports for your convenience: mixin hooks marked with 'callable' below can be called like in the following example example:
+
+```javascript
+const { build } = require('@untool/webpack');
+build();
+```
+
+If you need to provide config overrides or options to these kinds of calls, you can do so like in the next example.
+
+```javascript
+const { configure } = require('@untool/webpack');
+const { build } = configure(configOverrides, options);
+build();
+```
+
+The above example is functionally equivalent to directly working with `@untool/core`'s [`bootstrap`](https://github.com/untool/untool/blob/master/packages/core/README.md#bootstrapconfigoverrides-options-build-only) export.
+
 ### `configureBuild(webpackConfig, loaderConfigs, target)` ([pipe](https://github.com/untool/mixinable/blob/master/README.md#definepipe))
 
 If you implement this mixin hook in your `@untool/core` [`core` mixin](https://github.com/untool/untool/blob/master/packages/core/README.md#mixins), you will be able to modify the different Webpack configs `untool` uses in any way you like.
