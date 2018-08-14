@@ -40,6 +40,23 @@ $ NODE_ENV=production un serve
 
 ## API
 
+`@untool/express` provides a couple of configurable exports for your convenience: mixin hooks marked with 'callable' below can be called like in the following example example:
+
+```javascript
+const { runServer } = require('@untool/express');
+runServer();
+```
+
+If you need to provide config overrides or options to these kinds of calls, you can do so like in the next example.
+
+```javascript
+const { configure } = require('@untool/express');
+const { runServer } = configure(configOverrides, options);
+runServer();
+```
+
+The above example is functionally equivalent to directly working with `@untool/core`'s [`bootstrap`](https://github.com/untool/untool/blob/master/packages/core/README.md#bootstrapconfigoverrides-options-build-only) export.
+
 ### `configureServer(app, middlewares, mode)` ([pipe](https://github.com/untool/mixinable/blob/master/README.md#definepipe))
 
 This is a mixin hook defined by `@untool/express` that allows you to register Express middlewares and generally do whatever you like with `app`, the [`Application`](https://expressjs.com/en/api.html#app) instance it is using under the hood.
