@@ -127,7 +127,7 @@ If you create custom mixins that define additional mixin strategies, you probabl
 
 ## API
 
-### `Mixin(config, [...args])`
+### `Mixin(config, options)`
 
 ```javascript
 import { Mixin } from '@untool/core';
@@ -141,15 +141,15 @@ export default MyMixin;
 
 `Mixin` is a base class to build custom mixins upon. As such, it only provides a class constructor that accepts and handles a couple of arguments. You do not, however, usually instantiate your mixins - `@untool/core` does that for you if configured to use them.
 
-The `Mixin` constructor expects at least one arguments: `config`, the main configuration object. This argument is made available as a homonymous instance property.
+The `Mixin` constructor expects two arguments: `config`, the main configuration object, and `options`, an object containing more ephemeral settings. These arguments are made available as a homonymous instance properties.
 
 ```javascript
 import { override } from 'mixinable';
 import { Mixin } from '@untool/core';
 
 class MyMixin extends Mixin {
-  constructor(config, ...args) {
-    super(config, ...args);
+  constructor(config, options) {
+    super(config, options);
   }
   myMethod(...args) {
     return this.myHookMethod(...args);
@@ -185,8 +185,8 @@ The render function serves two main purposes: 'universalifying' or 'isomorphizin
 
 `Mixin` aside, `render` probably is the only part of `untool` you will directly interact with in your own code. It certainly is the only one of its APIs you will ever use within your application.
 
-### `bootstrap([overrides], [...args])` (build only)
+### `bootstrap([configOverrides], [options])` (build only)
 
 This is a semi-private function that is mainly being used internally, for example by [`@untool/yargs`](https://github.com/untool/untool/blob/master/packages/yargs/README.md). It returns the core mixin container - this allows you to call all defined mixin methods.
 
-You will only ever have to call it if you want to use `@untool/core` programmatically. You can pass it an `overrides` object that will be merged into the main config object. Whatever other arguments it receives are being passed along to the core container's mixins' constructors.
+You will only ever have to call it if you want to use `@untool/core` programmatically. You can pass it an `configOverrides` object that will be merged into the main config object, and and options object mixins might use instead of CLI arguments.
