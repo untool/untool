@@ -24,5 +24,5 @@ exports.bootstrap = function bootstrap(configOverrides = {}, options = {}) {
   };
   debug(mixins.map(({ name, strategies }) => ({ [name]: strategies })));
 
-  return define(strategies)(...mixins)(config, options);
+  return define(strategies, mixins)(config, options);
 };

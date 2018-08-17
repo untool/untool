@@ -18,7 +18,7 @@ exports.render = function render(...renderArgs) {
       (result, mixin) => Object.assign({}, result, mixin.strategies),
       {}
     );
-    const createMixinable = define(strategies)(...mixins);
+    const createMixinable = define(strategies, mixins);
 
     debug(mixins.map(({ name, strategies }) => ({ [name]: strategies })));
 
