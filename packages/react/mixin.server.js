@@ -6,7 +6,6 @@ const { StaticRouter } = require('react-router-dom');
 const { Helmet } = require('react-helmet');
 
 const {
-  override,
   async: { compose, parallel, pipe },
 } = require('mixinable');
 
@@ -76,7 +75,6 @@ class ReactMixin extends Mixin {
 }
 
 ReactMixin.strategies = {
-  render: override,
   bootstrap: parallel,
   enhanceElement: compose,
   fetchData: pipe,
