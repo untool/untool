@@ -12,19 +12,14 @@ const {
 const { Mixin } = require('@untool/core');
 
 class WebpackMixin extends Mixin {
-  createAccessMiddleware() {
-    const accessMiddleware = require('./lib/middleware/access');
-    const { config } = this;
-    return accessMiddleware(config);
-  }
   createAssetsMiddleware() {
     const assetsMiddleware = require('./lib/middleware/assets');
     const { config, assets, assetsByChunkName } = this;
     return assetsMiddleware(config, { assets, assetsByChunkName });
   }
   loadPrebuiltMiddleware() {
-    const { buildDir, serverFile } = this.config;
-    const path = join(buildDir, serverFile);
+    const { serverDir, serverFile } = this.config;
+    const path = join(serverDir, serverFile);
     return exists(path) ? require(path) : (req, res, next) => next();
   }
   createRenderMiddleware() {
@@ -75,9 +70,14 @@ class WebpackMixin extends Mixin {
   }
   clean() {
     const rimraf = require('rimraf');
-    const { buildDir } = this.config;
-    return new Promise((resolve, reject) =>
-      rimraf(buildDir, (error) => (error ? reject(error) : resolve()))
+    const { buildDir, serverDir } = this.config;
+    return Promise.all(
+      [buildDir, serverDir].map(
+        (dir) =>
+          new Promise((resolve, reject) =>
+            rimraf(dir, (error) => (error ? reject(error) : resolve()))
+          )
+      )
     );
   }
   build() {
@@ -117,7 +117,6 @@ class WebpackMixin extends Mixin {
     if (mode === 'serve') {
       middlewares.routes.push(this.loadPrebuiltMiddleware());
     }
-    middlewares.preinitial.push(this.createAccessMiddleware());
     middlewares.preroutes.push(this.createAssetsMiddleware());
     return app;
   }
