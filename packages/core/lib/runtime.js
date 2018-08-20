@@ -5,6 +5,8 @@ const define = require('mixinable');
 
 const { environmentalize } = require('./env');
 
+const { override } = define;
+
 exports.Mixin = class Mixin {
   constructor(config) {
     this.config = config;
@@ -16,7 +18,7 @@ exports.render = function render(...renderArgs) {
     const config = environmentalize(baseConfig);
     const strategies = mixins.reduce(
       (result, mixin) => Object.assign({}, result, mixin.strategies),
-      {}
+      { render: override }
     );
     const createMixinable = define(strategies, mixins);
 
