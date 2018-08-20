@@ -12,19 +12,14 @@ const {
 const { Mixin } = require('@untool/core');
 
 class WebpackMixin extends Mixin {
-  createAccessMiddleware() {
-    const accessMiddleware = require('./lib/middleware/access');
-    const { config } = this;
-    return accessMiddleware(config);
-  }
   createAssetsMiddleware() {
     const assetsMiddleware = require('./lib/middleware/assets');
     const { config, assets, assetsByChunkName } = this;
     return assetsMiddleware(config, { assets, assetsByChunkName });
   }
   loadPrebuiltMiddleware() {
-    const { buildDir, serverFile } = this.config;
-    const path = join(buildDir, serverFile);
+    const { serverDir, serverFile } = this.config;
+    const path = join(serverDir, serverFile);
     return exists(path) ? require(path) : (req, res, next) => next();
   }
   createRenderMiddleware() {
@@ -117,7 +112,6 @@ class WebpackMixin extends Mixin {
     if (mode === 'serve') {
       middlewares.routes.push(this.loadPrebuiltMiddleware());
     }
-    middlewares.preinitial.push(this.createAccessMiddleware());
     middlewares.preroutes.push(this.createAssetsMiddleware());
     return app;
   }
