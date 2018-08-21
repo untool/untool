@@ -35,7 +35,7 @@
     "caniuse-lite": "^1.0.30000846",
     "debug": "^3.1.0",
     "enhanced-resolve": "^4.0.0",
-    "file-loader": "^1.1.6",
+    "file-loader": "^2.0.0",
     "find-up": "^3.0.0",
     "is-builtin-module": "^2.0.0",
     "loader-utils": "^1.1.0",
