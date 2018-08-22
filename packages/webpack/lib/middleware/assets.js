@@ -24,6 +24,7 @@ module.exports = (config, assetData) =>
       .filter((chunkName) =>
         new RegExp(`^(vendors~)?${config.name}$`).test(chunkName)
       )
+      .sort((a) => (a.startsWith('vendors~') ? 0 : 1))
       .forEach((chunkName) => {
         const chunkAssets = assetsByChunkName[chunkName];
         const assets = Array.isArray(chunkAssets) ? chunkAssets : [chunkAssets];
