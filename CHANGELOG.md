@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.17.2"></a>
+## [0.17.2](https://github.com/untool/untool/compare/v0.17.1...v0.17.2) (2018-08-23)
+
+
+### Bug Fixes
+
+* update dependency file-loader to v2 ([613456b](https://github.com/untool/untool/commit/613456b))
+* **webpack:** move assets starting with "vendors~" to the top ([2b65269](https://github.com/untool/untool/commit/2b65269))
+
+
+
+
+
 <a name="0.17.1"></a>
 ## [0.17.1](https://github.com/untool/untool/compare/v0.17.0...v0.17.1) (2018-08-20)
 
