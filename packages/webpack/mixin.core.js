@@ -14,8 +14,8 @@ const { Mixin } = require('@untool/core');
 class WebpackMixin extends Mixin {
   createAssetsMiddleware() {
     const assetsMiddleware = require('./lib/middleware/assets');
-    const { config, assets, assetsByChunkName } = this;
-    return assetsMiddleware(config, { assets, assetsByChunkName });
+    const { config } = this;
+    return assetsMiddleware(config, () => this.assetsByChunkName);
   }
   loadPrebuiltMiddleware() {
     const { serverDir, serverFile } = this.config;
@@ -54,9 +54,9 @@ class WebpackMixin extends Mixin {
   createAssetsPlugin() {
     const AssetsPlugin = require('./lib/plugins/assets');
     const { options, config } = this;
-    return new AssetsPlugin(options, config, (assets, assetsByChunkName) =>
-      Object.assign(this, { assets, assetsByChunkName })
-    );
+    return new AssetsPlugin(options, config, (assetsByChunkName) => {
+      this.assetsByChunkName = assetsByChunkName;
+    });
   }
   createRenderPlugin() {
     const RenderPlugin = require('./lib/plugins/render');
