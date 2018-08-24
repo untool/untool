@@ -15,7 +15,7 @@ class WebpackMixin extends Mixin {
   createAssetsMiddleware() {
     const assetsMiddleware = require('./lib/middleware/assets');
     const { config } = this;
-    return assetsMiddleware(config, () => this.assetsByChunkName);
+    return assetsMiddleware(() => this.assets, config);
   }
   loadPrebuiltMiddleware() {
     const { serverDir, serverFile } = this.config;
@@ -51,17 +51,15 @@ class WebpackMixin extends Mixin {
       require('webpack-hot-middleware')(compiler, { log: false }),
     ];
   }
-  createAssetsPlugin() {
-    const AssetsPlugin = require('./lib/plugins/assets');
-    const { options, config } = this;
-    return new AssetsPlugin(options, config, (assetsByChunkName) => {
-      this.assetsByChunkName = assetsByChunkName;
-    });
-  }
   createRenderPlugin() {
     const RenderPlugin = require('./lib/plugins/render');
     const { renderLocations } = this;
     return new RenderPlugin(renderLocations);
+  }
+  createAssetsPlugin(target) {
+    const AssetsPlugin = require('./lib/plugins/assets');
+    const { config } = this;
+    return new AssetsPlugin((assets) => (this.assets = assets), config, target);
   }
   getBuildConfig(target) {
     const getConfig = require(`./lib/configs/${target}`);
@@ -101,9 +99,7 @@ class WebpackMixin extends Mixin {
     if (this.options.static && target === 'build') {
       plugins.unshift(this.createRenderPlugin());
     }
-    if (target !== 'node') {
-      plugins.unshift(this.createAssetsPlugin());
-    }
+    plugins.unshift(this.createAssetsPlugin(target));
     return webpackConfig;
   }
   configureServer(app, middlewares, mode) {
