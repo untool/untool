@@ -1,5 +1,7 @@
 'use strict';
 
+const { join } = require('path');
+
 module.exports = {
   https: false,
   host: '[HOST]',
@@ -7,6 +9,6 @@ module.exports = {
   locations: [],
   basePath: '',
   assetPath: '<basePath>',
-  buildDir: '<rootDir>/dist',
+  buildDir: join('<rootDir>', 'dist'),
   mixins: [__dirname],
 };
