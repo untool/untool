@@ -4,15 +4,9 @@ const { extname } = require('path');
 
 const { RawSource } = require('webpack-sources');
 
-let resolve;
-let promise = new Promise((_resolve) => (resolve = _resolve)).then(
-  (assets) =>
-    (resolve = (assets) => (promise = Promise.resolve(assets))) && assets
-);
-
 module.exports = class WebpackAssetsPlugin {
-  constructor(setAssets, config, target) {
-    this.setAssets = setAssets;
+  constructor(assets, config, target) {
+    this.assets = assets;
     this.config = config;
     this.target = target;
   }
@@ -20,7 +14,7 @@ module.exports = class WebpackAssetsPlugin {
     const { config, target } = this;
     if (target === 'node') {
       compiler.hooks.emit.tapPromise('untool-assets', (compilation) =>
-        promise.then(
+        this.assets.then(
           (assets) =>
             (compilation.assets[config.assetFile] = new RawSource(
               JSON.stringify(assets)
@@ -54,8 +48,7 @@ module.exports = class WebpackAssetsPlugin {
               }, result),
             { css: [], js: [] }
           );
-        resolve({ assetsByChunkName, assetsByType });
-        this.setAssets(promise);
+        this.assets.resolve({ assetsByChunkName, assetsByType });
       });
     }
   }
