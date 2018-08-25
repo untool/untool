@@ -11,16 +11,27 @@ const {
 
 const { Mixin } = require('@untool/core');
 
+const { Resolvable } = require('./lib/utils/resolvable');
+
 class WebpackMixin extends Mixin {
-  createAssetsMiddleware() {
-    const assetsMiddleware = require('./lib/middleware/assets');
-    const { config } = this;
-    return assetsMiddleware(() => this.assets, config);
+  constructor(...args) {
+    super(...args);
+    this.assets = new Resolvable();
+  }
+  loadPrebuiltAssets() {
+    const { serverDir, assetFile } = this.config;
+    const path = join(serverDir, assetFile);
+    return exists(path) ? require(path) : {};
   }
   loadPrebuiltMiddleware() {
     const { serverDir, serverFile } = this.config;
     const path = join(serverDir, serverFile);
     return exists(path) ? require(path) : (req, res, next) => next();
+  }
+  createAssetsMiddleware() {
+    const assetsMiddleware = require('./lib/middleware/assets');
+    const { assets } = this;
+    return assetsMiddleware(assets);
   }
   createRenderMiddleware() {
     const renderMiddleware = require('./lib/middleware/render');
@@ -58,8 +69,8 @@ class WebpackMixin extends Mixin {
   }
   createAssetsPlugin(target) {
     const AssetsPlugin = require('./lib/plugins/assets');
-    const { config } = this;
-    return new AssetsPlugin((assets) => (this.assets = assets), config, target);
+    const { assets, config } = this;
+    return new AssetsPlugin(assets, config, target);
   }
   getBuildConfig(target) {
     const getConfig = require(`./lib/configs/${target}`);
@@ -111,6 +122,7 @@ class WebpackMixin extends Mixin {
       middlewares.routes.push(this.createRenderMiddleware());
     }
     if (mode === 'serve') {
+      this.assets.resolve(this.loadPrebuiltAssets());
       middlewares.routes.push(this.loadPrebuiltMiddleware());
     }
     middlewares.preroutes.push(this.createAssetsMiddleware());
