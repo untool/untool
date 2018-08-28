@@ -20,15 +20,15 @@ exports.Resolvable = class Resolvable {
     Object.assign(this, {
       reset() {
         state.splice(0, state.length);
-        return this;
       },
       resolve(value) {
-        queue.forEach((fn) => fn(null, value));
-        return this;
+        Promise.resolve(value).then(
+          (value) => queue.forEach((fn) => fn(null, value)),
+          this.reject
+        );
       },
       reject(reason) {
         queue.forEach((fn) => fn(reason));
-        return this;
       },
       then(onFulfilled, onRejected) {
         return promise().then(onFulfilled, onRejected);
