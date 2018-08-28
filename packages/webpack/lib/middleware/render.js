@@ -21,7 +21,7 @@ module.exports = exports = function createRenderMiddleware(webpackConfig) {
     } else if (stats.hasErrors() || stats.hasWarnings()) {
       const { errors, warnings } = stats.toJson();
       resolvable.reject(
-        new Error(`Can't compile:\n${[].concat(errors, warnings).join('\n')}`)
+        new Error(`Can't compile:\n${[...errors, ...warnings].join('\n')}`)
       );
     } else {
       const { path, filename } = webpackConfig.output;
