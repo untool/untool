@@ -1,7 +1,5 @@
 'use strict';
 
-require('babel-polyfill');
-
 const { getConfigAndMixins } = require('./loader');
 
 let entryPoint = require('@untool/entrypoint');
