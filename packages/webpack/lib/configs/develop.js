@@ -29,15 +29,15 @@ module.exports = function getConfig(config, configureBuild) {
       cacheIdentifier: `development:develop`,
       presets: [
         [
-          require.resolve('babel-preset-env'),
+          require.resolve('@babel/preset-env'),
           {
-            modules: false,
-            useBuiltIns: true,
+            modules: 'commonjs',
+            useBuiltIns: 'usage',
             targets: { browsers: config.browsers },
           },
         ],
       ],
-      plugins: [require.resolve('babel-plugin-syntax-dynamic-import')],
+      plugins: [require.resolve('@babel/plugin-syntax-dynamic-import')],
     },
   };
 
