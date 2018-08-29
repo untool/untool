@@ -23,9 +23,10 @@
   },
   "homepage": "https://github.com/untool/untool#readme",
   "dependencies": {
+    "@babel/preset-flow": "^7.0.0",
+    "@babel/preset-react": "^7.0.0",
     "@untool/core": "^0.17.1",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.13",
-    "babel-preset-react": "^6.24.1",
     "mixinable": "^4.0.0",
     "serialize-javascript": "^1.4.0"
   },
