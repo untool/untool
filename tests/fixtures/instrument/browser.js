@@ -1,12 +1,9 @@
 /* eslint-env browser */
 /* eslint-disable no-console */
 
-const { Mixin } = require('@untool/core');
-
-class InstrumentMixin extends Mixin {
+class InstrumentMixin {
   constructor(...args) {
     console.log('constructor', ...JSON.parse(JSON.stringify(args)));
-    super(...args);
   }
   bootstrap(...args) {
     console.log('bootstrap', ...JSON.parse(JSON.stringify(args)));
@@ -22,4 +19,4 @@ class InstrumentMixin extends Mixin {
   }
 }
 
-module.exports = InstrumentMixin;
+export default InstrumentMixin;

@@ -25,10 +25,10 @@ module.exports = function getConfig(config, configureBuild) {
       cacheIdentifier: `${process.env.NODE_ENV || 'development'}:node`,
       presets: [
         [
-          require.resolve('babel-preset-env'),
+          require.resolve('@babel/preset-env'),
           {
             modules: false,
-            useBuiltIns: true,
+            useBuiltIns: 'usage',
             targets: { node: config.node },
           },
         ],
