@@ -1,17 +1,17 @@
 'use strict';
 
-const { createElement } = require('react');
-const { renderToString } = require('react-dom/server');
-const { StaticRouter } = require('react-router-dom');
-const { Helmet } = require('react-helmet');
+import { createElement } from 'react';
+import { renderToString } from 'react-dom/server';
+import { StaticRouter } from 'react-router-dom';
+import { Helmet } from 'react-helmet';
 
-const {
-  async: { compose, parallel, pipe },
-} = require('mixinable');
+import { async } from 'mixinable';
 
-const { Mixin } = require('@untool/core');
+import { Mixin } from '@untool/core';
 
-const template = require('./lib/template');
+import template from './lib/template';
+
+const { compose, parallel, pipe } = async;
 
 class ReactMixin extends Mixin {
   constructor(config, element, options) {
@@ -81,4 +81,4 @@ ReactMixin.strategies = {
   getTemplateData: pipe,
 };
 
-module.exports = ReactMixin;
+export default ReactMixin;
