@@ -5,7 +5,6 @@
   "mixin:browser": "browser",
   "untool": {
     "locations": ["/"],
-    "browsers": "last 1 Chrome versions",
     "mixins": ["."]
   },
   "dependencies": {

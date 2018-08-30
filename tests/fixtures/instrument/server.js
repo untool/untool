@@ -1,12 +1,10 @@
 const EventEmitter = require('../../helpers/promise');
 
-const { Mixin } = require('@untool/core/lib/runtime');
-
 const events = new EventEmitter();
 
-class InstrumentMixin extends Mixin {
+class InstrumentMixin {
   constructor(...args) {
-    super(...args);
+    this.config = args[0];
     events.emit('constructor', this, ...args);
   }
   bootstrap(...args) {
