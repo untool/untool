@@ -27,13 +27,14 @@ module.exports = function getConfig(config, configureBuild) {
         [
           require.resolve('@babel/preset-env'),
           {
-            modules: 'commonjs',
+            modules: false,
             useBuiltIns: 'usage',
             targets: { node: config.node },
           },
         ],
       ],
       plugins: [require.resolve('babel-plugin-dynamic-import-node')],
+      sourceType: 'unambiguous',
     },
   };
 
