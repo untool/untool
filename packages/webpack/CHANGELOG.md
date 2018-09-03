@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.18.0"></a>
+# [0.18.0](https://github.com/untool/untool/compare/v0.17.2...v0.18.0) (2018-09-03)
+
+
+### Bug Fixes
+
+* **webpack:** set source type to 'unambiguous' ([13bc15c](https://github.com/untool/untool/commit/13bc15c))
+
+
+### Features
+
+* **webpack:** upgrade babel to v7 ([921f149](https://github.com/untool/untool/commit/921f149))
+
+
+
+
+
 <a name="0.17.2"></a>
 ## [0.17.2](https://github.com/untool/untool/compare/v0.17.1...v0.17.2) (2018-08-23)
 
