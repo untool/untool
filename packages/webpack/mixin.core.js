@@ -57,7 +57,6 @@ class WebpackMixin extends Mixin {
         logLevel: 'silent',
         publicPath: webpackBrowserConfig.output.publicPath,
         watchOptions: webpackBrowserConfig.watchOptions,
-        serverSideRender: true,
       }),
       require('webpack-hot-middleware')(compiler, { log: false }),
     ];
