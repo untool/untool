@@ -1,44 +1,30 @@
 'use strict';
 
 exports.Resolvable = class Resolvable {
-  constructor(executor) {
+  constructor() {
     const state = [];
-    const queue = [(...args) => state.splice(0, state.length, ...args)];
-    const promise = () => {
+    const queue = [
+      (reason, value) => state.splice(0, state.length, reason, value),
+    ];
+    this.reset = () => {
+      state.splice(0, state.length);
+    };
+    this.resolve = (value) => {
+      queue.forEach((fn) => fn(null, value));
+    };
+    this.reject = (reason) => {
+      queue.forEach((fn) => fn(reason));
+    };
+    this.registerCallback = (callback) => {
       if (state.length) {
         const [reason, value] = state;
-        return reason ? Promise.reject(reason) : Promise.resolve(value);
+        callback(reason, value);
       } else {
-        return new Promise((resolve, reject) => {
-          queue.push(function once(reason, value) {
-            queue.splice(queue.indexOf(once), 1);
-            return reason ? reject(reason) : resolve(value);
-          });
+        queue.push(function once(reason, value) {
+          queue.splice(queue.indexOf(once), 1);
+          callback(reason, value);
         });
       }
     };
-    Object.assign(this, {
-      reset() {
-        state.splice(0, state.length);
-      },
-      resolve(value) {
-        Promise.resolve(value).then(
-          (value) => queue.forEach((fn) => fn(null, value)),
-          this.reject
-        );
-      },
-      reject(reason) {
-        queue.forEach((fn) => fn(reason));
-      },
-      then(onFulfilled, onRejected) {
-        return promise().then(onFulfilled, onRejected);
-      },
-      catch(onRejected) {
-        return promise().catch(onRejected);
-      },
-    });
-    if (executor) {
-      new Promise(executor).then(this.resolve, this.reject);
-    }
   }
 };

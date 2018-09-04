@@ -13,13 +13,17 @@ module.exports = class WebpackAssetsPlugin {
   apply(compiler) {
     const { config, target } = this;
     if (target === 'node') {
-      compiler.hooks.emit.tapPromise('untool-assets', (compilation) =>
-        this.assets.then(
-          (assets) =>
-            (compilation.assets[config.assetFile] = new RawSource(
+      compiler.hooks.emit.tapAsync('untool-assets', (compilation, callback) =>
+        this.assets.registerCallback((error, assets) => {
+          if (error) {
+            callback(error);
+          } else {
+            compilation.assets[config.assetFile] = new RawSource(
               JSON.stringify(assets)
-            ))
-        )
+            );
+            callback();
+          }
+        })
       );
     } else {
       compiler.hooks.emit.tap('untool-assets', (compilation) => {
