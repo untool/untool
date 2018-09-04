@@ -43,3 +43,7 @@ exports.stripLeadingSlash = function stripLeadingSlash(location) {
 exports.stripTrailingSlash = function stripTrailingSlash(location) {
   return location.replace(/\/+$/, '');
 };
+
+exports.trimSlashes = function trimSlashes(location) {
+  return exports.stripLeadingSlash(exports.stripTrailingSlash(location));
+};
