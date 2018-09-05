@@ -4,7 +4,7 @@
   "mixin:server": "server",
   "mixin:browser": "browser",
   "untool": {
-    "locations": ["/"],
+    "locations": ["/", "/foo"],
     "mixins": ["."]
   },
   "dependencies": {
