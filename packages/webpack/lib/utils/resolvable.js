@@ -1,30 +1,51 @@
 'use strict';
 
 exports.Resolvable = class Resolvable {
-  constructor() {
+  constructor(executor) {
     const state = [];
     const queue = [
       (reason, value) => state.splice(0, state.length, reason, value),
     ];
-    this.reset = () => {
-      state.splice(0, state.length);
-    };
-    this.resolve = (value) => {
-      queue.forEach((fn) => fn(null, value));
-    };
-    this.reject = (reason) => {
-      queue.forEach((fn) => fn(reason));
-    };
-    this.registerCallback = (callback) => {
+    const promise = () => {
       if (state.length) {
         const [reason, value] = state;
-        callback(reason, value);
+        return reason ? Promise.reject(reason) : Promise.resolve(value);
       } else {
-        queue.push(function once(reason, value) {
-          queue.splice(queue.indexOf(once), 1);
-          callback(reason, value);
+        return new Promise((resolve, reject) => {
+          queue.push(function once(reason, value) {
+            queue.splice(queue.indexOf(once), 1);
+            return reason ? reject(reason) : resolve(value);
+          });
         });
       }
     };
+    this.reset = (executor) => {
+      state.splice(0, state.length);
+      if (executor) {
+        new Promise((resolve, reject) =>
+          executor(
+            (value) => void resolve(value) || this.resolve(value),
+            (error) => void reject(error) || this.reject(error),
+            (executor) => this.reset(executor)
+          )
+        ).catch(this.reject);
+      }
+    };
+    this.resolve = (value) => {
+      Promise.resolve(value).then(
+        (value) => queue.slice().forEach((fn) => fn(null, value)),
+        this.reject
+      );
+    };
+    this.reject = (reason) => {
+      queue.slice().forEach((fn) => fn(reason));
+    };
+    this.then = (onFulfilled, onRejected) => {
+      return promise().then(onFulfilled, onRejected);
+    };
+    this.catch = (onRejected) => {
+      return promise().catch(onRejected);
+    };
+    this.reset(executor);
   }
 };
