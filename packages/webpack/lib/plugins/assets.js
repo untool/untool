@@ -5,25 +5,21 @@ const { extname } = require('path');
 const { RawSource } = require('webpack-sources');
 
 module.exports = class WebpackAssetsPlugin {
-  constructor(assets, config, target) {
-    this.assets = assets;
+  constructor(resolvable, config, target) {
+    this.resolvable = resolvable;
     this.config = config;
     this.target = target;
   }
   apply(compiler) {
     const { config, target } = this;
     if (target === 'node') {
-      compiler.hooks.emit.tapAsync('untool-assets', (compilation, callback) =>
-        this.assets.registerCallback((error, assets) => {
-          if (error) {
-            callback(error);
-          } else {
-            compilation.assets[config.assetFile] = new RawSource(
+      compiler.hooks.emit.tapPromise('untool-assets', (compilation) =>
+        this.resolvable.then(
+          (assets) =>
+            (compilation.assets[config.assetFile] = new RawSource(
               JSON.stringify(assets)
-            );
-            callback();
-          }
-        })
+            ))
+        )
       );
     } else {
       compiler.hooks.emit.tap('untool-assets', (compilation) => {
@@ -52,7 +48,7 @@ module.exports = class WebpackAssetsPlugin {
               }, result),
             { css: [], js: [] }
           );
-        this.assets.resolve({ assetsByChunkName, assetsByType });
+        this.resolvable.resolve({ assetsByChunkName, assetsByType });
       });
     }
   }

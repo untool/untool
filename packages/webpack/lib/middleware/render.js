@@ -1,7 +1,6 @@
 'use strict';
 
 const { join } = require('path');
-const EventEmitter = require('events');
 
 const webpack = require('webpack');
 const MemoryFS = require('memory-fs');
@@ -9,87 +8,49 @@ const MemoryFS = require('memory-fs');
 const sourceMapSupport = require('source-map-support');
 const requireFromString = require('require-from-string');
 
-module.exports = exports = function createRenderMiddleware(webpackConfig) {
-  const transpiler = exports.createTranspiler(webpackConfig);
-  let middleware, error;
-  transpiler.on('start', () => {
-    middleware = null;
-    error = null;
-  });
-  transpiler.on('success', (result) => {
-    middleware = result;
-    error = null;
-  });
-  transpiler.on('error', (result) => {
-    middleware = null;
-    error = result;
-  });
-  const getMiddlewarePromise = () => {
-    if (error) {
-      return Promise.reject(error);
-    }
-    if (middleware) {
-      return Promise.resolve(middleware);
-    }
-    return new Promise((resolve) => {
-      transpiler.once('result', () => {
-        resolve(getMiddlewarePromise());
-      });
-    });
-  };
-  return function webpackRenderMiddleware(req, res, next) {
-    getMiddlewarePromise()
-      .then((middleware) => middleware(req, res, next))
-      .catch(next);
-  };
-};
+const { Resolvable } = require('../utils/resolvable');
 
-exports.createTranspiler = function createTranspiler(webpackConfig) {
-  const emitter = new EventEmitter();
-  const compiler = webpack(webpackConfig);
-  compiler.outputFileSystem = new MemoryFS();
-  compiler.hooks.watchRun.tap('untool-transpiler', () => emitter.emit('start'));
-  const emitResult = (...args) => {
-    emitter.emit(...args);
-    emitter.emit('result');
-  };
-  const handleCompilation = (compileError, stats) => {
-    if (compileError) {
-      emitResult('error', compileError);
-    } else if (stats.hasErrors()) {
-      const { errors } = stats.toJson();
-      const details = errors
-        .map((str) => str.replace(/\033?\[[0-9]{1,2}m/g, ''))
-        .join('\n');
-      emitResult('error', new Error(`Can't compile:\n${details}`));
-    } else {
-      const { path, filename } = webpackConfig.output;
-      const filePath = join(path, filename);
-      compiler.outputFileSystem.readFile(filePath, (readError, fileContent) => {
-        if (readError) {
-          emitResult('error', readError);
-        } else {
+module.exports = function createRenderMiddleware(webpackConfig) {
+  const resolvable = new Resolvable((resolve, reject, reset) => {
+    const compiler = webpack(webpackConfig);
+    const handleCompilation = (compileError, stats) => {
+      if (compileError) {
+        reject(compileError);
+      } else if (stats.hasErrors()) {
+        const { errors } = stats.toJson();
+        const details = errors.map((error) =>
+          error.replace(/\033?\[[0-9]{1,2}m/g, '')
+        );
+        reject(new Error(`Can't compile:\n${details.join('\n')}`));
+      } else {
+        const { path, filename } = webpackConfig.output;
+        const filePath = join(path, filename);
+        const { outputFileSystem: fs } = compiler;
+        fs.readFile(filePath, 'utf8', (readError, fileContents) => {
+          if (readError) return reject(readError);
           try {
-            const result = requireFromString(fileContent.toString(), filePath);
-            emitResult('success', result, stats);
+            resolve(requireFromString(fileContents, filePath));
           } catch (moduleError) {
-            emitResult('error', moduleError);
+            reject(moduleError);
           }
-        }
+        });
+      }
+    };
+    if (webpackConfig.devtool) {
+      sourceMapSupport.install({
+        environment: 'node',
+        hookRequire: process.env.NODE_ENV !== 'production',
       });
     }
+    compiler.outputFileSystem = new MemoryFS();
+    if (webpackConfig.watchOptions) {
+      compiler.hooks.watchRun.tap('untool-transpiler', () => reset());
+      compiler.watch(webpackConfig.watchOptions, handleCompilation);
+    } else {
+      compiler.run(handleCompilation);
+    }
+  });
+  return function webpackRenderMiddleware(req, res, next) {
+    resolvable.then((middleware) => middleware(req, res, next)).catch(next);
   };
-  if (webpackConfig.devtool) {
-    sourceMapSupport.install({
-      environment: 'node',
-      hookRequire: process.env.NODE_ENV !== 'production',
-    });
-  }
-  if (webpackConfig.watchOptions) {
-    compiler.watch(webpackConfig.watchOptions, handleCompilation);
-  } else {
-    compiler.run(handleCompilation);
-  }
-  process.nextTick(emitter.emit.bind(emitter, 'start'));
-  return emitter;
 };

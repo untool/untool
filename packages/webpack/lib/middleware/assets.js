@@ -1,14 +1,12 @@
 'use strict';
 
-module.exports = (assets) => {
+module.exports = (resolvable) => {
   return function assetsMiddleware(req, res, next) {
-    assets.registerCallback((error, assets) => {
-      if (error) {
-        next(error);
-      } else {
+    resolvable
+      .then((assets) => {
         res.locals = { ...res.locals, ...assets };
         next();
-      }
-    });
+      })
+      .catch(next);
   };
 };
