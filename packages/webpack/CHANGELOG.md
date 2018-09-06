@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.19.0"></a>
+# [0.19.0](https://github.com/untool/untool/compare/v0.18.0...v0.19.0) (2018-09-06)
+
+
+### Bug Fixes
+
+* **webpack:** fix rendering of multiple locations ([11e7e7f](https://github.com/untool/untool/commit/11e7e7f))
+
+
+
+
+
 <a name="0.18.0"></a>
 # [0.18.0](https://github.com/untool/untool/compare/v0.17.2...v0.18.0) (2018-09-03)
 
