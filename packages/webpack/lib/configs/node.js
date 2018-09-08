@@ -120,7 +120,7 @@ module.exports = function getConfig(config, configureBuild) {
     performance: {
       hints: false,
     },
-    devtool: process.env.NODE_ENV !== 'production' && 'inline-source-map',
+    devtool: 'inline-source-map',
   };
 
   const loaderConfigs = {
