@@ -4,26 +4,10 @@ const { extname } = require('path');
 
 const { RawSource } = require('webpack-sources');
 
-module.exports = class WebpackAssetsPlugin {
-  constructor(resolvable, config, target) {
-    this.resolvable = resolvable;
-    this.config = config;
-    this.target = target;
-  }
-  apply(compiler) {
-    const { config, target } = this;
-    if (target === 'node') {
-      compiler.hooks.emit.tapPromise('untool-assets', (compilation) =>
-        this.resolvable.then(
-          (assets) =>
-            (compilation.assets[config.assetFile] = new RawSource(
-              JSON.stringify(assets)
-            ))
-        )
-      );
-    } else {
-      compiler.hooks.emit.tap('untool-assets', (compilation) => {
-        const { namedChunks: chunks } = compilation;
+module.exports = exports = class WebpackAssetDataPlugin {
+  constructor({ assets: resolvable, config }) {
+    this.apply = (compiler) => {
+      compiler.hooks.emit.tap('untool-assets', ({ namedChunks: chunks }) => {
         const assetsByChunkName = Array.from(chunks.keys()).reduce(
           (result, key) => ({ ...result, [key]: chunks.get(key).files }),
           {}
@@ -48,8 +32,21 @@ module.exports = class WebpackAssetsPlugin {
               }, result),
             { css: [], js: [] }
           );
-        this.resolvable.resolve({ assetsByChunkName, assetsByType });
+        resolvable.resolve({ assetsByChunkName, assetsByType });
       });
-    }
+    };
+  }
+};
+
+exports.AssetManifestPlugin = class WebpackAssetManifestPlugin {
+  constructor({ assets: resolvable, config }) {
+    this.apply = (compiler) => {
+      compiler.hooks.emit.tapPromise('untool-assets', ({ assets }) =>
+        resolvable.then(
+          (data) =>
+            (assets[config.assetFile] = new RawSource(JSON.stringify(data)))
+        )
+      );
+    };
   }
 };
