@@ -29,7 +29,6 @@ module.exports = function createRenderMiddleware(webpackConfig) {
         fs.readFile(filePath, 'utf8', (readError, fileContents) => {
           if (readError) return reject(readError);
           try {
-            sourceMapSupport.install({ hookRequire: true });
             resolve(requireFromString(fileContents, filePath));
           } catch (moduleError) {
             reject(moduleError);
@@ -37,6 +36,7 @@ module.exports = function createRenderMiddleware(webpackConfig) {
         });
       }
     };
+    sourceMapSupport.install({ environment: 'node', hookRequire: true });
     compiler.outputFileSystem = new MemoryFS();
     if (webpackConfig.watchOptions) {
       compiler.hooks.watchRun.tap('untool-transpiler', () => reset());
