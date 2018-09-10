@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.20.0"></a>
+# [0.20.0](https://github.com/untool/untool/compare/v0.19.0...v0.20.0) (2018-09-10)
+
+
+### Features
+
+* **webpack:** add server source maps in production ([85b1ef6](https://github.com/untool/untool/commit/85b1ef6))
+
+
+
+
+
 <a name="0.19.0"></a>
 # [0.19.0](https://github.com/untool/untool/compare/v0.18.0...v0.19.0) (2018-09-06)
 
