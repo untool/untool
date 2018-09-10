@@ -18,30 +18,16 @@ class WebpackMixin extends Mixin {
     super(...args);
     this.assets = new Resolvable();
   }
-  loadAssetManifest() {
-    const { serverDir, assetFile } = this.config;
-    const path = join(serverDir, assetFile);
-    return exists(path) ? require(path) : {};
-  }
   loadRenderMiddleware() {
     const { serverDir, serverFile, assetFile } = this.config;
-    const server = join(serverDir, serverFile);
-    const assetManifest = join(serverDir, assetFile);
-    this.assets.resolve(exists(assetManifest) ? require(assetManifest) : {});
-    return exists(server) ? require(server) : (req, res, next) => next();
-  }
-  createWebpackMiddlewares() {
-    const webpackConfig = this.getBuildConfig('develop');
-    const compiler = require('webpack')(webpackConfig);
-    return [
-      require('webpack-dev-middleware')(compiler, {
-        noInfo: true,
-        logLevel: 'silent',
-        publicPath: webpackConfig.output.publicPath,
-        watchOptions: webpackConfig.watchOptions,
-      }),
-      require('webpack-hot-middleware')(compiler, { log: false }),
-    ];
+    const middlewarePath = join(serverDir, serverFile);
+    const manifestPath = join(serverDir, assetFile);
+    if (exists(middlewarePath)) {
+      this.assets.resolve(exists(manifestPath) ? require(manifestPath) : {});
+      return require(middlewarePath);
+    } else {
+      return (req, res, next) => next();
+    }
   }
   createRenderMiddleware() {
     const createRenderMiddleware = require('./lib/middleware/render');
@@ -57,6 +43,19 @@ class WebpackMixin extends Mixin {
   createAssetDataMiddleware() {
     const createAssetDataMiddleware = require('./lib/middleware/assets');
     return createAssetDataMiddleware(this);
+  }
+  createWebpackMiddlewares() {
+    const webpackConfig = this.getBuildConfig('develop');
+    const compiler = require('webpack')(webpackConfig);
+    return [
+      require('webpack-dev-middleware')(compiler, {
+        noInfo: true,
+        logLevel: 'silent',
+        publicPath: webpackConfig.output.publicPath,
+        watchOptions: webpackConfig.watchOptions,
+      }),
+      require('webpack-hot-middleware')(compiler, { log: false }),
+    ];
   }
   createRenderPlugin() {
     const RenderPlugin = require('./lib/plugins/render');
@@ -125,7 +124,6 @@ class WebpackMixin extends Mixin {
     }
     if (mode === 'serve') {
       middlewares.routes.push(this.loadRenderMiddleware());
-      this.assets.resolve(this.loadAssetManifest());
     }
     middlewares.preroutes.push(this.createAssetDataMiddleware());
     return app;
