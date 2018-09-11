@@ -27,7 +27,7 @@ class ReactMixin extends Mixin {
   }
   bootstrap(req, res) {
     this.options.location = req.path;
-    this.assetsByType = res.locals.assetsByType;
+    this.assets = res.locals.stats.entryAssetsByType;
   }
   enhanceElement(element) {
     return createElement(StaticRouter, this.options, element);
@@ -35,7 +35,7 @@ class ReactMixin extends Mixin {
   getTemplateData(data) {
     return Object.assign(data, {
       mountpoint: this.config.name,
-      assetsByType: this.assetsByType,
+      assets: this.assets,
       globals: Object.assign({ _env: this.config._env }, data.globals),
       fragments: Object.keys(data.helmet).reduce(
         (result, key) =>

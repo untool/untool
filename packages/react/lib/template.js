@@ -13,7 +13,7 @@ const renderGlobals = (globals) => {
   return entries.length ? `<script>var ${entries.join(',')};</script>` : '';
 };
 
-module.exports = ({ fragments, assetsByType, mountpoint, markup, globals }) =>
+module.exports = ({ fragments, assets, mountpoint, markup, globals }) =>
   `<!DOCTYPE html>
 <html ${fragments.htmlAttributes}>
   <head>
@@ -22,7 +22,7 @@ module.exports = ({ fragments, assetsByType, mountpoint, markup, globals }) =>
     ${fragments.base}
     ${fragments.meta}
     ${fragments.link}
-    ${renderCSS(assetsByType)}
+    ${renderCSS(assets)}
     ${fragments.style}
     ${fragments.script}
     ${fragments.headSuffix}
@@ -31,6 +31,6 @@ module.exports = ({ fragments, assetsByType, mountpoint, markup, globals }) =>
     <div id="${mountpoint}">${markup}</div>
     ${fragments.noscript}
     ${renderGlobals(globals)}
-    ${renderJS(assetsByType)}
+    ${renderJS(assets)}
   </body>
 </html>`.replace(/(^\s*[\r\n]| (?=>))/gm, '');
