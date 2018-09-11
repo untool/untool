@@ -1,6 +1,6 @@
 {
   "name": "untool",
-  "version": "0.20.0",
+  "version": "0.21.0",
   "description": "untool cli",
   "bin": {
     "untool": "index.js",

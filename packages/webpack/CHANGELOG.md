@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.21.0"></a>
+# [0.21.0](https://github.com/untool/untool/compare/v0.20.0...v0.21.0) (2018-09-11)
+
+
+### Bug Fixes
+
+* **webpack:** clone asset metadata in middleware ([46a69ca](https://github.com/untool/untool/commit/46a69ca)), closes [#132](https://github.com/untool/untool/issues/132)
+* **webpack:** make sure resovable is being resolved in all conditions ([ee10a25](https://github.com/untool/untool/commit/ee10a25))
+* update dependency debug to v4 ([47abf31](https://github.com/untool/untool/commit/47abf31))
+
+
+### Features
+
+* **webpack:** add stats (instead of asset data) ([a7324af](https://github.com/untool/untool/commit/a7324af))
+
+
+
+
+
 <a name="0.20.0"></a>
 # [0.20.0](https://github.com/untool/untool/compare/v0.19.0...v0.20.0) (2018-09-10)
 
