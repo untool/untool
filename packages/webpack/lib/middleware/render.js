@@ -45,7 +45,7 @@ module.exports = function createRenderMiddleware(webpackConfig) {
       compiler.run(handleCompilation);
     }
   });
-  return function webpackRenderMiddleware(req, res, next) {
+  return function renderMiddleware(req, res, next) {
     resolvable.then((middleware) => middleware(req, res, next)).catch(next);
   };
 };

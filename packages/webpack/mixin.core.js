@@ -16,15 +16,15 @@ const { Resolvable } = require('./lib/utils/resolvable');
 class WebpackMixin extends Mixin {
   constructor(...args) {
     super(...args);
-    this.assets = new Resolvable();
+    this.stats = new Resolvable();
   }
   loadRenderMiddleware() {
-    const { serverDir, serverFile, assetFile } = this.config;
-    const middlewarePath = join(serverDir, serverFile);
-    const manifestPath = join(serverDir, assetFile);
-    this.assets.resolve(exists(manifestPath) ? require(manifestPath) : {});
-    if (exists(middlewarePath)) {
-      return require(middlewarePath);
+    const { serverDir, serverFile, statsFile } = this.config;
+    const serverFilePath = join(serverDir, serverFile);
+    const statsFilePath = join(serverDir, statsFile);
+    this.stats.resolve(exists(statsFilePath) ? require(statsFilePath) : {});
+    if (exists(serverFilePath)) {
+      return require(serverFilePath);
     } else {
       return (req, res, next) => next();
     }
@@ -40,9 +40,9 @@ class WebpackMixin extends Mixin {
     const { watchOptions } = this.getBuildConfig('develop');
     return createRenderMiddleware({ watchOptions, ...webpackConfig });
   }
-  createAssetDataMiddleware() {
-    const createAssetDataMiddleware = require('./lib/middleware/assets');
-    return createAssetDataMiddleware(this);
+  createStatsMiddleware() {
+    const createStatsMiddleware = require('./lib/middleware/stats');
+    return createStatsMiddleware(this);
   }
   createWebpackMiddlewares() {
     const webpackConfig = this.getBuildConfig('develop');
@@ -61,13 +61,13 @@ class WebpackMixin extends Mixin {
     const RenderPlugin = require('./lib/plugins/render');
     return new RenderPlugin(this);
   }
-  createAssetDataPlugin() {
-    const AssetDataPlugin = require('./lib/plugins/assets');
-    return new AssetDataPlugin(this);
+  createStatsPlugin() {
+    const { StatsPlugin } = require('./lib/plugins/stats');
+    return new StatsPlugin(this);
   }
-  createAssetManifestPlugin() {
-    const { AssetManifestPlugin } = require('./lib/plugins/assets');
-    return new AssetManifestPlugin(this);
+  createStatsFilePlugin() {
+    const { StatsFilePlugin } = require('./lib/plugins/stats');
+    return new StatsFilePlugin(this);
   }
   getBuildConfig(target) {
     const getConfig = require(`./lib/configs/${target}`);
@@ -108,9 +108,9 @@ class WebpackMixin extends Mixin {
       plugins.unshift(this.createRenderPlugin());
     }
     if (target === 'node') {
-      plugins.unshift(this.createAssetManifestPlugin());
+      plugins.unshift(this.createStatsFilePlugin());
     } else {
-      plugins.unshift(this.createAssetDataPlugin());
+      plugins.unshift(this.createStatsPlugin());
     }
     return webpackConfig;
   }
@@ -125,7 +125,7 @@ class WebpackMixin extends Mixin {
     if (mode === 'serve') {
       middlewares.routes.push(this.loadRenderMiddleware());
     }
-    middlewares.preroutes.push(this.createAssetDataMiddleware());
+    middlewares.preroutes.push(this.createStatsMiddleware());
     return app;
   }
   registerCommands(yargs) {
