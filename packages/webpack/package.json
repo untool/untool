@@ -34,7 +34,7 @@
     "babel-plugin-dynamic-import-node": "^2.0.0",
     "caniuse-lite": "^1.0.30000846",
     "clone": "^2.1.2",
-    "debug": "^3.1.0",
+    "debug": "^4.0.0",
     "enhanced-resolve": "^4.0.0",
     "file-loader": "^2.0.0",
     "find-up": "^3.0.0",
