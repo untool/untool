@@ -26,6 +26,7 @@ exports.StatsPlugin = class WebpackStatsPlugin {
           );
         resolvable.resolve({ ...stats, entryAssetsByType });
       });
+      compiler.hooks.watchRun.tap('untool-stats', () => resolvable.reset());
     };
   }
 };
