@@ -42,7 +42,7 @@ $ NODE_ENV=production un build
 
 ##### `-s` / `--static`
 
-In `static` mode, static HTML pages will be generated for the [`locations`](https://github.com/untool/untool/blob/master/packages/express/README.md#locations) configured for your application. In `no-static` mode, `server.js` and `assets.json` files will be created instead.
+In `static` mode, static HTML pages will be generated for the [`locations`](https://github.com/untool/untool/blob/master/packages/express/README.md#locations) configured for your application. In `no-static` mode, `server.js` and `stats.json` files will be created instead.
 
 ### `develop`
 
@@ -137,12 +137,13 @@ _This method is also exported so that you can use it in your own, non-mixin code
 
 ## Settings
 
-| Property     | Type     | Default         |
-| ------------ | -------- | --------------- |
-| `browsers`   | `string` | `'defaults'`    |
-| `node`       | `string` | `'current'`     |
-| `serverFile` | `string` | `'server.js'`   |
-| `assetFile`  | `string` | `'assets.json'` |
+| Property     | Type     | Default                                  |
+| ------------ | -------- | ---------------------------------------- |
+| `browsers`   | `string` | `'defaults'`                             |
+| `node`       | `string` | `'current'`                              |
+| `serverDir`  | `string` | `'<rootDir>/node_modules/.cache/untool'` |
+| `serverFile` | `string` | `'server.js'`                            |
+| `statsFile`  | `string` | `'stats.json'`                           |
 
 ### `browsers`
 
@@ -164,9 +165,19 @@ This is the target Node.js version Babel's [`preset-env`](https://babeljs.io/doc
 }
 ```
 
+### `serverDir`
+
+Path of your server build output. It will only be used in `production`, non-`static` mode. By default, this folder is located inside your `node_modules` folder and it is usually removed before building.
+
+```json
+{
+  "serverDir": "<buildDir>"
+}
+```
+
 ### `serverFile`
 
-Path of your server output file, relative to [`buildDir`](https://github.com/untool/untool/blob/master/packages/express/README.md#builddir). It will only be generated in `production` and `static` modes and is being used internally.
+Path of your server output file, relative to [`serverDir`](https://github.com/untool/untool/blob/master/packages/webpack/README.md#serverdir). It will only be generated in `production`, non-`static` mode and is being used internally.
 
 ```json
 {
@@ -174,12 +185,12 @@ Path of your server output file, relative to [`buildDir`](https://github.com/unt
 }
 ```
 
-### `assetFile`
+### `statsFile`
 
-Path of your assets manifest file, relative to [`buildDir`](https://github.com/untool/untool/blob/master/packages/express/README.md#builddir). It will only be generated in `production` and `no-static` modes and is being used internally.
+Path of your stats file, relative to [`serverDir`](https://github.com/untool/untool/blob/master/packages/webpack/README.md#serverdir). It will only be generated in `production`, non-`static` mode and is being used internally.
 
 ```json
 {
-  "assetFile": "assets.json"
+  "assetFile": "stats.json"
 }
 ```
