@@ -26,6 +26,7 @@
     "@babel/preset-react": "^7.0.0",
     "@untool/core": "^0.21.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.13",
+    "clone": "^2.1.2",
     "mixinable": "^4.0.0",
     "serialize-javascript": "^1.4.0"
   },
