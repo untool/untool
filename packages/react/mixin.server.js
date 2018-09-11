@@ -4,6 +4,7 @@ const { createElement } = require('react');
 const { renderToString } = require('react-dom/server');
 const { StaticRouter } = require('react-router-dom');
 const { Helmet } = require('react-helmet');
+const clone = require('clone');
 
 const {
   async: { compose, parallel, pipe },
@@ -27,24 +28,23 @@ class ReactMixin extends Mixin {
   }
   bootstrap(req, res) {
     this.options.location = req.path;
-    this.assets = res.locals.stats.entryAssetsByType;
+    this.assets = clone(res.locals.stats.entryAssetsByType);
   }
   enhanceElement(element) {
     return createElement(StaticRouter, this.options, element);
   }
-  getTemplateData(data) {
-    return Object.assign(data, {
-      mountpoint: this.config.name,
-      assets: this.assets,
-      globals: Object.assign({ _env: this.config._env }, data.globals),
-      fragments: Object.keys(data.helmet).reduce(
-        (result, key) =>
-          Object.assign(result, {
-            [key]: data.helmet[key].toString(),
-          }),
-        { headPrefix: '', headSuffix: '' }
-      ),
-    });
+  procureTemplateData(data) {
+    const { helmet } = data;
+    const { assets, config } = this;
+    const { name: mountpoint, _env } = config;
+    const globals = { _env };
+    const fragments = Object.keys(helmet).reduce(
+      (result, key) => Object.assign(result, { [key]: helmet[key].toString() }),
+      { headPrefix: '', headSuffix: '' }
+    );
+    return this.getTemplateData(
+      Object.assign(data, { assets, mountpoint, globals, fragments })
+    );
   }
   render(req, res, next) {
     Promise.resolve()
@@ -65,7 +65,7 @@ class ReactMixin extends Mixin {
         } else {
           context.headers && res.set(context.headers);
           res.status(context.status || 200);
-          return this.getTemplateData({ fetchedData, markup, helmet }).then(
+          return this.procureTemplateData({ fetchedData, markup, helmet }).then(
             (templateData) => res.send(template(templateData))
           );
         }
