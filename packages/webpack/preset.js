@@ -7,6 +7,6 @@ module.exports = {
   node: 'current',
   serverDir: join('<rootDir>', 'node_modules', '.cache', 'untool'),
   serverFile: 'server.js',
-  assetFile: 'assets.json',
+  statsFile: 'stats.json',
   mixins: [__dirname],
 };
