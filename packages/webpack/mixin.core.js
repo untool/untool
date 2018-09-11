@@ -22,8 +22,8 @@ class WebpackMixin extends Mixin {
     const { serverDir, serverFile, assetFile } = this.config;
     const middlewarePath = join(serverDir, serverFile);
     const manifestPath = join(serverDir, assetFile);
+    this.assets.resolve(exists(manifestPath) ? require(manifestPath) : {});
     if (exists(middlewarePath)) {
-      this.assets.resolve(exists(manifestPath) ? require(manifestPath) : {});
       return require(middlewarePath);
     } else {
       return (req, res, next) => next();
