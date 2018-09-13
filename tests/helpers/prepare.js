@@ -17,7 +17,7 @@ const prepareDir = (rootDir) => {
 
 module.exports = (...args) =>
   run(...args).then((api) => {
-    const { events: events } = require(join(api.rootDir, 'core'));
+    const { events } = require(join(api.rootDir, 'instrument', 'mixin.core'));
     prepareDir(api.rootDir);
     return {
       getArgTypes(...args) {
