@@ -34,12 +34,6 @@ class WebpackMixin extends Mixin {
     const webpackConfig = this.getBuildConfig('node');
     return createRenderMiddleware(webpackConfig);
   }
-  createRenderWatchMiddleware() {
-    const createRenderMiddleware = require('./lib/middleware/render');
-    const webpackConfig = this.getBuildConfig('node');
-    const { watchOptions } = this.getBuildConfig('develop');
-    return createRenderMiddleware({ watchOptions, ...webpackConfig });
-  }
   createStatsMiddleware() {
     const createStatsMiddleware = require('./lib/middleware/stats');
     return createStatsMiddleware(this);
@@ -117,7 +111,7 @@ class WebpackMixin extends Mixin {
   configureServer(app, middlewares, mode) {
     if (mode === 'develop') {
       middlewares.initial.push(this.createWebpackMiddlewares());
-      middlewares.routes.push(this.createRenderWatchMiddleware());
+      middlewares.routes.push(this.createRenderMiddleware());
     }
     if (mode === 'static') {
       middlewares.routes.push(this.createRenderMiddleware());
