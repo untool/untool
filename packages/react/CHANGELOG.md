@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.22.0"></a>
+# [0.22.0](https://github.com/untool/untool/compare/v0.21.0...v0.22.0) (2018-09-13)
+
+
+### Features
+
+* **react:** clone `this.assets` to ensure extensibility ([4f51abb](https://github.com/untool/untool/commit/4f51abb))
+
+
+
+
+
 <a name="0.21.0"></a>
 # [0.21.0](https://github.com/untool/untool/compare/v0.20.0...v0.21.0) (2018-09-11)
 
