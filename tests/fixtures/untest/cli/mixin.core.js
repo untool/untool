@@ -1,36 +1,28 @@
 'use strict';
+/* eslint-disable no-console */
 
 const { format } = require('url');
+const { basename } = require('path');
 
 const prettyMS = require('pretty-ms');
 
-module.exports = class CLIMixin {
-  constructor(config, options) {
-    this.config = config;
-    this.options = options;
-  }
-  registerCommands(yargs) {
-    return yargs.option('quiet', {
-      alias: 'q',
-      description: 'Silence log output',
-      type: 'boolean',
-    });
-  }
-  handleArguments(argv) {
-    this.options = { ...this.options, ...argv };
-    const { quiet } = this.options;
-    const { name } = this.config;
-    if (!quiet) {
-      process.stdout.write(
-        `[${name}] started in ${process.env.NODE_ENV || 'development'} mode\n`
+const { Mixin } = require('@untool/core');
+
+module.exports = class CLIMixin extends Mixin {
+  constructor(...args) {
+    super(...args);
+    const { name, rootDir } = this.config;
+    this.isFixture = basename(rootDir) !== 'untest';
+    if (!this.isFixture) {
+      console.log(
+        `[${name}] started in ${process.env.NODE_ENV || 'development'} mode`
       );
     }
   }
   configureBuild(webpackConfig, loaderConfigs, target) {
     if (target === 'develop') {
-      const { quiet } = this.options;
       const { name } = this.config;
-      if (!quiet) {
+      if (!this.isFixture) {
         webpackConfig.plugins.push({
           apply(compiler) {
             compiler.hooks.done.tap('untool-log-plugin', (stats) => {
@@ -47,10 +39,9 @@ module.exports = class CLIMixin {
     return webpackConfig;
   }
   inspectBuild(stats) {
-    const { quiet } = this.options;
     const { name } = this.config;
-    if (!quiet) {
-      process.stdout.write(
+    if (!this.isFixture) {
+      console.log(
         `[${name}] built successfully\n\n${stats.toString({
           colors: false,
           version: false,
@@ -58,21 +49,18 @@ module.exports = class CLIMixin {
           modules: false,
           entrypoints: false,
           chunks: false,
-        })}\n\n`
+        })}\n`
       );
     }
   }
   inspectServer(server) {
-    const { quiet } = this.options;
     const { name, https, basePath: pathname } = this.config;
-    if (!quiet) {
-      const { address, port } = server.address();
-      const hostname = ['::', '::1', '0.0.0.0', '127.0.0.1'].includes(address)
-        ? 'localhost'
-        : address;
+    if (!this.isFixture) {
+      const { port } = server.address();
+      const hostname = 'localhost';
       const protocol = https ? 'https' : 'http';
       const parts = { protocol, hostname, port, pathname };
-      process.stdout.write(`[${name}] listening at ${format(parts)}\n`);
+      console.log(`[${name}] listening at ${format(parts)}`);
     }
   }
 };
