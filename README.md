@@ -4,7 +4,7 @@
 
 `untool` is a JavaScript tool designed to streamline configuration and usage of other JavaScript tools. By default, it comes with a basic development and runtime environment for universal React applications. This environment is highly modular. Every one of its default modules is configurable and extensible - and entirely optional.
 
-`untool` is not really meant to be used on its own, but extended and built upon. To get everything you need to develop and deploy a production grade web application, please check out [Hops](https://github.com/xing/hops).
+`untool` is not really meant to be used on its own, but extended and built upon. To get everything you need to develop and deploy a production grade web application, please check out [`hops`](https://github.com/xing/hops).
 
 ## Why?
 
@@ -40,31 +40,13 @@ The [`@untool/react`](https://github.com/untool/untool/tree/master/packages/reac
 
 ### Installation
 
-As `untool` is completely modular, there is no single best way to install its different parts. Installing its global [command line interface](https://github.com/untool/untool/blob/master/packages/cli/README.md) (CLI), however, is a sensible way to get started.
+As `untool` is completely modular, there is no single best way to install its different parts. Installing [`hops`](https://github.com/xing/hops), a full-blown development and runtime environment based on `untool`, is probably the most sensible way to get started, though.
 
 ```bash
-$ yarn global add untool # OR npm install --global untool
+$ npx hops@next init --hops-version next --template hops-template-react@next foo
 ```
 
-Having installed this global CLI package, you can set up your first `untool` project. The easiest way to do so is to install the `@untool/defaults` package and its (dependencies') dependencies.
-
-```text
-$ mkdir foo && cd $_
-$ yarn init -y
-$ yarn add @untool/defaults react react-dom react-router-dom react-helmet
-```
-
-Now, start building your app. `untool` will pick up whatever is configured as your project's main entry point. The following lines will give you a minimal React app.
-
-```text
-$ cat << EOT > index.js
-import React from 'react';
-import { render } from 'untool';
-export default render(<h1>meep</h1>);
-EOT
-```
-
-After these steps, you are good to go: you can just run your app by executing the command `un start` inside your project folder.
+After these steps, you are good to go: you can just run your app by executing the command `yarn start` inside your project folder.
 
 ### Utilization
 
@@ -73,7 +55,6 @@ To use `untool`, you certainly do not have to learn about all the parts and conc
 If you need to extend its features, you will want to take a peek into the black box, though. To become acquainted with `untool`'s innards, it certainly makes sense to dive into its README files. This is the recommended reading order:
 
 - [`@untool/core`](https://github.com/untool/untool/blob/master/packages/core/README.md): central base module all other packages rely upon
-- [`@untool/defaults`](https://github.com/untool/untool/blob/master/packages/defaults/README.md): default preset incorporating all other main packages
 - [`@untool/yargs`](https://github.com/untool/untool/blob/master/packages/yargs/README.md): command line interface engine
 - [`@untool/express`](https://github.com/untool/untool/blob/master/packages/express/README.md): development and production server implementation
 - [`@untool/webpack`](https://github.com/untool/untool/blob/master/packages/webpack/README.md): webpack setup (including Babel)
