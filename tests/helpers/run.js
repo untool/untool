@@ -15,7 +15,7 @@ const {
 
 const bootstrap = () =>
   Promise.resolve().then(() => {
-    const fixtureDir = join(__dirname, '../fixtures/instrument');
+    const fixtureDir = join(__dirname, '../fixtures/untest');
     const rootDir = `${fixtureDir}-${uuid()}`;
     return new Promise((resolve, reject) =>
       ncp(fixtureDir, rootDir, (error) => {
@@ -32,7 +32,7 @@ module.exports = (...args) =>
     process.chdir(rootDir);
     process.nextTick(() => run(...args));
 
-    const { events } = require(join(rootDir, 'core'));
+    const { events } = require(join(rootDir, 'instrument', 'mixin.core'));
     const api = {
       rootDir,
       getArg(...args) {

@@ -13,7 +13,7 @@ const {
 
 module.exports = (...args) =>
   run(...args).then((api) => {
-    const { events } = require(join(api.rootDir, 'server'));
+    const { events } = require(join(api.rootDir, 'instrument', 'mixin.server'));
     return {
       getArg(...args) {
         return events.promiseArg(...args);
