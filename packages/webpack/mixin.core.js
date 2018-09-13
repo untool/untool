@@ -17,6 +17,7 @@ class WebpackMixin extends Mixin {
   constructor(...args) {
     super(...args);
     this.stats = new Resolvable();
+    this.buildConfigs = {};
   }
   loadRenderMiddleware() {
     const { serverDir, serverFile, statsFile } = this.config;
@@ -70,9 +71,17 @@ class WebpackMixin extends Mixin {
     return new StatsFilePlugin(this);
   }
   getBuildConfig(target) {
+    if (this.buildConfigs[target]) {
+      return this.buildConfigs[target];
+    }
+
     const getConfig = require(`./lib/configs/${target}`);
     const { configureBuild, config } = this;
-    return getConfig(config, (...args) => configureBuild(...args, target));
+    this.buildConfigs[target] = getConfig(config, (...args) =>
+      configureBuild(...args, target)
+    );
+
+    return this.buildConfigs[target];
   }
   clean() {
     const rimraf = require('rimraf');
