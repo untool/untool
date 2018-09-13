@@ -3,8 +3,8 @@
 const debug = require('debug')('untool:core');
 const define = require('mixinable');
 
-const { getConfig } = require('./config');
-const { environmentalize } = require('./env');
+const { getConfig } = require('./lib/config');
+const { environmentalize } = require('./lib/env');
 
 exports.Mixin = class Mixin {
   constructor(config, options) {
