@@ -123,6 +123,13 @@ module.exports = function getConfig(config, configureBuild) {
     devtool: 'inline-source-map',
   };
 
+  if (process.env.NODE_ENV !== 'production') {
+    webpackConfig.watchOptions = {
+      aggregateTimeout: 300,
+      ignored: /node_modules/,
+    };
+  }
+
   const loaderConfigs = {
     jsLoaderConfig,
     urlLoaderConfig,
