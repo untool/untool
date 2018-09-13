@@ -5,7 +5,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "cd tests/fixtures/instrument; un start",
+    "start": "cd tests/fixtures/untest; node cli start",
     "test": "NODE_ENV=test ava --verbose --timeout=90s tests",
     "lint": "eslint --ignore-path .gitignore '**/*.js'",
     "fmt": "prettier --write --ignore-path .gitignore '**/*.js'",
@@ -116,14 +116,11 @@
         2,
         "always",
         [
-          "cli",
           "core",
-          "defaults",
           "express",
           "react",
           "webpack",
-          "yargs",
-          "untool"
+          "yargs"
         ]
       ]
     }
