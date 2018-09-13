@@ -2,8 +2,7 @@
   "name": "@untool/core",
   "version": "0.22.0",
   "description": "untool core",
-  "main": "lib/core.js",
-  "esnext:main": "lib/runtime.js",
+  "esnext": "lib/runtime.js",
   "scripts": {
     "test": "echo \"Error: no test specified\""
   },
