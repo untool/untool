@@ -1,4 +1,4 @@
-const EventEmitter = require('../../helpers/promise');
+const EventEmitter = require('../../../helpers/promise');
 
 const { Mixin } = require('@untool/core/lib/runtime');
 
