@@ -33,4 +33,4 @@ module.exports = ({ fragments, assets, mountpoint, markup, globals }) =>
     ${renderGlobals(globals)}
     ${renderJS(assets)}
   </body>
-</html>`.replace(/(^\s*[\r\n]| (?=>))/gm, '');
+</html>`;
