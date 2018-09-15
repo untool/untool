@@ -9,7 +9,7 @@ const {
   optimize,
 } = require('webpack');
 
-const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const TerserPlugin = require('terser-webpack-plugin');
 
 const {
   uri: { resolveRelative },
@@ -113,11 +113,11 @@ module.exports = function getConfig(config, configureBuild) {
         chunks: 'all',
       },
       minimizer: [
-        new UglifyJsPlugin({
+        new TerserPlugin({
           cache: true,
           parallel: true,
           sourceMap: true,
-          uglifyOptions: {
+          terserOptions: {
             compress: {
               inline: 1, // https://github.com/mishoo/UglifyJS2/issues/2842
             },
