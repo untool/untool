@@ -36,6 +36,7 @@
     "@commitlint/travis-cli": "^7.0.0",
     "ava": "^0.25.0",
     "babel-eslint": "^9.0.0",
+    "cycle": "^1.0.3",
     "cz-conventional-changelog": "^2.1.0",
     "eslint": "^5.0.0",
     "eslint-config-prettier": "^3.0.0",
