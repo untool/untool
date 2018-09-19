@@ -1,3 +1,3 @@
 'use strict';
 
-exports.template = require('./lib/template');
+module.exports = require('./lib/components');
