@@ -2,7 +2,7 @@
 /* global __webpack_modules__, __webpack_require__ */
 
 const { createElement, PureComponent } = require('react');
-const { withRouter } = require('react-router-dom');
+const { default: withRouter } = require('react-router-dom/withRouter');
 
 exports.Miss = withRouter(({ staticContext }) => {
   if (staticContext) {
@@ -27,20 +27,22 @@ exports.Header = withRouter(({ staticContext, name, value }) => {
 
 exports.Import = ({ loader, loading, weakId, module }) =>
   withRouter(
-    class Split extends PureComponent {
+    class ImportComponent extends PureComponent {
       constructor({ staticContext }) {
         super();
         if (__webpack_modules__[weakId] || staticContext) {
           this.state = {
-            Component: ((m) => m.default || m)(__webpack_require__(weakId)),
+            Component: ((value) => value.default || value)(
+              __webpack_require__(weakId)
+            ),
           };
           if (staticContext) {
-            staticContext.modules.push({ weakId, module });
+            staticContext.modules.push(module);
           }
         } else {
           this.state = { Component: loading };
           loader().then(
-            (module) => this.setState({ Component: module.default || module }),
+            (value) => this.setState({ Component: value.default || value }),
             (error) => this.setState({ Component: loading, error })
           );
         }

@@ -31,7 +31,7 @@ class ReactMixin extends Mixin {
   procureAssets() {
     const { stats, modules } = this;
     const { moduleIds, chunks, assetsByChunkName } = stats;
-    const ids = modules.map(({ module }) => moduleIds[module]);
+    const ids = modules.map((module) => moduleIds[module]);
     const isCssJs = RegExp.prototype.test.bind(/\.(css|js)$/);
     const isUpdate = RegExp.prototype.test.bind(/\.hot-update\./);
     const isVendor = RegExp.prototype.test.bind(/vendors~/);
