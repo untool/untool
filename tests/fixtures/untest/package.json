@@ -2,7 +2,7 @@
   "name": "untest",
   "license": "MIT",
   "untool": {
-    "locations": ["/", "/foo"],
+    "locations": ["/", "/about"],
     "mixins": ["./instrument", "./cli"]
   },
   "dependencies": {
