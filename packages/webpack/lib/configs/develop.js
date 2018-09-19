@@ -76,7 +76,7 @@ module.exports = function getConfig(config, configureBuild) {
       publicPath: '/',
       pathinfo: true,
       filename: getAssetPath('[name].js'),
-      chunkFilename: getAssetPath('[name]-[id].js'),
+      chunkFilename: getAssetPath(`chunk-[name].js`),
       devtoolModuleFilenameTemplate: (info) =>
         relative(config.rootDir, info.absoluteResourcePath),
     },
