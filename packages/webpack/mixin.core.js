@@ -31,7 +31,7 @@ class WebpackMixin extends Mixin {
   }
   createRenderMiddleware() {
     const createRenderMiddleware = require('./lib/middleware/render');
-    const webpackConfig = this.getBuildConfig('node');
+    const webpackConfig = this.getWebpackNodeConfig();
     return createRenderMiddleware(webpackConfig);
   }
   createStatsMiddleware() {
@@ -39,7 +39,7 @@ class WebpackMixin extends Mixin {
     return createStatsMiddleware(this);
   }
   createWebpackMiddlewares() {
-    const webpackConfig = this.getBuildConfig('develop');
+    const webpackConfig = this.getWebpackDevelopConfig();
     const compiler = require('webpack')(webpackConfig);
     return [
       require('webpack-dev-middleware')(compiler, {
@@ -63,10 +63,23 @@ class WebpackMixin extends Mixin {
     const { StatsFilePlugin } = require('./lib/plugins/stats');
     return new StatsFilePlugin(this);
   }
-  getBuildConfig(target) {
-    const getConfig = require(`./lib/configs/${target}`);
-    const { configureBuild, config } = this;
-    return getConfig(config, (...args) => configureBuild(...args, target));
+  getWebpackBuildConfig(target) {
+    const getConfig = require(`./lib/configs/build`);
+    return getConfig(this.config, target, (...args) =>
+      this.configureBuild(...args, 'build')
+    );
+  }
+  getWebpackDevelopConfig(target) {
+    const getConfig = require(`./lib/configs/develop`);
+    return getConfig(this.config, target, (...args) =>
+      this.configureBuild(...args, 'develop')
+    );
+  }
+  getWebpackNodeConfig(target) {
+    const getConfig = require(`./lib/configs/node`);
+    return getConfig(this.config, target, (...args) =>
+      this.configureBuild(...args, 'node')
+    );
   }
   clean() {
     const rimraf = require('rimraf');
@@ -82,12 +95,12 @@ class WebpackMixin extends Mixin {
   }
   build() {
     const webpack = require('webpack');
-    const { options, getBuildConfig, inspectBuild } = this;
+    const { options, inspectBuild } = this;
     const webpackConfig = (({ static: isStatic }) => {
       if (isStatic) {
-        return getBuildConfig('build');
+        return this.getWebpackBuildConfig();
       } else {
-        return [getBuildConfig('build'), getBuildConfig('node')];
+        return [this.getWebpackBuildConfig(), this.getWebpackNodeConfig()];
       }
     })(options);
     return new Promise((resolve, reject) =>
@@ -218,7 +231,9 @@ class WebpackMixin extends Mixin {
 WebpackMixin.strategies = {
   configureBuild: pipe,
   inspectBuild: sequence,
-  getBuildConfig: callableSync,
+  getWebpackBuildConfig: callableSync,
+  getWebpackDevelopConfig: callableSync,
+  getWebpackNodeConfig: callableSync,
   build: callableAsync,
   clean: callableAsync,
 };

@@ -11,7 +11,7 @@ const {
 
 const { isESNext, isExternal } = require('../utils/helpers');
 
-module.exports = function getConfig(config, configureBuild) {
+module.exports = function getConfig(config, target = 'server', configureBuild) {
   const getAssetPath = resolveRelative.bind(null, config.assetPath);
 
   const jsLoaderConfig = {
@@ -99,7 +99,7 @@ module.exports = function getConfig(config, configureBuild) {
         {
           test: require.resolve('../shims/loader'),
           loader: require.resolve('../utils/loader'),
-          options: { target: 'server', config },
+          options: { target, config },
         },
         {
           oneOf: allLoaderConfigs,
