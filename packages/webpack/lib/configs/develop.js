@@ -75,8 +75,8 @@ module.exports = function getConfig(config, configureBuild) {
       path: config.buildDir,
       publicPath: '/',
       pathinfo: true,
-      filename: getAssetPath('[name].js'),
-      chunkFilename: getAssetPath(`chunk-[name].js`),
+      filename: getAssetPath(`${config.name}.js`),
+      chunkFilename: getAssetPath(`${config.name}-[name].js`),
       devtoolModuleFilenameTemplate: (info) =>
         relative(config.rootDir, info.absoluteResourcePath),
     },
@@ -107,6 +107,11 @@ module.exports = function getConfig(config, configureBuild) {
           oneOf: allLoaderConfigs,
         },
       ],
+    },
+    optimization: {
+      splitChunks: {
+        chunks: 'all',
+      },
     },
     plugins: [
       new HotModuleReplacementPlugin(),

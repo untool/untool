@@ -11,7 +11,7 @@ const isLocal = (path) => !path.includes('node_modules');
 const isShim = (path) => path.startsWith(join(dirname(__dirname), 'shims'));
 const isMixin = (path) => /mixin(\.[a-z]+)?\.js$/.test(path);
 const isModule = (path) =>
-  /"((e|j)snext(:[a-z]+)?|mixin(:[a-z]+)?)": ?"/m.test(
+  /"((e|j)snext(:[a-z]+)?|module|mixin(:[a-z]+)?)": ?"/m.test(
     readFile(findUp('package.json', { cwd: dirname(path) }), 'utf8')
   );
 const isExpression = (path) => /[!?]/.test(path);
