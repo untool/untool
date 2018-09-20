@@ -2,7 +2,7 @@
 
 const { createElement } = require('react');
 const { renderToString } = require('react-dom/server');
-const { StaticRouter } = require('react-router-dom');
+const { default: StaticRouter } = require('react-router-dom/StaticRouter');
 const { Helmet } = require('react-helmet');
 const clone = require('clone');
 

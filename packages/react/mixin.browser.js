@@ -4,7 +4,7 @@
 
 const { createElement } = require('react');
 const { unmountComponentAtNode, hydrate, render } = require('react-dom');
-const { BrowserRouter } = require('react-router-dom');
+const { default: BrowserRouter } = require('react-router-dom/BrowserRouter');
 
 const {
   async: { compose, parallel, pipe },
