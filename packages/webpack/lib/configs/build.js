@@ -75,8 +75,8 @@ module.exports = function getConfig(config, configureBuild) {
       path: config.buildDir,
       publicPath: '/',
       pathinfo: true,
-      filename: getAssetPath('[name]-[chunkhash:12].js'),
-      chunkFilename: getAssetPath(`chunk-[name]-[chunkhash:12].js`),
+      filename: getAssetPath(`${config.name}-[chunkhash:12].js`),
+      chunkFilename: getAssetPath(`${config.name}-[chunkhash:12].js`),
       devtoolModuleFilenameTemplate: (info) =>
         relative(config.rootDir, info.absoluteResourcePath),
     },
