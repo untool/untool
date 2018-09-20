@@ -29,30 +29,42 @@ class ReactMixin extends Mixin {
     );
   }
   procureAssets() {
-    const { stats, modules } = this;
-    const { moduleIds, chunks, assetsByChunkName } = stats;
-    const ids = modules.map((module) => moduleIds[module]);
-    const isCssJs = RegExp.prototype.test.bind(/\.(css|js)$/);
-    const isUpdate = RegExp.prototype.test.bind(/\.hot-update\./);
-    const isVendor = RegExp.prototype.test.bind(/vendors~/);
-    const isChunk = RegExp.prototype.test.bind(/chunk~/);
-    return Object.values(assetsByChunkName)
-      .concat(
-        chunks
-          .filter(({ modules }) => modules.find(({ id }) => ids.includes(id)))
-          .map(({ files }) => files)
+    const { stats, modules: rawModules } = this;
+    const { chunks, modules, moduleIds: rawModuleIdMap } = stats;
+    const importModuleIds = (function getAllModuleIds(moduleIds) {
+      const dependecyModuleIds = modules.reduce(
+        (result, { id, reasons }) =>
+          !moduleIds.includes(id) &&
+          reasons.find(({ moduleId }) => moduleIds.includes(moduleId))
+            ? result.concat(id)
+            : result,
+        []
+      );
+      if (dependecyModuleIds.length) {
+        return getAllModuleIds(moduleIds.concat(dependecyModuleIds));
+      }
+      return moduleIds;
+    })(rawModules.map((rawModule) => rawModuleIdMap[rawModule]));
+    const entryChunks = chunks.filter(({ entry }) => entry);
+    const vendorChunks = chunks.filter(({ id }) =>
+      entryChunks.find((entryChunk) => entryChunk.siblings.includes(id))
+    );
+    const importChunks = chunks.filter(({ modules }) =>
+      modules.find(({ id }) => importModuleIds.includes(id))
+    );
+    const sortChunks = ({ id: a }, { id: b }) => b - a;
+    return [
+      ...vendorChunks.sort(sortChunks),
+      ...importChunks.sort(sortChunks),
+      ...entryChunks.sort(sortChunks),
+    ]
+      .reduce((result, { files }) => result.concat(files), [])
+      .filter(
+        (asset, index, self) =>
+          self.indexOf(asset) === index &&
+          /\.(css|js)$/.test(asset) &&
+          !/\.hot-update\./.test(asset)
       )
-      .reduce((result, array) => result.concat(array), [])
-      .filter((asset, index, self) => self.indexOf(asset) === index)
-      .filter((asset) => isCssJs(asset) && !isUpdate(asset))
-      .sort((a, b) => {
-        if (isVendor(a)) return isVendor(b) ? a.localeCompare(b) * -1 : 1;
-        if (isVendor(b)) return -1;
-        if (isChunk(a)) return isChunk(b) ? a.localeCompare(b) * -1 : 1;
-        if (isChunk(b)) return -1;
-        return a.localeCompare(b) * -1;
-      })
-      .reverse()
       .reduce(
         (result, asset) => {
           const extension = extname(asset).substring(1);
