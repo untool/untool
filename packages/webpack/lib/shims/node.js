@@ -1,14 +1,7 @@
-'use strict';
-
-require('source-map-support/register');
-
-const { getConfigAndMixins } = require('./loader');
-
-let entryPoint = require('@untool/entrypoint');
-if (typeof entryPoint.default === 'function') {
-  entryPoint = entryPoint.default;
-}
+import 'source-map-support/register';
+import { getConfigAndMixins } from './loader';
+import entryPoint from '@untool/entrypoint';
 
 const { config, mixins } = getConfigAndMixins();
 
-module.exports = entryPoint(config, mixins);
+export default entryPoint(config, mixins);
