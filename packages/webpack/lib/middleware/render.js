@@ -29,7 +29,8 @@ module.exports = function createRenderMiddleware(webpackConfig) {
         fs.readFile(filePath, 'utf8', (readError, fileContents) => {
           if (readError) return reject(readError);
           try {
-            resolve(requireFromString(fileContents, filePath));
+            const middleware = requireFromString(fileContents, filePath);
+            resolve(middleware.default);
           } catch (moduleError) {
             reject(moduleError);
           }

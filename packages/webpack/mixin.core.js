@@ -24,7 +24,7 @@ class WebpackMixin extends Mixin {
     const statsFilePath = join(serverDir, statsFile);
     this.stats.resolve(exists(statsFilePath) ? require(statsFilePath) : {});
     if (exists(serverFilePath)) {
-      return require(serverFilePath);
+      return require(serverFilePath).default;
     } else {
       return (req, res, next) => next();
     }
