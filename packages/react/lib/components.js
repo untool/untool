@@ -2,7 +2,7 @@
 /* global __webpack_modules__, __webpack_require__ */
 
 const { createElement, PureComponent } = require('react');
-const { default: withRouter } = require('react-router-dom/withRouter');
+const { default: withRouter } = require('react-router-dom/es/withRouter');
 
 exports.Miss = withRouter(({ staticContext }) => {
   if (staticContext) {

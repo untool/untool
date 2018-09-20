@@ -4,7 +4,7 @@ const { extname } = require('path');
 
 const { createElement } = require('react');
 const { renderToString } = require('react-dom/server');
-const { default: StaticRouter } = require('react-router-dom/StaticRouter');
+const { default: StaticRouter } = require('react-router-dom/es/StaticRouter');
 const { Helmet } = require('react-helmet');
 
 const {
