@@ -129,11 +129,23 @@ Using this utility mixin method, you can delete your `buildDir` and all of its c
 
 _This method is also exported so that you can use it in your own, non-mixin code. Import it like so: `import { clean } from '@untool/webpack';`. In this mode, it also accepts another argument, `options`, which you can pass any CLI argument to._
 
-### `getBuildConfig(target)` ([callable](https://github.com/untool/mixinable/blob/master/README.md#defineoverride))
+### `getWebpackBuildConfig(target)` ([callable](https://github.com/untool/mixinable/blob/master/README.md#defineoverride))
 
-Returns the webpack config after `configureBuild` has been applied. `target` argument can be `build`, `develop`, or `node`.
+Returns the webpack config for the production build after `configureBuild` has been applied. `target` argument can be `browser` or `none` and will determine which mixins should be bundled.
 
-_This method is also exported so that you can use it in your own, non-mixin code. Import it like so: `import { getBuildConfig } from '@untool/webpack';`. In this mode, it also accepts another argument, `options`, which you can pass any CLI argument to._
+_This method is also exported so that you can use it in your own, non-mixin code. Import it like so: `import { getWebpackBuildConfig } from '@untool/webpack';`. In this mode, it also accepts another argument, `options`, which you can pass any CLI argument to._
+
+### `getWebpackDevelopConfig(target)` ([callable](https://github.com/untool/mixinable/blob/master/README.md#defineoverride))
+
+Returns the webpack config for the development build after `configureBuild` has been applied. `target` argument can be `browser` or `none` and will determine which mixins should be bundled.
+
+_This method is also exported so that you can use it in your own, non-mixin code. Import it like so: `import { getWebpackDevelopConfig } from '@untool/webpack';`. In this mode, it also accepts another argument, `options`, which you can pass any CLI argument to._
+
+### `getWebpackNodeConfig(target)` ([callable](https://github.com/untool/mixinable/blob/master/README.md#defineoverride))
+
+Returns the webpack config for the server-side Node.js build after `configureBuild` has been applied. `target` argument can be `server` or `none` and will determine which mixins should be bundled.
+
+_This method is also exported so that you can use it in your own, non-mixin code. Import it like so: `import { getWebpackNodeConfig } from '@untool/webpack';`. In this mode, it also accepts another argument, `options`, which you can pass any CLI argument to._
 
 ## Settings
 

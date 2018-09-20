@@ -9,8 +9,14 @@ const configure = (config, options) => ({
   build(...args) {
     return bootstrap(config, options).build(...args);
   },
-  getBuildConfig(...args) {
-    return bootstrap(config, options).getBuildConfig(...args);
+  getWebpackBuildConfig(...args) {
+    return bootstrap(config, options).getWebpackBuildConfig(...args);
+  },
+  getWebpackDevelopConfig(...args) {
+    return bootstrap(config, options).getWebpackDevelopConfig(...args);
+  },
+  getWebpackNodeConfig(...args) {
+    return bootstrap(config, options).getWebpackNodeConfig(...args);
   },
   configure,
 });
