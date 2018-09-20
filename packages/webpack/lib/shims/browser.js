@@ -1,19 +1,13 @@
-'use strict';
-
-const { getConfigAndMixins } = require('./loader');
+import { getConfigAndMixins } from './loader';
+import entryPoint from '@untool/entrypoint';
 
 (function render() {
-  let entryPoint = require('@untool/entrypoint');
-  if (typeof entryPoint.default === 'function') {
-    entryPoint = entryPoint.default;
-  }
-
   const { config, mixins } = getConfigAndMixins();
 
   entryPoint(config, mixins)();
 
   if (module.hot) {
-    module.hot.accept(require.resolve('@untool/entrypoint'), function() {
+    module.hot.accept('@untool/entrypoint', function() {
       setTimeout(render);
     });
   }
