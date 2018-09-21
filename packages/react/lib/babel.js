@@ -15,46 +15,32 @@ module.exports = function({ types: t }) {
         const binding = path.scope.getBinding(bindingName);
 
         binding.referencePaths.forEach((refPath) => {
-          const callArgs = refPath.parentPath.get('arguments');
-          const modulePath = callArgs.shift();
-          const moduleNode = modulePath.node;
+          const call = refPath.parentPath;
+          t.assertCallExpression(call);
 
-          t.assertStringLiteral(moduleNode);
+          const argument = call.get('arguments')[0];
+          t.assertStringLiteral(argument);
 
-          const loader = t.arrowFunctionExpression(
-            [],
-            this.opts.target === 'node'
-              ? t.callExpression(
-                  t.memberExpression(
-                    t.identifier('Promise'),
-                    t.identifier('resolve')
-                  ),
-                  [t.callExpression(t.identifier('require'), [moduleNode])]
-                )
-              : t.callExpression(t.identifier('import'), [moduleNode])
-          );
-
-          const loading = callArgs.length
-            ? callArgs.shift().node
-            : t.arrowFunctionExpression(
-                [],
-                t.blockStatement([t.returnStatement(t.nullLiteral())])
-              );
-
-          const weakId = t.callExpression(
-            t.memberExpression(
-              t.identifier('require'),
-              t.identifier('resolveWeak')
-            ),
-            [moduleNode]
-          );
-
-          modulePath.replaceWith(
+          argument.replaceWith(
             t.objectExpression([
-              t.objectProperty(t.identifier('loader'), loader),
-              t.objectProperty(t.identifier('loading'), loading),
-              t.objectProperty(t.identifier('weakId'), weakId),
-              t.objectProperty(t.identifier('module'), moduleNode),
+              t.objectProperty(t.identifier('module'), argument.node),
+              t.objectProperty(
+                t.identifier('load'),
+                t.arrowFunctionExpression(
+                  [],
+                  t.callExpression(t.identifier('import'), [argument.node])
+                )
+              ),
+              t.objectProperty(
+                t.identifier('weakId'),
+                t.callExpression(
+                  t.memberExpression(
+                    t.identifier('require'),
+                    t.identifier('resolveWeak')
+                  ),
+                  [argument.node]
+                )
+              ),
             ])
           );
         });
