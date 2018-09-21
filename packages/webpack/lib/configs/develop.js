@@ -111,6 +111,7 @@ module.exports = function getConfig(config, configureBuild) {
     optimization: {
       splitChunks: {
         chunks: 'all',
+        name: false,
       },
     },
     plugins: [
