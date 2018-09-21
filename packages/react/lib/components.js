@@ -1,7 +1,7 @@
 'use strict';
 /* global __webpack_modules__, __webpack_require__ */
 
-const { createElement, PureComponent } = require('react');
+const { createElement, Component } = require('react');
 const { default: withRouter } = require('react-router-dom/es/withRouter');
 
 exports.Miss = withRouter(({ staticContext }) => {
@@ -25,31 +25,39 @@ exports.Header = withRouter(({ staticContext, name, value }) => {
   return null;
 });
 
-exports.Import = ({ loader, loading, weakId, module }) =>
-  withRouter(
-    class ImportComponent extends PureComponent {
-      constructor({ staticContext }) {
-        super();
-        if (__webpack_modules__[weakId] || staticContext) {
-          this.state = {
-            Component: ((value) => value.default || value)(
-              __webpack_require__(weakId)
-            ),
-          };
-          if (staticContext) {
-            staticContext.modules.push(module);
-          }
-        } else {
-          this.state = { Component: loading };
-          loader().then(
-            (value) => this.setState({ Component: value.default || value }),
-            (error) => this.setState({ Component: loading, error })
-          );
-        }
-      }
-      render() {
-        const { Component, error } = this.state;
-        return createElement(Component, { error });
+exports.Import = (options) => {
+  const { module, load, weakId } = options;
+  class ImportComponent extends Component {
+    constructor(props) {
+      super(props);
+      const { componentOrPromise } = props;
+      const getComponent = (value) => value.default || value;
+      if (componentOrPromise instanceof Promise) {
+        this.state = { Component: () => null };
+        componentOrPromise.then((value) =>
+          this.setState({ Component: getComponent(value) })
+        );
+      } else {
+        this.state = { Component: getComponent(componentOrPromise) };
       }
     }
-  );
+    render() {
+      const { Component } = this.state;
+      return createElement(Component);
+    }
+  }
+  return withRouter((props) => {
+    const { staticContext, component } = props;
+    if (staticContext) {
+      staticContext.modules.push(module);
+    }
+    return createElement(component || ImportComponent, {
+      ...props,
+      componentOrPromise:
+        staticContext || __webpack_modules__[weakId]
+          ? __webpack_require__(weakId)
+          : load(),
+      options,
+    });
+  });
+};
