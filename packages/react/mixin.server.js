@@ -31,6 +31,9 @@ class ReactMixin extends Mixin {
   procureAssets() {
     const { stats, modules: rawModules } = this;
     const { chunks, modules, moduleIds: rawModuleIdMap } = stats;
+    const rawModuleIds = rawModules.map(
+      (rawModule) => rawModuleIdMap[rawModule]
+    );
     const importModuleIds = (function getAllModuleIds(moduleIds) {
       const dependecyModuleIds = modules.reduce(
         (result, { id, reasons }) =>
@@ -44,10 +47,10 @@ class ReactMixin extends Mixin {
         return getAllModuleIds(moduleIds.concat(dependecyModuleIds));
       }
       return moduleIds;
-    })(rawModules.map((rawModule) => rawModuleIdMap[rawModule]));
+    })(rawModuleIds);
     const entryChunks = chunks.filter(({ entry }) => entry);
     const vendorChunks = chunks.filter(({ id }) =>
-      entryChunks.find((entryChunk) => entryChunk.siblings.includes(id))
+      entryChunks.find(({ siblings }) => siblings.includes(id))
     );
     const importChunks = chunks.filter(({ modules }) =>
       modules.find(({ id }) => importModuleIds.includes(id))

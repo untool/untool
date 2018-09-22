@@ -25,39 +25,32 @@ exports.Header = withRouter(({ staticContext, name, value }) => {
   return null;
 });
 
-exports.Import = (options) => {
-  const { module, load, weakId } = options;
-  class ImportComponent extends Component {
-    constructor(props) {
-      super(props);
-      const { componentOrPromise } = props;
-      const getComponent = (value) => value.default || value;
-      if (componentOrPromise instanceof Promise) {
-        this.state = { Component: () => null };
-        componentOrPromise.then((value) =>
-          this.setState({ Component: getComponent(value) })
-        );
-      } else {
-        this.state = { Component: getComponent(componentOrPromise) };
-      }
+exports.Import = ({ module, load, weakId }) => {
+  class ImportPlaceholder extends Component {
+    constructor(placeholderProps) {
+      super(placeholderProps);
+      const { load, ...props } = placeholderProps;
+      load().then(({ default: Component }) =>
+        this.setState({ Component, props })
+      );
+      this.state = { Component: () => null };
     }
     render() {
-      const { Component } = this.state;
-      return createElement(Component);
+      const { Component, props } = this.state;
+      return createElement(Component, props);
     }
   }
-  return withRouter((props) => {
-    const { staticContext, component } = props;
+  return withRouter(function ImportManager(managerProps) {
+    const { staticContext, placeholder, ...props } = managerProps;
     if (staticContext) {
       staticContext.modules.push(module);
     }
-    return createElement(component || ImportComponent, {
-      ...props,
-      componentOrPromise:
-        staticContext || __webpack_modules__[weakId]
-          ? __webpack_require__(weakId)
-          : load(),
-      options,
-    });
+    if (staticContext || __webpack_modules__[weakId]) {
+      const Component = __webpack_require__(weakId).default;
+      return createElement(Component, props);
+    } else {
+      const Placeholder = placeholder || ImportPlaceholder;
+      return createElement(Placeholder, { ...props, load });
+    }
   });
 };
