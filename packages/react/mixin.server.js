@@ -29,32 +29,19 @@ class ReactMixin extends Mixin {
     );
   }
   procureAssets() {
-    const { stats, modules: rawModules } = this;
-    const { chunks, modules, moduleIds: rawModuleIdMap } = stats;
-    const rawModuleIds = rawModules.map(
-      (rawModule) => rawModuleIdMap[rawModule]
-    );
-    const importModuleIds = (function getAllModuleIds(moduleIds) {
-      const dependecyModuleIds = modules.reduce(
-        (result, { id, reasons }) =>
-          !moduleIds.includes(id) &&
-          reasons.find(({ moduleId }) => moduleIds.includes(moduleId))
-            ? result.concat(id)
-            : result,
-        []
-      );
-      if (dependecyModuleIds.length) {
-        return getAllModuleIds(moduleIds.concat(dependecyModuleIds));
-      }
-      return moduleIds;
-    })(rawModuleIds);
+    const { stats, modules } = this;
+    const { chunks, moduleIdMap, moduleDepIds, moduleChunkMap } = stats;
     const entryChunks = chunks.filter(({ entry }) => entry);
     const vendorChunks = chunks.filter(({ id }) =>
       entryChunks.find(({ siblings }) => siblings.includes(id))
     );
-    const importChunks = chunks.filter(({ modules }) =>
-      modules.find(({ id }) => importModuleIds.includes(id))
-    );
+    const importChunks = modules.reduce((result, module) => {
+      const moduleId = moduleIdMap[module];
+      const chunkIds = moduleDepIds[moduleId].map(
+        (moduleId) => moduleChunkMap[moduleId]
+      );
+      return result.concat(chunks.filter(({ id }) => chunkIds.includes(id)));
+    }, []);
     const sortChunks = ({ id: a }, { id: b }) => b - a;
     return [
       ...vendorChunks.sort(sortChunks),
