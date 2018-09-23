@@ -26,34 +26,38 @@ exports.Header = withRouter(({ staticContext, name, value }) => {
 });
 
 exports.Import = ({ module, load, weakId }, name = 'default') => {
-  return withRouter(function ImportManager(managerProps) {
-    const { staticContext, placeholder, ...props } = managerProps;
-    if (staticContext) {
-      staticContext.modules.push(module);
+  class ImportPlaceholder extends Component {
+    constructor({ load, name }) {
+      super();
+      const state = { Component: null, error: null, loading: null };
+      load().then(
+        ({ [name]: Component }) => this.setState({ ...state, Component }),
+        (error) => this.setState({ ...state, error })
+      );
+      this.state = { ...state, loading: true };
     }
-    if (staticContext || __webpack_modules__[weakId]) {
-      const Component = __webpack_require__(weakId)[name];
-      return createElement(Component, props);
-    } else {
-      const Placeholder = placeholder || exports.ImportPlaceholder;
-      return createElement(Placeholder, { ...props, load, name });
+    render() {
+      const defaultRender = ({ Component, error, loading, ...props }) => {
+        return !(error || loading) ? createElement(Component, props) : null;
+      };
+      const { render = defaultRender, realProps } = this.props;
+      return render({ ...realProps, ...this.state });
     }
-  });
-};
-
-exports.ImportPlaceholder = class ImportPlaceholder extends Component {
-  constructor(placeholderProps) {
-    super(placeholderProps);
-    const { load, name, ...props } = placeholderProps;
-    const state = { loading: null, error: null, Component: null, props };
-    load().then(
-      ({ [name]: Component }) => this.setState({ ...state, Component }),
-      (error) => this.setState({ ...state, error })
+  }
+  return function ImportWrapper({ placeholder, render, ...realProps }) {
+    return createElement(
+      withRouter(function ImportManager({ staticContext }) {
+        if (staticContext) {
+          staticContext.modules.push(module);
+        }
+        if (staticContext || __webpack_modules__[weakId]) {
+          const Component = __webpack_require__(weakId)[name];
+          return createElement(Component, realProps);
+        } else {
+          const Placeholder = placeholder || ImportPlaceholder;
+          return createElement(Placeholder, { realProps, render, load, name });
+        }
+      })
     );
-    this.state = { ...state, loading: true };
-  }
-  render() {
-    const { Component, props } = this.state;
-    return Component ? createElement(Component, props) : null;
-  }
+  };
 };
