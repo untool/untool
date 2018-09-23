@@ -4,19 +4,16 @@ import { Helmet } from 'react-helmet';
 import { Switch, Route, Link } from 'react-router-dom';
 
 import { render } from '@untool/core';
-import { Import, ImportPlaceholder, Miss } from '@untool/react';
+import { Import, Miss } from '@untool/react';
 
 const Home = Import('./home');
 const About = Import('./about', 'About');
 
-class Placeholder extends ImportPlaceholder {
-  render() {
-    const { Component, props, error, loading } = this.state;
-    if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error!!!</p>;
-    return <Component {...props} />;
-  }
-}
+const preload = ({ Component, error, loading, ...props }) => {
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error!!!</p>;
+  return <Component {...props} />;
+};
 
 const App = () => (
   <Fragment>
@@ -26,7 +23,7 @@ const App = () => (
     <Link to="/">Home</Link> <Link to="/about">About</Link>
     <Switch>
       <Route exact path="/" component={Home} />} />
-      <Route path="/about" render={() => <About placeholder={Placeholder} />} />
+      <Route path="/about" render={() => <About render={preload} />} />
       <Miss />
     </Switch>
   </Fragment>
