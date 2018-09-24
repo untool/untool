@@ -30,25 +30,16 @@ class ReactMixin extends Mixin {
   }
   procureAssets() {
     const { stats, modules } = this;
-    const { chunks, moduleIdMap, moduleDepIds, moduleChunkMap } = stats;
-    const entryChunks = chunks.filter(({ entry }) => entry);
-    const vendorChunks = chunks.filter(({ id }) =>
-      entryChunks.find(({ siblings }) => siblings.includes(id))
+    const { entryFiles, vendorFiles, moduleFileMap } = stats;
+    const moduleFiles = modules.reduce(
+      (result, module) => result.concat(moduleFileMap[module]),
+      []
     );
-    const importChunks = modules.reduce((result, module) => {
-      const moduleId = moduleIdMap[module];
-      const chunkIds = moduleDepIds[moduleId].map(
-        (moduleId) => moduleChunkMap[moduleId]
-      );
-      return result.concat(chunks.filter(({ id }) => chunkIds.includes(id)));
-    }, []);
-    const sortChunks = ({ id: a }, { id: b }) => b - a;
     return [
-      ...vendorChunks.sort(sortChunks),
-      ...importChunks.sort(sortChunks),
-      ...entryChunks.sort(sortChunks),
+      ...vendorFiles.sort((a, b) => b.localeCompare(a)),
+      ...moduleFiles.sort((a, b) => b.localeCompare(a)),
+      ...entryFiles.sort((a, b) => b.localeCompare(a)),
     ]
-      .reduce((result, { files }) => result.concat(files), [])
       .filter(
         (asset, index, self) =>
           self.indexOf(asset) === index &&
