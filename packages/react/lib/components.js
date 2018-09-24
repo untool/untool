@@ -26,38 +26,44 @@ exports.Header = withRouter(({ staticContext, name, value }) => {
 });
 
 exports.Import = ({ module, load, weakId }, name = 'default') => {
-  class ImportPlaceholder extends Component {
-    constructor({ load, name }) {
-      super();
-      const state = { Component: null, error: null, loading: null };
-      load().then(
-        ({ [name]: Component }) => this.setState({ ...state, Component }),
-        (error) => this.setState({ ...state, error })
-      );
-      this.state = { ...state, loading: true };
-    }
-    render() {
-      const defaultRender = ({ Component, error, loading, ...props }) => {
-        return !(error || loading) ? createElement(Component, props) : null;
-      };
-      const { render = defaultRender, realProps } = this.props;
-      return render({ ...realProps, ...this.state });
-    }
-  }
-  return function ImportWrapper({ placeholder, render, ...realProps }) {
-    return createElement(
-      withRouter(function ImportManager({ staticContext }) {
+  const ImportComponent = withRouter(
+    class ImportComponent extends Component {
+      constructor({ staticContext }) {
+        super();
         if (staticContext) {
           staticContext.modules.push(module);
         }
         if (staticContext || __webpack_modules__[weakId]) {
-          const Component = __webpack_require__(weakId)[name];
-          return createElement(Component, realProps);
+          this.state = { Component: __webpack_require__(weakId)[name] };
         } else {
-          const Placeholder = placeholder || ImportPlaceholder;
-          return createElement(Placeholder, { realProps, render, load, name });
+          this.state = { loading: true };
         }
-      })
-    );
+      }
+      componentDidMount() {
+        const { loader } = this.props;
+        const { loading } = this.state;
+        if (loading) {
+          const state = { Component: null, error: null, loading: false };
+          Promise.resolve()
+            .then(() => (loader ? loader(load) : load()))
+            .then(
+              ({ [name]: Component }) => this.setState({ ...state, Component }),
+              (error) => this.setState({ ...state, error })
+            );
+        }
+      }
+      render() {
+        const {
+          render = ({ Component, error, loading, ...props }) => {
+            return !(error || loading) ? createElement(Component, props) : null;
+          },
+          ownProps,
+        } = this.props;
+        return render({ ...ownProps, ...this.state });
+      }
+    }
+  );
+  return function Import({ loader, render, ...ownProps }) {
+    return createElement(ImportComponent, { loader, render, ownProps });
   };
 };
