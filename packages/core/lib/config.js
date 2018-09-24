@@ -16,6 +16,8 @@ const escapeRegExp = require('escape-string-regexp');
 const isPlainObject = require('is-plain-object');
 const { load: loadEnv } = require('dotenv');
 
+const defaultNamespace = process.env.UNTOOL_NSP || 'untool';
+
 const merge = (...args) =>
   mergeWith({}, ...args, (objValue, srcValue, key) => {
     if (Array.isArray(objValue)) {
@@ -85,66 +87,6 @@ const resolveMixins = (context, mixins) =>
     { core: [], server: [], browser: [] }
   );
 
-const loadConfig = (context, config) => {
-  const { loadSync, searchSync } = cosmiconfig(
-    process.env.UNTOOL_NSP || 'untool',
-    { stopDir: context }
-  );
-  return config
-    ? loadSync(resolvePreset(context, config))
-    : searchSync(context);
-};
-
-const loadSettings = (context, { dependencies = {}, devDependencies = {} }) => {
-  const result = loadConfig(context);
-  const settings = {
-    ...(result ? result.config : {}),
-  };
-  if (!settings.presets) {
-    settings.presets = Object.keys(dependencies)
-      .concat(
-        process.env.NODE_ENV !== 'production'
-          ? Object.keys(devDependencies)
-          : []
-      )
-      .filter((key) => {
-        try {
-          return loadConfig(context, key);
-        } catch (error) {
-          if (!isResolveError(error)) throw error;
-          return null;
-        }
-      });
-  }
-  return settings;
-};
-
-const loadPreset = (context, preset) => {
-  try {
-    return loadConfig(context, preset);
-  } catch (error) {
-    if (!isResolveError(error)) throw error;
-    try {
-      return loadConfig(dirname(resolve(context, `${preset}/package.json`)));
-    } catch (error) {
-      if (!isResolveError(error)) throw error;
-      throw new Error(`Can't find preset '${preset}' in '${context}'`);
-    }
-  }
-};
-
-const loadPresets = (context, presets = []) =>
-  presets.reduce((configs, preset) => {
-    const { config, filepath } = loadPreset(context, preset);
-    const presetContext = dirname(filepath);
-    if (config.mixins) {
-      config.mixins = config.mixins.map(
-        (mixin) => (mixin.startsWith('.') ? join(presetContext, mixin) : mixin)
-      );
-    }
-    return merge(configs, loadPresets(presetContext, config.presets), config);
-  }, {});
-
 const placeholdify = (config) => {
   const flatConfig = flatten(config);
   const flatKeys = Object.keys(flatConfig);
@@ -169,12 +111,81 @@ const placeholdify = (config) => {
   return replaceRecursive(config);
 };
 
-exports.getConfig = (overrides) => {
+exports.getConfig = ({ configNamespace = defaultNamespace, ...overrides }) => {
   const pkgFile = findUp('package.json');
   const pkgData = require(pkgFile);
   const rootDir = dirname(pkgFile);
 
   const { name = basename(rootDir), version = '0.0.0' } = pkgData;
+
+  const mergeAndOverride = (...args) => {
+    if (typeof overrides === 'function') {
+      return overrides(merge(...args));
+    } else {
+      return merge(...args, overrides);
+    }
+  };
+
+  const loadConfig = (context, config) => {
+    const { loadSync, searchSync } = cosmiconfig(configNamespace, {
+      stopDir: context,
+    });
+    return config
+      ? loadSync(resolvePreset(context, config))
+      : searchSync(context);
+  };
+
+  const loadSettings = (context, pkgData) => {
+    const { dependencies = {}, devDependencies = {} } = pkgData;
+    const result = loadConfig(context);
+    const settings = {
+      ...(result ? result.config : {}),
+    };
+    if (!settings.presets) {
+      settings.presets = Object.keys(dependencies)
+        .concat(
+          process.env.NODE_ENV !== 'production'
+            ? Object.keys(devDependencies)
+            : []
+        )
+        .filter((key) => {
+          try {
+            return loadConfig(context, key);
+          } catch (error) {
+            if (!isResolveError(error)) throw error;
+            return null;
+          }
+        });
+    }
+    return settings;
+  };
+
+  const loadPreset = (context, preset) => {
+    try {
+      return loadConfig(context, preset);
+    } catch (error) {
+      if (!isResolveError(error)) throw error;
+      try {
+        return loadConfig(dirname(resolve(context, `${preset}/package.json`)));
+      } catch (error) {
+        if (!isResolveError(error)) throw error;
+        throw new Error(`Can't find preset '${preset}' in '${context}'`);
+      }
+    }
+  };
+
+  const loadPresets = (context, presets = []) =>
+    presets.reduce((configs, preset) => {
+      const { config, filepath } = loadPreset(context, preset);
+      const presetContext = dirname(filepath);
+      if (config.mixins) {
+        config.mixins = config.mixins.map(
+          (mixin) =>
+            mixin.startsWith('.') ? join(presetContext, mixin) : mixin
+        );
+      }
+      return merge(configs, loadPresets(presetContext, config.presets), config);
+    }, {});
 
   loadEnv({ path: join(rootDir, '.env') });
 
@@ -182,18 +193,13 @@ exports.getConfig = (overrides) => {
   const settings = loadSettings(rootDir, pkgData);
   const presets = loadPresets(rootDir, settings.presets);
 
-  const mergeAndOverride = (...args) =>
-    typeof overrides === 'function'
-      ? overrides(merge(...args))
-      : merge(...args, overrides);
-  const raw = mergeAndOverride(defaults, presets, settings);
-  delete raw.presets;
+  const rawConfig = mergeAndOverride(defaults, presets, settings);
+  delete rawConfig.presets;
 
   const config = {
-    ...placeholdify(raw),
-    mixins: resolveMixins(rootDir, raw.mixins),
+    ...placeholdify(rawConfig),
+    mixins: resolveMixins(rootDir, rawConfig.mixins),
   };
-
   debug(config);
   return config;
 };
