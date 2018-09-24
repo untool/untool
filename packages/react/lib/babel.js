@@ -4,8 +4,9 @@ module.exports = function({ types: t }) {
   return {
     visitor: {
       ImportDeclaration(path) {
+        const module = this.opts.module || '@untool/react';
         const source = path.node.source.value;
-        if (source !== '@untool/react') return;
+        if (source !== module) return;
 
         const specifiers = path.get('specifiers');
         const specifier = specifiers.find(
