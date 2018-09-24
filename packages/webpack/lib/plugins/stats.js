@@ -16,31 +16,53 @@ exports.StatsPlugin = class WebpackStatsPlugin {
               currentModule = module.rootModule;
             }
             moduleIdMap[currentModule.rawRequest] = module.id;
-            moduleChunkMap[module.id] = chunk.id;
+            moduleChunkMap[module.id] = chunk;
           }
         });
-        const moduleDepIds = stats.modules.reduce(
-          (result, { id }) => ({
+        const getDepModuleIds = (id) =>
+          (function getAllModuleIds(moduleIds) {
+            const depModuleIds = stats.modules.reduce(
+              (result, { id, reasons }) =>
+                !moduleIds.includes(id) &&
+                reasons.find(({ moduleId }) => moduleIds.includes(moduleId))
+                  ? result.concat(id)
+                  : result,
+              []
+            );
+            if (depModuleIds.length) {
+              return getAllModuleIds(moduleIds.concat(depModuleIds));
+            }
+            return moduleIds;
+          })([id]);
+        const moduleFileMap = Object.keys(moduleIdMap).reduce(
+          (result, rawRequest) => ({
             ...result,
-            [id]: (function getAllModuleIds(moduleIds) {
-              const depModuleIds = stats.modules.reduce(
-                (result, { id, reasons }) =>
-                  !moduleIds.includes(id) &&
-                  reasons.find(({ moduleId }) => moduleIds.includes(moduleId))
-                    ? result.concat(id)
-                    : result,
+            [rawRequest]: getDepModuleIds(moduleIdMap[rawRequest])
+              .reduce(
+                (result, moduleId) =>
+                  result.concat(moduleChunkMap[moduleId].files),
                 []
-              );
-              if (depModuleIds.length) {
-                return getAllModuleIds(moduleIds.concat(depModuleIds));
-              }
-              return moduleIds;
-            })([id]),
+              )
+              .filter((file, index, self) => self.indexOf(file) === index),
           }),
           {}
         );
-        const additions = { moduleIdMap, moduleChunkMap, moduleDepIds };
-        resolvable.resolve({ ...stats, ...additions });
+        const entryChunks = stats.chunks.filter(({ entry }) => entry);
+        const vendorChunks = stats.chunks.filter(({ id }) =>
+          entryChunks.find(({ siblings }) => siblings.includes(id))
+        );
+        const entryFiles = entryChunks.reduce(
+          (result, { files }) => result.concat(files),
+          []
+        );
+        const vendorFiles = vendorChunks.reduce(
+          (result, { files }) => result.concat(files),
+          []
+        );
+        resolvable.resolve({
+          ...stats,
+          ...{ moduleFileMap, entryFiles, vendorFiles },
+        });
       });
       compiler.hooks.watchRun.tap('untool-stats', () => resolvable.reset());
     };
