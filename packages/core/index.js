@@ -26,3 +26,5 @@ exports.bootstrap = function bootstrap(configOverrides = {}, options = {}) {
 
   return define(strategies, mixins)(config, options);
 };
+
+exports.internal = { getConfig, environmentalize };
