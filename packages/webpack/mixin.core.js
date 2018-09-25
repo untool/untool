@@ -29,17 +29,13 @@ class WebpackMixin extends Mixin {
       return (req, res, next) => next();
     }
   }
-  createRenderMiddleware() {
-    const createRenderMiddleware = require('./lib/middleware/render');
-    const webpackConfig = this.getWebpackNodeConfig();
-    return createRenderMiddleware(webpackConfig);
+  createRenderMiddleware(webpackConfig) {
+    return require('./lib/middleware/render')(webpackConfig);
   }
   createStatsMiddleware() {
-    const createStatsMiddleware = require('./lib/middleware/stats');
-    return createStatsMiddleware(this);
+    return require('./lib/middleware/stats')(this);
   }
-  createWebpackMiddlewares() {
-    const webpackConfig = this.getWebpackDevelopConfig();
+  createWebpackMiddlewares(webpackConfig) {
     const compiler = require('webpack')(webpackConfig);
     return [
       require('webpack-dev-middleware')(compiler, {
@@ -123,11 +119,14 @@ class WebpackMixin extends Mixin {
   }
   configureServer(app, middlewares, mode) {
     if (mode === 'develop') {
-      middlewares.initial.push(this.createWebpackMiddlewares());
-      middlewares.routes.push(this.createRenderMiddleware());
+      const devConfig = this.getWebpackDevelopConfig();
+      const nodeConfig = this.getWebpackNodeConfig();
+      middlewares.initial.push(this.createWebpackMiddlewares(devConfig));
+      middlewares.routes.push(this.createRenderMiddleware(nodeConfig));
     }
     if (mode === 'static') {
-      middlewares.routes.push(this.createRenderMiddleware());
+      const nodeConfig = this.getWebpackNodeConfig();
+      middlewares.routes.push(this.createRenderMiddleware(nodeConfig));
     }
     if (mode === 'serve') {
       middlewares.routes.push(this.loadRenderMiddleware());
