@@ -122,7 +122,12 @@ class WebpackMixin extends Mixin {
       const devConfig = this.getWebpackDevelopConfig();
       const nodeConfig = this.getWebpackNodeConfig();
       middlewares.initial.push(this.createWebpackMiddlewares(devConfig));
-      middlewares.routes.push(this.createRenderMiddleware(nodeConfig));
+      middlewares.routes.push(
+        this.createRenderMiddleware({
+          ...nodeConfig,
+          watchOptions: devConfig.watchOptions,
+        })
+      );
     }
     if (mode === 'static') {
       const nodeConfig = this.getWebpackNodeConfig();
