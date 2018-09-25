@@ -12,6 +12,7 @@
     "release": "lerna publish --conventional-commits",
     "bump": "lerna publish --force-publish=* --cd-version=major",
     "update": "yarn upgrade-interactive --latest",
+    "snapshot": "yarn reset && yarn test -u",
     "reset": "git clean -dfx && yarn",
     "commitmsg": "commitlint -e $GIT_PARAMS",
     "precommit": "lint-staged",
