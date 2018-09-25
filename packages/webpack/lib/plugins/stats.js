@@ -22,7 +22,7 @@ exports.StatsPlugin = class WebpackStatsPlugin {
         const getDepModuleIds = (id) =>
           (function getAllModuleIds(moduleIds) {
             const depModuleIds = stats.modules.reduce(
-              (result, { id, reasons, chunks }) =>
+              (result, { id, chunks, reasons }) =>
                 !moduleIds.includes(id) &&
                 chunks.length &&
                 reasons.find(({ moduleId }) => moduleIds.includes(moduleId))

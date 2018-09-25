@@ -18,69 +18,6 @@ class WebpackMixin extends Mixin {
     super(...args);
     this.stats = new Resolvable();
   }
-  loadRenderMiddleware() {
-    const { serverDir, serverFile, statsFile } = this.config;
-    const serverFilePath = join(serverDir, serverFile);
-    const statsFilePath = join(serverDir, statsFile);
-    this.stats.resolve(exists(statsFilePath) ? require(statsFilePath) : {});
-    if (exists(serverFilePath)) {
-      return require(serverFilePath).default;
-    } else {
-      return (req, res, next) => next();
-    }
-  }
-  createRenderMiddleware() {
-    const createRenderMiddleware = require('./lib/middleware/render');
-    const webpackConfig = this.getWebpackNodeConfig();
-    return createRenderMiddleware(webpackConfig);
-  }
-  createStatsMiddleware() {
-    const createStatsMiddleware = require('./lib/middleware/stats');
-    return createStatsMiddleware(this);
-  }
-  createWebpackMiddlewares() {
-    const webpackConfig = this.getWebpackDevelopConfig();
-    const compiler = require('webpack')(webpackConfig);
-    return [
-      require('webpack-dev-middleware')(compiler, {
-        noInfo: true,
-        logLevel: 'silent',
-        publicPath: webpackConfig.output.publicPath,
-        watchOptions: webpackConfig.watchOptions,
-      }),
-      require('webpack-hot-middleware')(compiler, { log: false }),
-    ];
-  }
-  createRenderPlugin() {
-    const RenderPlugin = require('./lib/plugins/render');
-    return new RenderPlugin(this);
-  }
-  createStatsPlugin() {
-    const { StatsPlugin } = require('./lib/plugins/stats');
-    return new StatsPlugin(this);
-  }
-  createStatsFilePlugin() {
-    const { StatsFilePlugin } = require('./lib/plugins/stats');
-    return new StatsFilePlugin(this);
-  }
-  getWebpackBuildConfig(target) {
-    const getConfig = require(`./lib/configs/build`);
-    return getConfig(this.config, target, (...args) =>
-      this.configureBuild(...args, 'build')
-    );
-  }
-  getWebpackDevelopConfig(target) {
-    const getConfig = require(`./lib/configs/develop`);
-    return getConfig(this.config, target, (...args) =>
-      this.configureBuild(...args, 'develop')
-    );
-  }
-  getWebpackNodeConfig(target) {
-    const getConfig = require(`./lib/configs/node`);
-    return getConfig(this.config, target, (...args) =>
-      this.configureBuild(...args, 'node')
-    );
-  }
   clean() {
     const rimraf = require('rimraf');
     const { buildDir, serverDir } = this.config;
@@ -95,12 +32,12 @@ class WebpackMixin extends Mixin {
   }
   build() {
     const webpack = require('webpack');
-    const { options, inspectBuild } = this;
+    const { options, inspectBuild, getBuildConfig } = this;
     const webpackConfig = (({ static: isStatic }) => {
       if (isStatic) {
-        return this.getWebpackBuildConfig();
+        return getBuildConfig('build');
       } else {
-        return [this.getWebpackBuildConfig(), this.getWebpackNodeConfig()];
+        return [getBuildConfig('build'), getBuildConfig('node')];
       }
     })(options);
     return new Promise((resolve, reject) =>
@@ -109,30 +46,82 @@ class WebpackMixin extends Mixin {
       )
     ).then((stats) => void inspectBuild(stats, webpackConfig) || stats);
   }
+  getBuildConfig(target, baseConfig) {
+    const { config, configureBuild } = this;
+    const { loaderConfigs = {}, ...webpackConfig } = (() => {
+      switch (baseConfig || target) {
+        case 'build':
+          return require('./lib/configs/build')(config);
+        case 'develop':
+          return require('./lib/configs/develop')(config);
+        case 'node':
+          return require('./lib/configs/node')(config);
+        default:
+          if (baseConfig && exists(baseConfig)) {
+            return require(baseConfig)(config);
+          }
+          throw new Error(`Can't get build config ${baseConfig || target}`);
+      }
+    })();
+    return configureBuild(webpackConfig, loaderConfigs, target);
+  }
   configureBuild(webpackConfig, loaderConfigs, target) {
-    const { plugins } = webpackConfig;
-    if (this.options.static && target === 'build') {
-      plugins.unshift(this.createRenderPlugin());
-    }
+    const { plugins, module } = webpackConfig;
+    const loaderConfig = {
+      test: require.resolve('./lib/shims/loader'),
+      loader: require.resolve('./lib/utils/loader'),
+      options: { type: target, config: this.config },
+    };
     if (target === 'node') {
-      plugins.unshift(this.createStatsFilePlugin());
-    } else {
-      plugins.unshift(this.createStatsPlugin());
+      const { StatsFilePlugin } = require('./lib/plugins/stats');
+      plugins.unshift(new StatsFilePlugin(this));
+      loaderConfig.options.type = 'server';
     }
+    if (target === 'develop' || target === 'build') {
+      const { StatsPlugin } = require('./lib/plugins/stats');
+      plugins.unshift(new StatsPlugin(this));
+      loaderConfig.options.type = 'browser';
+    }
+    if (target === 'build' && this.options.static) {
+      const RenderPlugin = require('./lib/plugins/render');
+      plugins.push(new RenderPlugin(this));
+    }
+    module.rules.unshift(loaderConfig);
     return webpackConfig;
   }
   configureServer(app, middlewares, mode) {
+    const { getBuildConfig, config, stats } = this;
     if (mode === 'develop') {
-      middlewares.initial.push(this.createWebpackMiddlewares());
-      middlewares.routes.push(this.createRenderMiddleware());
+      const webpackDevelopConfig = getBuildConfig('develop');
+      const compiler = require('webpack')(webpackDevelopConfig);
+      middlewares.initial.push(
+        require('webpack-dev-middleware')(compiler, {
+          noInfo: true,
+          logLevel: 'silent',
+          publicPath: webpackDevelopConfig.output.publicPath,
+          watchOptions: webpackDevelopConfig.watchOptions,
+        }),
+        require('webpack-hot-middleware')(compiler, { log: false })
+      );
     }
-    if (mode === 'static') {
-      middlewares.routes.push(this.createRenderMiddleware());
+    if (mode === 'static' || mode === 'develop') {
+      const createRenderMiddleware = require('./lib/middleware/render');
+      const webpackNodeConfig = getBuildConfig('node');
+      middlewares.routes.push(
+        createRenderMiddleware(webpackNodeConfig, mode === 'develop')
+      );
     }
     if (mode === 'serve') {
-      middlewares.routes.push(this.loadRenderMiddleware());
+      const { serverDir, serverFile, statsFile } = config;
+      const serverFilePath = join(serverDir, serverFile);
+      const statsFilePath = join(serverDir, statsFile);
+      stats.resolve(exists(statsFilePath) ? require(statsFilePath) : {});
+      if (exists(serverFilePath)) {
+        middlewares.routes.push(require(serverFilePath).default);
+      }
     }
-    middlewares.preroutes.push(this.createStatsMiddleware());
+    const createStatsMiddleware = require('./lib/middleware/stats');
+    middlewares.preroutes.push(createStatsMiddleware(this));
     return app;
   }
   registerCommands(yargs) {
@@ -231,9 +220,7 @@ class WebpackMixin extends Mixin {
 WebpackMixin.strategies = {
   configureBuild: pipe,
   inspectBuild: sequence,
-  getWebpackBuildConfig: callableSync,
-  getWebpackDevelopConfig: callableSync,
-  getWebpackNodeConfig: callableSync,
+  getBuildConfig: callableSync,
   build: callableAsync,
   clean: callableAsync,
 };

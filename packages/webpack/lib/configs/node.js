@@ -2,7 +2,6 @@
 
 const { resolve } = require('path');
 
-const debug = require('debug')('untool:webpack:node');
 const { EnvironmentPlugin, optimize } = require('webpack');
 
 const {
@@ -11,7 +10,7 @@ const {
 
 const { isESNext, isExternal } = require('../utils/helpers');
 
-module.exports = function getConfig(config, target = 'server', configureBuild) {
+module.exports = function getConfig(config) {
   const getAssetPath = resolveRelative.bind(null, config.assetPath);
 
   const jsLoaderConfig = {
@@ -59,15 +58,20 @@ module.exports = function getConfig(config, target = 'server', configureBuild) {
 
   const allLoaderConfigs = [jsLoaderConfig, urlLoaderConfig, fileLoaderConfig];
 
-  const webpackConfig = {
+  return {
+    // invalid for webpack, required with untool
+    loaderConfigs: {
+      jsLoaderConfig,
+      urlLoaderConfig,
+      fileLoaderConfig,
+      allLoaderConfigs,
+    },
     name: 'node',
     target: 'node',
     mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
     bail: process.env.NODE_ENV === 'production',
     context: config.rootDir,
-    entry: {
-      [config.name]: require.resolve('../shims/node'),
-    },
+    entry: { [config.name]: require.resolve('../shims/node') },
     output: {
       path: config.serverDir,
       publicPath: '/',
@@ -78,9 +82,7 @@ module.exports = function getConfig(config, target = 'server', configureBuild) {
         resolve(info.absoluteResourcePath),
     },
     resolve: {
-      alias: {
-        '@untool/entrypoint': config.rootDir,
-      },
+      alias: { '@untool/entrypoint': config.rootDir },
       extensions: ['.js'],
       mainFields: [
         'esnext:server',
@@ -95,51 +97,17 @@ module.exports = function getConfig(config, target = 'server', configureBuild) {
     },
     externals: isExternal(),
     module: {
-      rules: [
-        {
-          test: require.resolve('../shims/loader'),
-          loader: require.resolve('../utils/loader'),
-          options: { target, config },
-        },
-        {
-          oneOf: allLoaderConfigs,
-        },
-      ],
+      rules: [{ oneOf: allLoaderConfigs }],
     },
     optimization: {
       minimizer: [],
     },
     plugins: [
-      new optimize.LimitChunkCountPlugin({
-        maxChunks: 1,
-      }),
-      new EnvironmentPlugin({
-        NODE_ENV: 'development',
-      }),
+      new optimize.LimitChunkCountPlugin({ maxChunks: 1 }),
+      new EnvironmentPlugin({ NODE_ENV: 'development' }),
     ],
-    performance: {
-      hints: false,
-    },
+    performance: { hints: false },
     devtool: 'inline-source-map',
+    watchOptions: { aggregateTimeout: 300, ignored: /node_modules/ },
   };
-
-  if (process.env.NODE_ENV !== 'production') {
-    webpackConfig.watchOptions = {
-      aggregateTimeout: 300,
-      ignored: /node_modules/,
-    };
-  }
-
-  const loaderConfigs = {
-    jsLoaderConfig,
-    urlLoaderConfig,
-    fileLoaderConfig,
-    allLoaderConfigs,
-  };
-
-  const result = configureBuild(webpackConfig, loaderConfigs);
-
-  debug(result);
-
-  return result;
 };

@@ -2,6 +2,12 @@
 
 const { bootstrap } = require('@untool/core');
 
+const createWebpackMiddleware = require('./lib/middleware/render');
+const createStatsMiddleware = require('./lib/middleware/stats');
+
+const RenderPlugin = require('./lib/plugins/render');
+const statsPlugins = require('./lib/plugins/stats');
+
 const configure = (config, options) => ({
   clean(...args) {
     return bootstrap(config, options).clean(...args);
@@ -9,14 +15,14 @@ const configure = (config, options) => ({
   build(...args) {
     return bootstrap(config, options).build(...args);
   },
-  getWebpackBuildConfig(...args) {
-    return bootstrap(config, options).getWebpackBuildConfig(...args);
+  getBuildConfig(...args) {
+    return bootstrap(config, options).getBuildConfig(...args);
   },
-  getWebpackDevelopConfig(...args) {
-    return bootstrap(config, options).getWebpackDevelopConfig(...args);
-  },
-  getWebpackNodeConfig(...args) {
-    return bootstrap(config, options).getWebpackNodeConfig(...args);
+  internal: {
+    createWebpackMiddleware,
+    createStatsMiddleware,
+    RenderPlugin,
+    ...statsPlugins,
   },
   configure,
 });
