@@ -17,6 +17,11 @@ const isPlainObject = require('is-plain-object');
 const { load: loadEnv } = require('dotenv');
 
 const defaultNamespace = process.env.UNTOOL_NSP || 'untool';
+const defaultMixinTypes = {
+  core: ['core'],
+  browser: ['browser', 'runtime'],
+  server: ['server', 'runtime'],
+};
 
 const merge = (...args) =>
   mergeWith({}, ...args, (objValue, srcValue, key) => {
@@ -33,59 +38,38 @@ const resolvePreset = createResolver({
   mainFields: ['preset'],
 });
 
-const resolveCoreMixin = createResolver({
-  mainFiles: ['mixin.core', 'mixin'],
-  mainFields: ['mixin:core', 'mixin'],
-});
-
-const resolveServerMixin = createResolver({
-  mainFiles: ['mixin.server', 'mixin.runtime', 'mixin'],
-  mainFields: ['mixin:server', 'mixin:runtime', 'mixin'],
-});
-
-const resolveBrowserMixin = createResolver({
-  mainFiles: ['mixin.browser', 'mixin.runtime', 'mixin'],
-  mainFields: ['mixin:browser', 'mixin:runtime', 'mixin'],
-});
-
-const isResolveError = (error) =>
-  error && error.message && error.message.startsWith("Can't resolve");
-
-const resolveMixin = (context, mixin, target) => {
+const resolveMixin = (types, ...args) => {
   try {
-    switch (target) {
-      case 'core':
-        return resolveCoreMixin(context, mixin);
-      case 'server':
-        return resolveServerMixin(context, mixin);
-      case 'browser':
-        return resolveBrowserMixin(context, mixin);
-    }
-  } catch (_) {
-    return;
+    return createResolver({
+      mainFiles: [...types.map((type) => `mixin.${type}`), 'mixin'],
+      mainFields: [...types.map((type) => `mixin:${type}`), 'mixin'],
+    })(...args);
+  } catch (error) {
+    return null;
   }
 };
 
-const resolveMixins = (context, mixins) =>
-  mixins.reduce(
-    (result, mixin) => {
-      let found = false;
-      Object.keys(result).forEach((target) => {
-        const targetMixin = resolveMixin(context, mixin, target);
-        if (targetMixin) {
-          if (!result[target].includes(targetMixin)) {
-            result[target].push(targetMixin);
-          }
-          found = true;
+const resolveMixins = (context, mixins, types) =>
+  mixins.reduce((result, mixin) => {
+    let found = false;
+    Object.keys(types).forEach((type) => {
+      const typeMixin = resolveMixin(types[type], context, mixin);
+      if (typeMixin) {
+        result[type] = result[type] || [];
+        if (!result[type].includes(typeMixin)) {
+          result[type].push(typeMixin);
         }
-      });
-      if (!found) {
-        throw new Error(`Can't find mixin '${mixin}'`);
+        found = true;
       }
-      return result;
-    },
-    { core: [], server: [], browser: [] }
-  );
+    });
+    if (!found) {
+      throw new Error(`Can't find mixin '${mixin}'`);
+    }
+    return result;
+  }, {});
+
+const isResolveError = (error) =>
+  error && error.message && error.message.startsWith("Can't resolve");
 
 const placeholdify = (config) => {
   const flatConfig = flatten(config);
@@ -111,7 +95,11 @@ const placeholdify = (config) => {
   return replaceRecursive(config);
 };
 
-exports.getConfig = ({ configNamespace = defaultNamespace, ...overrides }) => {
+exports.getConfig = ({
+  untoolNamespace: namespace = defaultNamespace,
+  untoolMixinTypes: mixinTypes = defaultMixinTypes,
+  ...overrides
+}) => {
   const pkgFile = findUp('package.json');
   const pkgData = require(pkgFile);
   const rootDir = dirname(pkgFile);
@@ -127,7 +115,7 @@ exports.getConfig = ({ configNamespace = defaultNamespace, ...overrides }) => {
   };
 
   const loadConfig = (context, config) => {
-    const { loadSync, searchSync } = cosmiconfig(configNamespace, {
+    const { loadSync, searchSync } = cosmiconfig(namespace, {
       stopDir: context,
     });
     return config
@@ -198,7 +186,7 @@ exports.getConfig = ({ configNamespace = defaultNamespace, ...overrides }) => {
 
   const config = {
     ...placeholdify(rawConfig),
-    mixins: resolveMixins(rootDir, rawConfig.mixins),
+    mixins: resolveMixins(rootDir, rawConfig.mixins, mixinTypes),
   };
   debug(config);
   return config;
