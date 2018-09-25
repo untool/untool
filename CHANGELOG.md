@@ -3,6 +3,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.23.0"></a>
+# [0.23.0](https://github.com/untool/untool/compare/v0.22.0...v0.23.0) (2018-09-25)
+
+
+### Bug Fixes
+
+* **react:** get rid of html cosmetics ([827f76d](https://github.com/untool/untool/commit/827f76d))
+* switch to esm imports where possible ([b27b212](https://github.com/untool/untool/commit/b27b212))
+
+
+### Features
+
+* **react:** add code-splitting `Import` component ([be424fe](https://github.com/untool/untool/commit/be424fe))
+* **react:** add loader prop instead of placeholder ([528d547](https://github.com/untool/untool/commit/528d547))
+* **react:** add support for nested async imports ([4352b67](https://github.com/untool/untool/commit/4352b67))
+* **react:** deep import react-router to avoid bundling everything ([c0d00ef](https://github.com/untool/untool/commit/c0d00ef))
+* **react:** introduce `ImportPlaceholder` export ([488baa8](https://github.com/untool/untool/commit/488baa8))
+* **react:** introduce placeholder render prop ([87aa46b](https://github.com/untool/untool/commit/87aa46b))
+* **react:** make `Import` location configurable ([e7c46cc](https://github.com/untool/untool/commit/e7c46cc))
+* **webpack:** add stats data needed for code splitting ([7d2b7aa](https://github.com/untool/untool/commit/7d2b7aa))
+* **webpack:** pass "target" to webpack config loader ([5526fe5](https://github.com/untool/untool/commit/5526fe5))
+* **webpack:** switch from uglify to terser ([66a2262](https://github.com/untool/untool/commit/66a2262)), closes [#144](https://github.com/untool/untool/issues/144)
+* **webpack:** use esm in browser entry to enable possible tree-shaking ([9d6516e](https://github.com/untool/untool/commit/9d6516e))
+* **webpack:** use esm in node entry to enable possible tree shaking ([34b1083](https://github.com/untool/untool/commit/34b1083))
+
+
+
+
+
 <a name="0.22.0"></a>
 # [0.22.0](https://github.com/untool/untool/compare/v0.21.0...v0.22.0) (2018-09-13)
 
