@@ -10,7 +10,7 @@ const requireFromString = require('require-from-string');
 
 const { Resolvable } = require('../utils/resolvable');
 
-module.exports = function createRenderMiddleware(webpackConfig) {
+module.exports = function createRenderMiddleware(webpackConfig, watch) {
   const resolvable = new Resolvable((resolve, reject, reset) => {
     const compiler = webpack(webpackConfig);
     const handleCompilation = (compileError, stats) => {
@@ -39,7 +39,7 @@ module.exports = function createRenderMiddleware(webpackConfig) {
     };
     sourceMapSupport.install({ environment: 'node', hookRequire: true });
     compiler.outputFileSystem = new MemoryFS();
-    if (webpackConfig.watchOptions) {
+    if (watch) {
       compiler.hooks.watchRun.tap('untool-transpiler', () => reset());
       compiler.watch(webpackConfig.watchOptions, handleCompilation);
     } else {

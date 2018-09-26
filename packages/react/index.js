@@ -1,3 +1,6 @@
 'use strict';
 
-exports.template = require('./lib/template');
+exports.internal = {
+  babelPlugin: require('./lib/babel'),
+  template: require('./lib/template'),
+};

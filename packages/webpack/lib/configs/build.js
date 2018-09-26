@@ -2,7 +2,6 @@
 
 const { relative } = require('path');
 
-const debug = require('debug')('untool:webpack:build');
 const {
   EnvironmentPlugin,
   HashedModuleIdsPlugin,
@@ -17,11 +16,7 @@ const {
 
 const { isESNext } = require('../utils/helpers');
 
-module.exports = function getConfig(
-  config,
-  target = 'browser',
-  configureBuild
-) {
+module.exports = function getConfig(config) {
   const getAssetPath = resolveRelative.bind(null, config.assetPath);
 
   const jsLoaderConfig = {
@@ -67,14 +62,19 @@ module.exports = function getConfig(
 
   const allLoaderConfigs = [jsLoaderConfig, urlLoaderConfig, fileLoaderConfig];
 
-  const webpackConfig = {
+  return {
+    // invalid for webpack, needed with untool
+    loaderConfigs: {
+      jsLoaderConfig,
+      urlLoaderConfig,
+      fileLoaderConfig,
+      allLoaderConfigs,
+    },
     name: 'build',
     mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
     bail: process.env.NODE_ENV === 'production',
     context: config.rootDir,
-    entry: {
-      [config.name]: require.resolve('../shims/browser'),
-    },
+    entry: { [config.name]: require.resolve('../shims/browser') },
     output: {
       path: config.buildDir,
       publicPath: '/',
@@ -101,21 +101,10 @@ module.exports = function getConfig(
       ],
     },
     module: {
-      rules: [
-        {
-          test: require.resolve('../shims/loader'),
-          loader: require.resolve('../utils/loader'),
-          options: { target, config },
-        },
-        {
-          oneOf: allLoaderConfigs,
-        },
-      ],
+      rules: [{ oneOf: allLoaderConfigs }],
     },
     optimization: {
-      splitChunks: {
-        chunks: 'all',
-      },
+      splitChunks: { chunks: 'all', name: false },
       minimizer: [
         new TerserPlugin({
           cache: true,
@@ -125,9 +114,7 @@ module.exports = function getConfig(
             compress: {
               inline: 1, // https://github.com/mishoo/UglifyJS2/issues/2842
             },
-            output: {
-              comments: false,
-            },
+            output: { comments: false },
           },
         }),
       ],
@@ -139,17 +126,4 @@ module.exports = function getConfig(
     ],
     devtool: 'source-map',
   };
-
-  const loaderConfigs = {
-    jsLoaderConfig,
-    urlLoaderConfig,
-    fileLoaderConfig,
-    allLoaderConfigs,
-  };
-
-  const result = configureBuild(webpackConfig, loaderConfigs);
-
-  debug(result);
-
-  return result;
 };

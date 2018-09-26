@@ -2,7 +2,6 @@
 
 const { relative } = require('path');
 
-const debug = require('debug')('untool:webpack:develop');
 const {
   DefinePlugin,
   HotModuleReplacementPlugin,
@@ -15,11 +14,7 @@ const {
 
 const { isESNext } = require('../utils/helpers');
 
-module.exports = function getConfig(
-  config,
-  target = 'browser',
-  configureBuild
-) {
+module.exports = function getConfig(config) {
   const getAssetPath = resolveRelative.bind(null, config.assetPath);
 
   const jsLoaderConfig = {
@@ -65,7 +60,14 @@ module.exports = function getConfig(
 
   const allLoaderConfigs = [jsLoaderConfig, urlLoaderConfig, fileLoaderConfig];
 
-  const webpackConfig = {
+  return {
+    // invalid for webpack, needed with untool
+    loaderConfigs: {
+      jsLoaderConfig,
+      urlLoaderConfig,
+      fileLoaderConfig,
+      allLoaderConfigs,
+    },
     name: 'develop',
     mode: 'development',
     context: config.rootDir,
@@ -85,9 +87,7 @@ module.exports = function getConfig(
         relative(config.rootDir, info.absoluteResourcePath),
     },
     resolve: {
-      alias: {
-        '@untool/entrypoint': config.rootDir,
-      },
+      alias: { '@untool/entrypoint': config.rootDir },
       extensions: ['.js'],
       mainFields: [
         'esnext:browser',
@@ -101,22 +101,10 @@ module.exports = function getConfig(
       ],
     },
     module: {
-      rules: [
-        {
-          test: require.resolve('../shims/loader'),
-          loader: require.resolve('../utils/loader'),
-          options: { target, config },
-        },
-        {
-          oneOf: allLoaderConfigs,
-        },
-      ],
+      rules: [{ oneOf: allLoaderConfigs }],
     },
     optimization: {
-      splitChunks: {
-        chunks: 'all',
-        name: false,
-      },
+      splitChunks: { chunks: 'all', name: false },
     },
     plugins: [
       new HotModuleReplacementPlugin(),
@@ -125,26 +113,8 @@ module.exports = function getConfig(
         'process.env.NODE_ENV': '"development"',
       }),
     ],
-    performance: {
-      hints: false,
-    },
+    performance: { hints: false },
     devtool: 'cheap-module-eval-source-map',
-    watchOptions: {
-      aggregateTimeout: 300,
-      ignored: /node_modules/,
-    },
+    watchOptions: { aggregateTimeout: 300, ignored: /node_modules/ },
   };
-
-  const loaderConfigs = {
-    jsLoaderConfig,
-    urlLoaderConfig,
-    fileLoaderConfig,
-    allLoaderConfigs,
-  };
-
-  const result = configureBuild(webpackConfig, loaderConfigs);
-
-  debug(result);
-
-  return result;
 };
