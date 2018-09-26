@@ -5,21 +5,23 @@ const { decycle } = require('cycle');
 
 const { Mixin } = require('@untool/core');
 
+const sanitize = (args) => JSON.parse(JSON.stringify(decycle(args)));
+
 class InstrumentMixin extends Mixin {
   constructor(...args) {
-    console.log('constructor', ...JSON.parse(JSON.stringify(decycle(args))));
     super(...args);
+    console.log('constructor', ...sanitize(args));
   }
   bootstrap(...args) {
-    console.log('bootstrap', ...JSON.parse(JSON.stringify(decycle(args))));
+    console.log('bootstrap', ...sanitize(args));
     return args[0];
   }
   enhanceElement(...args) {
-    console.log('enhanceElement', ...JSON.parse(JSON.stringify(decycle(args))));
+    console.log('enhanceElement', ...sanitize(args));
     return args[0];
   }
   fetchData(...args) {
-    console.log('fetchData', ...JSON.parse(JSON.stringify(decycle(args))));
+    console.log('fetchData', ...sanitize(args));
     return args[0];
   }
 }

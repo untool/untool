@@ -1,6 +1,6 @@
 const EventEmitter = require('../../../helpers/promise');
 
-const { Mixin } = require('@untool/core/lib/runtime');
+const { Mixin } = require('@untool/core');
 
 const events = new EventEmitter();
 
