@@ -71,12 +71,10 @@ module.exports = function getConfig(config) {
     name: 'develop',
     mode: 'development',
     context: config.rootDir,
-    entry: {
-      [config.name]: [
-        require.resolve('webpack-hot-middleware/client'),
-        require.resolve('../shims/browser'),
-      ],
-    },
+    entry: [
+      require.resolve('webpack-hot-middleware/client'),
+      require.resolve('../shims/browser'),
+    ],
     output: {
       path: config.buildDir,
       publicPath: '/',
