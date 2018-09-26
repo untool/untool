@@ -66,12 +66,15 @@ class WebpackMixin extends Mixin {
     return configureBuild(webpackConfig, loaderConfigs, target);
   }
   configureBuild(webpackConfig, loaderConfigs, target) {
-    const { plugins, module } = webpackConfig;
+    const { config } = this;
+    const { plugins, module, resolve } = webpackConfig;
+    const shimPath = require.resolve('./lib/shims/runtime');
     const loaderConfig = {
-      test: require.resolve('./lib/shims/loader'),
+      test: shimPath,
       loader: require.resolve('./lib/utils/loader'),
-      options: { type: target, config: this.config },
+      options: { type: target, config },
     };
+    resolve.alias['@untool/core'] = shimPath;
     if (target === 'node') {
       const { StatsFilePlugin } = require('./lib/plugins/stats');
       plugins.unshift(new StatsFilePlugin(this));
@@ -86,7 +89,7 @@ class WebpackMixin extends Mixin {
       const RenderPlugin = require('./lib/plugins/render');
       plugins.push(new RenderPlugin(this));
     }
-    module.rules.unshift(loaderConfig);
+    module.rules.push(loaderConfig);
     return webpackConfig;
   }
   configureServer(app, middlewares, mode) {

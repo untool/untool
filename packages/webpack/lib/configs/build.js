@@ -74,7 +74,7 @@ module.exports = function getConfig(config) {
     mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
     bail: process.env.NODE_ENV === 'production',
     context: config.rootDir,
-    entry: { [config.name]: require.resolve('../shims/browser') },
+    entry: require.resolve('../shims/browser'),
     output: {
       path: config.buildDir,
       publicPath: '/',
