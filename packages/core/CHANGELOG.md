@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.24.0"></a>
+# [0.24.0](https://github.com/untool/untool/compare/v0.23.0...v0.24.0) (2018-09-26)
+
+
+### Features
+
+* **core:** make config namespace configurable ([b2df149](https://github.com/untool/untool/commit/b2df149))
+
+
+
+
+
 <a name="0.23.0"></a>
 # [0.23.0](https://github.com/untool/untool/compare/v0.22.0...v0.23.0) (2018-09-25)
 

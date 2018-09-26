@@ -1,6 +1,6 @@
 {
   "name": "@untool/core",
-  "version": "0.23.0",
+  "version": "0.24.0",
   "description": "untool core",
   "jsnext": "lib/runtime.js",
   "scripts": {
