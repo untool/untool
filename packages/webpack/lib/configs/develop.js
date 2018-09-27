@@ -9,7 +9,9 @@ const {
 } = require('webpack');
 
 const {
-  uri: { resolveRelative },
+  internal: {
+    uri: { resolveRelative },
+  },
 } = require('@untool/express');
 
 const { isESNext } = require('../utils/helpers');

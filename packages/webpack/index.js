@@ -6,7 +6,11 @@ const createWebpackMiddleware = require('./lib/middleware/render');
 const createStatsMiddleware = require('./lib/middleware/stats');
 
 const RenderPlugin = require('./lib/plugins/render');
-const statsPlugins = require('./lib/plugins/stats');
+const { StatsPlugin, StatsFilePlugin } = require('./lib/plugins/stats');
+
+const runtimeLoader = require('./lib/utils/loader');
+const { isESNext, isExternal } = require('./lib/utils/helpers');
+const { Resolvable } = require('./lib/utils/resolvable');
 
 const configure = (config, options) => ({
   clean(...args) {
@@ -22,7 +26,12 @@ const configure = (config, options) => ({
     createWebpackMiddleware,
     createStatsMiddleware,
     RenderPlugin,
-    ...statsPlugins,
+    StatsPlugin,
+    StatsFilePlugin,
+    runtimeLoader,
+    isESNext,
+    isExternal,
+    Resolvable,
   },
   configure,
 });

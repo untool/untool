@@ -11,7 +11,9 @@ const {
 const TerserPlugin = require('terser-webpack-plugin');
 
 const {
-  uri: { resolveRelative },
+  internal: {
+    uri: { resolveRelative },
+  },
 } = require('@untool/express');
 
 const { isESNext } = require('../utils/helpers');

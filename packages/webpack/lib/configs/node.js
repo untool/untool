@@ -5,7 +5,9 @@ const { resolve } = require('path');
 const { EnvironmentPlugin, optimize } = require('webpack');
 
 const {
-  uri: { resolveRelative },
+  internal: {
+    uri: { resolveRelative },
+  },
 } = require('@untool/express');
 
 const { isESNext, isExternal } = require('../utils/helpers');
