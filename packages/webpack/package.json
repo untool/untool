@@ -1,6 +1,6 @@
 {
   "name": "@untool/webpack",
-  "version": "0.24.0",
+  "version": "0.24.1",
   "description": "untool webpack mixin",
   "keywords": [
     "unmixin",

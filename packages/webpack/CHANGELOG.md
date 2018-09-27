@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.24.1"></a>
+## [0.24.1](https://github.com/untool/untool/compare/v0.24.0...v0.24.1) (2018-09-27)
+
+
+### Bug Fixes
+
+* **webpack:** re-implement stats analysis ([47e1c4d](https://github.com/untool/untool/commit/47e1c4d))
+
+
+
+
+
 <a name="0.24.0"></a>
 # [0.24.0](https://github.com/untool/untool/compare/v0.23.0...v0.24.0) (2018-09-26)
 
