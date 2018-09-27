@@ -3,7 +3,7 @@
 const { relative } = require('path');
 
 const {
-  DefinePlugin,
+  EnvironmentPlugin,
   HotModuleReplacementPlugin,
   NamedModulesPlugin,
 } = require('webpack');
@@ -109,9 +109,7 @@ module.exports = function getConfig(config) {
     plugins: [
       new HotModuleReplacementPlugin(),
       new NamedModulesPlugin(),
-      new DefinePlugin({
-        'process.env.NODE_ENV': '"development"',
-      }),
+      new EnvironmentPlugin({ NODE_ENV: 'development' }),
     ],
     performance: { hints: false },
     devtool: 'cheap-module-eval-source-map',
