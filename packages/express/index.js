@@ -18,7 +18,7 @@ const configure = (config, options) => ({
     return bootstrap(config, options).renderLocations(...args);
   },
   configure,
-  uri,
+  internal: { uri },
 });
 
 module.exports = configure();
