@@ -5,7 +5,7 @@ const { relative } = require('path');
 const {
   EnvironmentPlugin,
   HashedModuleIdsPlugin,
-  optimize,
+  optimize: { ModuleConcatenationPlugin },
 } = require('webpack');
 
 const TerserPlugin = require('terser-webpack-plugin');
@@ -123,7 +123,7 @@ module.exports = function getConfig(config) {
     },
     plugins: [
       new HashedModuleIdsPlugin(),
-      new optimize.ModuleConcatenationPlugin(),
+      new ModuleConcatenationPlugin(),
       new EnvironmentPlugin({ NODE_ENV: 'development' }),
     ],
     devtool: 'source-map',
