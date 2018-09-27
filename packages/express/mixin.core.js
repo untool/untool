@@ -40,29 +40,27 @@ class ExpressMixin extends Mixin {
       }, {})
     );
   }
-  createFilesMiddleware() {
-    const express = require('express');
-    const helmet = require('helmet');
-    const mime = require('mime');
-    const { buildDir } = this.config;
-    return express.static(buildDir, {
-      maxAge: '1y',
-      setHeaders: (res, filePath) => {
-        if (
-          (res && res.locals && res.locals.noCache) ||
-          mime.getType(filePath) === 'text/html'
-        ) {
-          helmet.noCache()(null, res, () => {});
-        }
-      },
-      redirect: false,
-    });
-  }
   configureServer(app, middlewares, mode) {
     if (mode !== 'static') {
       const helmet = require('helmet');
+      const express = require('express');
+      const mime = require('mime');
+      const { buildDir } = this.config;
       middlewares.initial.push(helmet());
-      middlewares.files.push(this.createFilesMiddleware());
+      middlewares.files.push(
+        express.static(buildDir, {
+          maxAge: '1y',
+          setHeaders: (res, filePath) => {
+            if (
+              (res && res.locals && res.locals.noCache) ||
+              mime.getType(filePath) === 'text/html'
+            ) {
+              helmet.noCache()(null, res, () => {});
+            }
+          },
+          redirect: false,
+        })
+      );
       middlewares.postfiles.push(helmet.noCache());
     }
     return app;
