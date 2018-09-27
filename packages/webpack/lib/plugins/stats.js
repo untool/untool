@@ -2,68 +2,77 @@
 
 const { RawSource } = require('webpack-sources');
 
-exports.StatsPlugin = class WebpackStatsPlugin {
+const analyzeCompilation = ({ chunks, chunkGroups }) => {
+  const entries = chunks.filter(({ entryModule }) => !!entryModule);
+  const groups = chunkGroups.reduce(
+    (result, { chunks }) => [...result, chunks],
+    []
+  );
+  const moduleGroupMap = chunks.reduce((result, chunk) => {
+    if (!entries.includes(chunk)) {
+      for (const module of chunk.modulesIterable) {
+        const chunkGroup = groups.find((group) => group.includes(chunk));
+        if (module.constructor.name === 'ConcatenatedModule') {
+          result[module.rootModule.rawRequest] = chunkGroup;
+        } else {
+          result[module.rawRequest] = chunkGroup;
+        }
+      }
+    }
+    return result;
+  }, {});
+  return { entries, groups, moduleGroupMap };
+};
+
+const extractFiles = ({ entries, groups, moduleGroupMap }) => {
+  const getFiles = (chunks) => {
+    return chunks.reduce((result, { files }) => [...result, ...files], []);
+  };
+  return {
+    entryFiles: getFiles(entries),
+    vendorFiles: getFiles(
+      groups
+        .find((group) => group.find((chunk) => entries.includes(chunk)))
+        .filter((chunk) => !entries.includes(chunk))
+    ),
+    moduleFileMap: Object.entries(moduleGroupMap).reduce(
+      (result, [module, group]) => ({ ...result, [module]: getFiles(group) }),
+      {}
+    ),
+  };
+};
+
+exports.StatsPlugin = class StatsPlugin {
   constructor({ stats: resolvable }) {
     this.apply = (compiler) => {
-      compiler.hooks.emit.tap('untool-stats', (compilation) => {
-        try {
-          const stats = compilation.getStats().toJson();
-          const moduleChunkGroupMap = {};
-          const chunkGroups = compilation.chunkGroups.reduce(
-            (result, { chunks }) => [...result, chunks],
-            []
-          );
-          compilation.chunks.forEach((chunk) => {
-            for (const module of chunk.modulesIterable) {
-              let currentModule = module;
-              if (module.constructor.name === 'ConcatenatedModule') {
-                currentModule = module.rootModule;
-              }
-              moduleChunkGroupMap[currentModule.rawRequest] = chunkGroups.find(
-                (group) => group.find(({ id }) => chunk.id === id)
-              );
-            }
-          });
-          const moduleFileMap = Object.keys(moduleChunkGroupMap).reduce(
-            (result, rawRequest) => ({
-              ...result,
-              [rawRequest]: (moduleChunkGroupMap[rawRequest] || [])
-                .reduce((result, { files }) => [...result, ...files], [])
-                .filter((file, index, self) => self.indexOf(file) === index),
-            }),
-            {}
-          );
-          const entryChunks = stats.chunks.filter(({ entry }) => entry);
-          const vendorChunks = stats.chunks.filter(({ id }) =>
-            entryChunks.find(({ siblings }) => siblings.includes(id))
-          );
-          const entryFiles = entryChunks.reduce(
-            (result, { files }) => result.concat(files),
-            []
-          );
-          const vendorFiles = vendorChunks.reduce(
-            (result, { files }) => result.concat(files),
-            []
-          );
-          resolvable.resolve({
-            ...stats,
-            ...{ moduleFileMap, entryFiles, vendorFiles },
-          });
-        } catch (error) {
-          resolvable.reject(error);
-        }
+      compiler.hooks.compilation.tap('StatsPlugin', (compilation) => {
+        compilation.hooks.additionalAssets.tap('StatsPlugin', () => {
+          try {
+            resolvable.resolve({
+              ...compilation.getStats().toJson(),
+              ...extractFiles(analyzeCompilation(compilation)),
+            });
+          } catch (error) {
+            resolvable.reject(error);
+          }
+        });
       });
-      compiler.hooks.watchRun.tap('untool-stats', () => resolvable.reset());
+      compiler.hooks.watchRun.tap('StatsPlugin', () => resolvable.reset());
     };
   }
 };
 
-exports.StatsFilePlugin = class WebpackStatsFilePlugin {
+exports.StatsFilePlugin = class StatsFilePlugin {
   constructor({ stats: resolvable, config: { statsFile } }) {
     this.apply = (compiler) => {
-      compiler.hooks.emit.tapPromise('untool-stats', ({ assets }) =>
-        resolvable.then(
-          (stats) => (assets[statsFile] = new RawSource(JSON.stringify(stats)))
+      compiler.hooks.compilation.tap('StatsFilePlugin', (compilation) =>
+        compilation.hooks.additionalAssets.tapPromise('StatsFilePlugin', () =>
+          resolvable.then(
+            (stats) =>
+              (compilation.assets[statsFile] = new RawSource(
+                JSON.stringify(stats)
+              ))
+          )
         )
       );
     };
