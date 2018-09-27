@@ -1,5 +1,5 @@
 'use strict';
-/* global config, getMixins, mainMethod */
+/* global getConfig, getMixins, mainMethod */
 
 const debug = require('debug')('untool:runtime');
 const define = require('mixinable');
@@ -20,7 +20,7 @@ exports.bootstrap = function bootstrap(...args) {
   );
   debug(mixins.map(({ name, strategies }) => ({ [name]: strategies })));
 
-  return define(strategies, mixins)(config, ...args);
+  return define(strategies, mixins)(getConfig(), ...args);
 };
 
 exports[mainMethod] = function(...bootstrapArgs) {
@@ -29,8 +29,4 @@ exports[mainMethod] = function(...bootstrapArgs) {
   };
 };
 
-exports.internal = {
-  getConfig() {
-    return config;
-  },
-};
+exports.internal = { getConfig };

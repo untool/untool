@@ -19,7 +19,7 @@ const getMixins = (type, config) =>
 
 const injectVariables = (source, { type, config, mainMethod = 'render' }) =>
   source.replace(
-    '/* global config, getMixins, mainMethod */',
+    '/* global getConfig, getMixins, mainMethod */',
     [
       ...(type === 'server'
         ? [
@@ -31,7 +31,7 @@ const injectVariables = (source, { type, config, mainMethod = 'render' }) =>
         : []),
       'const isPlainObject = require("is-plain-object");',
       `const environmentalize = ${environmentalize.toString()};`,
-      `const config = environmentalize(${getConfig(type, config)});`,
+      `const getConfig = () => environmentalize(${getConfig(type, config)});`,
       `const getMixins = () => ${getMixins(type, config)};`,
       `const mainMethod = ${JSON.stringify(mainMethod)};`,
     ].join('\n')
@@ -39,6 +39,5 @@ const injectVariables = (source, { type, config, mainMethod = 'render' }) =>
 
 module.exports = function(content) {
   this.cacheable();
-  const options = getOptions(this);
-  return injectVariables(content, options);
+  return injectVariables(content, getOptions(this));
 };
