@@ -2,17 +2,22 @@
 
 const { RawSource } = require('webpack-sources');
 
-module.exports = class WebpackRenderPlugin {
+module.exports = class RenderPlugin {
   constructor({ renderLocations }) {
     this.apply = (compiler) =>
-      compiler.hooks.emit.tapPromise('untool-render', ({ assets }) =>
-        renderLocations().then((pages) => {
-          const pageAssets = Object.keys(pages).reduce(
-            (result, key) => ({ ...result, [key]: new RawSource(pages[key]) }),
-            {}
-          );
-          Object.assign(assets, pageAssets);
-        })
+      compiler.hooks.compilation.tap('RenderPlugin', (compilation) =>
+        compilation.hooks.additionalAssets.tapPromise('RenderPlugin', () =>
+          renderLocations().then((pages) => {
+            const pageAssets = Object.keys(pages).reduce(
+              (result, location) => ({
+                ...result,
+                [location]: new RawSource(pages[location]),
+              }),
+              {}
+            );
+            Object.assign(compilation.assets, pageAssets);
+          })
+        )
       );
   }
 };
