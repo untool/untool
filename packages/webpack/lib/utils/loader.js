@@ -2,7 +2,9 @@
 
 const { getOptions } = require('loader-utils');
 
-const { environmentalize } = require('@untool/core').internal;
+const {
+  internal: { environmentalize },
+} = require('@untool/core');
 
 const getConfig = (type, config) =>
   JSON.stringify(
@@ -19,7 +21,7 @@ const getMixins = (type, config) =>
 
 const injectVariables = (source, { type, config, mainMethod = 'render' }) =>
   source.replace(
-    '/* global getConfig, getMixins, mainMethod */',
+    '/* this will be replaced by our webpack loader */',
     [
       ...(type === 'server'
         ? [

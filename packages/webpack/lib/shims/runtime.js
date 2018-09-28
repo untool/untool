@@ -1,7 +1,6 @@
 'use strict';
-// =PLACEHOLDER=>
 /* global getConfig, getMixins, mainMethod */
-// <=PLACEHOLDER=
+/* this will be replaced by our webpack loader */
 
 const debug = require('debug')('untool:runtime');
 const define = require('mixinable');

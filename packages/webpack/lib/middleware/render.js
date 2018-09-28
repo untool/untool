@@ -40,7 +40,7 @@ module.exports = function createRenderMiddleware(webpackConfig, watch) {
     sourceMapSupport.install({ environment: 'node', hookRequire: true });
     compiler.outputFileSystem = new MemoryFS();
     if (watch) {
-      compiler.hooks.watchRun.tap('untool-transpiler', () => reset());
+      compiler.hooks.watchRun.tap('RenderMiddleware', () => reset());
       compiler.watch(webpackConfig.watchOptions, handleCompilation);
     } else {
       compiler.run(handleCompilation);

@@ -32,14 +32,13 @@ class WebpackMixin extends Mixin {
   }
   build() {
     const webpack = require('webpack');
-    const { options, inspectBuild, getBuildConfig } = this;
     const webpackConfig = (({ static: isStatic }) => {
       if (isStatic) {
-        return getBuildConfig('build');
+        return this.getBuildConfig('build');
       } else {
-        return [getBuildConfig('build'), getBuildConfig('node')];
+        return [this.getBuildConfig('build'), this.getBuildConfig('node')];
       }
-    })(options);
+    })(this.options);
     return new Promise((resolve, reject) =>
       webpack(webpackConfig).run((error, stats) => {
         if (error) {
@@ -51,35 +50,33 @@ class WebpackMixin extends Mixin {
           resolve(stats);
         }
       })
-    ).then((stats) => void inspectBuild(stats, webpackConfig) || stats);
+    ).then((stats) => void this.inspectBuild(stats, webpackConfig) || stats);
   }
   getBuildConfig(target, baseConfig) {
-    const { config, configureBuild } = this;
     const { loaderConfigs = {}, ...webpackConfig } = (() => {
       switch (baseConfig || target) {
         case 'build':
-          return require('./lib/configs/build')(config);
+          return require('./lib/configs/build')(this.config);
         case 'develop':
-          return require('./lib/configs/develop')(config);
+          return require('./lib/configs/develop')(this.config);
         case 'node':
-          return require('./lib/configs/node')(config);
+          return require('./lib/configs/node')(this.config);
         default:
           if (baseConfig && exists(baseConfig)) {
-            return require(baseConfig)(config);
+            return require(baseConfig)(this.config);
           }
           throw new Error(`Can't get build config ${baseConfig || target}`);
       }
     })();
-    return configureBuild(webpackConfig, loaderConfigs, target);
+    return this.configureBuild(webpackConfig, loaderConfigs, target);
   }
   configureBuild(webpackConfig, loaderConfigs, target) {
-    const { config } = this;
     const { plugins, module, resolve } = webpackConfig;
     const shimPath = require.resolve('./lib/shims/runtime');
     const loaderConfig = {
       test: shimPath,
       loader: require.resolve('./lib/utils/loader'),
-      options: { type: target, config },
+      options: { type: target, config: this.config },
     };
     resolve.alias['@untool/core'] = shimPath;
     if (target === 'node') {
@@ -100,9 +97,8 @@ class WebpackMixin extends Mixin {
     return webpackConfig;
   }
   configureServer(app, middlewares, mode) {
-    const { getBuildConfig, config, stats } = this;
     if (mode === 'develop') {
-      const webpackDevelopConfig = getBuildConfig('develop');
+      const webpackDevelopConfig = this.getBuildConfig('develop');
       const compiler = require('webpack')(webpackDevelopConfig);
       middlewares.initial.push(
         require('webpack-dev-middleware')(compiler, {
@@ -116,16 +112,16 @@ class WebpackMixin extends Mixin {
     }
     if (mode === 'static' || mode === 'develop') {
       const createRenderMiddleware = require('./lib/middleware/render');
-      const webpackNodeConfig = getBuildConfig('node');
+      const webpackNodeConfig = this.getBuildConfig('node');
       middlewares.routes.push(
         createRenderMiddleware(webpackNodeConfig, mode === 'develop')
       );
     }
     if (mode === 'serve') {
-      const { serverDir, serverFile, statsFile } = config;
+      const { serverDir, serverFile, statsFile } = this.config;
       const serverFilePath = join(serverDir, serverFile);
       const statsFilePath = join(serverDir, statsFile);
-      stats.resolve(exists(statsFilePath) ? require(statsFilePath) : {});
+      this.stats.resolve(exists(statsFilePath) ? require(statsFilePath) : {});
       if (exists(serverFilePath)) {
         middlewares.routes.push(require(serverFilePath).default);
       }
