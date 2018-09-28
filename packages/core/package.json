@@ -1,6 +1,6 @@
 {
   "name": "@untool/core",
-  "version": "0.25.0",
+  "version": "0.25.1",
   "description": "untool core",
   "jsnext": "index.js",
   "scripts": {

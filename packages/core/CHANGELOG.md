@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.25.1"></a>
+## [0.25.1](https://github.com/untool/untool/compare/v0.25.0...v0.25.1) (2018-09-28)
+
+
+### Bug Fixes
+
+* **core:** make sure core is always included in build ([9971d54](https://github.com/untool/untool/commit/9971d54))
+
+
+
+
+
 <a name="0.25.0"></a>
 # [0.25.0](https://github.com/untool/untool/compare/v0.24.1...v0.25.0) (2018-09-28)
 
