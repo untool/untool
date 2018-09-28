@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 'use strict';
 
 const createYargs = require('yargs');
@@ -40,3 +41,7 @@ const configure = (config, options) => ({
 });
 
 module.exports = configure();
+
+if (require.main === module) {
+  module.exports.run();
+}
