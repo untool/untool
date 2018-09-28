@@ -13,6 +13,52 @@ $ yarn add @untool/react react react-dom react-router-dom react-helmet
 # OR npm install @untool/react react react-dom react-router-dom react-helmet
 ```
 
+## Components
+
+### `<Miss />`
+
+This component allows you to instruct `@untool/react` to call Express.js' [middleware `next`](https://expressjs.com/en/guide/using-middleware.html) function. On the client side, it is effectively a no-op.
+
+### `<Status code={418} />`
+
+This component enables you to instruct `@untool/react` to send a different HTTP status code than the default of 200. On the client side, it is effectively a no-op.
+
+### `<Header name="Foo" value="Bar" />`
+
+With this component, you can declaratively set arbitrary HTTP headers from your React application.
+
+### `Import('./module', 'exportName')`
+
+Using the `Import` component, you can asynchronously require modules into your application to help you reduce asset sizes. It works similarly to [`react-loadable`](https://github.com/jamiebuilds/react-loadable), but is deeply integrated with `untool`.
+
+```javascript
+import { Import } from '@untool/react';
+
+const Home = Import('./home');
+
+export default () => <Home />;
+```
+
+Components created using `Import` support some props that enable you to control module loading and (placeholder) rendering.
+
+```javascript
+import { Import } from '@untool/react';
+
+const About = Import('./about', 'About');
+
+const loader = (load) =>
+  Promise.race([
+    new Promise((resolve, reject) => setTimeout(reject, 10000)),
+    load(),
+  ]);
+
+const render = ({ Component, error, loading, ...props }) => {
+  return !(error || loading) ? createElement(Component, props) : null;
+};
+
+export default () => <About loader={loader} render={render} />;
+```
+
 ## API
 
 ### `render([req, res, next])` ([override](https://github.com/untool/mixinable/blob/master/README.md#defineoverride))
