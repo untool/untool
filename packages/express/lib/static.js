@@ -2,26 +2,22 @@
 
 const EventEmitter = require('events');
 
-const mocks = require('node-mocks-http');
+const { createMocks } = require('node-mocks-http');
 
 module.exports = (app) => (options) =>
   new Promise((resolve, reject) => {
-    if (typeof options === 'string') {
-      options = { url: options };
-    }
-    const req = mocks.createRequest(options);
-    const res = mocks.createResponse({
-      eventEmitter: EventEmitter,
-      request: req,
-    });
+    const { req, res } = createMocks(
+      typeof options === 'string' ? { url: options } : options,
+      { eventEmitter: EventEmitter }
+    );
     res.on('finish', () => {
       if (res.statusCode !== 200) {
-        reject(new Error(`invalid status code: ${res.statusCode}`));
+        reject(new Error(`Received status ${res.statusCode} for: ${req.url}`));
       } else {
         resolve(res._getData());
       }
     });
     app.handle(req, res, (error) => {
-      reject(error || new Error(`no response for: ${req.url}`));
+      reject(error || new Error(`Can't get response for: ${req.url}`));
     });
   });
