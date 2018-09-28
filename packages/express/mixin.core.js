@@ -7,7 +7,7 @@ const {
 
 const { Mixin } = require('@untool/core');
 
-const uri = require('./lib/uri');
+const { resolveAbsolute, resolveRelative } = require('./lib/uri');
 
 class ExpressMixin extends Mixin {
   runServer(mode) {
@@ -28,7 +28,6 @@ class ExpressMixin extends Mixin {
     const indexFile = require('directory-index');
     const render = this.createRenderer();
     const { basePath, locations } = this.config;
-    const { resolveAbsolute, resolveRelative } = uri;
     return Promise.all(
       locations
         .map((location) => resolveAbsolute(basePath, location))
