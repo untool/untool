@@ -49,7 +49,7 @@ exports.StatsPlugin = class StatsPlugin {
         compilation.hooks.additionalAssets.tap('StatsPlugin', () => {
           try {
             resolvable.resolve({
-              ...compilation.getStats().toJson(),
+              ...compilation.getStats().toJson({ source: false }),
               ...extractFiles(analyzeCompilation(compilation)),
             });
           } catch (error) {
