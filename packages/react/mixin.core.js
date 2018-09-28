@@ -3,13 +3,9 @@
 const { Mixin } = require('@untool/core');
 
 module.exports = class ReactMixin extends Mixin {
-  configureBuild(webpackConfig, loaderConfigs, target) {
-    const { fileLoaderConfig, jsLoaderConfig } = loaderConfigs;
-
+  configureBuild(webpackConfig, { fileLoaderConfig, jsLoaderConfig }, target) {
     webpackConfig.resolve.extensions.push('.jsx');
-
     fileLoaderConfig.exclude.push(/\.jsx$/);
-
     jsLoaderConfig.test.push(/\.jsx$/);
     jsLoaderConfig.options.presets.push(require.resolve('@babel/preset-react'));
     if (target !== 'develop' && process.env.NODE_ENV === 'production') {
@@ -18,7 +14,6 @@ module.exports = class ReactMixin extends Mixin {
       );
     }
     jsLoaderConfig.options.plugins.push(require.resolve('./lib/babel'));
-
     return webpackConfig;
   }
 };
