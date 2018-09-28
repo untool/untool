@@ -20,10 +20,10 @@ const App = () => (
     <Helmet>
       <title>Untest</title>
     </Helmet>
-    <Link to="/">Home</Link> <Link to="/about">About</Link>
+    <Link to="/">Home</Link> <Link to="/about/">About</Link>
     <Switch>
       <Route exact path="/" component={Home} />} />
-      <Route path="/about" render={() => <About render={preload} />} />
+      <Route path="/about/" render={() => <About render={preload} />} />
       <Miss />
     </Switch>
   </Fragment>
