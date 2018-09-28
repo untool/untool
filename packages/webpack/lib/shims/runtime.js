@@ -1,5 +1,7 @@
 'use strict';
+// =PLACEHOLDER=>
 /* global getConfig, getMixins, mainMethod */
+// <=PLACEHOLDER=
 
 const debug = require('debug')('untool:runtime');
 const define = require('mixinable');
