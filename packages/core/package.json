@@ -1,6 +1,6 @@
 {
   "name": "@untool/core",
-  "version": "0.24.0",
+  "version": "0.25.0",
   "description": "untool core",
   "scripts": {
     "test": "echo \"Error: no test specified\""

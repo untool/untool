@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+<a name="0.25.0"></a>
+# [0.25.0](https://github.com/untool/untool/compare/v0.24.1...v0.25.0) (2018-09-28)
+
+
+### Features
+
+* **core:** add internal exports ([061c541](https://github.com/untool/untool/commit/061c541))
+* **core:** make mixin types configurable ([c1df54a](https://github.com/untool/untool/commit/c1df54a))
+
+
+
+
+
 <a name="0.24.0"></a>
 # [0.24.0](https://github.com/untool/untool/compare/v0.23.0...v0.24.0) (2018-09-26)
 
