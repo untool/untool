@@ -2,7 +2,9 @@
 
 [![npm](https://img.shields.io/npm/v/@untool%2Freact.svg)](https://www.npmjs.com/package/@untool%2Freact)
 
-`@untool/react` provides all three types of `@untool/core` [mixins](https://github.com/untool/untool/blob/master/packages/core/README.md#mixins). Its `core` mixin uses `@untool/webpack`'s [`configureBuild`](https://github.com/untool/untool/blob/master/packages/webpack/README.md#configurebuildwebpackconfig-loaderconfigs-target-pipe) hook to add some settings specific to [React](https://reactjs.org), for example support for [JSX](https://reactjs.org/docs/introducing-jsx.html) syntax.
+`@untool/react`'s main runtime exports are a couple of React components that allow implementers to declaratively control server (or system) behavior. Additionally, `@untool/react` features full support for [`react-router`](https://github.com/ReactTraining/react-router)'s and [`react-helmet`](https://github.com/nfl/react-helmet)'s components.
+
+`@untool/react` provides all three types of `@untool/core` [mixin types](https://github.com/untool/untool/blob/master/packages/core/README.md#mixins). Its `core` mixin uses `@untool/webpack`'s [`configureBuild`](https://github.com/untool/untool/blob/master/packages/webpack/README.md#configurebuildwebpackconfig-loaderconfigs-target-pipe) hook to add some settings specific to [React](https://reactjs.org), for example support for [JSX](https://reactjs.org/docs/introducing-jsx.html) syntax.
 
 Its `runtime`, i.e. `browser` and `server`, mixins are a bit more interesting as they are `untool`'s only default [`render`](https://github.com/untool/untool/blob/master/packages/core/README.md#renderargs-runtime-only) mixins. They set up [React](https://reactjs.org) for client- and server-side rendering. Additionally, they provide mixin hooks of their own to allow you to add your own features, for example [Redux](https://redux.js.org) support.
 
@@ -19,15 +21,33 @@ $ yarn add @untool/react react react-dom react-router-dom react-helmet
 
 This component allows you to instruct `@untool/react` to call Express.js' [middleware `next`](https://expressjs.com/en/guide/using-middleware.html) function. On the client side, it is effectively a no-op.
 
+```javascript
+import { Miss } from '@untool/react';
+
+export default () => <Miss />;
+```
+
 ### `<Status code={418} />`
 
 This component enables you to instruct `@untool/react` to send a different HTTP status code than the default of 200. On the client side, it is effectively a no-op.
 
-### `<Header name="Foo" value="Bar" />`
+```javascript
+import { Status } from '@untool/react';
+
+export default () => <Status code={404} />;
+```
+
+### `<Header name="X-Foo" value="Bar" />`
 
 With this component, you can declaratively set arbitrary HTTP headers from your React application.
 
-### `Import('./module', 'exportName')`
+```javascript
+import { Header } from '@untool/react';
+
+export default () => <Header name="X-Foo" value="Bar" />;
+```
+
+### `Import('./module'[, 'exportName'])`
 
 Using the `Import` component, you can asynchronously require modules into your application to help you reduce asset sizes. It works similarly to [`react-loadable`](https://github.com/jamiebuilds/react-loadable), but is deeply integrated with `untool`.
 
@@ -53,11 +73,13 @@ const loader = (load) =>
   ]);
 
 const render = ({ Component, error, loading, ...props }) => {
-  return !(error || loading) ? createElement(Component, props) : null;
+  return !(error || loading) ? <Component {...props} /> : null;
 };
 
 export default () => <About loader={loader} render={render} />;
 ```
+
+`Import`ed modules (and their dependencies) will be placed in separate chunks, i.e. asset files. `@untool/react` makes sure that all asset files containing modules used for server-side rendering are referenced in the initial HTML output.
 
 ## API
 
