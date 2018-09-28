@@ -169,7 +169,7 @@ Note that you can call all defined mixinable methods directly on your mixin inst
 
 ### `render([...args])` (runtime only)
 
-This function, that you are expected to call in your applications main entry file, is essentialy a shorthand: it creates and bootstraps a core mixin container and calls its `render` method.
+This function only exists if [`@untool/webpack`](https://github.com/untool/untool/blob/master/packages/webpack/README.md) is installed and active. You are expected to call it in your applications main entry file and it is essentialy a shorthand: it creates and bootstraps a core mixin container and calls its `render` method.
 
 Whatever arguments it receives are being passed along to its container's mixins' constructors. For it to work, you need to register at least one mixin implementing the `render` method. The default render mixin is [`@untool/react`](https://github.com/untool/untool/blob/master/packages/react/README.md).
 
@@ -185,7 +185,7 @@ The render function serves two main purposes: 'universalifying' or 'isomorphizin
 
 `Mixin` aside, `render` probably is the only part of `untool` you will directly interact with in your own code. It certainly is the only one of its APIs you will ever use within your application.
 
-### `bootstrap([configOverrides], [options])` (build only)
+### `bootstrap([configOverrides], [options])`
 
 This is a semi-private function that is mainly being used internally, for example by [`@untool/yargs`](https://github.com/untool/untool/blob/master/packages/yargs/README.md). It returns the core mixin container - this allows you to call all defined mixin methods.
 
