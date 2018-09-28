@@ -29,9 +29,8 @@ class ReactMixin extends Mixin {
     );
   }
   procureAssets() {
-    const { stats, modules } = this;
-    const { entryFiles, vendorFiles, moduleFileMap } = stats;
-    const moduleFiles = modules.reduce(
+    const { entryFiles, vendorFiles, moduleFileMap } = this.stats;
+    const moduleFiles = this.modules.reduce(
       (result, module) => result.concat(moduleFileMap[module]),
       []
     );
