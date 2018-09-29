@@ -3,42 +3,50 @@
 const { RawSource } = require('webpack-sources');
 
 const analyzeCompilation = ({ chunks, chunkGroups }) => {
-  const entries = chunks.filter(({ entryModule }) => !!entryModule);
-  const groups = chunkGroups.reduce(
-    (result, { chunks }) => [...result, chunks],
+  const entryChunks = chunks.filter(({ entryModule }) => !!entryModule);
+  const vendorChunks = chunkGroups.reduce(
+    (result, { chunks }) => [
+      ...result,
+      ...(chunks.find((chunk) => entryChunks.includes(chunk))
+        ? chunks.filter((chunk) => !entryChunks.includes(chunk))
+        : []),
+    ],
     []
   );
-  const moduleGroupMap = chunks.reduce((result, chunk) => {
-    if (!entries.includes(chunk)) {
-      for (const module of chunk.modulesIterable) {
-        const chunkGroup = groups.find((group) => group.includes(chunk));
-        if (module.constructor.name === 'ConcatenatedModule') {
-          result[module.rootModule.rawRequest] = chunkGroup;
-        } else {
-          result[module.rawRequest] = chunkGroup;
-        }
-      }
-    }
-    return result;
-  }, {});
-  return { entries, groups, moduleGroupMap };
+  const chunksByModule = chunks
+    .filter(
+      (chunk) =>
+        !entryChunks.includes(chunk) &&
+        !vendorChunks.includes(chunk) &&
+        !chunk.chunkReason
+    )
+    .reduce(
+      (result, chunk) =>
+        Array.from(chunk.modulesIterable).reduce((result, module) => {
+          const { chunks } = chunkGroups.find(({ chunks }) =>
+            chunks.includes(chunk)
+          );
+          if (module.constructor.name === 'ConcatenatedModule') {
+            result.push([module.rootModule.rawRequest, chunks]);
+          } else {
+            result.push([module.rawRequest, chunks]);
+          }
+          return result;
+        }, result),
+      []
+    );
+  return { entryChunks, vendorChunks, chunksByModule };
 };
 
-const extractFiles = ({ entries, groups, moduleGroupMap }) => {
-  const getFiles = (chunks) => {
-    return chunks.reduce((result, { files }) => [...result, ...files], []);
-  };
+const extractFiles = ({ entryChunks, vendorChunks, chunksByModule }) => {
+  const gatherFiles = (result, { files }) => [...result, ...files];
   return {
-    entryFiles: getFiles(entries),
-    vendorFiles: getFiles(
-      groups
-        .find((group) => group.find((chunk) => entries.includes(chunk)))
-        .filter((chunk) => !entries.includes(chunk))
-    ),
-    moduleFileMap: Object.entries(moduleGroupMap).reduce(
-      (result, [module, group]) => ({ ...result, [module]: getFiles(group) }),
-      {}
-    ),
+    entryFiles: entryChunks.reduce(gatherFiles, []),
+    vendorFiles: vendorChunks.reduce(gatherFiles, []),
+    moduleFileMap: chunksByModule.reduce((result, [module, chunks]) => {
+      result[module] = chunks.reduce(gatherFiles, []);
+      return result;
+    }, {}),
   };
 };
 
