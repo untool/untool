@@ -14,8 +14,6 @@
     "update": "yarn upgrade-interactive --latest",
     "snapshot": "yarn reset && yarn test -u",
     "reset": "git clean -dfx && yarn",
-    "commitmsg": "commitlint -e $GIT_PARAMS",
-    "precommit": "lint-staged",
     "posttest": "rimraf tests/fixtures/*-*",
     "preinstall": "[ -z \"${npm_execpath##*yarn*}\" ] || exit 1"
   },
@@ -132,6 +130,12 @@
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"
+    }
+  },
+  "husky": {
+    "hooks": {
+      "commit-msg": "commitlint -e $HUSKY_GIT_PARAMS",
+      "pre-commit": "lint-staged"
     }
   }
 }
