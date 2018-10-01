@@ -25,16 +25,16 @@ exports.Header = withRouter(({ staticContext, name, value }) => {
   return null;
 });
 
-exports.Import = ({ module, load, weakId }, name = 'default') => {
+exports.Import = ({ load, moduleId }, name = 'default') => {
   const ImportComponent = withRouter(
     class ImportComponent extends Component {
       constructor({ staticContext }) {
         super();
         if (staticContext) {
-          staticContext.modules.push(module);
+          staticContext.modules.push(moduleId);
         }
-        if (staticContext || __webpack_modules__[weakId]) {
-          this.state = { Component: __webpack_require__(weakId)[name] };
+        if (staticContext || __webpack_modules__[moduleId]) {
+          this.state = { Component: __webpack_require__(moduleId)[name] };
         } else {
           this.state = { loading: true };
         }

@@ -26,7 +26,6 @@ module.exports = function({ types: t }) {
 
           argument.replaceWith(
             t.objectExpression([
-              t.objectProperty(t.identifier('module'), argument.node),
               t.objectProperty(
                 t.identifier('load'),
                 t.arrowFunctionExpression(
@@ -35,7 +34,7 @@ module.exports = function({ types: t }) {
                 )
               ),
               t.objectProperty(
-                t.identifier('weakId'),
+                t.identifier('moduleId'),
                 t.callExpression(
                   t.memberExpression(
                     t.identifier('require'),
