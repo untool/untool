@@ -4,6 +4,7 @@ const { resolve } = require('path');
 
 const {
   EnvironmentPlugin,
+  NamedModulesPlugin,
   optimize: { LimitChunkCountPlugin },
 } = require('webpack');
 
@@ -109,6 +110,7 @@ module.exports = function getConfig(config) {
     },
     plugins: [
       new LimitChunkCountPlugin({ maxChunks: 1 }),
+      new NamedModulesPlugin(),
       new EnvironmentPlugin({ NODE_ENV: 'development' }),
     ],
     performance: { hints: false },
