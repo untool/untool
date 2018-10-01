@@ -52,6 +52,9 @@ exports.StatsPlugin = class StatsPlugin {
     this.apply = (compiler) => {
       compiler.hooks.compilation.tap('StatsPlugin', (compilation) => {
         compilation.hooks.additionalAssets.tap('StatsPlugin', () => {
+          if (compilation.compiler !== compiler) {
+            return;
+          }
           try {
             resolvable.resolve({
               ...compilation.getStats().toJson({ source: false }),
