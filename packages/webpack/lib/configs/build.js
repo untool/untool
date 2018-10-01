@@ -4,7 +4,7 @@ const { relative } = require('path');
 
 const {
   EnvironmentPlugin,
-  HashedModuleIdsPlugin,
+  NamedModulesPlugin,
   optimize: { ModuleConcatenationPlugin },
 } = require('webpack');
 
@@ -122,8 +122,8 @@ module.exports = function getConfig(config) {
       ],
     },
     plugins: [
-      new HashedModuleIdsPlugin(),
       new ModuleConcatenationPlugin(),
+      new NamedModulesPlugin(),
       new EnvironmentPlugin({ NODE_ENV: 'development' }),
     ],
     devtool: 'source-map',

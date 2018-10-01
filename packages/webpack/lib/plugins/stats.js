@@ -15,10 +15,7 @@ const analyzeCompilation = ({ chunks, chunkGroups }) => {
   );
   const chunksByModule = chunks
     .filter(
-      (chunk) =>
-        !entryChunks.includes(chunk) &&
-        !vendorChunks.includes(chunk) &&
-        !chunk.chunkReason
+      (chunk) => !entryChunks.includes(chunk) && !vendorChunks.includes(chunk)
     )
     .reduce(
       (result, chunk) =>
@@ -27,9 +24,9 @@ const analyzeCompilation = ({ chunks, chunkGroups }) => {
             chunks.includes(chunk)
           );
           if (module.constructor.name === 'ConcatenatedModule') {
-            result.push([module.rootModule.rawRequest, chunks]);
+            result.push([module.rootModule.id, chunks]);
           } else {
-            result.push([module.rawRequest, chunks]);
+            result.push([module.id, chunks]);
           }
           return result;
         }, result),
