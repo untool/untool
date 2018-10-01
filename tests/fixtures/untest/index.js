@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-vars */
 import React, { Fragment } from 'react';
 import { Helmet } from 'react-helmet';
-import { Switch, Route, Link } from 'react-router-dom';
+import { Switch, Route, Link } from 'react-router-dom/es';
 
 import { render } from '@untool/core';
 import { Import, Miss } from '@untool/react';
