@@ -4,21 +4,33 @@
 const { createElement, Component } = require('react');
 const { default: withRouter } = require('react-router-dom/es/withRouter');
 
-exports.Miss = withRouter(({ staticContext }) => {
+const { bootstrap } = require('@untool/core');
+
+exports.render = function render(...bootstrapArgs) {
+  return function render(...renderArgs) {
+    const { render } = bootstrap(...bootstrapArgs);
+    if (!render) {
+      throw new Error("Can't use @untool/react mixin");
+    }
+    return render(...renderArgs);
+  };
+};
+
+exports.Miss = withRouter(function Miss({ staticContext }) {
   if (staticContext) {
     staticContext.miss = true;
   }
   return null;
 });
 
-exports.Status = withRouter(({ staticContext, code }) => {
+exports.Status = withRouter(function Status({ staticContext, code }) {
   if (staticContext) {
     staticContext.status = code;
   }
   return null;
 });
 
-exports.Header = withRouter(({ staticContext, name, value }) => {
+exports.Header = withRouter(function Header({ staticContext, name, value }) {
   if (staticContext) {
     staticContext.headers = { ...staticContext.headers, [name]: value };
   }

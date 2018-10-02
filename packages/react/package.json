@@ -2,7 +2,7 @@
   "name": "@untool/react",
   "version": "0.26.0",
   "description": "untool react mixin",
-  "jsnext": "lib/components.js",
+  "jsnext": "lib/runtime.js",
   "keywords": [
     "unmixin",
     "unpreset"
