@@ -7,7 +7,7 @@ const { Router } = express;
 
 module.exports = (mode, { configureServer }) => {
   const phases = ['initial', 'files', 'parse', 'routes', 'final'].reduce(
-    (result, key) => result.concat(`pre${key}`, key, `post${key}`),
+    (result, key) => [...result, `pre${key}`, key, `post${key}`],
     []
   );
   const middlewares = phases.reduce(
@@ -19,7 +19,9 @@ module.exports = (mode, { configureServer }) => {
   debug(middlewares);
   phases.forEach((phase) =>
     middlewares[phase].forEach((middleware) =>
-      (/final/.test(phase) ? app : router).use(...[].concat(middleware))
+      (/final/.test(phase) ? app : router).use(
+        ...(Array.isArray(middleware) ? middleware : [middleware])
+      )
     )
   );
   return app;
