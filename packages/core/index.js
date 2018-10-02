@@ -4,7 +4,7 @@ const debug = require('debug')('untool:core');
 const define = require('mixinable');
 
 const { getConfig } = require('./lib/config');
-const { environmentalize } = require('./lib/utils');
+const { environmentalize, placeholdify } = require('./lib/utils');
 
 exports.Mixin = class Mixin {
   constructor(config, options) {
@@ -23,7 +23,6 @@ exports.bootstrap = function bootstrap(configOverrides = {}, options = {}) {
     ),
   };
   debug(mixins.map(({ name, strategies }) => ({ [name]: strategies })));
-
   return define(strategies, mixins)(config, options);
 };
 
@@ -32,4 +31,5 @@ exports.internal = {
     return environmentalize(getConfig(...args));
   },
   environmentalize,
+  placeholdify,
 };
