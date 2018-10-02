@@ -9,7 +9,7 @@ exports.merge = (...args) =>
   mergeWith({}, ...args, (objValue, srcValue, key) => {
     if (Array.isArray(objValue)) {
       if ('mixins' === key) {
-        return objValue.concat(srcValue);
+        return [...objValue, ...srcValue];
       }
       return srcValue;
     }
@@ -17,17 +17,20 @@ exports.merge = (...args) =>
 
 exports.placeholdify = (config) => {
   const flatConfig = flatten(config);
-  const flatKeys = Object.keys(flatConfig);
-  const regExp = new RegExp(`<(${flatKeys.map(escapeRegExp).join('|')})>`, 'g');
+  const configPaths = Object.keys(flatConfig).map(escapeRegExp);
+  const regExp = new RegExp(`<(${configPaths.join('|')})>`, 'g');
   const replaceRecursive = (item) => {
     if (Array.isArray(item)) {
       return item.map(replaceRecursive);
     }
     if (isPlainObject(item)) {
-      return Object.keys(item).reduce((result, key) => {
-        result[key] = replaceRecursive(item[key]);
-        return result;
-      }, {});
+      return Object.entries(item).reduce(
+        (result, [key, value]) => ({
+          ...result,
+          [key]: replaceRecursive(value),
+        }),
+        {}
+      );
     }
     if (regExp.test(item)) {
       return item.replace(regExp, (_, key) =>
@@ -48,10 +51,13 @@ exports.environmentalize = (_config) => {
       return item.map(replaceRecursive);
     }
     if (isPlainObject(item)) {
-      return Object.keys(item).reduce((result, key) => {
-        result[key] = replaceRecursive(item[key]);
-        return result;
-      }, {});
+      return Object.entries(item).reduce(
+        (result, [key, value]) => ({
+          ...result,
+          [key]: replaceRecursive(value),
+        }),
+        {}
+      );
     }
     if (regExp.test(item)) {
       return item.replace(regExp, (_, key) =>
@@ -60,5 +66,5 @@ exports.environmentalize = (_config) => {
     }
     return item;
   };
-  return Object.assign(replaceRecursive(_config), { _config, _env });
+  return { ...replaceRecursive(_config), _config, _env };
 };
