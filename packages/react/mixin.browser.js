@@ -7,6 +7,7 @@ const { unmountComponentAtNode, hydrate, render } = require('react-dom');
 const { default: BrowserRouter } = require('react-router-dom/es/BrowserRouter');
 
 const {
+  override,
   async: { compose, parallel, pipe },
 } = require('mixinable');
 
@@ -16,12 +17,8 @@ class ReactMixin extends Mixin {
   constructor(config, element, options) {
     super(config);
     this.element = element;
-    this.options = Object.assign(
-      {
-        basename: config.basePath,
-      },
-      options && options.router
-    );
+    const { basePath: basename } = config;
+    this.options = { ...(options && options.router), basename };
   }
   enhanceElement(element) {
     return createElement(BrowserRouter, this.options, element);
@@ -51,6 +48,7 @@ ReactMixin.strategies = {
   bootstrap: parallel,
   enhanceElement: compose,
   fetchData: pipe,
+  render: override,
 };
 
 module.exports = ReactMixin;
