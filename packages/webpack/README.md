@@ -95,7 +95,7 @@ build();
 
 The above example is functionally equivalent to directly working with `@untool/core`'s [`bootstrap`](https://github.com/untool/untool/blob/master/packages/core/README.md#bootstrapconfigoverrides-options-build-only) export.
 
-### `configureBuild(webpackConfig, loaderConfigs, target)` ([pipe](https://github.com/untool/mixinable/blob/master/README.md#definepipe))
+### `configureBuild(webpackConfig, loaderConfigs, target)` ([sequence](https://github.com/untool/mixinable/blob/master/README.md#defineparallel))
 
 If you implement this mixin hook in your `@untool/core` [`core` mixin](https://github.com/untool/untool/blob/master/packages/core/README.md#mixins), you will be able to modify the different Webpack configs `untool` uses in any way you like.
 
@@ -106,12 +106,12 @@ const { Mixin } = require('@untool/core');
 
 module.exports = class MyMixin extends Mixin {
   configureBuild(webpackConfig, loaderConfigs, target) {
-    return webpackConfig;
+    webpackConfig.resolve.extensions.push('.ftw');
   }
 };
 ```
 
-You can use whatever mechanism you like to modify the complicated structures Webpack configs unfortunately have to be. We specifically recommend [`webpack-merge`](https://github.com/survivejs/webpack-merge) for non-trivial alterations.
+You can use whatever mechanism you like to modify the complicated structures Webpack configs unfortunately have to be.
 
 ### `inspectBuild(stats, config)` ([sequence](https://github.com/untool/mixinable/blob/master/README.md#defineparallel))
 
@@ -149,13 +149,17 @@ _This method is also exported so that you can use it in your own, non-mixin code
 
 ## Settings
 
-| Property     | Type     | Default                                  |
-| ------------ | -------- | ---------------------------------------- |
-| `browsers`   | `string` | `'defaults'`                             |
-| `node`       | `string` | `'current'`                              |
-| `serverDir`  | `string` | `'<rootDir>/node_modules/.cache/untool'` |
-| `serverFile` | `string` | `'server.js'`                            |
-| `statsFile`  | `string` | `'stats.json'`                           |
+| Property     | Type       | Default                                  |
+| ------------ | ---------- | ---------------------------------------- |
+| `browsers`   | `string`   | `'defaults'`                             |
+| `node`       | `string`   | `'current'`                              |
+| `locations`  | `[string]` | `[]`                                     |
+| `basePath`   | `string`   | `''`                                     |
+| `assetPath`  | `string`   | `'<basePath>'`                           |
+| `buildDir`   | `string`   | `'<distDir>'`                            |
+| `serverDir`  | `string`   | `'<rootDir>/node_modules/.cache/untool'` |
+| `serverFile` | `string`   | `'server.js'`                            |
+| `statsFile`  | `string`   | `'stats.json'`                           |
 
 ### `browsers`
 
@@ -174,6 +178,48 @@ This is the target Node.js version Babel's [`preset-env`](https://babeljs.io/doc
 ```json
 {
   "node": "8.10"
+}
+```
+
+### `locations`
+
+Using this setting, you can define the locations used for prerendering of static HTML pages at build time. Simply list all URL paths you want to prerender and perform a build in static mode, e.g. by running `un build -ps`.
+
+Locations are treated as relative to your configured `basePath`: you will not have to add it as a prefix to your `locations` yourself.
+
+```json
+{
+  "locations": ["/foo", "/bar"]
+}
+```
+
+### `basePath`
+
+This is the URL base path, i.e. subfolder, your application will be served from. If set, this folder will be created in your `buildDir` during static builds.
+
+```json
+{
+  "basePath": "<name>"
+}
+```
+
+### `assetPath`
+
+This is the URL base path, i.e. subfolder, your application's assets will be served from. If set, this folder will be created in your `buildDir` at build time.
+
+```json
+{
+  "assetPath": "<basePath>/assets"
+}
+```
+
+### `buildDir`
+
+Path of your browser build output. By default, this folder is usually removed before building. Make sure the contents of this folder can be served by your webserver.
+
+```json
+{
+  "buildDir": "<rootDir>/build"
 }
 ```
 

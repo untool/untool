@@ -1,12 +1,11 @@
 {
-  "name": "@untool/react",
+  "name": "untool",
   "version": "0.26.0",
-  "description": "untool react mixin",
+  "description": "javascript tooling platform",
   "jsnext": "lib/runtime.js",
-  "keywords": [
-    "unmixin",
-    "unpreset"
-  ],
+  "bin": {
+    "un": "lib/bin.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\""
   },
@@ -24,19 +23,11 @@
   },
   "homepage": "https://github.com/untool/untool#readme",
   "dependencies": {
-    "@babel/preset-react": "^7.0.0",
-    "@untool/core": "^0.26.0",
-    "babel-plugin-transform-react-remove-prop-types": "^0.4.13",
-    "clone": "^2.1.2",
-    "mixinable": "^4.0.0",
-    "prop-types": "^15.6.2",
-    "serialize-javascript": "^1.4.0"
-  },
-  "peerDependencies": {
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0",
-    "react-helmet": "^5.2.0",
-    "react-router-dom": "^4.2.2"
+    "@untool/core": "0.26.0",
+    "@untool/express": "0.26.0",
+    "@untool/react": "0.26.0",
+    "@untool/webpack": "0.26.0",
+    "@untool/yargs": "0.26.0"
   },
   "engines": {
     "node": ">8.6.0"

@@ -1,11 +1,9 @@
 'use strict';
 
 exports.resolve = function resolve(...args) {
-  const basePath = exports.stripTrailingSlash(args.shift());
-  const pathSegments = args.map((segment) =>
-    segment.replace(/(?:^\/+|\/+$)/g, '')
-  );
-  return [basePath].concat(pathSegments).join('/');
+  const basePath = exports.trimTrailingSlash(args.shift());
+  const pathSegments = args.map((segment) => exports.trimSlashes(segment));
+  return [basePath, ...pathSegments].join('/');
 };
 
 exports.resolveFolder = function resolveFolder(...args) {
@@ -17,7 +15,7 @@ exports.resolveAbsolute = function resolveAbsolute(...args) {
 };
 
 exports.resolveRelative = function resolveRelative(...args) {
-  return exports.stripLeadingSlash(exports.resolve(...args));
+  return exports.trimLeadingSlash(exports.resolve(...args));
 };
 
 exports.resolveAbsoluteFolder = function resolveAbsoluteFolder(...args) {
@@ -25,7 +23,7 @@ exports.resolveAbsoluteFolder = function resolveAbsoluteFolder(...args) {
 };
 
 exports.resolveRelativeFolder = function resolveRelativeFolder(...args) {
-  return exports.stripLeadingSlash(exports.resolveFolder(...args));
+  return exports.trimLeadingSlash(exports.resolveFolder(...args));
 };
 
 exports.addLeadingSlash = function addLeadingSlash(location) {
@@ -36,14 +34,14 @@ exports.addTrailingSlash = function addTrailingSlash(location) {
   return location.replace(/\/*$/, '/');
 };
 
-exports.stripLeadingSlash = function stripLeadingSlash(location) {
+exports.trimLeadingSlash = function trimLeadingSlash(location) {
   return location.replace(/^\/+/, '');
 };
 
-exports.stripTrailingSlash = function stripTrailingSlash(location) {
+exports.trimTrailingSlash = function trimTrailingSlash(location) {
   return location.replace(/\/+$/, '');
 };
 
 exports.trimSlashes = function trimSlashes(location) {
-  return exports.stripLeadingSlash(exports.stripTrailingSlash(location));
+  return exports.trimLeadingSlash(exports.trimTrailingSlash(location));
 };

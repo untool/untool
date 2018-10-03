@@ -6,20 +6,19 @@ const {
   internal: { environmentalize },
 } = require('@untool/core');
 
-const getConfig = (type, config) =>
-  JSON.stringify(
-    Object.assign({}, config._config, { mixins: undefined })
-  ).replace(
+// eslint-disable-next-line no-unused-vars
+const getConfig = (type, { _config: { mixins: _, ...config } }) =>
+  JSON.stringify(config).replace(
     new RegExp(`"${config.rootDir}(.*?)"`, 'g'),
     type === 'server' ? 'expand(".$1")' : '".$1"'
   );
 
-const getMixins = (type, config) =>
-  `[${(config.mixins[type] || [])
+const getMixins = (type, { mixins }) =>
+  `[${(mixins[type] || [])
     .map((mixin) => `((m) => m.default || m )(require('${mixin}'))`)
     .join(',')}]`;
 
-const injectVariables = (source, { type, config, mainMethod = 'render' }) =>
+const injectVariables = (source, { type, config }) =>
   source.replace(
     '/* this will be replaced by our webpack loader */',
     [
@@ -35,7 +34,6 @@ const injectVariables = (source, { type, config, mainMethod = 'render' }) =>
       `const environmentalize = ${environmentalize.toString()};`,
       `const getConfig = () => environmentalize(${getConfig(type, config)});`,
       `const getMixins = () => ${getMixins(type, config)};`,
-      `const mainMethod = ${JSON.stringify(mainMethod)};`,
     ].join('\n')
   );
 
