@@ -14,9 +14,14 @@ module.exports = (mode, { configureServer }) => {
     (result, key) => ({ ...result, [key]: [] }),
     { phases }
   );
+  const app = express();
   const router = new Router();
-  const app = configureServer(express(), middlewares, mode).use(router);
+
+  configureServer(app, middlewares, mode);
+  app.use(router);
+
   debug(middlewares);
+
   phases.forEach((phase) =>
     middlewares[phase].forEach((middleware) =>
       (/final/.test(phase) ? app : router).use(
@@ -24,5 +29,6 @@ module.exports = (mode, { configureServer }) => {
       )
     )
   );
+
   return app;
 };
