@@ -9,7 +9,7 @@ const { Mixin } = require('@untool/core');
 
 module.exports = class CLIMixin extends Mixin {
   registerCommands(yargs) {
-    return yargs.option('quiet', {
+    yargs.option('quiet', {
       alias: 'q',
       description: 'Silence log output',
       type: 'boolean',
@@ -57,7 +57,7 @@ module.exports = class CLIMixin extends Mixin {
   inspectServer(server) {
     const { quiet } = this.options;
     if (!quiet) {
-      const { name, https, basePath: pathname } = this.config;
+      const { name, https, basePath: pathname = '' } = this.config;
       const { port } = server.address();
       const hostname = 'localhost';
       const protocol = https ? 'https' : 'http';
