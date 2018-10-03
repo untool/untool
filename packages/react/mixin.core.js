@@ -14,6 +14,5 @@ module.exports = class ReactMixin extends Mixin {
       );
     }
     jsLoaderConfig.options.plugins.push(require.resolve('./lib/babel'));
-    return webpackConfig;
   }
 };
