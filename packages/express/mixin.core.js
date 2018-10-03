@@ -1,13 +1,10 @@
 'use strict';
 
 const {
-  sync: { sequence, pipe, callable: callableSync },
-  async: { callable: callableAsync },
+  sync: { sequence, callable },
 } = require('mixinable');
 
 const { Mixin } = require('@untool/core');
-
-const { resolveAbsolute, resolveRelative } = require('./lib/uri');
 
 class ExpressMixin extends Mixin {
   runServer(mode) {
@@ -20,40 +17,23 @@ class ExpressMixin extends Mixin {
     return create(mode, this);
   }
   createRenderer() {
-    const create = require('./lib/static');
+    const create = require('./lib/render');
     const app = this.createServer('static');
     return create(app);
-  }
-  renderLocations() {
-    const indexFile = require('directory-index');
-    const render = this.createRenderer();
-    const { basePath, locations } = this.config;
-    return Promise.all(
-      locations
-        .map((location) => resolveAbsolute(basePath, location))
-        .map((location) => render(location))
-    ).then((responses) =>
-      responses.reduce((result, response, index) => {
-        const key = resolveRelative(basePath, indexFile(locations[index]));
-        return { ...result, [key]: response };
-      }, {})
-    );
   }
   configureServer(app, middlewares, mode) {
     if (mode !== 'static') {
       const helmet = require('helmet');
       const express = require('express');
       const mime = require('mime');
-      const { buildDir } = this.config;
+      const { distDir } = this.config;
       middlewares.initial.push(helmet());
       middlewares.files.push(
-        express.static(buildDir, {
+        express.static(distDir, {
           maxAge: '1y',
           setHeaders: (res, filePath) => {
-            if (
-              (res && res.locals && res.locals.noCache) ||
-              mime.getType(filePath) === 'text/html'
-            ) {
+            const { noCache } = res.locals || {};
+            if (noCache || mime.getType(filePath) === 'text/html') {
               helmet.noCache()(null, res, () => {});
             }
           },
@@ -62,11 +42,10 @@ class ExpressMixin extends Mixin {
       );
       middlewares.postfiles.push(helmet.noCache());
     }
-    return app;
   }
   registerCommands(yargs) {
     const { name } = this.config;
-    return yargs.command(
+    yargs.command(
       this.configureCommand({
         command: 'serve',
         describe: `Serve ${name}`,
@@ -88,12 +67,11 @@ class ExpressMixin extends Mixin {
 }
 
 ExpressMixin.strategies = {
-  configureServer: pipe,
+  configureServer: sequence,
   inspectServer: sequence,
-  runServer: callableSync,
-  createServer: callableSync,
-  createRenderer: callableSync,
-  renderLocations: callableAsync,
+  runServer: callable,
+  createServer: callable,
+  createRenderer: callable,
 };
 
 module.exports = ExpressMixin;
