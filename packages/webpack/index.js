@@ -5,7 +5,7 @@ const { bootstrap } = require('@untool/core');
 const createWebpackMiddleware = require('./lib/middleware/render');
 const createStatsMiddleware = require('./lib/middleware/stats');
 
-const RenderPlugin = require('./lib/plugins/render');
+const { RenderPlugin } = require('./lib/plugins/render');
 const { StatsPlugin, StatsFilePlugin } = require('./lib/plugins/stats');
 
 const runtimeLoader = require('./lib/utils/loader');
