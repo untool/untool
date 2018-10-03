@@ -57,7 +57,7 @@ runServer();
 
 The above example is functionally equivalent to directly working with `@untool/core`'s [`bootstrap`](https://github.com/untool/untool/blob/master/packages/core/README.md#bootstrapconfigoverrides-options-build-only) export.
 
-### `configureServer(app, middlewares, mode)` ([pipe](https://github.com/untool/mixinable/blob/master/README.md#definepipe))
+### `configureServer(app, middlewares, mode)` ([sequence](https://github.com/untool/mixinable/blob/master/README.md#defineparallel))
 
 This is a mixin hook defined by `@untool/express` that allows you to register Express middlewares and generally do whatever you like with `app`, the [`Application`](https://expressjs.com/en/api.html#app) instance it is using under the hood.
 
@@ -104,25 +104,16 @@ If you need a fully configured render function like the one used in `renderLocat
 
 _This method is also exported so that you can use it in your own, non-mixin code. Import it like so: `import { createRenderer } from '@untool/express';`. In this mode, it also accepts another argument, `options`, which you can pass any CLI argument to._
 
-### `renderLocations()` ([callable](https://github.com/untool/mixinable/blob/master/README.md#defineoverride))
-
-With this method you can render HTML pages for all configured [`locations`](https://github.com/untool/untool/blob/master/packages/express/README.md#locations) using a simulated Express server configured using `@untool/express`' [settings](https://github.com/untool/untool/blob/master/packages/express/README.md#settings). This method returns a `Promise` resolving to a hash containing the rendered paths.
-
-_This method is also exported so that you can use it in your own, non-mixin code. Import it like so: `import { renderLocations } from '@untool/express';`. In this mode, it also accepts another argument, `options`, which you can pass any CLI argument to._
-
 ## Settings
 
 `@untool/express` defines a couple of settings as a preset for `@untool/core`'s [configuration engine](https://github.com/untool/untool/blob/master/packages/core/README.md#configuration). You can manage and access them using the mechanisms outlined there.
 
-| Property    | Type               | Default            |
-| ----------- | ------------------ | ------------------ |
-| `https`     | `boolean`/`Object` | `false`            |
-| `host`      | `string`           | `[HOST]`           |
-| `port`      | `number`           | `[PORT]`           |
-| `locations` | `[string]`         | `[]`               |
-| `basePath`  | `string`           | `''`               |
-| `assetPath` | `string`           | `'<basePath>'`     |
-| `buildDir`  | `string`           | `'<rootDir>/dist'` |
+| Property  | Type               | Default            |
+| --------- | ------------------ | ------------------ |
+| `https`   | `boolean`/`Object` | `false`            |
+| `host`    | `string`           | `[HOST]`           |
+| `port`    | `number`           | `[PORT]`           |
+| `distDir` | `string`           | `'<rootDir>/dist'` |
 
 ### `https`
 
@@ -157,42 +148,12 @@ The [TCP port](https://en.wikipedia.org/wiki/Transmission_Control_Protocol#TCP_p
 }
 ```
 
-### `locations`
-
-Using this setting, you can define the locations used for prerendering of static HTML pages at build time. Simply list all URL paths you want to prerender and call `un build -ps`.
-
-```json
-{
-  "locations": ["/foo", "/bar"]
-}
-```
-
-### `basePath`
-
-This is the URL base path, i.e. subfolder, your application will be served from.
-
-```json
-{
-  "basePath": "<name>"
-}
-```
-
-### `assetPath`
-
-This is the URL base path, i.e. subfolder, your application's assets will be served from.
-
-```json
-{
-  "assetPath": "<basePath>/assets"
-}
-```
-
-### `buildDir`
+### `distDir`
 
 This is the file system path, i.e. subfolder, your application's assets will be served from.
 
 ```json
 {
-  "buildDir": "<rootDir>/build"
+  "distDir": "<rootDir>/build"
 }
 ```

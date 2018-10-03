@@ -14,9 +14,6 @@ const configure = (config, options) => ({
   createRenderer(...args) {
     return bootstrap(config, options).createRenderer(...args);
   },
-  renderLocations(...args) {
-    return bootstrap(config, options).renderLocations(...args);
-  },
   configure,
   internal: { uri },
 });
