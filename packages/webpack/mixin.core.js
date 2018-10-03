@@ -5,7 +5,7 @@ const { join } = require('path');
 
 const debug = require('debug')('untool:webpack:stats');
 const {
-  sync: { pipe, sequence, callable: callableSync },
+  sync: { sequence, callable: callableSync },
   async: { callable: callableAsync },
 } = require('mixinable');
 
@@ -68,7 +68,8 @@ class WebpackMixin extends Mixin {
           throw new Error(`Can't get build config ${baseConfig || target}`);
       }
     })();
-    return this.configureBuild(webpackConfig, loaderConfigs, target);
+    this.configureBuild(webpackConfig, loaderConfigs, target);
+    return webpackConfig;
   }
   configureBuild(webpackConfig, loaderConfigs, target) {
     const { plugins, module, resolve } = webpackConfig;
@@ -90,11 +91,10 @@ class WebpackMixin extends Mixin {
       loaderConfig.options.type = 'browser';
     }
     if (target === 'build' && this.options.static) {
-      const RenderPlugin = require('./lib/plugins/render');
+      const { RenderPlugin } = require('./lib/plugins/render');
       plugins.push(new RenderPlugin(this));
     }
     module.rules.push(loaderConfig);
-    return webpackConfig;
   }
   configureServer(app, middlewares, mode) {
     if (mode === 'develop') {
@@ -128,11 +128,10 @@ class WebpackMixin extends Mixin {
     }
     const createStatsMiddleware = require('./lib/middleware/stats');
     middlewares.preroutes.push(createStatsMiddleware(this));
-    return app;
   }
   registerCommands(yargs) {
     const { name } = this.config;
-    return yargs
+    yargs
       .command(
         this.configureCommand({
           command: 'start',
@@ -224,7 +223,7 @@ class WebpackMixin extends Mixin {
 }
 
 WebpackMixin.strategies = {
-  configureBuild: pipe,
+  configureBuild: sequence,
   inspectBuild: sequence,
   getBuildConfig: callableSync,
   build: callableAsync,
