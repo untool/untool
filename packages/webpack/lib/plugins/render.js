@@ -8,9 +8,8 @@ module.exports = class RenderPlugin {
       compiler.hooks.compilation.tap('RenderPlugin', (compilation) =>
         compilation.hooks.additionalAssets.tapPromise('RenderPlugin', () =>
           renderLocations().then((pages) =>
-            Object.keys(pages).forEach(
-              (location) =>
-                (compilation.assets[location] = new RawSource(pages[location]))
+            Object.entries(pages).forEach(
+              ([path, page]) => (compilation.assets[path] = new RawSource(page))
             )
           )
         )

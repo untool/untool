@@ -8,6 +8,7 @@ const { default: StaticRouter } = require('react-router-dom/es/StaticRouter');
 const { Helmet } = require('react-helmet');
 
 const {
+  override,
   async: { compose, parallel, pipe },
 } = require('mixinable');
 
@@ -19,19 +20,15 @@ class ReactMixin extends Mixin {
   constructor(config, element, options) {
     super(config);
     this.element = element;
-    this.modules = [];
-    this.options = Object.assign(
-      {
-        context: { modules: this.modules },
-        basename: config.basePath,
-      },
-      options && options.router
-    );
+    const { basePath: basename } = config;
+    const modules = (this.modules = []);
+    const context = (this.context = { modules });
+    this.options = { ...(options && options.router), basename, context };
   }
   procureAssets() {
     const { entryFiles, vendorFiles, moduleFileMap } = this.stats;
     const moduleFiles = this.modules.reduce(
-      (result, module) => result.concat(moduleFileMap[module]),
+      (result, module) => [...result, ...moduleFileMap[module]],
       []
     );
     return [
@@ -54,17 +51,16 @@ class ReactMixin extends Mixin {
         { css: [], js: [] }
       );
   }
-  procureTemplateData(data) {
+  procureTemplateData({ helmet, ...data }) {
     const { name: mountpoint, _env } = this.config;
-    const { helmet } = data;
-    const fragments = Object.keys(helmet).reduce(
-      (result, key) => Object.assign(result, { [key]: helmet[key].toString() }),
+    const assets = this.procureAssets();
+    const fragments = Object.entries(helmet).reduce(
+      (result, [key, value]) => ({ ...result, [key]: value.toString() }),
       { headPrefix: '', headSuffix: '' }
     );
-    const assets = this.procureAssets();
-    return this.getTemplateData(
-      Object.assign(data, { assets, mountpoint, fragments, globals: { _env } })
-    );
+    const globals = { _env };
+    const templateData = { ...data, mountpoint, assets, fragments, globals };
+    return this.getTemplateData(templateData);
   }
   bootstrap(req, res) {
     this.options.location = req.path;
@@ -83,15 +79,14 @@ class ReactMixin extends Mixin {
       .then(({ element, data: fetchedData }) => {
         const markup = renderToString(element);
         const helmet = Helmet.renderStatic();
-        const { context } = this.options;
-        if (context.miss) {
+        if (this.context.miss) {
           next();
-        } else if (context.url) {
-          context.headers && res.set(context.headers);
-          res.redirect(context.status || 301, context.url);
+        } else if (this.context.url) {
+          this.context.headers && res.set(this.context.headers);
+          res.redirect(this.context.status || 301, this.context.url);
         } else {
-          context.headers && res.set(context.headers);
-          res.status(context.status || 200);
+          this.context.headers && res.set(this.context.headers);
+          res.status(this.context.status || 200);
           return this.procureTemplateData({ fetchedData, markup, helmet }).then(
             (templateData) => res.send(template(templateData))
           );
@@ -106,6 +101,7 @@ ReactMixin.strategies = {
   enhanceElement: compose,
   fetchData: pipe,
   getTemplateData: pipe,
+  render: override,
 };
 
 module.exports = ReactMixin;
