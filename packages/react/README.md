@@ -15,6 +15,20 @@ $ yarn add @untool/react react react-dom react-router-dom react-helmet
 # OR npm install @untool/react react react-dom react-router-dom react-helmet
 ```
 
+## `render(element, [options])`
+
+`render()` is `@untool/react`'s main export. You are expected to call it in your applications main entry file and it is essentialy a shorthand: it creates and bootstraps a core mixin container and calls its `render` method.
+
+`render` accepts two arguments: a react element and an optional options object. `@untool/react` will use the contents of `options.router` to configure the [React Router](https://github.com/ReactTraining/react-router) instances it controls.
+
+```javascript
+import React from 'react';
+import { render } from '@untool/react';
+export default render(<h1>hello world</h1>);
+```
+
+The `render` function serves two main purposes: 'universalifying' or 'isomorphizing' you application, i.e. making sure your app's code can run both on a server and in a browser, and integrating `untool`'s build and runtime environments.
+
 ## Components
 
 ### `<Miss />`
@@ -27,7 +41,7 @@ import { Miss } from '@untool/react';
 export default () => <Miss />;
 ```
 
-### `<Status code={418} />`
+### `<Status code />`
 
 This component enables you to instruct `@untool/react` to send a different HTTP status code than the default of 200. On the client side, it is effectively a no-op.
 
@@ -37,7 +51,7 @@ import { Status } from '@untool/react';
 export default () => <Status code={404} />;
 ```
 
-### `<Header name="X-Foo" value="Bar" />`
+### `<Header name value />`
 
 With this component, you can declaratively set arbitrary HTTP headers from your React application.
 
@@ -47,7 +61,7 @@ import { Header } from '@untool/react';
 export default () => <Header name="X-Foo" value="Bar" />;
 ```
 
-### `Import('./module'[, 'exportName'])`
+### `Import(module, [exportName])`
 
 Using the `Import` component, you can asynchronously require modules into your application to help you reduce asset sizes. It works similarly to [`react-loadable`](https://github.com/jamiebuilds/react-loadable), but is deeply integrated with `untool`.
 
@@ -85,7 +99,7 @@ export default () => <About loader={loader} render={render} />;
 
 ### `render([req, res, next])` ([override](https://github.com/untool/mixinable/blob/master/README.md#defineoverride))
 
-This method is being called from within `@untool/core` whenever you call its `render` method. In a server-side, i.e. Node.js, environment it receives the usual arguments any Express [middleware](https://expressjs.com/en/guide/writing-middleware.html) receives: `req`, `res`, and `next`. In a client-side, i.e. browser, environment it receives no arguments whatsoever.
+This method is being called from within `@untool/core` whenever you call the main `render` method. In a server-side, i.e. Node.js, environment it receives the usual arguments any Express [middleware](https://expressjs.com/en/guide/writing-middleware.html) receives: `req`, `res`, and `next`. In a client-side, i.e. browser, environment it receives no arguments whatsoever.
 
 ```javascript
 const { Mixin } = require('@untool/core');
