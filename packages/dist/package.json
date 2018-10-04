@@ -1,0 +1,36 @@
+{
+  "name": "untool",
+  "version": "0.26.0",
+  "description": "javascript tooling platform",
+  "jsnext": "lib/runtime.js",
+  "bin": {
+    "un": "lib/cli.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/untool/untool.git"
+  },
+  "author": "dmbch <daniel@dmbch.net>",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "bugs": {
+    "url": "https://github.com/untool/untool/issues"
+  },
+  "homepage": "https://github.com/untool/untool#readme",
+  "dependencies": {
+    "@untool/core": "0.26.0",
+    "@untool/express": "0.26.0",
+    "@untool/react": "0.26.0",
+    "@untool/webpack": "0.26.0",
+    "@untool/yargs": "0.26.0",
+    "mixinable": "^4.0.0"
+  },
+  "engines": {
+    "node": ">8.6.0"
+  }
+}

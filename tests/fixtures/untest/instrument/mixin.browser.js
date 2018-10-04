@@ -3,7 +3,7 @@
 
 const { decycle } = require('cycle');
 
-const { Mixin } = require('@untool/core');
+const { Mixin } = require('untool');
 
 const sanitize = (args) => JSON.parse(JSON.stringify(decycle(args)));
 
