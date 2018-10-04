@@ -1,6 +1,6 @@
 node_modules
-dist
 tests/fixtures/*-*
+tests/fixtures/*/dist
 *.sublime*
 *.log
 .DS_Store
