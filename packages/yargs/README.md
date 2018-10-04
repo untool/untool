@@ -18,16 +18,16 @@ $ yarn add @untool/yargs # OR npm install @untool/yargs
 
 `@untool/yargs` only has a couple of semi-private exports, but it exposes a couple of mixin hooks other mixins can implement, allowing them to alter or extend its functionality. These hooks will be called either by `@untool/yargs` itself or by others.
 
-### `registerCommands(yargs)` ([pipe](https://github.com/untool/mixinable/blob/master/README.md#definepipe))
+### `registerCommands(yargs)` ([sequence](https://github.com/untool/mixinable/blob/master/README.md#defineparallel))
 
-This is the most relevant hook provided by `@untool/yargs`: it enables other mixins to register their respective commands. Implementations of this mixin method will receive two arguments: a [`yargs`](http://yargs.js.org) instance and the command line arguments `@untool/yargs` received. Implementations need to return the `yargs` instance that they were called with.
+This is the most relevant hook provided by `@untool/yargs`: it enables other mixins to register their respective commands. Implementations of this mixin method will receive a single argument: a [`yargs`](http://yargs.js.org) instance.
 
 ```javascript
 const { Mixin } = require('@untool/core');
 
 module.exports = class FooMixin extends Mixin {
   registerCommands(yargs) {
-    return yargs.command(
+    yargs.command(
       this.configureCommand({
         command: 'foo',
         builder: {},
@@ -38,7 +38,7 @@ module.exports = class FooMixin extends Mixin {
 };
 ```
 
-### `configureCommand(definition)` ([pipe](https://github.com/untool/mixinable/blob/master/README.md#definepipe))
+### `configureCommand(definition)` ([sequence](https://github.com/untool/mixinable/blob/master/README.md#defineparallel))
 
 By implemention this method, your mixin can intercept and alter command configuration. Its main purpose is to enable you to add arguments to commands defined by other mixins.
 
@@ -55,7 +55,6 @@ module.exports = class FooBarMixin extends Mixin {
         type: 'boolean',
       };
     }
-    return definition;
   }
 };
 ```
