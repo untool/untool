@@ -19,7 +19,7 @@ const configure = (config, options) => ({
       }
       process.on('uncaughtException', handleError);
       process.on('unhandledRejection', handleError);
-      process.nextTick(() =>
+      process.nextTick(() => {
         registerCommands(
           yargs
             .version(false)
@@ -29,8 +29,9 @@ const configure = (config, options) => ({
             .strict()
             .demandCommand(1, '')
             .check(handleArguments)
-        ).parse()
-      );
+        );
+        yargs.parse();
+      });
     } catch (error) {
       // eslint-disable-next-line no-console
       console.error(error.stack ? error.stack.toString() : error.toString());

@@ -1,7 +1,7 @@
 'use strict';
 
 const {
-  sync: { pipe, sequence, override },
+  sync: { sequence, override },
 } = require('mixinable');
 
 const { Mixin } = require('@untool/core');
@@ -15,8 +15,8 @@ class YargsMixin extends Mixin {
 }
 
 YargsMixin.strategies = {
-  registerCommands: pipe,
-  configureCommand: pipe,
+  registerCommands: sequence,
+  configureCommand: (...args) => sequence(...args) && args[1],
   handleArguments: sequence,
   handleError: override,
 };
