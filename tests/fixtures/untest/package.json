@@ -1,15 +1,10 @@
 {
   "name": "untest",
-  "license": "MIT",
+  "dependencies": {
+    "untool": "*"
+  },
   "untool": {
     "locations": ["/", "/about"],
     "mixins": ["./instrument"]
-  },
-  "dependencies": {
-    "@untool/core": "*",
-    "@untool/yargs": "*",
-    "@untool/express": "*",
-    "@untool/react": "*",
-    "@untool/webpack": "*"
   }
 }
