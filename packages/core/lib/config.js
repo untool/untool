@@ -4,7 +4,7 @@ const debug = require('debug')('untool:config');
 
 const { createLoader } = require('./loader');
 const { createResolver } = require('./resolver');
-const { placeholdify } = require('./utils');
+const { placeholdify, environmentalize } = require('./utils');
 
 const defaultNamespace = process.env.UNTOOL_NSP || 'untool';
 const defaultMixinTypes = {
@@ -28,5 +28,8 @@ exports.getConfig = ({
     mixins: resolveMixins(rootDir, mixins),
   };
   debug(config);
-  return config;
+  return environmentalize(config);
 };
+
+exports.getMixins = (config) =>
+  config.mixins.core.map((mixin) => require(mixin));
