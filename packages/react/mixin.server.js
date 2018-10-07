@@ -19,7 +19,7 @@ const template = require('./lib/template');
 
 class ReactMixin extends Mixin {
   constructor(config, element, options) {
-    super(config);
+    super(config, options);
     this.element = element;
     const { basePath: basename } = config;
     const modules = (this.modules = []);
