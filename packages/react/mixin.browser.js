@@ -15,7 +15,7 @@ const { Mixin } = require('@untool/core');
 
 class ReactMixin extends Mixin {
   constructor(config, element, options) {
-    super(config);
+    super(config, options);
     this.element = element;
     const { basePath: basename } = config;
     this.options = { ...(options && options.router), basename };

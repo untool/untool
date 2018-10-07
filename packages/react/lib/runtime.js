@@ -6,13 +6,13 @@ const { default: withRouter } = require('react-router-dom/es/withRouter');
 
 const { bootstrap } = require('@untool/core');
 
-exports.render = function render(...bootstrapArgs) {
-  return function render(...renderArgs) {
-    const { render } = bootstrap(...bootstrapArgs);
+exports.render = function render(element, options) {
+  return function render(...args) {
+    const { render } = bootstrap({}, element, options);
     if (!render) {
       throw new Error("Can't use @untool/react mixin");
     }
-    return render(...renderArgs);
+    return render(...args);
   };
 };
 
