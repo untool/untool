@@ -72,42 +72,43 @@ class WebpackMixin extends Mixin {
     return webpackConfig;
   }
   configureBuild(webpackConfig, loaderConfigs, target) {
-    const { plugins, module, resolve } = webpackConfig;
-    const shimPath = require.resolve('./lib/shims/runtime');
-    const loaderConfig = {
-      test: shimPath,
+    const { plugins, module } = webpackConfig;
+    const configLoaderConfig = {
+      test: require.resolve('@untool/core/lib/config'),
       loader: require.resolve('./lib/utils/loader'),
       options: { type: target, config: this.config },
     };
-    resolve.alias['@untool/core'] = shimPath;
     if (target === 'node') {
       const { StatsFilePlugin } = require('./lib/plugins/stats');
       plugins.unshift(new StatsFilePlugin(this));
-      loaderConfig.options.type = 'server';
+      configLoaderConfig.options.type = 'server';
     }
     if (target === 'develop' || target === 'build') {
       const { StatsPlugin } = require('./lib/plugins/stats');
       plugins.unshift(new StatsPlugin(this));
-      loaderConfig.options.type = 'browser';
+      configLoaderConfig.options.type = 'browser';
     }
     if (target === 'build' && this.options.static) {
       const { RenderPlugin } = require('./lib/plugins/render');
       plugins.push(new RenderPlugin(this));
     }
-    module.rules.push(loaderConfig);
+    module.rules.push(configLoaderConfig);
   }
   configureServer(app, middlewares, mode) {
     if (mode === 'develop') {
+      const webpack = require('webpack');
+      const createWebpackDevMiddleware = require('webpack-dev-middleware');
+      const createWebpackHotMiddleware = require('webpack-hot-middleware');
       const webpackDevelopConfig = this.getBuildConfig('develop');
-      const compiler = require('webpack')(webpackDevelopConfig);
+      const compiler = webpack(webpackDevelopConfig);
       middlewares.initial.push(
-        require('webpack-dev-middleware')(compiler, {
+        createWebpackDevMiddleware(compiler, {
           noInfo: true,
           logLevel: 'silent',
           publicPath: webpackDevelopConfig.output.publicPath,
           watchOptions: webpackDevelopConfig.watchOptions,
         }),
-        require('webpack-hot-middleware')(compiler, { log: false })
+        createWebpackHotMiddleware(compiler, { log: false })
       );
     }
     if (mode === 'static' || mode === 'develop') {
