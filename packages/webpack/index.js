@@ -8,7 +8,7 @@ const createStatsMiddleware = require('./lib/middleware/stats');
 const { RenderPlugin } = require('./lib/plugins/render');
 const { StatsPlugin, StatsFilePlugin } = require('./lib/plugins/stats');
 
-const runtimeLoader = require('./lib/utils/loader');
+const configLoader = require('./lib/utils/loader');
 const { isESNext, isExternal } = require('./lib/utils/helpers');
 const { Resolvable } = require('./lib/utils/resolvable');
 
@@ -28,7 +28,7 @@ const configure = (config, options) => ({
     RenderPlugin,
     StatsPlugin,
     StatsFilePlugin,
-    runtimeLoader,
+    configLoader,
     isESNext,
     isExternal,
     Resolvable,
