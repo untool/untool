@@ -33,6 +33,7 @@
     "mime": "^2.2.2",
     "mixinable": "^4.0.0",
     "node-mocks-http": "^1.7.0",
+    "portfinder": "^1.0.17",
     "supports-color": "^5.4.0"
   },
   "engines": {

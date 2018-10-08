@@ -3,9 +3,10 @@
 const { readFileSync: readFile } = require('fs');
 const { join } = require('path');
 
-const { createServer: createNetServer } = require('net');
 const { createServer: createHTTPServer } = require('http');
 const { createServer: createHTTPSServer } = require('https');
+
+const portfinder = require('portfinder');
 
 const createServer = (app, https) =>
   https
@@ -22,21 +23,10 @@ const createServer = (app, https) =>
       )
     : createHTTPServer(app);
 
-const getPort = (host, port) => {
-  const findPort = (host, port, max) =>
-    new Promise((resolve, reject) => {
-      max = max || Math.min(65535, port + 50);
-      if (port > max) {
-        reject(new Error('unable to open free port'));
-      } else {
-        process.nextTick(() => {
-          const server = createNetServer().unref();
-          server.on('error', () => resolve(findPort(host, port + 1, max)));
-          server.listen(port, host, () => server.close(() => resolve(port)));
-        });
-      }
-    });
-  return findPort(host, Number(port || '8080'), Number(port));
+const getPort = (port) => {
+  if (port) return Promise.resolve(port);
+  portfinder.basePort = 8080;
+  return portfinder.getPortPromise();
 };
 
 module.exports = (app, { config, inspectServer, handleError }) => {
