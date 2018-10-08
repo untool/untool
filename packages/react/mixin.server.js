@@ -1,12 +1,12 @@
 'use strict';
 
 const { extname } = require('path');
+const { parse } = require('url');
 
 const { createElement } = require('react');
 const { renderToString } = require('react-dom/server');
 const { default: StaticRouter } = require('react-router-dom/es/StaticRouter');
 const { Helmet } = require('react-helmet');
-const url = require('url');
 
 const {
   async: { compose, parallel, pipe },
@@ -68,11 +68,8 @@ class ReactMixin extends Mixin {
     );
   }
   bootstrap(req, res) {
-    const { pathname, search } = url.parse(req.url);
-    this.options.location = {
-      pathname,
-      search,
-    };
+    const { pathname, search } = parse(req.url);
+    this.options.location = { pathname, search };
     this.stats = res.locals.stats;
   }
   enhanceElement(element) {
