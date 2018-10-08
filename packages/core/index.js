@@ -1,14 +1,16 @@
 'use strict';
 
 const debug = require('debug')('untool:core');
+const isPlainObject = require('is-plain-object');
 const define = require('mixinable');
 
 const { getConfig, getMixins } = require('./lib/config');
 
 exports.Mixin = class Mixin {
-  constructor(config, options = {}) {
+  constructor(config, ...args) {
+    const options = args.slice(-1);
     this.config = config;
-    this.options = options;
+    this.options = isPlainObject(options) ? options : {};
   }
 };
 
