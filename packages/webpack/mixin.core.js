@@ -52,6 +52,9 @@ class WebpackMixin extends Mixin {
       })
     ).then((stats) => void this.inspectBuild(stats, webpackConfig) || stats);
   }
+  getBuildStats() {
+    return Promise.resolve(this.stats);
+  }
   getBuildConfig(target, baseConfig) {
     const { loaderConfigs = {}, ...webpackConfig } = (() => {
       switch (baseConfig || target) {
@@ -226,6 +229,7 @@ class WebpackMixin extends Mixin {
 WebpackMixin.strategies = {
   configureBuild: sequence,
   inspectBuild: sequence,
+  getBuildStats: callableAsync,
   getBuildConfig: callableSync,
   build: callableAsync,
   clean: callableAsync,
