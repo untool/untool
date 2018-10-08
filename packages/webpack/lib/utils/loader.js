@@ -30,7 +30,7 @@ module.exports = function configLoader() {
     `const override = merge.bind(null, ${getConfig(type, config)});`,
     `const functions = [override, placeholdify, environmentalize];`,
     `const getConfig = functions.reduce.bind(functions, (res, fn) => fn(res));`,
-    `exports.getConfig = (overrides) => getConfig(overrides);`,
+    `exports.getConfig = (overrides = {}) => getConfig(overrides);`,
     `exports.getMixins = () => ${getMixins(type, config)};`,
   ].join('\n');
 };
