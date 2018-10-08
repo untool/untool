@@ -3,7 +3,11 @@
 const { existsSync: exists } = require('fs');
 const { join } = require('path');
 
-const debug = require('debug')('untool:webpack:stats');
+const debug = require('debug');
+const debugStats = debug('untool:webpack:stats');
+const debugConfig = (target, config) =>
+  debug(`untool:webpack:config:${target}`)(config);
+
 const {
   sync: { sequence, callable: callableSync },
   async: { callable: callableAsync },
@@ -72,6 +76,7 @@ class WebpackMixin extends Mixin {
       }
     })();
     this.configureBuild(webpackConfig, loaderConfigs, target);
+    debugConfig(target, webpackConfig);
     return webpackConfig;
   }
   configureBuild(webpackConfig, loaderConfigs, target) {
@@ -220,7 +225,7 @@ class WebpackMixin extends Mixin {
     this.options = { ...this.options, ...argv };
   }
   inspectBuild(stats) {
-    debug(
+    debugStats(
       stats.toString({ chunks: false, modules: false, entrypoints: false })
     );
   }
