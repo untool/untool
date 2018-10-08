@@ -21,7 +21,7 @@ exports.getConfig = ({
   untoolNamespace: namespace = defaultNamespace,
   untoolMixinTypes: mixinTypes = defaultMixinTypes,
   ...overrides
-}) => {
+} = {}) => {
   const pkgFile = findUp('package.json');
   const pkgData = require(pkgFile);
   const rootDir = dirname(pkgFile);
