@@ -14,7 +14,7 @@ exports.Mixin = class Mixin {
   }
 };
 
-exports.bootstrap = function bootstrap(overrides = {}, ...args) {
+exports.initialize = function initialize(overrides = {}, ...args) {
   const config = getConfig(overrides);
   const mixins = getMixins(config);
   const strategies = {
