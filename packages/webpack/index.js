@@ -1,6 +1,6 @@
 'use strict';
 
-const { bootstrap } = require('@untool/core');
+const { initialize } = require('@untool/core');
 
 const createWebpackMiddleware = require('./lib/middleware/render');
 const createStatsMiddleware = require('./lib/middleware/stats');
@@ -14,13 +14,13 @@ const { Resolvable } = require('./lib/utils/resolvable');
 
 const configure = (config, options) => ({
   clean(...args) {
-    return bootstrap(config, options).clean(...args);
+    return initialize(config, options).clean(...args);
   },
   build(...args) {
-    return bootstrap(config, options).build(...args);
+    return initialize(config, options).build(...args);
   },
   getBuildConfig(...args) {
-    return bootstrap(config, options).getBuildConfig(...args);
+    return initialize(config, options).getBuildConfig(...args);
   },
   internal: {
     createWebpackMiddleware,

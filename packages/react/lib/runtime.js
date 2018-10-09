@@ -4,11 +4,11 @@
 const { createElement, Component } = require('react');
 const { default: withRouter } = require('react-router-dom/es/withRouter');
 
-const { bootstrap } = require('@untool/core');
+const { initialize } = require('@untool/core');
 
 exports.render = function render(element, options) {
   return function render(...args) {
-    const { render } = bootstrap({}, element, options);
+    const { render } = initialize({}, element, options);
     if (!render) {
       throw new Error("Can't use @untool/react mixin");
     }
