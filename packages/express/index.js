@@ -1,18 +1,18 @@
 'use strict';
 
-const { bootstrap } = require('@untool/core');
+const { intialize } = require('@untool/core');
 
 const uri = require('./lib/uri');
 
 const configure = (config, options) => ({
   runServer(...args) {
-    return bootstrap(config, options).runServer(...args);
+    return intialize(config, options).runServer(...args);
   },
   createServer(...args) {
-    return bootstrap(config, options).createServer(...args);
+    return intialize(config, options).createServer(...args);
   },
   createRenderer(...args) {
-    return bootstrap(config, options).createRenderer(...args);
+    return intialize(config, options).createRenderer(...args);
   },
   configure,
   internal: { uri },

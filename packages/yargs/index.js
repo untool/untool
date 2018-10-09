@@ -3,7 +3,7 @@
 
 const createYargs = require('yargs');
 
-const { bootstrap } = require('@untool/core');
+const { initialize } = require('@untool/core');
 
 const configure = (config, options) => ({
   run(...args) {
@@ -12,7 +12,7 @@ const configure = (config, options) => ({
       if (yargs.argv.production || yargs.argv.p) {
         process.env.NODE_ENV = 'production';
       }
-      const core = bootstrap(config, options);
+      const core = initialize(config, options);
       const { registerCommands, handleArguments, handleError } = core;
       if (!(registerCommands && handleArguments && handleError)) {
         throw new Error("Can't use @untool/yargs mixin");
