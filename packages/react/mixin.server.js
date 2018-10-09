@@ -26,7 +26,7 @@ class ReactMixin extends Mixin {
     const context = (this.context = { modules });
     this.options = { ...(options && options.router), basename, context };
   }
-  procureAssets() {
+  determineAssets() {
     const { entryFiles, vendorFiles, moduleFileMap } = this.stats;
     const moduleFiles = this.modules.reduce(
       (result, module) => [...result, ...moduleFileMap[module]],
@@ -52,16 +52,15 @@ class ReactMixin extends Mixin {
         { css: [], js: [] }
       );
   }
-  procureTemplateData({ helmet, ...data }) {
+  getInitialTemplateData({ helmet, ...data }) {
     const { name: mountpoint, _env } = this.config;
-    const assets = this.procureAssets();
+    const assets = this.determineAssets();
     const fragments = Object.entries(helmet).reduce(
       (result, [key, value]) => ({ ...result, [key]: value.toString() }),
       { headPrefix: '', headSuffix: '' }
     );
     const globals = { _env };
-    const templateData = { ...data, mountpoint, assets, fragments, globals };
-    return this.getTemplateData(templateData);
+    return { ...data, mountpoint, assets, fragments, globals };
   }
   bootstrap(req, res) {
     const { pathname, search } = parse(req.url);
@@ -79,8 +78,11 @@ class ReactMixin extends Mixin {
         this.fetchData({}, element).then((data) => ({ element, data }))
       )
       .then(({ element, data: fetchedData }) => {
-        const markup = renderToString(element);
-        const helmet = Helmet.renderStatic();
+        const initialData = this.getInitialTemplateData({
+          markup: renderToString(element),
+          helmet: Helmet.renderStatic(),
+          fetchedData,
+        });
         if (this.context.miss) {
           next();
         } else if (this.context.url) {
@@ -89,8 +91,8 @@ class ReactMixin extends Mixin {
         } else {
           this.context.headers && res.set(this.context.headers);
           res.status(this.context.status || 200);
-          return this.procureTemplateData({ fetchedData, markup, helmet }).then(
-            (templateData) => res.send(template(templateData))
+          return this.getTemplateData(initialData).then((templateData) =>
+            res.send(template(templateData))
           );
         }
       })
