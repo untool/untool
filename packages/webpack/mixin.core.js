@@ -36,15 +36,12 @@ class WebpackMixin extends Mixin {
   }
   build() {
     const webpack = require('webpack');
-    const webpackConfig = (({ static: isStatic }) => {
-      if (isStatic) {
-        return this.getBuildConfig('build');
-      } else {
-        return [this.getBuildConfig('build'), this.getBuildConfig('node')];
-      }
-    })(this.options);
+    const webpackConfigs = [];
+    this.collectBuildConfigs(webpackConfigs);
     return new Promise((resolve, reject) =>
-      webpack(webpackConfig).run((error, stats) => {
+      webpack(
+        webpackConfigs.length === 1 ? webpackConfigs[0] : webpackConfigs
+      ).run((error, stats) => {
         if (error) {
           reject(error);
         } else if (stats.hasErrors()) {
@@ -54,7 +51,7 @@ class WebpackMixin extends Mixin {
           resolve(stats);
         }
       })
-    ).then((stats) => void this.inspectBuild(stats, webpackConfig) || stats);
+    ).then((stats) => void this.inspectBuild(stats, webpackConfigs) || stats);
   }
   getBuildStats() {
     return Promise.resolve(this.stats);
@@ -78,6 +75,12 @@ class WebpackMixin extends Mixin {
     this.configureBuild(webpackConfig, loaderConfigs, target);
     debugConfig(target, webpackConfig);
     return webpackConfig;
+  }
+  collectBuildConfigs(webpackConfigs) {
+    webpackConfigs.push(this.getBuildConfig('build'));
+    if (!this.options.static) {
+      webpackConfigs.push(this.getBuildConfig('node'));
+    }
   }
   configureBuild(webpackConfig, loaderConfigs, target) {
     const { plugins, module } = webpackConfig;
@@ -232,6 +235,7 @@ class WebpackMixin extends Mixin {
 }
 
 WebpackMixin.strategies = {
+  collectBuildConfigs: sequence,
   configureBuild: sequence,
   inspectBuild: sequence,
   getBuildStats: callableAsync,
