@@ -8,7 +8,7 @@ const { createConfigLoader } = require('./loader');
 const { createMixinResolver } = require('./resolver');
 const { placeholdify, environmentalize } = require('./utils');
 
-const defaultNamespace = process.env.UNTOOL_NSP || 'untool';
+const defaultNamespace = 'untool';
 const defaultMixinTypes = {
   core: ['core'],
   browser: ['browser', 'runtime'],
