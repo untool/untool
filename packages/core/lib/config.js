@@ -4,8 +4,8 @@
 
 const debug = require('debug')('untool:config');
 
-const { createLoader } = require('./loader');
-const { createResolver } = require('./resolver');
+const { createConfigLoader } = require('./loader');
+const { createMixinResolver } = require('./resolver');
 const { placeholdify, environmentalize } = require('./utils');
 
 const defaultNamespace = process.env.UNTOOL_NSP || 'untool';
@@ -20,18 +20,16 @@ exports.getConfig = ({
   untoolMixinTypes: mixinTypes = defaultMixinTypes,
   ...overrides
 } = {}) => {
-  const { loadConfig } = createLoader(namespace);
-  const { resolveMixins } = createResolver(mixinTypes);
-  // eslint-disable-next-line no-unused-vars
-  const { presets: _, ...rawConfig } = loadConfig(overrides);
-  const { rootDir, mixins } = rawConfig;
+  const { loadConfig } = createConfigLoader(namespace);
+  const { resolveMixins } = createMixinResolver(mixinTypes);
+  const { presets, mixins, ...rawConfig } = loadConfig(overrides);
   const config = {
-    ...placeholdify(rawConfig),
-    mixins: resolveMixins(rootDir, mixins),
+    ...environmentalize(placeholdify(rawConfig)),
+    _mixins: resolveMixins(rawConfig.rootDir, mixins),
+    _presets: presets,
   };
   debug(config);
-  return environmentalize(config);
+  return config;
 };
 
-exports.getMixins = (config) =>
-  config.mixins.core.map((mixin) => require(mixin));
+exports.getMixins = ({ _mixins: mixins }) => mixins.core.map(require);
