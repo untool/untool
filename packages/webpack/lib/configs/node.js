@@ -14,7 +14,7 @@ const {
   },
 } = require('@untool/express');
 
-const { isESNext, isExternal } = require('../utils/helpers');
+const { isESNext } = require('../utils/helpers');
 
 module.exports = function getConfig(config) {
   const getAssetPath = resolveRelative.bind(null, config.assetPath);
@@ -101,7 +101,6 @@ module.exports = function getConfig(config) {
         'main',
       ],
     },
-    externals: isExternal(),
     module: {
       rules: [{ oneOf: allLoaderConfigs }],
     },
