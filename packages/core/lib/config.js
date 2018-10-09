@@ -1,4 +1,6 @@
 'use strict';
+// This file is usually not being used at runtime, but only at buildtime.
+// @untool/webpack is taking care of providing runtime configuration.
 
 const debug = require('debug')('untool:config');
 
