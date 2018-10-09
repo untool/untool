@@ -167,7 +167,7 @@ If inheriting from `Mixin`, all methods of your mixin are automatically bound to
 
 Note that you can call all defined mixinable methods directly on your mixin instance.
 
-### `bootstrap([configOverrides], [options])`
+### `initialize([configOverrides], [options])`
 
 This is a semi-private function that is mainly being used internally, for example by [`@untool/yargs`](https://github.com/untool/untool/blob/master/packages/yargs/README.md). It returns the core mixin container - this allows you to call all defined mixin methods.
 
