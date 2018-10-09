@@ -5,16 +5,6 @@ const {
   create: { sync: createResolver },
 } = require('enhanced-resolve');
 
-exports.resolve = resolve;
-
-exports.resolvePreset = createResolver({
-  mainFiles: ['preset'],
-  mainFields: ['preset'],
-});
-
-exports.isResolveError = (error) =>
-  error && error.message && error.message.startsWith("Can't resolve");
-
 const mixinResolvers = {};
 
 const resolveMixin = (types, ...args) => {
@@ -32,7 +22,17 @@ const resolveMixin = (types, ...args) => {
   }
 };
 
-exports.createResolver = (mixinTypes) => ({
+exports.resolve = resolve;
+
+exports.resolvePreset = createResolver({
+  mainFiles: ['preset'],
+  mainFields: ['preset'],
+});
+
+exports.isResolveError = (error) =>
+  error && error.message && error.message.startsWith("Can't resolve");
+
+exports.createMixinResolver = (mixinTypes) => ({
   resolveMixins(context, mixins) {
     return mixins.reduce((result, mixin) => {
       let found = false;

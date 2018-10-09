@@ -10,7 +10,7 @@ const { sync: findUp } = require('find-up');
 const { merge } = require('./utils');
 const { resolve, resolvePreset, isResolveError } = require('./resolver');
 
-exports.createLoader = (namespace) => {
+exports.createConfigLoader = (namespace) => {
   const loadConfig = (stopDir, module) => {
     const { loadSync } = cosmiconfig(namespace, { stopDir });
     return loadSync(resolvePreset(stopDir, module));
