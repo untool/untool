@@ -17,7 +17,7 @@ $ yarn add @untool/react react react-dom react-router-dom react-helmet
 
 ## `render(element, [options])`
 
-`render()` is `@untool/react`'s main export. You are expected to call it in your applications main entry file and it is essentialy a shorthand: it creates and bootstraps a core mixin container and calls its `render` method.
+`render()` is `@untool/react`'s main export. You are expected to call it in your applications main entry file and it is essentialy a shorthand: it creates and bootstraps a mixin container and calls its `render` method.
 
 `render` accepts two arguments: a react element and an optional options object. `@untool/react` will use the contents of `options.router` to configure the [React Router](https://github.com/ReactTraining/react-router) instances it controls.
 
@@ -99,7 +99,7 @@ export default () => <About loader={loader} render={render} />;
 
 ### `render([req, res, next])` ([override](https://github.com/untool/mixinable/blob/master/README.md#defineoverride))
 
-This method is being called from within `@untool/core` whenever you call the main `render` method. In a server-side, i.e. Node.js, environment it receives the usual arguments any Express [middleware](https://expressjs.com/en/guide/writing-middleware.html) receives: `req`, `res`, and `next`. In a client-side, i.e. browser, environment it receives no arguments whatsoever.
+This method is being called whenever you call the main `render` method. In a server-side, i.e. Node.js, environment it receives the usual arguments any Express [middleware](https://expressjs.com/en/guide/writing-middleware.html) receives: `req`, `res`, and `next`. In a client-side, i.e. browser, environment it receives no arguments whatsoever.
 
 ```javascript
 const { Mixin } = require('@untool/core');
