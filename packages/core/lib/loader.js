@@ -8,25 +8,25 @@ const { load: loadEnv } = require('dotenv');
 const { sync: findUp } = require('find-up');
 
 const { merge } = require('./utils');
-const { createResolver } = require('./resolver');
+const { resolve, resolvePreset, isResolveError } = require('./resolver');
 
 exports.createLoader = (namespace) => {
-  const { resolve, resolvePreset, isResolveError } = createResolver();
-
-  const loadOrSearchConfig = (stopDir, module) => {
-    const { loadSync, searchSync } = cosmiconfig(namespace, { stopDir });
-    return module
-      ? loadSync(resolvePreset(stopDir, module))
-      : searchSync(stopDir);
+  const loadConfig = (stopDir, module) => {
+    const { loadSync } = cosmiconfig(namespace, { stopDir });
+    return loadSync(resolvePreset(stopDir, module));
+  };
+  const searchConfig = (stopDir) => {
+    const { searchSync } = cosmiconfig(namespace, { stopDir });
+    return searchSync(stopDir);
   };
 
   const loadPreset = (context, preset) => {
     try {
-      return loadOrSearchConfig(context, preset);
+      return loadConfig(context, preset);
     } catch (error) {
       if (!isResolveError(error)) throw error;
       try {
-        return loadOrSearchConfig(
+        return searchConfig(
           dirname(resolve(context, `${preset}/package.json`))
         );
       } catch (error) {
@@ -50,7 +50,7 @@ exports.createLoader = (namespace) => {
 
   const loadSettings = (context, pkgData) => {
     const { dependencies = {}, devDependencies = {} } = pkgData;
-    const result = loadOrSearchConfig(context);
+    const result = searchConfig(context);
     const settings = { ...(result && result.config) };
     if (!settings.presets) {
       settings.presets = [
@@ -60,7 +60,7 @@ exports.createLoader = (namespace) => {
           : []),
       ].filter((key) => {
         try {
-          return loadOrSearchConfig(context, key);
+          return loadConfig(context, key);
         } catch (error) {
           if (!isResolveError(error)) throw error;
           return null;
@@ -75,7 +75,6 @@ exports.createLoader = (namespace) => {
       const pkgFile = findUp('package.json');
       const pkgData = require(pkgFile);
       const rootDir = dirname(pkgFile);
-
       const { name = basename(rootDir), version = '0.0.0' } = pkgData;
 
       loadEnv({ path: join(rootDir, '.env') });
