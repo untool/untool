@@ -11,27 +11,32 @@ class InstrumentMixin extends Mixin {
   }
   configureServer(...args) {
     events.emit('configureServer', ...args);
-    return args[0];
   }
   inspectServer(...args) {
     events.emit('inspectServer', ...args);
-    return args[0];
   }
   configureBuild(...args) {
     events.emit('configureBuild', ...args);
-    return args[0];
+    const [webpackConfig, , target] = args;
+    if (target === 'node') {
+      webpackConfig.externals = [
+        function(context, request, callback) {
+          if (request.includes(__dirname)) {
+            return callback(null, 'commonjs ' + request);
+          }
+          callback();
+        },
+      ];
+    }
   }
   inspectBuild(...args) {
     events.emit('inspectBuild', ...args);
-    return args[0];
   }
   registerCommands(...args) {
     events.emit('registerCommands', ...args);
-    return args[0];
   }
   handleArguments(...args) {
     events.emit('handleArguments', ...args);
-    return args[0];
   }
 }
 
