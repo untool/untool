@@ -5,7 +5,7 @@ const { relative } = require('path');
 const {
   EnvironmentPlugin,
   HotModuleReplacementPlugin,
-  NamedModulesPlugin,
+  HashedModuleIdsPlugin,
 } = require('webpack');
 
 const {
@@ -14,14 +14,12 @@ const {
   },
 } = require('@untool/express');
 
-const { isESNext } = require('../utils/helpers');
-
 module.exports = function getConfig(config) {
   const getAssetPath = resolveRelative.bind(null, config.assetPath);
 
   const jsLoaderConfig = {
     test: [/\.js$/],
-    include: isESNext(),
+    exclude: [/\b(?:core-js|regenerator-runtime)\b/],
     loader: require.resolve('babel-loader'),
     options: {
       babelrc: false,
@@ -108,7 +106,7 @@ module.exports = function getConfig(config) {
     },
     plugins: [
       new HotModuleReplacementPlugin(),
-      new NamedModulesPlugin(),
+      new HashedModuleIdsPlugin(),
       new EnvironmentPlugin({ NODE_ENV: 'development' }),
     ],
     performance: { hints: false },
