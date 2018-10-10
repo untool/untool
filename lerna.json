@@ -4,6 +4,11 @@
   "version": "1.0.0-rc.1",
   "registry": "https://registry.npmjs.org/",
   "command": {
+    "version": {
+      "forcePublish": true,
+      "exact": true,
+      "preid": "rc"
+    },
     "publish": {
       "message": "chore: release %s",
       "conventionalCommits": true
