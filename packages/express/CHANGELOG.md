@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-rc.0](https://github.com/untool/untool/compare/v0.26.0...v1.0.0-rc.0) (2018-10-10)
+
+**Note:** Version bump only for package @untool/express
+
+
+
+
+
 <a name="0.26.0"></a>
 # [0.26.0](https://github.com/untool/untool/compare/v0.25.1...v0.26.0) (2018-10-01)
 

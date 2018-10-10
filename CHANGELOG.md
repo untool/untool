@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-rc.0](https://github.com/untool/untool/compare/v0.26.0...v1.0.0-rc.0) (2018-10-10)
+
+
+### Bug Fixes
+
+* **core:** allow calling getConfig without arguments ([f9731ce](https://github.com/untool/untool/commit/f9731ce))
+* **core:** make base mixin class properly work at runtime ([8fc1350](https://github.com/untool/untool/commit/8fc1350))
+* **webpack:** allow calling getConfig without arguments ([31f9cc3](https://github.com/untool/untool/commit/31f9cc3))
+* **webpack:** bundle everything during node build ([c31a259](https://github.com/untool/untool/commit/c31a259))
+* **webpack:** re-introduce config debug output ([ddb0ecd](https://github.com/untool/untool/commit/ddb0ecd))
+
+
+### Features
+
+* **react:** pass search to StaticRouter ([3f7401c](https://github.com/untool/untool/commit/3f7401c))
+* **webpack:** introduce `collectBuildConfigs` hook ([f225655](https://github.com/untool/untool/commit/f225655))
+* **webpack:** introduce `getBuildStats` utility hook ([590df85](https://github.com/untool/untool/commit/590df85))
+* **yargs:** add optional logging mixin ([d465289](https://github.com/untool/untool/commit/d465289))
+
+
+
+
+
 <a name="0.26.0"></a>
 # [0.26.0](https://github.com/untool/untool/compare/v0.25.1...v0.26.0) (2018-10-01)
 
