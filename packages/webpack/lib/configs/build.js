@@ -4,7 +4,7 @@ const { relative } = require('path');
 
 const {
   EnvironmentPlugin,
-  NamedModulesPlugin,
+  HashedModuleIdsPlugin,
   optimize: { ModuleConcatenationPlugin },
 } = require('webpack');
 
@@ -16,14 +16,12 @@ const {
   },
 } = require('@untool/express');
 
-const { isESNext } = require('../utils/helpers');
-
 module.exports = function getConfig(config) {
   const getAssetPath = resolveRelative.bind(null, config.assetPath);
 
   const jsLoaderConfig = {
     test: [/\.js$/],
-    include: isESNext(),
+    exclude: [/\b(?:core-js|regenerator-runtime)\b/],
     loader: require.resolve('babel-loader'),
     options: {
       babelrc: false,
@@ -106,7 +104,10 @@ module.exports = function getConfig(config) {
       rules: [{ oneOf: allLoaderConfigs }],
     },
     optimization: {
-      splitChunks: { chunks: 'all', name: false },
+      splitChunks: {
+        chunks: 'all',
+        name: false,
+      },
       minimizer: [
         new TerserPlugin({
           cache: true,
@@ -123,9 +124,13 @@ module.exports = function getConfig(config) {
     },
     plugins: [
       new ModuleConcatenationPlugin(),
-      new NamedModulesPlugin(),
+      new HashedModuleIdsPlugin(),
       new EnvironmentPlugin({ NODE_ENV: 'development' }),
     ],
+    performance: {
+      hints: 'warning',
+      maxEntrypointSize: 262144,
+    },
     devtool: 'source-map',
   };
 };
