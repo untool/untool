@@ -60,7 +60,7 @@ module.exports = (...args) =>
           evaluate: page.evaluate.bind(page),
           screenshot: page.screenshot.bind(page),
         };
-        page.setDefaultNavigationTimeout(60000);
+        page.setDefaultNavigationTimeout(90000);
         return api;
       })
   );

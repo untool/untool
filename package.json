@@ -6,7 +6,7 @@
   "private": true,
   "scripts": {
     "start": "cd tests/fixtures/untest; node cli start",
-    "test": "NODE_ENV=test ava --verbose --timeout=90s tests",
+    "test": "NODE_ENV=test ava --verbose --timeout=120s tests",
     "lint": "eslint --ignore-path .gitignore '**/*.js'",
     "fmt": "prettier --write --ignore-path .gitignore '**/*.js'",
     "release": "lerna publish",
