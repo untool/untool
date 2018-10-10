@@ -2,6 +2,7 @@
 
 const { initialize } = require('@untool/core');
 
+const createAgentMiddleware = require('./lib/middleware/agent');
 const createWebpackMiddleware = require('./lib/middleware/render');
 const createStatsMiddleware = require('./lib/middleware/stats');
 
@@ -23,6 +24,7 @@ const configure = (config, options) => ({
     return initialize(config, options).getBuildConfig(...args);
   },
   internal: {
+    createAgentMiddleware,
     createWebpackMiddleware,
     createStatsMiddleware,
     RenderPlugin,

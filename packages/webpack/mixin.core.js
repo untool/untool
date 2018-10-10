@@ -138,6 +138,10 @@ class WebpackMixin extends Mixin {
         middlewares.routes.push(require(serverFilePath).default);
       }
     }
+    if (mode !== 'static') {
+      const createAgentMiddleware = require('./lib/middleware/agent');
+      middlewares.initial.push(createAgentMiddleware(this));
+    }
     const createStatsMiddleware = require('./lib/middleware/stats');
     middlewares.preroutes.push(createStatsMiddleware(this));
   }
