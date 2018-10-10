@@ -32,7 +32,7 @@ const getPort = (port) => {
 module.exports = (app, { config, inspectServer, handleError }) => {
   const { host, port, https } = config;
   const server = createServer(app, https);
-  getPort(host, port).then((port) =>
+  getPort(port).then((port) =>
     server.listen(port, host, (error) => {
       if (error) {
         server.close();
