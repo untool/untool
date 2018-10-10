@@ -1,6 +1,6 @@
 {
   "name": "@untool/react",
-  "version": "1.0.0-rc.0",
+  "version": "1.0.0-rc.1",
   "description": "untool react mixin",
   "jsnext": "lib/runtime.js",
   "keywords": [
@@ -25,7 +25,7 @@
   "homepage": "https://github.com/untool/untool#readme",
   "dependencies": {
     "@babel/preset-react": "^7.0.0",
-    "@untool/core": "^1.0.0-rc.0",
+    "@untool/core": "^1.0.0-rc.1",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.13",
     "clone": "^2.1.2",
     "mixinable": "^4.0.0",
