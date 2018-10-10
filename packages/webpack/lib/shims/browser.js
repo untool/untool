@@ -1,3 +1,4 @@
+import '@babel/polyfill';
 import entryPoint from '@untool/entrypoint';
 
 entryPoint();

@@ -33,7 +33,7 @@ module.exports = function getConfig(config) {
           require.resolve('@babel/preset-env'),
           {
             modules: false,
-            useBuiltIns: 'usage',
+            useBuiltIns: 'entry',
             targets: { node: config.node },
           },
         ],
