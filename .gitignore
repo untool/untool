@@ -1,5 +1,5 @@
 node_modules
-dist
+tests/fixtures/*/dist
 tests/fixtures/*-*
 *.sublime*
 *.log
