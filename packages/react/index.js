@@ -4,3 +4,5 @@ exports.internal = {
   babelPlugin: require('./lib/babel'),
   template: require('./lib/template'),
 };
+
+exports.configure = () => ({ ...exports });
