@@ -10,7 +10,6 @@ const { RenderPlugin } = require('./lib/plugins/render');
 const { StatsPlugin, StatsFilePlugin } = require('./lib/plugins/stats');
 
 const configLoader = require('./lib/utils/loader');
-const { isESNext, isExternal } = require('./lib/utils/helpers');
 const { Resolvable } = require('./lib/utils/resolvable');
 
 const configure = (config, options) => ({
@@ -31,8 +30,6 @@ const configure = (config, options) => ({
     StatsPlugin,
     StatsFilePlugin,
     configLoader,
-    isESNext,
-    isExternal,
     Resolvable,
   },
   configure,
