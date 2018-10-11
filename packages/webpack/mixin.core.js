@@ -91,17 +91,17 @@ class WebpackMixin extends Mixin {
     };
     if (target === 'node') {
       const { StatsFilePlugin } = require('./lib/plugins/stats');
-      plugins.unshift(new StatsFilePlugin(this));
+      plugins.unshift(new StatsFilePlugin(this.stats, this.config));
       configLoaderConfig.options.type = 'server';
     }
     if (target === 'develop' || target === 'build') {
       const { StatsPlugin } = require('./lib/plugins/stats');
-      plugins.unshift(new StatsPlugin(this));
+      plugins.unshift(new StatsPlugin(this.stats));
       configLoaderConfig.options.type = 'browser';
     }
     if (target === 'build' && this.options.static) {
       const { RenderPlugin } = require('./lib/plugins/render');
-      plugins.push(new RenderPlugin(this));
+      plugins.push(new RenderPlugin(this.createRenderer(), this.config));
     }
     module.rules.push(configLoaderConfig);
   }
@@ -139,11 +139,12 @@ class WebpackMixin extends Mixin {
       }
     }
     if (mode !== 'static') {
+      const { browsers } = this.config;
       const createAgentMiddleware = require('./lib/middleware/agent');
-      middlewares.initial.push(createAgentMiddleware(this));
+      middlewares.initial.push(createAgentMiddleware(browsers));
     }
     const createStatsMiddleware = require('./lib/middleware/stats');
-    middlewares.preroutes.push(createStatsMiddleware(this));
+    middlewares.preroutes.push(createStatsMiddleware(this.stats));
   }
   registerCommands(yargs) {
     const { name } = this.config;

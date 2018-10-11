@@ -10,8 +10,7 @@ const {
 } = require('@untool/express');
 
 exports.RenderPlugin = class RenderPlugin {
-  constructor({ createRenderer, config: { basePath, locations } }) {
-    const render = createRenderer();
+  constructor(render, { basePath, locations }) {
     this.apply = (compiler) => {
       const toUrlPath = resolveAbsolute.bind(null, basePath);
       const toFsPath = resolveRelative.bind(null, basePath);
