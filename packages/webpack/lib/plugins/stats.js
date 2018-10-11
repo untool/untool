@@ -48,7 +48,7 @@ const extractFiles = ({ entryChunks, vendorChunks, chunksByModule }) => {
 };
 
 exports.StatsPlugin = class StatsPlugin {
-  constructor({ stats: resolvable }) {
+  constructor(resolvable) {
     this.apply = (compiler) => {
       compiler.hooks.compilation.tap('StatsPlugin', (compilation) => {
         compilation.hooks.additionalAssets.tap('StatsPlugin', () => {
@@ -71,7 +71,7 @@ exports.StatsPlugin = class StatsPlugin {
 };
 
 exports.StatsFilePlugin = class StatsFilePlugin {
-  constructor({ stats: resolvable, config: { statsFile } }) {
+  constructor(resolvable, { statsFile }) {
     this.apply = (compiler) => {
       compiler.hooks.compilation.tap('StatsFilePlugin', (compilation) =>
         compilation.hooks.additionalAssets.tapPromise('StatsFilePlugin', () =>

@@ -1,6 +1,6 @@
 'use strict';
 
-module.exports = function createStatsMiddleware({ stats: resolvable }) {
+module.exports = function createStatsMiddleware(resolvable) {
   return function statsMiddleware(req, res, next) {
     resolvable
       .then((stats) => {
