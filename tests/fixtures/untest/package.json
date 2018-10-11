@@ -6,10 +6,6 @@
     "mixins": ["./instrument"]
   },
   "dependencies": {
-    "@untool/core": "*",
-    "@untool/yargs": "*",
-    "@untool/express": "*",
-    "@untool/react": "*",
-    "@untool/webpack": "*"
+    "untool": "*"
   }
 }

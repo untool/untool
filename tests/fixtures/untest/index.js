@@ -2,7 +2,7 @@
 import React, { Fragment } from 'react';
 import { Switch, Route, Link } from 'react-router-dom/es';
 
-import { Import, Miss, render } from '@untool/react';
+import { Import, Miss, render } from 'untool';
 
 const Home = Import('./home');
 const About = Import('./about', 'About');
