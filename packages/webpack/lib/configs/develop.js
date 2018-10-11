@@ -6,6 +6,7 @@ const {
   EnvironmentPlugin,
   HotModuleReplacementPlugin,
   HashedModuleIdsPlugin,
+  NamedModulesPlugin,
 } = require('webpack');
 
 const {
@@ -16,6 +17,7 @@ const {
 
 module.exports = function getConfig(config) {
   const getAssetPath = resolveRelative.bind(null, config.assetPath);
+  const isProduction = process.env.NODE_ENV === 'production';
 
   const jsLoaderConfig = {
     test: [/\.js$/],
@@ -105,8 +107,8 @@ module.exports = function getConfig(config) {
       splitChunks: { chunks: 'all', name: false },
     },
     plugins: [
+      new (isProduction ? HashedModuleIdsPlugin : NamedModulesPlugin)(),
       new HotModuleReplacementPlugin(),
-      new HashedModuleIdsPlugin(),
       new EnvironmentPlugin({ NODE_ENV: 'development' }),
     ],
     performance: { hints: false },
