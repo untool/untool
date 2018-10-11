@@ -5,7 +5,7 @@
   "license": "MIT",
   "private": true,
   "scripts": {
-    "start": "cd tests/fixtures/untest; node cli start",
+    "start": "cd tests/fixtures/untest; un start",
     "test": "NODE_ENV=test ava --verbose --timeout=120s tests",
     "lint": "eslint --ignore-path .gitignore '**/*.js'",
     "fmt": "prettier --write --ignore-path .gitignore '**/*.js'",
