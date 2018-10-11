@@ -41,8 +41,9 @@ const configure = (config, options) => ({
   configure,
 });
 
-module.exports = configure();
-
 if (require.main === module) {
+  module.exports = configure({ mixins: ['@untool/yargs/log'] });
   module.exports.run();
+} else {
+  module.exports = configure();
 }
