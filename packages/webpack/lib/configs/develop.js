@@ -21,7 +21,7 @@ module.exports = function getConfig(config) {
 
   const jsLoaderConfig = {
     test: [/\.js$/],
-    exclude: [/\b(?:core-js|regenerator-runtime)\b/],
+    exclude: [/node_modules\/core-js/],
     loader: require.resolve('babel-loader'),
     options: {
       babelrc: false,
@@ -35,6 +35,8 @@ module.exports = function getConfig(config) {
             modules: false,
             useBuiltIns: 'usage',
             targets: { browsers: config.browsers },
+            include: [],
+            exclude: [],
           },
         ],
       ],
