@@ -5,6 +5,7 @@ const { relative } = require('path');
 const {
   EnvironmentPlugin,
   HashedModuleIdsPlugin,
+  NamedModulesPlugin,
   optimize: { ModuleConcatenationPlugin },
 } = require('webpack');
 
@@ -18,6 +19,7 @@ const {
 
 module.exports = function getConfig(config) {
   const getAssetPath = resolveRelative.bind(null, config.assetPath);
+  const isProduction = process.env.NODE_ENV === 'production';
 
   const jsLoaderConfig = {
     test: [/\.js$/],
@@ -25,7 +27,7 @@ module.exports = function getConfig(config) {
     loader: require.resolve('babel-loader'),
     options: {
       babelrc: false,
-      compact: process.env.NODE_ENV === 'production',
+      compact: isProduction,
       cacheDirectory: true,
       cacheIdentifier: `${process.env.NODE_ENV || 'development'}:build`,
       presets: [
@@ -71,8 +73,8 @@ module.exports = function getConfig(config) {
       allLoaderConfigs,
     },
     name: 'build',
-    mode: process.env.NODE_ENV === 'production' ? 'production' : 'development',
-    bail: process.env.NODE_ENV === 'production',
+    mode: isProduction ? 'production' : 'development',
+    bail: isProduction,
     context: config.rootDir,
     entry: require.resolve('../shims/browser'),
     output: {
@@ -123,8 +125,8 @@ module.exports = function getConfig(config) {
       ],
     },
     plugins: [
+      new (isProduction ? HashedModuleIdsPlugin : NamedModulesPlugin)(),
       new ModuleConcatenationPlugin(),
-      new HashedModuleIdsPlugin(),
       new EnvironmentPlugin({ NODE_ENV: 'development' }),
     ],
     performance: {
