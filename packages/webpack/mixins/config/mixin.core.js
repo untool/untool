@@ -17,11 +17,11 @@ class WebpackConfigMixin extends Mixin {
     const { loaderConfigs = {}, ...webpackConfig } = (() => {
       switch (baseConfig || target) {
         case 'build':
-          return require('../../configs/build')(this.config);
+          return require('../../lib/configs/build')(this.config);
         case 'develop':
-          return require('../../configs/develop')(this.config);
+          return require('../../lib/configs/develop')(this.config);
         case 'node':
-          return require('../../configs/node')(this.config);
+          return require('../../lib/configs/node')(this.config);
         default:
           if (baseConfig && exists(baseConfig)) {
             return require(baseConfig)(this.config);
@@ -43,7 +43,7 @@ class WebpackConfigMixin extends Mixin {
     const { module } = webpackConfig;
     const configLoaderConfig = {
       test: require.resolve('@untool/core/lib/config'),
-      loader: require.resolve('../../utils/loader'),
+      loader: require.resolve('../../lib/utils/loader'),
       options: { type: target, config: this.config },
     };
     if (target === 'node') {
@@ -57,7 +57,7 @@ class WebpackConfigMixin extends Mixin {
   configureServer(app, middlewares, mode) {
     if (mode !== 'static') {
       const { browsers } = this.config;
-      const createAgentMiddleware = require('../../middlewares/agent');
+      const createAgentMiddleware = require('../../lib/middlewares/agent');
       middlewares.initial.push(createAgentMiddleware(browsers));
     }
   }
