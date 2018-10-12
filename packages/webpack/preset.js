@@ -13,11 +13,11 @@ module.exports = {
   serverFile: 'server.js',
   statsFile: 'stats.json',
   mixins: [
-    join(__dirname, 'lib', 'mixins', 'build'),
-    join(__dirname, 'lib', 'mixins', 'config'),
-    join(__dirname, 'lib', 'mixins', 'develop'),
-    join(__dirname, 'lib', 'mixins', 'render'),
-    join(__dirname, 'lib', 'mixins', 'start'),
-    join(__dirname, 'lib', 'mixins', 'stats'),
+    join(__dirname, 'mixins', 'build'),
+    join(__dirname, 'mixins', 'config'),
+    join(__dirname, 'mixins', 'develop'),
+    join(__dirname, 'mixins', 'render'),
+    join(__dirname, 'mixins', 'start'),
+    join(__dirname, 'mixins', 'stats'),
   ],
 };

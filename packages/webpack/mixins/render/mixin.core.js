@@ -27,7 +27,7 @@ class WebpackRenderMixin extends Mixin {
   configureBuild(webpackConfig, loaderConfigs, target) {
     if (target === 'build' && this.options.static) {
       const { plugins } = webpackConfig;
-      const { RenderPlugin } = require('../../plugins/render');
+      const { RenderPlugin } = require('../../lib/plugins/render');
       plugins.push(
         new RenderPlugin(this.createRenderer(), this.getRenderRequests())
       );
@@ -35,7 +35,7 @@ class WebpackRenderMixin extends Mixin {
   }
   configureServer(app, middlewares, mode) {
     if (mode === 'static' || mode === 'develop') {
-      const createRenderMiddleware = require('../../middlewares/render');
+      const createRenderMiddleware = require('../../lib/middlewares/render');
       const webpackNodeConfig = this.getBuildConfig('node');
       middlewares.routes.push(
         createRenderMiddleware(webpackNodeConfig, mode === 'develop')

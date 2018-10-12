@@ -9,7 +9,7 @@ const {
 
 const { Mixin } = require('@untool/core');
 
-const { Resolvable } = require('../../utils/resolvable');
+const { Resolvable } = require('../../lib/utils/resolvable');
 
 class WebpackStatsMixin extends Mixin {
   constructor(...args) {
@@ -22,11 +22,11 @@ class WebpackStatsMixin extends Mixin {
   configureBuild(webpackConfig, loaderConfigs, target) {
     const { plugins } = webpackConfig;
     if (target === 'node') {
-      const { StatsFilePlugin } = require('../../plugins/stats');
+      const { StatsFilePlugin } = require('../../lib/plugins/stats');
       plugins.unshift(new StatsFilePlugin(this.stats, this.config));
     }
     if (target === 'develop' || target === 'build') {
-      const { StatsPlugin } = require('../../plugins/stats');
+      const { StatsPlugin } = require('../../lib/plugins/stats');
       plugins.unshift(new StatsPlugin(this.stats));
     }
   }
@@ -36,7 +36,7 @@ class WebpackStatsMixin extends Mixin {
       const statsFilePath = join(serverDir, statsFile);
       this.stats.resolve(exists(statsFilePath) ? require(statsFilePath) : {});
     }
-    const createStatsMiddleware = require('../../middlewares/stats');
+    const createStatsMiddleware = require('../../lib/middlewares/stats');
     middlewares.preroutes.push(createStatsMiddleware(this.stats));
   }
 }
