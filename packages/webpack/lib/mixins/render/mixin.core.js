@@ -3,14 +3,34 @@
 const { existsSync: exists } = require('fs');
 const { join } = require('path');
 
+const {
+  async: { override },
+} = require('mixinable');
+
+const {
+  internal: {
+    uri: { resolveAbsolute },
+  },
+} = require('@untool/express');
+
 const { Mixin } = require('@untool/core');
 
 class WebpackRenderMixin extends Mixin {
+  getRenderRequests() {
+    const { locations, basePath } = this.config;
+    return locations.map((location) => {
+      const isString = typeof location === 'string';
+      const url = resolveAbsolute(basePath, isString ? location : location.url);
+      return isString ? { url } : { ...location, url };
+    });
+  }
   configureBuild(webpackConfig, loaderConfigs, target) {
     if (target === 'build' && this.options.static) {
       const { plugins } = webpackConfig;
       const { RenderPlugin } = require('../../plugins/render');
-      plugins.push(new RenderPlugin(this.createRenderer(), this.config));
+      plugins.push(
+        new RenderPlugin(this.createRenderer(), this.getRenderRequests())
+      );
     }
   }
   configureServer(app, middlewares, mode) {
@@ -43,5 +63,9 @@ class WebpackRenderMixin extends Mixin {
     this.options = { ...this.options, ...argv };
   }
 }
+
+WebpackRenderMixin.strategies = {
+  getRenderRequests: override,
+};
 
 module.exports = WebpackRenderMixin;
