@@ -1,5 +1,7 @@
 'use strict';
 
+const { join } = require('path');
+
 module.exports = {
-  mixins: [__dirname],
+  mixins: [join(__dirname, 'mixins', 'main')],
 };

@@ -42,7 +42,8 @@ const configure = (config, options) => ({
 });
 
 if (require.main === module) {
-  module.exports = configure({ mixins: ['@untool/yargs/log'] });
+  const { join } = require('path');
+  module.exports = configure({ mixins: [join(__dirname, 'mixins', 'log')] });
   module.exports.run();
 } else {
   module.exports = configure();

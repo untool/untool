@@ -2,15 +2,8 @@
   "name": "@untool/yargs",
   "version": "1.0.0-rc.2",
   "description": "untool yargs mixin",
-  "keywords": [
-    "unmixin",
-    "unpreset"
-  ],
   "bin": {
     "un": "./index.js"
-  },
-  "scripts": {
-    "test": "echo \"Error: no test specified\""
   },
   "repository": {
     "type": "git",
