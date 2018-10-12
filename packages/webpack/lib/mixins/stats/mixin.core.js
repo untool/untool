@@ -36,7 +36,7 @@ class WebpackStatsMixin extends Mixin {
       const statsFilePath = join(serverDir, statsFile);
       this.stats.resolve(exists(statsFilePath) ? require(statsFilePath) : {});
     }
-    const createStatsMiddleware = require('../../middleware/stats');
+    const createStatsMiddleware = require('../../middlewares/stats');
     middlewares.preroutes.push(createStatsMiddleware(this.stats));
   }
 }
