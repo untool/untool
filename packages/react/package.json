@@ -2,14 +2,8 @@
   "name": "@untool/react",
   "version": "1.0.0-rc.2",
   "description": "untool react mixin",
-  "jsnext": "lib/runtime.js",
-  "keywords": [
-    "unmixin",
-    "unpreset"
-  ],
-  "scripts": {
-    "test": "echo \"Error: no test specified\""
-  },
+  "browser": "lib/runtime.js",
+  "server": "lib/runtime.js",
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/untool/untool.git"
