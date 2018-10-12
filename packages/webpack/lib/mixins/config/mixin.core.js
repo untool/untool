@@ -57,7 +57,7 @@ class WebpackConfigMixin extends Mixin {
   configureServer(app, middlewares, mode) {
     if (mode !== 'static') {
       const { browsers } = this.config;
-      const createAgentMiddleware = require('../../middleware/agent');
+      const createAgentMiddleware = require('../../middlewares/agent');
       middlewares.initial.push(createAgentMiddleware(browsers));
     }
   }
