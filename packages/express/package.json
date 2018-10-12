@@ -2,13 +2,6 @@
   "name": "@untool/express",
   "version": "1.0.0-rc.2",
   "description": "untool express mixin",
-  "keywords": [
-    "unmixin",
-    "unpreset"
-  ],
-  "scripts": {
-    "test": "echo \"Error: no test specified\""
-  },
   "repository": {
     "type": "git",
     "url": "git+ssh://git@github.com/untool/untool.git"

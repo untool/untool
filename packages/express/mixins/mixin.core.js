@@ -8,16 +8,16 @@ const { Mixin } = require('@untool/core');
 
 class ExpressMixin extends Mixin {
   runServer(mode) {
-    const run = require('./lib/run');
+    const run = require('../lib/run');
     const app = this.createServer(mode);
     return run(app, this);
   }
   createServer(mode) {
-    const create = require('./lib/serve');
+    const create = require('../lib/serve');
     return create(mode, this);
   }
   createRenderer() {
-    const create = require('./lib/render');
+    const create = require('../lib/render');
     const app = this.createServer('static');
     return create(app);
   }

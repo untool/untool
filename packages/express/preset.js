@@ -7,5 +7,5 @@ module.exports = {
   host: '[HOST]',
   port: '[PORT]',
   distDir: join('<rootDir>', 'dist'),
-  mixins: [__dirname],
+  mixins: [join(__dirname, 'mixins')],
 };
