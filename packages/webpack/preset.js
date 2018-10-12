@@ -12,5 +12,12 @@ module.exports = {
   serverDir: join('<rootDir>', 'node_modules', '.cache', 'untool'),
   serverFile: 'server.js',
   statsFile: 'stats.json',
-  mixins: [__dirname],
+  mixins: [
+    join(__dirname, 'lib', 'mixins', 'build'),
+    join(__dirname, 'lib', 'mixins', 'config'),
+    join(__dirname, 'lib', 'mixins', 'develop'),
+    join(__dirname, 'lib', 'mixins', 'render'),
+    join(__dirname, 'lib', 'mixins', 'start'),
+    join(__dirname, 'lib', 'mixins', 'stats'),
+  ],
 };
