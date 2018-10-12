@@ -15,7 +15,7 @@ const {
 
 const { Mixin } = require('@untool/core');
 
-const template = require('./lib/template');
+const template = require('../lib/template');
 
 class ReactMixin extends Mixin {
   constructor(config, element, options) {
