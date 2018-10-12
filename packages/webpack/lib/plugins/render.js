@@ -5,23 +5,27 @@ const { RawSource } = require('webpack-sources');
 
 const {
   internal: {
-    uri: { resolveAbsolute, resolveRelative },
+    uri: { trimLeadingSlash },
   },
 } = require('@untool/express');
 
 exports.RenderPlugin = class RenderPlugin {
-  constructor(render, { basePath, locations }) {
+  constructor(render, requests) {
     this.apply = (compiler) => {
-      const toUrlPath = resolveAbsolute.bind(null, basePath);
-      const toFsPath = resolveRelative.bind(null, basePath);
-      const promise = Promise.all(
-        locations.map((location) => render(toUrlPath(location)))
+      const promise = requests.then((requests) =>
+        Promise.all(
+          requests.map((request) =>
+            render(request).then((response) => ({
+              path: trimLeadingSlash(indexFile(request.url)),
+              response,
+            }))
+          )
+        )
       );
       compiler.hooks.compilation.tap('RenderPlugin', (compilation) => {
         compilation.hooks.additionalAssets.tapPromise('RenderPlugin', () =>
           promise.then((responses) =>
-            responses.forEach((response, index) => {
-              const path = toFsPath(indexFile(locations[index]));
+            responses.forEach(({ path, response }) => {
               compilation.assets[path] = new RawSource(response);
             })
           )
