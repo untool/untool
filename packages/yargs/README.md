@@ -14,6 +14,22 @@ $ yarn add @untool/yargs # OR npm install @untool/yargs
 
 `@untool/yargs` does not define any commands of its own, but only takes care of basically setting up [`yargs`](http://yargs.js.org).
 
+`@untool/yargs` provides a basic command line interface you can use to control your application. It is called `un` - and it is best used inside your `package.json` scripts section.
+
+```json
+{
+  "scripts": {
+    "start": "un start"
+  }
+}
+```
+
+Alternatively, you can call it directly inside your project using `npx` or `yarn exec`. Call it without any command to see the available commands and options.
+
+```bash
+$ yarn exec un start # OR npx un start
+```
+
 ## API
 
 `@untool/yargs` only has a couple of semi-private exports, but it exposes a couple of mixin hooks other mixins can implement, allowing them to alter or extend its functionality. These hooks will be called either by `@untool/yargs` itself or by others.
