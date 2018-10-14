@@ -14,30 +14,32 @@ const { Resolvable } = require('../../lib/utils/resolvable');
 class WebpackStatsMixin extends Mixin {
   constructor(...args) {
     super(...args);
-    this.stats = new Resolvable();
+    this.resolvable = new Resolvable();
   }
   getBuildStats() {
-    return Promise.resolve(this.stats);
+    return Promise.resolve(this.resolvable);
   }
   configureBuild(webpackConfig, loaderConfigs, target) {
     const { plugins } = webpackConfig;
-    if (target === 'node') {
-      const { StatsFilePlugin } = require('../../lib/plugins/stats');
-      plugins.unshift(new StatsFilePlugin(this.stats, this.config));
-    }
     if (target === 'develop' || target === 'build') {
       const { StatsPlugin } = require('../../lib/plugins/stats');
-      plugins.unshift(new StatsPlugin(this.stats));
+      plugins.unshift(new StatsPlugin(this.resolvable));
+    }
+    if (target === 'node') {
+      const { StatsFilePlugin } = require('../../lib/plugins/stats');
+      plugins.unshift(new StatsFilePlugin(this.resolvable, this.config));
     }
   }
   configureServer(app, middlewares, mode) {
     if (mode === 'serve') {
       const { serverDir, statsFile } = this.config;
       const statsFilePath = join(serverDir, statsFile);
-      this.stats.resolve(exists(statsFilePath) ? require(statsFilePath) : {});
+      this.resolvable.resolve(
+        exists(statsFilePath) ? require(statsFilePath) : {}
+      );
     }
     const createStatsMiddleware = require('../../lib/middlewares/stats');
-    middlewares.preroutes.push(createStatsMiddleware(this.stats));
+    middlewares.preroutes.push(createStatsMiddleware(this.resolvable));
   }
 }
 

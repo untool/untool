@@ -15,18 +15,19 @@ exports.RenderPlugin = class RenderPlugin {
       const promise = requests.then((requests) =>
         Promise.all(
           requests.map((request) =>
-            render(request).then((response) => ({
-              path: trimLeadingSlash(indexFile(request.url)),
-              response,
+            render(request).then((content) => ({
+              outfile:
+                request.outfile || trimLeadingSlash(indexFile(request.url)),
+              content,
             }))
           )
         )
       );
       compiler.hooks.compilation.tap('RenderPlugin', (compilation) => {
         compilation.hooks.additionalAssets.tapPromise('RenderPlugin', () =>
-          promise.then((responses) =>
-            responses.forEach(({ path, response }) => {
-              compilation.assets[path] = new RawSource(response);
+          promise.then((results) =>
+            results.forEach(({ outfile, content }) => {
+              compilation.assets[outfile] = new RawSource(content);
             })
           )
         );
