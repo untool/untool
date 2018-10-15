@@ -2,9 +2,9 @@
 
 const { initialize } = require('@untool/core');
 
-const createAgentMiddleware = require('./lib/middleware/agent');
-const createWebpackMiddleware = require('./lib/middleware/render');
-const createStatsMiddleware = require('./lib/middleware/stats');
+const createAgentMiddleware = require('./lib/middlewares/agent');
+const createWebpackMiddleware = require('./lib/middlewares/render');
+const createStatsMiddleware = require('./lib/middlewares/stats');
 
 const { RenderPlugin } = require('./lib/plugins/render');
 const { StatsPlugin, StatsFilePlugin } = require('./lib/plugins/stats');
