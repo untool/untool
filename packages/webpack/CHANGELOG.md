@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-rc.3](https://github.com/untool/untool/compare/v1.0.0-rc.2...v1.0.0-rc.3) (2018-10-15)
+
+
+### Bug Fixes
+
+* **webpack:** remove obsolete helpers import ([eb41673](https://github.com/untool/untool/commit/eb41673))
+
+
+### Features
+
+* **webpack:** add ua detection middleware ([838af07](https://github.com/untool/untool/commit/838af07))
+* **webpack:** babel everything (except polyfills) ([1a97e1c](https://github.com/untool/untool/commit/1a97e1c))
+* **webpack:** introduce getRenderRequests hook ([c1b3141](https://github.com/untool/untool/commit/c1b3141))
+* **webpack:** use adaptive module ids ([d4db5da](https://github.com/untool/untool/commit/d4db5da))
+
+
+
+
+
 # [1.0.0-rc.2](https://github.com/untool/untool/compare/v1.0.0-rc.1...v1.0.0-rc.2) (2018-10-10)
 
 **Note:** Version bump only for package @untool/webpack

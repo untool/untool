@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-rc.3](https://github.com/untool/untool/compare/v1.0.0-rc.2...v1.0.0-rc.3) (2018-10-15)
+
+
+### Features
+
+* **yargs:** re-enable un command ([b0f86d6](https://github.com/untool/untool/commit/b0f86d6))
+
+
+
+
+
 # [1.0.0-rc.2](https://github.com/untool/untool/compare/v1.0.0-rc.1...v1.0.0-rc.2) (2018-10-10)
 
 **Note:** Version bump only for package @untool/yargs
