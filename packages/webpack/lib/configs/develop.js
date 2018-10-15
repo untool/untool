@@ -72,7 +72,6 @@ module.exports = function getConfig(config) {
       fileLoaderConfig,
       allLoaderConfigs,
     },
-    name: 'develop',
     mode: 'development',
     context: config.rootDir,
     entry: [

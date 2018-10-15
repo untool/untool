@@ -74,7 +74,6 @@ module.exports = function getConfig(config) {
       fileLoaderConfig,
       allLoaderConfigs,
     },
-    name: 'node',
     target: 'node',
     mode: isProduction ? 'production' : 'development',
     bail: isProduction,
