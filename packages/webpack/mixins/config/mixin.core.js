@@ -17,14 +17,14 @@ class WebpackConfigMixin extends Mixin {
     const { loaderConfigs = {}, ...webpackConfig } = (() => {
       switch (baseConfig || target) {
         case 'build':
-          return require('../../lib/configs/build')(this.config);
+          return require('../../lib/configs/build')(this.config, target);
         case 'develop':
-          return require('../../lib/configs/develop')(this.config);
+          return require('../../lib/configs/develop')(this.config, target);
         case 'node':
-          return require('../../lib/configs/node')(this.config);
+          return require('../../lib/configs/node')(this.config, target);
         default:
           if (baseConfig && exists(baseConfig)) {
-            return require(baseConfig)(this.config);
+            return require(baseConfig)(this.config, target);
           }
           throw new Error(`Can't get build config ${baseConfig || target}`);
       }
@@ -40,7 +40,6 @@ class WebpackConfigMixin extends Mixin {
     }
   }
   configureBuild(webpackConfig, loaderConfigs, target) {
-    webpackConfig.name = target;
     const { module } = webpackConfig;
     const configLoaderConfig = {
       test: require.resolve('@untool/core/lib/config'),

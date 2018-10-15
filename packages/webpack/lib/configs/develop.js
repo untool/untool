@@ -15,7 +15,7 @@ const {
   },
 } = require('@untool/express');
 
-module.exports = function getConfig(config) {
+module.exports = function getConfig(config, name) {
   const getAssetPath = resolveRelative.bind(null, config.assetPath);
   const isProduction = process.env.NODE_ENV === 'production';
 
@@ -27,7 +27,7 @@ module.exports = function getConfig(config) {
       babelrc: false,
       compact: false,
       cacheDirectory: true,
-      cacheIdentifier: `development:develop`,
+      cacheIdentifier: `development:${name}`,
       presets: [
         [
           require.resolve('@babel/preset-env'),
@@ -72,6 +72,7 @@ module.exports = function getConfig(config) {
       fileLoaderConfig,
       allLoaderConfigs,
     },
+    name,
     mode: 'development',
     context: config.rootDir,
     entry: [
@@ -104,6 +105,7 @@ module.exports = function getConfig(config) {
     module: {
       rules: [{ oneOf: allLoaderConfigs }],
     },
+    externals: [],
     optimization: {
       splitChunks: { chunks: 'all', name: false },
     },
