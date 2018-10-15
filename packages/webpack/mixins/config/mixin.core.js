@@ -40,6 +40,7 @@ class WebpackConfigMixin extends Mixin {
     }
   }
   configureBuild(webpackConfig, loaderConfigs, target) {
+    webpackConfig.name = target;
     const { module } = webpackConfig;
     const configLoaderConfig = {
       test: require.resolve('@untool/core/lib/config'),
