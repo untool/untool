@@ -23,8 +23,12 @@ exports.Resolvable = class Resolvable {
       state.splice(0, state.length);
       if (executor) {
         new Promise((resolve, reject) =>
-          executor(resolve, reject, this.reset)
-        ).then(this.resolve, this.reject);
+          executor(
+            (value) => void resolve(value) || this.resolve(value),
+            (error) => void reject(error) || this.reject(error),
+            (executor) => this.reset(executor)
+          )
+        ).catch(this.reject);
       }
     };
     this.resolve = (value) => {
