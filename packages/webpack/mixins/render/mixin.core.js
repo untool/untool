@@ -7,11 +7,7 @@ const {
   async: { override },
 } = require('mixinable');
 
-const {
-  internal: {
-    uri: { resolveAbsolute },
-  },
-} = require('@untool/express');
+const { join: joinUrl, ensureLeadingSlash } = require('pathifist');
 
 const { Mixin } = require('@untool/core');
 
@@ -20,7 +16,9 @@ class WebpackRenderMixin extends Mixin {
     const { locations, basePath } = this.config;
     return locations.map((location) => {
       const isString = typeof location === 'string';
-      const url = resolveAbsolute(basePath, isString ? location : location.url);
+      const url = ensureLeadingSlash(
+        joinUrl(basePath, isString ? location : location.url)
+      );
       return isString ? { url } : { ...location, url };
     });
   }
