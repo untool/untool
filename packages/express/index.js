@@ -2,8 +2,6 @@
 
 const { initialize } = require('@untool/core');
 
-const uri = require('./lib/uri');
-
 const configure = (config, options) => ({
   runServer(...args) {
     return initialize(config, options).runServer(...args);
@@ -15,7 +13,6 @@ const configure = (config, options) => ({
     return initialize(config, options).createRenderer(...args);
   },
   configure,
-  internal: { uri },
 });
 
 module.exports = configure();
