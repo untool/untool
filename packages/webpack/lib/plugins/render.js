@@ -3,11 +3,7 @@
 const indexFile = require('directory-index');
 const { RawSource } = require('webpack-sources');
 
-const {
-  internal: {
-    uri: { trimLeadingSlash },
-  },
-} = require('@untool/express');
+const { trimLeadingSlash } = require('pathifist');
 
 exports.RenderPlugin = class RenderPlugin {
   constructor(render, requests) {

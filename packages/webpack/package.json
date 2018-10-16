@@ -34,6 +34,7 @@
     "loader-utils": "^1.1.0",
     "memory-fs": "^0.4.1",
     "mixinable": "^4.0.0",
+    "pathifist": "^0.0.2",
     "require-from-string": "^2.0.1",
     "rimraf": "^2.6.2",
     "source-map-support": "^0.5.6",

@@ -9,14 +9,10 @@ const {
   NamedModulesPlugin,
 } = require('webpack');
 
-const {
-  internal: {
-    uri: { resolveRelative },
-  },
-} = require('@untool/express');
+const { join, trimSlashes } = require('pathifist');
 
 module.exports = function getConfig(config, name) {
-  const getAssetPath = resolveRelative.bind(null, config.assetPath);
+  const getAssetPath = (...arg) => trimSlashes(join(config.assetPath, ...arg));
   const isProduction = process.env.NODE_ENV === 'production';
 
   const jsLoaderConfig = {
