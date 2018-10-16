@@ -102,6 +102,7 @@ module.exports = function getConfig(config) {
         'main',
       ],
     },
+    externals: [],
     module: {
       rules: [{ oneOf: allLoaderConfigs }],
     },
