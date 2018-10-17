@@ -6,7 +6,6 @@
   "command": {
     "version": {
       "forcePublish": true,
-      "exact": true,
       "preid": "rc"
     },
     "publish": {
