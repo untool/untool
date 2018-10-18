@@ -48,7 +48,7 @@ const extractFiles = ({ entryChunks, vendorChunks, chunksByModule }) => {
 };
 
 exports.StatsPlugin = class StatsPlugin {
-  constructor(resolvable) {
+  constructor(enhancedPromise) {
     this.apply = (compiler) => {
       compiler.hooks.compilation.tap('StatsPlugin', (compilation) => {
         compilation.hooks.additionalAssets.tap('StatsPlugin', () => {
@@ -56,26 +56,26 @@ exports.StatsPlugin = class StatsPlugin {
             return;
           }
           try {
-            resolvable.resolve({
+            enhancedPromise.resolve({
               ...compilation.getStats().toJson({ source: false }),
               ...extractFiles(analyzeCompilation(compilation)),
             });
           } catch (error) {
-            resolvable.reject(error);
+            enhancedPromise.reject(error);
           }
         });
       });
-      compiler.hooks.watchRun.tap('StatsPlugin', () => resolvable.reset());
+      compiler.hooks.watchRun.tap('StatsPlugin', () => enhancedPromise.reset());
     };
   }
 };
 
 exports.StatsFilePlugin = class StatsFilePlugin {
-  constructor(resolvable, { statsFile }) {
+  constructor(enhancedPromise, { statsFile }) {
     this.apply = (compiler) => {
       compiler.hooks.compilation.tap('StatsFilePlugin', (compilation) =>
         compilation.hooks.additionalAssets.tapPromise('StatsFilePlugin', () =>
-          resolvable.then(
+          enhancedPromise.then(
             (stats) =>
               (compilation.assets[statsFile] = new RawSource(
                 JSON.stringify(stats)

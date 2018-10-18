@@ -1,8 +1,8 @@
 'use strict';
 
-module.exports = function createStatsMiddleware(resolvable) {
+module.exports = function createStatsMiddleware(enhancedPromise) {
   return function statsMiddleware(req, res, next) {
-    resolvable
+    enhancedPromise
       .then((stats) => {
         res.locals = { ...res.locals, stats };
         next();

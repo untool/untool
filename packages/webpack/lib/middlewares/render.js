@@ -8,10 +8,10 @@ const MemoryFS = require('memory-fs');
 const sourceMapSupport = require('source-map-support');
 const requireFromString = require('require-from-string');
 
-const { Resolvable } = require('../utils/resolvable');
+const EnhancedPromise = require('eprom');
 
 module.exports = function createRenderMiddleware(webpackConfig, watch) {
-  const resolvable = new Resolvable((resolve, reject, reset) => {
+  const enhancedPromise = new EnhancedPromise((resolve, reject, reset) => {
     const compiler = webpack(webpackConfig);
     const handleCompilation = (compileError, stats) => {
       if (compileError) {
@@ -47,6 +47,8 @@ module.exports = function createRenderMiddleware(webpackConfig, watch) {
     }
   });
   return function renderMiddleware(req, res, next) {
-    resolvable.then((middleware) => middleware(req, res, next)).catch(next);
+    enhancedPromise
+      .then((middleware) => middleware(req, res, next))
+      .catch(next);
   };
 };
