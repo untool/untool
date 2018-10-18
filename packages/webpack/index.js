@@ -10,7 +10,6 @@ const { RenderPlugin } = require('./lib/plugins/render');
 const { StatsPlugin, StatsFilePlugin } = require('./lib/plugins/stats');
 
 const configLoader = require('./lib/utils/loader');
-const { Resolvable } = require('./lib/utils/resolvable');
 
 const configure = (config, options) => ({
   clean(...args) {
@@ -30,7 +29,6 @@ const configure = (config, options) => ({
     StatsPlugin,
     StatsFilePlugin,
     configLoader,
-    Resolvable,
   },
   configure,
 });
