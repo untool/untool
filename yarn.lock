@@ -3889,6 +3889,11 @@ enhanced-resolve@^4.0.0, enhanced-resolve@^4.1.0:
     memory-fs "^0.4.0"
     tapable "^1.0.0"
 
+eprom@^0.0.1:
+  version "0.0.1"
+  resolved "https://registry.yarnpkg.com/eprom/-/eprom-0.0.1.tgz#43d0180998ed39e3c152554c9951b8d77144e568"
+  integrity sha512-g8hnWeRig8kno+shd0maZWVdWWDPfcBzk7lwF0BhbOG0JODWurRFx5CiaGUXP3NybWPCOWmtTvvjo1dW2F14gg==
+
 equal-length@^1.0.0:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/equal-length/-/equal-length-1.0.1.tgz#21ca112d48ab24b4e1e7ffc0e5339d31fdfc274c"
