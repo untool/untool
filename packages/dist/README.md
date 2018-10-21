@@ -46,4 +46,4 @@ const { Mixin } = require('untool');
 
 ## Settings
 
-As `untool` aggrgates all other `@untool` packages it includes all settings these provide.
+As `untool` aggregates all other `@untool` packages it includes all settings these provide.
