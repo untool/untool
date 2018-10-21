@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-rc.7](https://github.com/untool/untool/compare/v1.0.0-rc.6...v1.0.0-rc.7) (2018-10-21)
+
+
+### Bug Fixes
+
+* **react:** enable untool package ([16e23e5](https://github.com/untool/untool/commit/16e23e5))
+
+
+
+
+
 # [1.0.0-rc.6](https://github.com/untool/untool/compare/v1.0.0-rc.5...v1.0.0-rc.6) (2018-10-17)
 
 **Note:** Version bump only for package untool
