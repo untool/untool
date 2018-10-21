@@ -1,6 +1,6 @@
 # `@untool/webpack`
 
-[![npm](https://img.shields.io/npm/v/@untool%2Fwebpack.svg)](https://www.npmjs.com/package/@untool%2Fwebpack)
+[![travis](https://img.shields.io/travis/untool/untool/master.svg)](https://travis-ci.org/untool/untool)&nbsp;[![npm](https://img.shields.io/npm/v/@untool%2Fwebpack.svg)](https://www.npmjs.com/package/@untool%2Fwebpack)
 
 `@untool/webpack` is the largest and most complex of `untool`'s core packages. It contains half of its total lines of code and provides both a [preset](https://github.com/untool/untool/blob/master/packages/core/README.md#presets) and a [core mixin](https://github.com/untool/untool/blob/master/packages/core/README.md#mixins). It provides a comprehensive, but rather minimal [`Webpack`](https://webpack.js.org) setup as a basis for your own configurations.
 

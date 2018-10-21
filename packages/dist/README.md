@@ -1,6 +1,6 @@
 # `untool`
 
-[![npm](https://img.shields.io/npm/v/untool.svg)](https://www.npmjs.com/package/untool)
+[![travis](https://img.shields.io/travis/untool/untool/master.svg)](https://travis-ci.org/untool/untool)&nbsp;[![npm](https://img.shields.io/npm/v/untool.svg)](https://www.npmjs.com/package/untool)
 
 This package is an (optional) consolidated entry point to all other `@untool/*` packages. It does not contain any meaningful code of its own, but you can use it to access our entire code base.
 
