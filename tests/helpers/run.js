@@ -3,7 +3,7 @@ const { join } = require('path');
 const uuid = require('uuid/v4');
 const ncp = require('ncp');
 
-const { run } = require('@untool/yargs');
+const { configure } = require('@untool/yargs');
 
 const {
   normalizeConfig,
@@ -30,9 +30,10 @@ const bootstrap = () =>
 module.exports = (...args) =>
   bootstrap().then((rootDir) => {
     process.chdir(rootDir);
-    process.nextTick(() => run(...args));
-
-    const { events } = require(join(rootDir, 'instrument', 'mixin.core'));
+    process.nextTick(() =>
+      configure({ mixins: [join(__dirname, 'instrument')] }).run(...args)
+    );
+    const { events } = require('./instrument/mixin.core');
     const api = {
       rootDir,
       getArg(...args) {

@@ -1,5 +1,3 @@
-const { join } = require('path');
-
 const supertest = require('supertest');
 
 const run = require('./run');
@@ -13,7 +11,7 @@ const {
 
 module.exports = (...args) =>
   run(...args).then((api) => {
-    const { events } = require(join(api.rootDir, 'instrument', 'mixin.server'));
+    const { events } = require('./instrument/mixin.server');
     return {
       getArg(...args) {
         return events.promiseArg(...args);

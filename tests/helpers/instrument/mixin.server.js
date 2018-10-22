@@ -1,4 +1,4 @@
-const EventEmitter = require('../../../helpers/promise');
+const EventEmitter = require('../promise');
 
 const { Mixin } = require('untool');
 
