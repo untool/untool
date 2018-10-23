@@ -39,7 +39,9 @@ exports.createMixinResolver = (mixinTypes) => ({
       Object.entries(mixinTypes).forEach(([key, types]) => {
         const typeMixin = resolveMixin(types, context, mixin);
         if (typeMixin) {
-          result[key] = [...(result[key] || []), typeMixin];
+          if (!result[key] || !result[key].includes(typeMixin)) {
+            result[key] = [...(result[key] || []), typeMixin];
+          }
           found = true;
         }
       });
