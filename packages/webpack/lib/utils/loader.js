@@ -9,7 +9,7 @@ const getConfig = (type, { _config: config }) =>
   );
 
 const getMixins = (type, { _mixins: mixins }) => {
-  const requires = (mixins[type] || []).map(
+  const requires = Array.from(mixins[type] || []).map(
     (mixin) => `((m) => m.default || m )(require('${mixin}'))`
   );
   return `[${requires.join(',')}]`;

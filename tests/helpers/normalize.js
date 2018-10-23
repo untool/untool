@@ -15,7 +15,14 @@ const normalizePath = (string) =>
     );
 
 exports.normalizeConfig = (config) =>
-  JSON.parse(normalizePath(JSON.stringify(config)));
+  JSON.parse(
+    normalizePath(
+      JSON.stringify(
+        config,
+        (key, value) => (value instanceof Set ? Array.from(value) : value)
+      )
+    )
+  );
 
 exports.normalizeMixin = (mixin) =>
   Object.assign(Object.create(mixin.constructor.prototype), mixin, {

@@ -32,4 +32,5 @@ exports.getConfig = ({
   return config;
 };
 
-exports.getMixins = ({ _mixins: mixins }) => mixins.core.map(require);
+exports.getMixins = ({ _mixins: mixins }) =>
+  Array.from(mixins.core || []).map(require);
