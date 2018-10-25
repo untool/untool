@@ -18,7 +18,7 @@ module.exports = function getConfig(config, name) {
   const isProduction = process.env.NODE_ENV === 'production';
 
   const jsLoaderConfig = {
-    test: [/\.js$/],
+    test: [/\.m?js$/],
     exclude: [/node_modules\/core-js/],
     loader: require.resolve('babel-loader'),
     options: {
@@ -53,7 +53,7 @@ module.exports = function getConfig(config, name) {
   };
 
   const fileLoaderConfig = {
-    exclude: [/\.(?:js|html|json)$/],
+    exclude: [/\.(?:m?js|html|json)$/],
     loader: require.resolve('file-loader'),
     options: {
       name: getAssetPath('[name]-[hash:16].[ext]'),
@@ -88,11 +88,12 @@ module.exports = function getConfig(config, name) {
       alias: {
         '@untool/entrypoint': config.rootDir,
       },
-      extensions: ['.js'],
+      extensions: ['.mjs', '.js'],
       mainFields: [
         'esnext:browser',
         'jsnext:browser',
         'browser',
+        'module',
         'esnext',
         'jsnext',
         'esnext:main',
