@@ -86,7 +86,9 @@ module.exports = function getConfig(config, name) {
         resolve(info.absoluteResourcePath),
     },
     resolve: {
-      alias: { '@untool/entrypoint': config.rootDir },
+      alias: Object.assign({}, config.alias, {
+        '@untool/entrypoint': config.rootDir,
+      }),
       extensions: ['.mjs', '.js'],
       mainFields: [
         'esnext:server',
