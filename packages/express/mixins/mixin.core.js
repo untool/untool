@@ -66,12 +66,10 @@ class ExpressMixin extends Mixin {
   }
 }
 
-ExpressMixin.strategies = {
-  configureServer: sequence,
-  inspectServer: sequence,
-  runServer: callable,
-  createServer: callable,
-  createRenderer: callable,
-};
+ExpressMixin.configureServer = sequence;
+ExpressMixin.inspectServer = sequence;
+ExpressMixin.runServer = callable;
+ExpressMixin.createServer = callable;
+ExpressMixin.createRenderer = callable;
 
 module.exports = ExpressMixin;
