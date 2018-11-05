@@ -66,10 +66,8 @@ class WebpackConfigMixin extends Mixin {
   }
 }
 
-WebpackConfigMixin.strategies = {
-  getBuildConfig: callable,
-  collectBuildConfigs: sequence,
-  configureBuild: sequence,
-};
+WebpackConfigMixin.getBuildConfig = callable;
+WebpackConfigMixin.collectBuildConfigs = sequence;
+WebpackConfigMixin.configureBuild = sequence;
 
 module.exports = WebpackConfigMixin;

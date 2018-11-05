@@ -42,8 +42,6 @@ class WebpackStatsMixin extends Mixin {
   }
 }
 
-WebpackStatsMixin.strategies = {
-  getBuildStats: callable,
-};
+WebpackStatsMixin.getBuildStats = callable;
 
 module.exports = WebpackStatsMixin;

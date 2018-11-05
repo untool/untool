@@ -62,8 +62,6 @@ class WebpackRenderMixin extends Mixin {
   }
 }
 
-WebpackRenderMixin.strategies = {
-  getRenderRequests: override,
-};
+WebpackRenderMixin.getRenderRequests = override;
 
 module.exports = WebpackRenderMixin;

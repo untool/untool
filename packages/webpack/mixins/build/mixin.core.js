@@ -75,10 +75,8 @@ class WebpackBuildMixin extends Mixin {
   }
 }
 
-WebpackBuildMixin.strategies = {
-  clean: callable,
-  build: callable,
-  inspectBuild: sequence,
-};
+WebpackBuildMixin.clean = callable;
+WebpackBuildMixin.build = callable;
+WebpackBuildMixin.inspectBuild = sequence;
 
 module.exports = WebpackBuildMixin;
