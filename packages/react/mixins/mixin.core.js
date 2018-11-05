@@ -14,9 +14,6 @@ module.exports = class ReactMixin extends Mixin {
       /node_modules\/react/
     );
 
-    // jsLoaderConfig.options.presets
-    //   .find((p) => Array.isArray(p) && p[0].includes('@babel/preset-env'))[1]
-    //   .include.push('es6.symbol');
     jsLoaderConfig.options.presets.push(require.resolve('@babel/preset-react'));
 
     if (target !== 'develop' && process.env.NODE_ENV === 'production') {
