@@ -1,6 +1,5 @@
 'use strict';
 
-const debug = require('debug')('untool:core');
 const isPlainObject = require('is-plain-object');
 const define = require('mixinable');
 
@@ -17,13 +16,18 @@ exports.Mixin = class Mixin {
 exports.initialize = function initialize(overrides = {}, ...args) {
   const config = getConfig(overrides);
   const mixins = getMixins(config);
-  const strategies = {
-    ...mixins.reduce(
-      (result, mixin) => ({ ...result, ...mixin.strategies }),
-      {}
-    ),
-  };
-  debug(mixins.map(({ name, strategies }) => ({ [name]: strategies })));
+  const strategies = mixins.reduce(
+    (result, mixin) => ({
+      ...result,
+      ...Object.entries(mixin).reduce((strategies, [key, value]) => {
+        if (typeof value === 'function') {
+          strategies[key] = value;
+        }
+        return strategies;
+      }, {}),
+    }),
+    {}
+  );
   return define(strategies, mixins)(config, ...args);
 };
 
