@@ -163,7 +163,9 @@ MyMixin.strategies = {
 export default MyMixin;
 ```
 
-If inheriting from `Mixin`, all methods of your mixin are automatically bound to the repective instance, so you do not have to call `this.method.bind(this)` yourself even if you use them in asynchronous contexts.
+If inheriting from `Mixin`, all mixinable methods of your mixin are automatically bound to the respective instance, so you do not have to call `method.bind()` yourself even if you use them in asynchronous contexts.
+
+While it is technically possible to define non-mixin utility methods on your mixin, doing so is strongly discouraged. If you have to, however, it is recommended to prefix such methods' names with an underscore (`_`) to denote them as private.
 
 Note that you can call all defined mixinable methods directly on your mixin instance.
 
