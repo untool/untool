@@ -14,11 +14,9 @@ class YargsMixin extends Mixin {
   }
 }
 
-YargsMixin.strategies = {
-  registerCommands: sequence,
-  configureCommand: (...args) => sequence(...args) && args[1],
-  handleArguments: sequence,
-  handleError: override,
-};
+YargsMixin.registerCommands = sequence;
+YargsMixin.configureCommand = (...args) => sequence(...args) && args[1];
+YargsMixin.handleArguments = sequence;
+YargsMixin.handleError = override;
 
 module.exports = YargsMixin;
