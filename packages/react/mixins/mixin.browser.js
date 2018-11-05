@@ -44,11 +44,9 @@ class ReactMixin extends Mixin {
   }
 }
 
-ReactMixin.strategies = {
-  bootstrap: parallel,
-  enhanceElement: compose,
-  fetchData: pipe,
-  render: override,
-};
+ReactMixin.bootstrap = parallel;
+ReactMixin.enhanceElement = compose;
+ReactMixin.fetchData = pipe;
+ReactMixin.render = override;
 
 module.exports = ReactMixin;
