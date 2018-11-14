@@ -4,6 +4,7 @@ const { resolve } = require('path');
 
 const {
   EnvironmentPlugin,
+  HotModuleReplacementPlugin,
   HashedModuleIdsPlugin,
   NamedModulesPlugin,
   optimize: { LimitChunkCountPlugin },
@@ -75,7 +76,12 @@ module.exports = function getConfig(config, name) {
     mode: isProduction ? 'production' : 'development',
     bail: isProduction,
     context: config.rootDir,
-    entry: require.resolve('../shims/server'),
+    entry: isProduction
+      ? require.resolve('../shims/server')
+      : [
+          require.resolve('webpack/hot/signal'),
+          require.resolve('../shims/server'),
+        ],
     output: {
       path: config.serverDir,
       publicPath: '/',
@@ -110,10 +116,11 @@ module.exports = function getConfig(config, name) {
     plugins: [
       new LimitChunkCountPlugin({ maxChunks: 1 }),
       new (isProduction ? HashedModuleIdsPlugin : NamedModulesPlugin)(),
+      isProduction ? { apply: () => {} } : new HotModuleReplacementPlugin(),
       new EnvironmentPlugin({ NODE_ENV: 'development' }),
     ],
     performance: { hints: false },
-    devtool: 'inline-source-map',
+    devtool: isProduction ? 'source-map' : 'cheap-module-eval-source-map',
     watchOptions: { aggregateTimeout: 300, ignored: /node_modules/ },
   };
 };

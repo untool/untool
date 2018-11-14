@@ -4,15 +4,16 @@ const { join } = require('path');
 
 const webpack = require('webpack');
 const MemoryFS = require('memory-fs');
-
 const sourceMapSupport = require('source-map-support');
 const requireFromString = require('require-from-string');
-
 const EnhancedPromise = require('eprom');
 
 module.exports = function createRenderMiddleware(webpackConfig, watch) {
+  sourceMapSupport.install({ environment: 'node', hookRequire: true });
+
+  let middleware = null;
+
   const enhancedPromise = new EnhancedPromise((resolve, reject, reset) => {
-    const compiler = webpack(webpackConfig);
     const handleCompilation = (compileError, stats) => {
       if (compileError) {
         reject(compileError);
@@ -25,27 +26,39 @@ module.exports = function createRenderMiddleware(webpackConfig, watch) {
       } else {
         const { path, filename } = webpackConfig.output;
         const filePath = join(path, filename);
-        const { outputFileSystem: fs } = compiler;
-        fs.readFile(filePath, 'utf8', (readError, fileContents) => {
-          if (readError) return reject(readError);
-          try {
-            const middleware = requireFromString(fileContents, filePath);
-            resolve(middleware.default);
-          } catch (moduleError) {
-            reject(moduleError);
+        if (watch) {
+          if (middleware) {
+            process.kill(process.pid, 'SIGUSR2');
+            resolve(middleware);
+          } else {
+            try {
+              middleware = require(filePath).default;
+              resolve(middleware);
+            } catch (moduleError) {
+              reject(moduleError);
+            }
           }
-        });
+        } else {
+          const { outputFileSystem: fs } = compiler;
+          fs.readFile(filePath, 'utf-8', (readError, fileContents) => {
+            if (readError) return reject(readError);
+            resolve(requireFromString(fileContents, filePath).default);
+          });
+        }
       }
     };
-    sourceMapSupport.install({ environment: 'node', hookRequire: true });
-    compiler.outputFileSystem = new MemoryFS();
+
+    const compiler = webpack(webpackConfig);
+
     if (watch) {
       compiler.hooks.watchRun.tap('RenderMiddleware', () => reset());
       compiler.watch(webpackConfig.watchOptions, handleCompilation);
     } else {
+      compiler.outputFileSystem = new MemoryFS();
       compiler.run(handleCompilation);
     }
   });
+
   return function renderMiddleware(req, res, next) {
     enhancedPromise
       .then((middleware) => middleware(req, res, next))
