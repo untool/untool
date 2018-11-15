@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-rc.10](https://github.com/untool/untool/compare/v1.0.0-rc.9...v1.0.0-rc.10) (2018-11-15)
+
+
+### Features
+
+* **webpack:** use HMR for server-side code ([f7f73cf](https://github.com/untool/untool/commit/f7f73cf))
+
+
+
+
+
 # [1.0.0-rc.9](https://github.com/untool/untool/compare/v1.0.0-rc.8...v1.0.0-rc.9) (2018-11-15)
 
 
