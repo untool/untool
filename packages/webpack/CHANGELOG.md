@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-rc.9](https://github.com/untool/untool/compare/v1.0.0-rc.8...v1.0.0-rc.9) (2018-11-15)
+
+
+### Features
+
+* **webpack:** support ESM via ".mjs" ext and "module" package field ([daaeb4b](https://github.com/untool/untool/commit/daaeb4b)), closes [/github.com/webpack/webpack/blob/v4.23.1/lib/WebpackOptionsDefaulter.js#L327-L348](https://github.com//github.com/webpack/webpack/blob/v4.23.1/lib/WebpackOptionsDefaulter.js/issues/L327-L348)
+
+
+### Performance Improvements
+
+* **webpack:** only re-evaluate config when overrides exist ([ef4a5a8](https://github.com/untool/untool/commit/ef4a5a8))
+
+
+
+
+
 # [1.0.0-rc.8](https://github.com/untool/untool/compare/v1.0.0-rc.7...v1.0.0-rc.8) (2018-10-23)
 
 **Note:** Version bump only for package @untool/webpack
