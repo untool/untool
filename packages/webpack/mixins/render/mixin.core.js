@@ -43,7 +43,7 @@ class WebpackRenderMixin extends Mixin {
       const { serverDir, serverFile } = this.config;
       const serverFilePath = join(serverDir, serverFile);
       if (exists(serverFilePath)) {
-        middlewares.routes.push(require(serverFilePath).default);
+        middlewares.routes.push(require(serverFilePath));
       }
     }
   }
