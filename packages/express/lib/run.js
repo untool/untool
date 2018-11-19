@@ -5,8 +5,7 @@ const { join } = require('path');
 
 const { createServer: createHTTPServer } = require('http');
 const { createServer: createHTTPSServer } = require('https');
-
-const portfinder = require('portfinder');
+const getPort = require('./getPort');
 
 const createServer = (app, https) =>
   https
@@ -22,12 +21,6 @@ const createServer = (app, https) =>
         app
       )
     : createHTTPServer(app);
-
-const getPort = (port) => {
-  if (port) return Promise.resolve(port);
-  portfinder.basePort = 8080;
-  return portfinder.getPortPromise();
-};
 
 module.exports = (app, { config, inspectServer, handleError }) => {
   const { host, port, https } = config;

@@ -8,9 +8,30 @@ const { Mixin } = require('@untool/core');
 
 class ExpressMixin extends Mixin {
   runServer(mode) {
-    const run = require('../lib/run');
-    const app = this.createServer(mode);
-    return run(app, this);
+    const os = require('os');
+    const cluster = require('cluster');
+    const getPort = require('../lib/getPort');
+
+    if (cluster.isMaster) {
+      const cpuCount = os.cpus().length;
+
+      getPort(this.config.port).then((port) => {
+        cluster.on('message', (worker) => {
+          worker.send(port);
+        });
+
+        for (let i = 0; i < cpuCount; i++) {
+          cluster.fork();
+        }
+      });
+    } else {
+      process.send('ready');
+      process.on('message', (port) => {
+        const run = require('../lib/run');
+        const app = this.createServer(mode);
+        return run(app, { ...this, config: { ...this.config, port } });
+      });
+    }
   }
   createServer(mode) {
     const create = require('../lib/serve');
