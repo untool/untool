@@ -3,7 +3,7 @@
 const { join } = require('path');
 
 module.exports = {
-  browsers: 'defaults',
+  browsers: ['defaults'],
   node: 'current',
   locations: [],
   basePath: '',
