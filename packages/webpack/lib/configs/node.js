@@ -12,6 +12,8 @@ const {
 
 const { join, trimSlashes } = require('pathifist');
 
+const getModules = require('../utils/modules');
+
 module.exports = function getConfig(config, name) {
   const getAssetPath = (...arg) => trimSlashes(join(config.assetPath, ...arg));
   const isProduction = process.env.NODE_ENV === 'production';
@@ -92,6 +94,7 @@ module.exports = function getConfig(config, name) {
         resolve(info.absoluteResourcePath),
     },
     resolve: {
+      modules: getModules(),
       alias: { '@untool/entrypoint': config.rootDir },
       extensions: ['.mjs', '.js'],
       mainFields: [
