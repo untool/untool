@@ -151,7 +151,7 @@ _This method is also exported so that you can use it in your own, non-mixin code
 
 | Property     | Type       | Default                                  |
 | ------------ | ---------- | ---------------------------------------- |
-| `browsers`   | `string`   | `'defaults'`                             |
+| `browsers`   | `[string]` | `['defaults']`                           |
 | `node`       | `string`   | `'current'`                              |
 | `locations`  | `[string]` | `[]`                                     |
 | `basePath`   | `string`   | `''`                                     |
@@ -167,7 +167,7 @@ This is a [`browserslist`](https://github.com/browserslist/browserslist) configu
 
 ```json
 {
-  "browsers": "last 1 Chrome versions"
+  "browsers": ["last 1 Chrome versions"]
 }
 ```
 
