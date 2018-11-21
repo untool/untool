@@ -94,7 +94,7 @@ module.exports = function getConfig(config, name) {
         resolve(info.absoluteResourcePath),
     },
     resolve: {
-      modules: getModules(),
+      modules: getModules(config.rootDir),
       alias: { '@untool/entrypoint': config.rootDir },
       extensions: ['.mjs', '.js'],
       mainFields: [
