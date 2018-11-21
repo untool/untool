@@ -87,7 +87,7 @@ module.exports = function getConfig(config, name) {
         relative(config.rootDir, info.absoluteResourcePath),
     },
     resolve: {
-      modules: getModules(),
+      modules: getModules(config.rootDir),
       alias: {
         '@untool/entrypoint': config.rootDir,
       },
