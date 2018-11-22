@@ -9,7 +9,8 @@ const configure = (config, options) => ({
   run(...args) {
     try {
       const yargs = args.length ? createYargs(args) : createYargs;
-      if (yargs.argv.production || yargs.argv.p) {
+      const { argv } = yargs.help(false);
+      if (argv.production || argv.p) {
         process.env.NODE_ENV = 'production';
       }
       const core = initialize(config, options);
@@ -22,10 +23,11 @@ const configure = (config, options) => ({
       process.nextTick(() => {
         registerCommands(
           yargs
-            .version(false)
             .usage('Usage: $0 <command> [options]')
-            .alias('help', 'h')
             .locale('en')
+            .version(false)
+            .help(true)
+            .alias('help', 'h')
             .strict()
             .demandCommand(1, '')
             .check(handleArguments)
