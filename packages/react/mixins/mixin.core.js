@@ -8,6 +8,10 @@ module.exports = class ReactMixin extends Mixin {
     fileLoaderConfig.exclude.push(/\.jsx$/);
     jsLoaderConfig.test.push(/\.jsx$/);
 
+    webpackConfig.entry = [require.resolve('core-js/es6/symbol')].concat(
+      webpackConfig.entry
+    );
+
     jsLoaderConfig.exclude.push(
       /node_modules\/react-helmet/,
       /node_modules\/react-dom/,
