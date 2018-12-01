@@ -8,12 +8,6 @@ module.exports = class ReactMixin extends Mixin {
     fileLoaderConfig.exclude.push(/\.jsx$/);
     jsLoaderConfig.test.push(/\.jsx$/);
 
-    jsLoaderConfig.exclude.push(
-      /node_modules\/react-helmet/,
-      /node_modules\/react-dom/,
-      /node_modules\/react/
-    );
-
     jsLoaderConfig.options.presets.push(require.resolve('@babel/preset-react'));
 
     if (target !== 'develop' && process.env.NODE_ENV === 'production') {
