@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-rc.12](https://github.com/untool/untool/compare/v1.0.0-rc.11...v1.0.0-rc.12) (2018-12-03)
+
+
+### Bug Fixes
+
+* **yargs:** prevent premature arg evaluation ([9769860](https://github.com/untool/untool/commit/9769860)), closes [#215](https://github.com/untool/untool/issues/215)
+
+
+
+
+
 # [1.0.0-rc.11](https://github.com/untool/untool/compare/v1.0.0-rc.10...v1.0.0-rc.11) (2018-11-19)
 
 **Note:** Version bump only for package @untool/yargs

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-rc.12](https://github.com/untool/untool/compare/v1.0.0-rc.11...v1.0.0-rc.12) (2018-12-03)
+
+
+### Bug Fixes
+
+* do not exclude packages from transpilation ([63fffab](https://github.com/untool/untool/commit/63fffab))
+
+
+
+
+
 # [1.0.0-rc.11](https://github.com/untool/untool/compare/v1.0.0-rc.10...v1.0.0-rc.11) (2018-11-19)
 
 **Note:** Version bump only for package @untool/react

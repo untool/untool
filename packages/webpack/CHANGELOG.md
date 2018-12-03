@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-rc.12](https://github.com/untool/untool/compare/v1.0.0-rc.11...v1.0.0-rc.12) (2018-12-03)
+
+
+### Features
+
+* **webpack:** allow definiton of modules with NODE_PATH ([8375e47](https://github.com/untool/untool/commit/8375e47))
+* **webpack:** allow definiton of modules with NODE_PATH ([ba524f4](https://github.com/untool/untool/commit/ba524f4))
+
+
+
+
+
 # [1.0.0-rc.11](https://github.com/untool/untool/compare/v1.0.0-rc.10...v1.0.0-rc.11) (2018-11-19)
 
 
