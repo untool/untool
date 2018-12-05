@@ -7,7 +7,7 @@
   "scripts": {
     "start": "cd tests/fixtures/untest; un start",
     "build": "cd tests/fixtures/untest; un build",
-    "serve": "cd tests/fixtures/untest; un start",
+    "serve": "cd tests/fixtures/untest; un serve",
     "test": "NODE_ENV=test ava --verbose --timeout=120s tests",
     "lint": "eslint --ignore-path .gitignore '**/*.js'",
     "fmt": "prettier --write --ignore-path .gitignore '**/*.js'",
