@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-rc.13](https://github.com/untool/untool/compare/v1.0.0-rc.12...v1.0.0-rc.13) (2018-12-05)
+
+
+### Bug Fixes
+
+* **react:** add babel/core as a dependency ([09cce6f](https://github.com/untool/untool/commit/09cce6f)), closes [#220](https://github.com/untool/untool/issues/220)
+* **react:** bump minimum React version to 16.4 ([dc7cb4a](https://github.com/untool/untool/commit/dc7cb4a))
+
+
+
+
+
 # [1.0.0-rc.12](https://github.com/untool/untool/compare/v1.0.0-rc.11...v1.0.0-rc.12) (2018-12-03)
 
 
