@@ -20,7 +20,7 @@ module.exports = class CLIMixin extends Mixin {
     const { quiet } = this.options;
     if (!quiet) {
       const { name } = this.config;
-      const mode = argv.production ? 'production' : 'development';
+      const mode = process.env.NODE_ENV || 'development';
       console.log(`[${name}] started in ${mode} mode`);
     }
   }
