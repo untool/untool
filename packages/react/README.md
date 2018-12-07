@@ -61,24 +61,24 @@ import { Header } from '@untool/react';
 export default () => <Header name="X-Foo" value="Bar" />;
 ```
 
-### `Import(module, [exportName])`
+### `importComponent(module, [exportName])`
 
-Using the `Import` component, you can asynchronously require modules into your application to help you reduce asset sizes. It works similarly to [`react-loadable`](https://github.com/jamiebuilds/react-loadable), but is deeply integrated with `untool`.
+Using the `importComponent` helper, you can asynchronously require components into your application to help you reduce asset sizes. It works similarly to [`react-loadable`](https://github.com/jamiebuilds/react-loadable), but is deeply integrated with `untool`.
 
 ```javascript
-import { Import } from '@untool/react';
+import { importComponent } from '@untool/react';
 
-const Home = Import('./home');
+const Home = importComponent('./home');
 
 export default () => <Home />;
 ```
 
-Components created using `Import` support some props that enable you to control module loading and (placeholder) rendering.
+`importComponent` itself returns a React component supporting some props that enable you to control module loading and (placeholder) rendering.
 
 ```javascript
-import { Import } from '@untool/react';
+import { importComponent } from '@untool/react';
 
-const About = Import('./about', 'About');
+const About = importComponent('./about', 'About');
 
 const loader = (load) =>
   Promise.race([
@@ -93,7 +93,7 @@ const render = ({ Component, error, loading, ...props }) => {
 export default () => <About loader={loader} render={render} />;
 ```
 
-`Import`ed modules (and their dependencies) will be placed in separate chunks, i.e. asset files. `@untool/react` makes sure that all asset files containing modules used for server-side rendering are referenced in the initial HTML output.
+Components loaded using `importComponent` (and their dependencies) will be placed in separate chunks, i.e. asset files. `@untool/react` makes sure that all asset files containing modules used for server-side rendering are referenced in the initial HTML output.
 
 ## API
 
