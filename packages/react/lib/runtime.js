@@ -37,7 +37,7 @@ exports.Header = withRouter(function Header({ staticContext, name, value }) {
   return null;
 });
 
-exports.Import = ({ load, moduleId }, name = 'default') => {
+exports.importComponent = ({ load, moduleId }, name = 'default') => {
   const ImportComponent = withRouter(
     class ImportComponent extends Component {
       constructor({ staticContext }) {

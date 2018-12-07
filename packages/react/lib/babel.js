@@ -10,7 +10,7 @@ module.exports = function({ types: t }) {
 
         const specifiers = path.get('specifiers');
         const specifier = specifiers.find(
-          (specifier) => specifier.node.imported.name === 'Import'
+          (specifier) => specifier.node.imported.name === 'importComponent'
         );
         if (!specifier) return;
 
