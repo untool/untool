@@ -33,7 +33,7 @@ $ yarn exec un start
 `untool` re-exports everything that [`@untool/core`](https://github.com/untool/untool/blob/master/packages/core/README.md) and [`@untool/react`](https://github.com/untool/untool/blob/master/packages/react/README.md) provide, meaning you can simply use it like this in your runtime code:
 
 ```javascript
-import { render, Import } from 'untool';
+import { render, importComponent } from 'untool';
 ```
 
 ### Core
