@@ -2,10 +2,10 @@
 import React, { Fragment } from 'react';
 import { Switch, Route, Link } from 'react-router-dom/es';
 
-import { Import, Miss, render } from 'untool';
+import { Miss, render, importComponent } from 'untool';
 
-const Home = Import('./home');
-const About = Import('./about', 'About');
+const Home = importComponent('./home');
+const About = importComponent('./about', 'About');
 
 const preload = ({ Component, error, loading, ...props }) => {
   if (loading) return <p>Loading...</p>;
