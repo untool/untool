@@ -24,7 +24,7 @@ class WebpackStartMixin extends Mixin {
           },
         },
         handler: (argv) => {
-          if (argv.production) {
+          if (process.env.NODE_ENV === 'production') {
             Promise.resolve(argv.clean && this.clean())
               .then(this.build)
               .then(this.runServer.bind(this, 'serve'))
