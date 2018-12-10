@@ -21,7 +21,7 @@ module.exports = function getConfig(config, name) {
 
   const jsLoaderConfig = {
     test: [/\.m?js$/],
-    exclude: [/node_modules\/core-js/],
+    exclude: [/node_modules\/core-js/, /node_modules\/@babel/],
     loader: require.resolve('babel-loader'),
     options: {
       babelrc: false,
@@ -40,7 +40,15 @@ module.exports = function getConfig(config, name) {
           },
         ],
       ],
-      plugins: [require.resolve('@babel/plugin-syntax-dynamic-import')],
+      plugins: [
+        require.resolve('@babel/plugin-syntax-dynamic-import'),
+        [
+          require.resolve('@babel/plugin-transform-runtime'),
+          {
+            useESModules: true,
+          },
+        ],
+      ],
       sourceType: 'unambiguous',
     },
   };
