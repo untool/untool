@@ -78,7 +78,7 @@ module.exports = function getConfig(config, name) {
     context: config.rootDir,
     entry: require.resolve('../shims/browser'),
     output: {
-      path: config.buildDir,
+      path: config.distDir,
       publicPath: '/',
       pathinfo: true,
       filename: getAssetPath(`${config.name}-[chunkhash:12].js`),

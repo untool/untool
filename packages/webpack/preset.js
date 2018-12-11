@@ -8,8 +8,8 @@ module.exports = {
   locations: [],
   basePath: '',
   assetPath: '<basePath>',
-  buildDir: '<distDir>',
-  serverDir: join('<rootDir>', 'node_modules', '.cache', 'untool'),
+  buildDir: join('<rootDir>', 'dist'),
+  serverDir: '<buildDir>',
   serverFile: 'server.js',
   statsFile: 'stats.json',
   mixins: [

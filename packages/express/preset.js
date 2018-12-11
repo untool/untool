@@ -6,6 +6,6 @@ module.exports = {
   https: false,
   host: '[HOST]',
   port: '[PORT]',
-  distDir: join('<rootDir>', 'dist'),
+  distDir: join('<buildDir>', 'public'),
   mixins: [join(__dirname, 'mixins')],
 };
