@@ -25,7 +25,6 @@
     "@untool/yargs": "^1.0.0-rc.14",
     "babel-loader": "8",
     "babel-plugin-dynamic-import-node": "^2.0.0",
-    "browserslist-useragent": "^2.0.1",
     "caniuse-lite": "^1.0.30000898",
     "debug": "^4.0.0",
     "enhanced-resolve": "^4.0.0",
