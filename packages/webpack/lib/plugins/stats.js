@@ -23,12 +23,7 @@ const analyzeCompilation = ({ chunks, chunkGroups }) => {
           const { chunks } = chunkGroups.find(({ chunks }) =>
             chunks.includes(chunk)
           );
-          if (module.constructor.name === 'ConcatenatedModule') {
-            result.push([module.rootModule.id, chunks]);
-          } else {
-            result.push([module.id, chunks]);
-          }
-          return result;
+          return [...result, [module.id, chunks]];
         }, result),
       []
     );
