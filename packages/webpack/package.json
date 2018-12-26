@@ -38,7 +38,7 @@
     "require-from-string": "^2.0.1",
     "rimraf": "^2.6.2",
     "source-map-support": "^0.5.6",
-    "supports-color": "^5.4.0",
+    "supports-color": "^6.0.0",
     "terser-webpack-plugin": "^1.1.0",
     "url-loader": "^1.0.1",
     "webpack": "^4.23.0",
