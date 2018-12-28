@@ -20,6 +20,9 @@ exports.RenderPlugin = class RenderPlugin {
         )
       );
       compiler.hooks.compilation.tap('RenderPlugin', (compilation) => {
+        if (compilation.compiler.isChild()) {
+          return;
+        }
         compilation.hooks.additionalAssets.tapPromise('RenderPlugin', () =>
           promise.then((results) =>
             results.forEach(({ outfile, content }) => {
