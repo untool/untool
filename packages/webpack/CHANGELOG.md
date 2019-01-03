@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-rc.15](https://github.com/untool/untool/compare/v1.0.0-rc.14...v1.0.0-rc.15) (2019-01-03)
+
+
+### Bug Fixes
+
+* remove dependency browserslist-useragent ([a9d987a](https://github.com/untool/untool/commit/a9d987a))
+* update dependency file-loader to v3 ([fe4591b](https://github.com/untool/untool/commit/fe4591b))
+* update dependency supports-color to v6 ([a8a26ff](https://github.com/untool/untool/commit/a8a26ff))
+* **webpack:** ignore child-compilers in RenderPlugin ([7c438ad](https://github.com/untool/untool/commit/7c438ad))
+
+
+
+
+
 # [1.0.0-rc.14](https://github.com/untool/untool/compare/v1.0.0-rc.13...v1.0.0-rc.14) (2018-12-07)
 
 
