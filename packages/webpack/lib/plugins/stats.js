@@ -47,7 +47,7 @@ exports.StatsPlugin = class StatsPlugin {
     this.apply = (compiler) => {
       compiler.hooks.compilation.tap('StatsPlugin', (compilation) => {
         compilation.hooks.additionalAssets.tap('StatsPlugin', () => {
-          if (compilation.compiler !== compiler) {
+          if (compilation.compiler.isChild()) {
             return;
           }
           try {
