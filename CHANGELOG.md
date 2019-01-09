@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-rc.16](https://github.com/untool/untool/compare/v1.0.0-rc.15...v1.0.0-rc.16) (2019-01-09)
+
+
+### Bug Fixes
+
+* **webpack:** simplify module/chunk mapping ([b475ef1](https://github.com/untool/untool/commit/b475ef1)), closes [xing/hops#758](https://github.com/xing/hops/issues/758) [/github.com/jamiebuilds/react-loadable/blob/master/src/webpack.js#L18-L20](https://github.com//github.com/jamiebuilds/react-loadable/blob/master/src/webpack.js/issues/L18-L20)
+
+
+
+
+
 # [1.0.0-rc.15](https://github.com/untool/untool/compare/v1.0.0-rc.14...v1.0.0-rc.15) (2019-01-03)
 
 
