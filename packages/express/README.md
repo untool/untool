@@ -6,6 +6,8 @@
 
 It does not only provide full featured development and production mode servers, but also a mechanism for rendering static files using Express style middlewares without having to launch an actual server.
 
+`@untool/express` strives to gracefully handle exceptions and to facilitate infrastructure integration: in case of uncaught middleware errors or upon receiving a [`SIGTERM`](https://www.gnu.org/software/libc/manual/html_node/Termination-Signals.html) signal, the server's [`close`](https://nodejs.org/api/net.html#net_server_close_callback) method will be called before exiting the process.
+
 ### Installation
 
 ```bash
@@ -82,9 +84,9 @@ module.exports = class MyMixin extends Mixin {
 
 Implement this hook in your `@untool/core` [`core` mixin](https://github.com/untool/untool/blob/master/packages/core/README.md#mixins) and you will be able to set up Express in any way you like.
 
-### `inspectServer(app, target)` ([sequence](https://github.com/untool/mixinable/blob/master/README.md#defineparallel))
+### `inspectServer(server)` ([sequence](https://github.com/untool/mixinable/blob/master/README.md#defineparallel))
 
-This hook will give you a running, i.e. listening, instance of [`http.Server`](https://nodejs.org/api/http.html#http_class_http_server) or [`https.Server`](https://nodejs.org/api/https.html#https_class_https_server), depending on your `https` setting. The second argument, `target`, will only ever be one of `develop` and `serve`. You can, for example, use this hook to register your server with an external load balancing system.
+This hook will give you a running, i.e. listening, instance of [`http.Server`](https://nodejs.org/api/http.html#http_class_http_server) or [`https.Server`](https://nodejs.org/api/https.html#https_class_https_server), depending on your `https` setting. This server will emit an additional `shutdown` event in case a graceful shutdown is triggered.
 
 ### `runServer(mode)` ([callable](https://github.com/untool/mixinable/blob/master/README.md#defineoverride))
 
@@ -108,12 +110,13 @@ _This method is also exported so that you can use it in your own, non-mixin code
 
 `@untool/express` defines a couple of settings as a preset for `@untool/core`'s [configuration engine](https://github.com/untool/untool/blob/master/packages/core/README.md#configuration). You can manage and access them using the mechanisms outlined there.
 
-| Property  | Type               | Default            |
-| --------- | ------------------ | ------------------ |
-| `https`   | `boolean`/`Object` | `false`            |
-| `host`    | `string`           | `[HOST]`           |
-| `port`    | `number`           | `[PORT]`           |
-| `distDir` | `string`           | `'<rootDir>/dist'` |
+| Property      | Type               | Default            |
+| ------------- | ------------------ | ------------------ |
+| `https`       | `boolean`/`Object` | `false`            |
+| `host`        | `string`           | `[HOST]`           |
+| `port`        | `number`           | `[PORT]`           |
+| `distDir`     | `string`           | `'<rootDir>/dist'` |
+| `gracePeriod` | `number`           | `30000`            |
 
 ### `https`
 
@@ -155,5 +158,15 @@ This is the file system path, i.e. subfolder, your application's assets will be 
 ```json
 {
   "distDir": "<rootDir>/build"
+}
+```
+
+### `gracePeriod`
+
+The amount of time (in milliseconds) to wait after receiving a [`SIGTERM`](https://www.gnu.org/software/libc/manual/html_node/Termination-Signals.html) signal or catching an unhandled middleware exception and before killing the server completely.
+
+```json
+{
+  "gracePeriod": 60000
 }
 ```
