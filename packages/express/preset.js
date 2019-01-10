@@ -7,5 +7,6 @@ module.exports = {
   host: '[HOST]',
   port: '[PORT]',
   distDir: join('<rootDir>', 'dist'),
+  gracePeriod: 30000,
   mixins: [join(__dirname, 'mixins')],
 };
