@@ -31,8 +31,8 @@ module.exports = class CLIMixin extends Mixin {
       webpackConfig.plugins.push({
         apply(compiler) {
           compiler.hooks.done.tap('LogPlugin', ({ endTime, startTime }) => {
-            const time = prettyMS(endTime - startTime);
-            console.log(`[${name}] built successfully in ${time}`);
+            const duration = prettyMS(endTime - startTime);
+            console.log(`[${name}] built successfully in ${duration}`);
           });
         },
       });
@@ -63,6 +63,11 @@ module.exports = class CLIMixin extends Mixin {
       const protocol = https ? 'https' : 'http';
       const parts = { protocol, hostname, port, pathname };
       console.log(`[${name}] listening at ${format(parts)}`);
+      server.on('shutdown', () => {
+        const { gracePeriod } = this.config;
+        const timeout = prettyMS(gracePeriod);
+        console.log(`[${name}] shutting down in ${timeout}`);
+      });
     }
   }
 };
