@@ -17,11 +17,13 @@ class ReactMixin extends Mixin {
   constructor(config, element, options) {
     super(config, options);
     this.element = element;
-    const { basePath: basename } = config;
-    this.options = { ...(options && options.router), basename };
   }
   enhanceElement(element) {
-    return createElement(BrowserRouter, this.options, element);
+    const props = {
+      ...this.options.router,
+      basename: this.config.basePath,
+    };
+    return createElement(BrowserRouter, props, element);
   }
   render() {
     const { name } = this.config;
