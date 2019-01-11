@@ -19,18 +19,21 @@ class ReactMixin extends Mixin {
   constructor(config, element, options) {
     super(config, options);
     this.element = element;
-    const { basePath: basename } = config;
-    const modules = (this.modules = []);
-    const context = (this.context = { modules });
-    this.options = { ...(options && options.router), basename, context };
+    this.context = { modules: [] };
   }
   bootstrap(req, res) {
-    const { pathname, search } = parse(req.url);
-    this.options.location = { pathname, search };
+    this.url = parse(req.url);
     this.stats = res.locals.stats;
   }
   enhanceElement(element) {
-    return createElement(StaticRouter, this.options, element);
+    const { pathname, search } = this.url;
+    const props = {
+      ...this.options.router,
+      location: { pathname, search },
+      basename: this.config.basePath,
+      context: this.context,
+    };
+    return createElement(StaticRouter, props, element);
   }
   render(req, res, next) {
     Promise.resolve()
@@ -38,7 +41,7 @@ class ReactMixin extends Mixin {
       .then(() => this.enhanceElement(this.element))
       .then((element) =>
         this.fetchData({}, element).then((data) =>
-          render(element, data, this.config, this.modules, this.stats)
+          render(element, data, this.config, this.stats, this.context.modules)
         )
       )
       .then((initialData) => {

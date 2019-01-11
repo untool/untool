@@ -32,7 +32,7 @@ function determineAssets(modules, stats) {
     );
 }
 
-module.exports = function render(element, fetchedData, config, modules, stats) {
+module.exports = function render(element, fetchedData, config, stats, modules) {
   const markup = renderToString(element);
   const helmet = Helmet.renderStatic();
   const fragments = Object.entries(helmet).reduce(
