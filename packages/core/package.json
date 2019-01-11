@@ -16,6 +16,7 @@
   },
   "homepage": "https://github.com/untool/untool#readme",
   "dependencies": {
+    "check-error": "^1.0.2",
     "cosmiconfig": "^5.0.5",
     "debug": "^4.0.0",
     "dotenv": "^6.0.0",

@@ -1,54 +1,57 @@
 'use strict';
 
+const { compatibleMessage } = require('check-error');
+
 const {
   sync: resolve,
   create: { sync: createResolver },
 } = require('enhanced-resolve');
 
-const mixinResolvers = {};
-
-const resolveMixin = (types, ...args) => {
-  try {
-    const key = types.join('__');
-    if (!mixinResolvers[key]) {
-      mixinResolvers[key] = createResolver({
-        mainFiles: [...types.map((type) => `mixin.${type}`), 'mixin'],
-        mainFields: [...types.map((type) => `mixin:${type}`), 'mixin'],
-      });
-    }
-    return mixinResolvers[key](...args);
-  } catch (error) {
-    return null;
-  }
-};
-
-exports.resolve = resolve;
-
-exports.resolvePreset = createResolver({
+const resolvePreset = createResolver({
   mainFiles: ['preset'],
   mainFields: ['preset'],
 });
 
-exports.isResolveError = (error) =>
-  error && error.message && error.message.startsWith("Can't resolve");
-
-exports.createMixinResolver = (mixinTypes) => ({
-  resolveMixins(context, mixins) {
-    return mixins.reduce((result, mixin) => {
-      let found = false;
-      Object.entries(mixinTypes).forEach(([key, types]) => {
-        const typeMixin = resolveMixin(types, context, mixin);
-        if (typeMixin) {
-          if (!result[key] || !result[key].includes(typeMixin)) {
-            result[key] = [...(result[key] || []), typeMixin];
-          }
-          found = true;
-        }
-      });
-      if (!found) {
-        throw new Error(`Can't find mixin '${mixin}'`);
-      }
-      return result;
-    }, {});
-  },
+const resolveCoreMixin = createResolver({
+  mainFiles: ['mixin.core', 'mixin'],
+  mainFields: ['mixin:core', 'mixin'],
 });
+
+const resolveBrowserMixin = createResolver({
+  mainFiles: ['mixin.browser', 'mixin.runtime', 'mixin'],
+  mainFields: ['mixin:browser', 'mixin:runtime', 'mixin'],
+});
+
+const resolveServerMixin = createResolver({
+  mainFiles: ['mixin.server', 'mixin.runtime', 'mixin'],
+  mainFields: ['mixin:server', 'mixin:runtime', 'mixin'],
+});
+
+exports.resolve = resolve;
+
+exports.resolvePreset = resolvePreset;
+
+exports.resolveMixins = (context, mixins) => {
+  const resolvers = {
+    core: resolveCoreMixin,
+    browser: resolveBrowserMixin,
+    server: resolveServerMixin,
+  };
+  const result = { core: [], browser: [], server: [] };
+  return mixins.reduce((result, mixin) => {
+    const found = Object.entries(resolvers).reduce((found, [key, resolve]) => {
+      try {
+        return !!result[key].push(resolve(context, mixin));
+      } catch (error) {
+        if (!exports.isResolveError(error)) throw error;
+        return found;
+      }
+    }, false);
+    if (!found) {
+      throw new Error(`Can't find mixin '${mixin}' in '${context}'`);
+    }
+    return result;
+  }, result);
+};
+
+exports.isResolveError = (error) => compatibleMessage(error, /^Can't resolve/);

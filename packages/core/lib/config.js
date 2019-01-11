@@ -2,31 +2,33 @@
 // This file is usually not being used at runtime, but only at buildtime.
 // @untool/webpack is taking care of providing runtime configuration.
 
+const { basename, dirname, join } = require('path');
+
+const { load: loadEnv } = require('dotenv');
+const { sync: findUp } = require('find-up');
+
 const debug = require('debug')('untool:config');
 
-const { createConfigLoader } = require('./loader');
-const { createMixinResolver } = require('./resolver');
-const { placeholdify, environmentalize } = require('./utils');
+const { loadConfig } = require('./loader');
+const { resolveMixins } = require('./resolver');
+const { environmentalize, placeholdify, merge } = require('./utils');
 
-const defaultNamespace = 'untool';
-const defaultMixinTypes = {
-  core: ['core'],
-  browser: ['browser', 'runtime'],
-  server: ['server', 'runtime'],
-};
+exports.getConfig = ({ untoolNamespace = 'untool', ...overrides } = {}) => {
+  const pkgFile = findUp('package.json');
+  const pkgData = require(pkgFile);
+  const rootDir = dirname(pkgFile);
 
-exports.getConfig = ({
-  untoolNamespace: namespace = defaultNamespace,
-  untoolMixinTypes: mixinTypes = defaultMixinTypes,
-  ...overrides
-} = {}) => {
-  const { loadConfig } = createConfigLoader(namespace);
-  const { resolveMixins } = createMixinResolver(mixinTypes);
-  const { presets, mixins, ...rawConfig } = loadConfig(overrides);
+  loadEnv({ path: join(rootDir, '.env') });
+
+  const { name = basename(rootDir), version = '0.0.0' } = pkgData;
+
+  const defaults = { rootDir, name, version };
+  const settings = loadConfig(untoolNamespace, pkgData, rootDir);
+
+  const { mixins, ...raw } = merge(defaults, settings, overrides);
   const config = {
-    ...environmentalize(placeholdify(rawConfig)),
-    _mixins: resolveMixins(rawConfig.rootDir, mixins),
-    _presets: presets,
+    ...environmentalize(placeholdify(raw)),
+    _mixins: resolveMixins(rootDir, mixins),
   };
   debug(config);
   return config;
