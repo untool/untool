@@ -1,89 +1,83 @@
 'use strict';
 
-const { basename, dirname, join } = require('path');
+const { dirname, join } = require('path');
 
 const cosmiconfig = require('cosmiconfig');
-
-const { load: loadEnv } = require('dotenv');
-const { sync: findUp } = require('find-up');
+const { compatibleMessage } = require('check-error');
 
 const { merge } = require('./utils');
 const { resolve, resolvePreset, isResolveError } = require('./resolver');
 
-exports.createConfigLoader = (namespace) => {
-  const loadConfig = (stopDir, module) => {
-    const { loadSync } = cosmiconfig(namespace, { stopDir });
-    return loadSync(resolvePreset(stopDir, module));
-  };
-  const searchConfig = (stopDir) => {
-    const { searchSync } = cosmiconfig(namespace, { stopDir });
+class Loader {
+  constructor(namespace, pkgData) {
+    this.namespace = namespace;
+    this.pkgData = pkgData;
+  }
+  load(context, module) {
+    const { loadSync } = cosmiconfig(this.namespace);
+    return loadSync(resolvePreset(context, module));
+  }
+  search(stopDir) {
+    const { searchSync } = cosmiconfig(this.namespace, { stopDir });
     return searchSync(stopDir);
-  };
-
-  const loadPreset = (context, preset) => {
+  }
+  loadPreset(context, preset) {
     try {
-      return loadConfig(context, preset);
+      return this.load(context, preset);
     } catch (error) {
       if (!isResolveError(error)) throw error;
       try {
-        return searchConfig(
-          dirname(resolve(context, `${preset}/package.json`))
-        );
+        return this.search(dirname(resolve(context, `${preset}/package.json`)));
       } catch (error) {
         if (!isResolveError(error)) throw error;
         throw new Error(`Can't find preset '${preset}' in '${context}'`);
       }
     }
-  };
-
-  const loadPresets = (context, presets = []) =>
-    presets.reduce((configs, preset) => {
-      const { config, filepath } = loadPreset(context, preset);
-      const newContext = dirname(filepath);
+  }
+  loadPresets(context, presets = []) {
+    return presets.reduce((result, preset) => {
+      const { config, filepath } = this.loadPreset(context, preset);
+      const directory = dirname(filepath);
       if (config.mixins) {
         config.mixins = config.mixins.map(
-          (mixin) => (mixin.startsWith('.') ? join(newContext, mixin) : mixin)
+          (mixin) => (mixin.startsWith('.') ? join(directory, mixin) : mixin)
         );
       }
-      return merge(configs, loadPresets(newContext, config.presets), config);
+      return merge(result, this.loadPresets(directory, config.presets), config);
     }, {});
-
-  const loadSettings = (context, pkgData) => {
-    const { dependencies = {}, devDependencies = {} } = pkgData;
-    const result = searchConfig(context);
+  }
+  loadSettings(context) {
+    const result = this.search(context);
     const settings = { ...(result && result.config) };
     if (!settings.presets) {
-      settings.presets = [
-        ...Object.keys(dependencies),
-        ...(process.env.NODE_ENV !== 'production'
-          ? Object.keys(devDependencies)
-          : []),
-      ].filter((key) => {
+      settings.presets = this.getDependencies().filter((dep) => {
         try {
-          return loadConfig(context, key);
+          return !!this.loadPreset(context, dep);
         } catch (error) {
-          if (!isResolveError(error)) throw error;
-          return null;
+          if (!compatibleMessage(error, /^Can't find preset/)) throw error;
         }
       });
     }
     return settings;
-  };
+  }
+  getDependencies() {
+    const { dependencies = {}, devDependencies = {} } = this.pkgData;
+    return [
+      ...Object.keys(dependencies),
+      ...(process.env.NODE_ENV !== 'production'
+        ? Object.keys(devDependencies)
+        : []),
+    ];
+  }
+}
 
-  return {
-    loadConfig: function loadConfig(overrides) {
-      const pkgFile = findUp('package.json');
-      const pkgData = require(pkgFile);
-      const rootDir = dirname(pkgFile);
-      const { name = basename(rootDir), version = '0.0.0' } = pkgData;
+exports.loadConfig = (namespace, pkgData, rootDir) => {
+  const loader = new Loader(namespace, pkgData);
 
-      loadEnv({ path: join(rootDir, '.env') });
+  const settings = loader.loadSettings(rootDir);
+  const presets = loader.loadPresets(rootDir, settings.presets);
 
-      const defaults = { rootDir, name, version, mixins: [] };
-      const settings = loadSettings(rootDir, pkgData);
-      const presets = loadPresets(rootDir, settings.presets);
-
-      return merge(defaults, presets, settings, overrides);
-    },
-  };
+  // eslint-disable-next-line no-unused-vars
+  const { presets: _, ...config } = merge(presets, settings);
+  return config;
 };
