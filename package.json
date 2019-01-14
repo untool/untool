@@ -18,7 +18,8 @@
     "update": "yarn upgrade-interactive --latest",
     "snapshot": "yarn reset && yarn test -u",
     "reset": "git clean -dfx && yarn",
-    "posttest": "rimraf tests/fixtures/*-*",
+    "pretest": "git clean -dfX tests/fixtures/untest",
+    "posttest": "git clean -dfX tests/fixtures",
     "preinstall": "[ -z \"${npm_execpath##*yarn*}\" ] || exit 1"
   },
   "repository": {
