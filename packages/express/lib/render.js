@@ -1,15 +1,19 @@
 'use strict';
 
-const EventEmitter = require('events');
+const eventEmitter = require('events');
 
 const { createMocks } = require('node-mocks-http');
 
 module.exports = (app) => (options) =>
   new Promise((resolve, reject) => {
-    const { req, res } = createMocks(
-      typeof options === 'string' ? { url: options } : options,
-      { eventEmitter: EventEmitter }
-    );
+    const allOptions = typeof options === 'string' ? { url: options } : options;
+    const { locals = {}, ...reqOptions } = allOptions;
+    const resOptions = { eventEmitter, locals };
+
+    const { req, res } = createMocks(reqOptions, resOptions);
+
+    req.app = app;
+
     res.on('finish', () => {
       if (res.statusCode !== 200) {
         reject(new Error(`Received status ${res.statusCode} for: ${req.url}`));
@@ -17,6 +21,7 @@ module.exports = (app) => (options) =>
         resolve(res._getData());
       }
     });
+
     app.handle(req, res, (error) => {
       reject(error || new Error(`Can't get response for: ${req.url}`));
     });
