@@ -13,20 +13,16 @@ const analyzeCompilation = ({ chunks, chunkGroups }) => {
     ],
     []
   );
-  const chunksByModule = chunks
-    .filter(
-      (chunk) => !entryChunks.includes(chunk) && !vendorChunks.includes(chunk)
-    )
-    .reduce(
-      (result, chunk) =>
-        Array.from(chunk.modulesIterable).reduce((result, module) => {
-          const { chunks } = chunkGroups.find(({ chunks }) =>
-            chunks.includes(chunk)
-          );
-          return [...result, [module.id, chunks]];
-        }, result),
-      []
-    );
+  const chunksByModule = chunks.reduce(
+    (result, chunk) =>
+      Array.from(chunk.modulesIterable).reduce((result, module) => {
+        const { chunks } = chunkGroups.find(({ chunks }) =>
+          chunks.includes(chunk)
+        );
+        return [...result, [module.id, chunks]];
+      }, result),
+    []
+  );
   return { entryChunks, vendorChunks, chunksByModule };
 };
 
