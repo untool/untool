@@ -12,8 +12,9 @@ exports.RenderPlugin = class RenderPlugin {
         Promise.all(
           requests.map((request) =>
             render(request).then((content) => ({
-              outfile:
-                request.outfile || trimLeadingSlash(indexFile(request.url)),
+              outfile: trimLeadingSlash(
+                request.outfile || indexFile(request.url || request)
+              ),
               content,
             }))
           )
