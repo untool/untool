@@ -19,7 +19,7 @@
     "snapshot": "yarn reset && yarn test -u",
     "reset": "git clean -dfx && yarn",
     "pretest": "git clean -dfX tests/fixtures/untest",
-    "posttest": "git clean -dfX tests/fixtures",
+    "posttest": "git clean -dfXq tests/fixtures",
     "preinstall": "[ -z \"${npm_execpath##*yarn*}\" ] || exit 1"
   },
   "repository": {
