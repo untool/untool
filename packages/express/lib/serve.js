@@ -3,6 +3,7 @@
 const { create: createDomain } = require('domain');
 
 const debug = require('debug')('untool:express');
+const isPlainObject = require('is-plain-object');
 const express = require('express');
 
 const { Router } = express;
@@ -24,15 +25,24 @@ module.exports = (mode, { configureServer }) => {
   debug(middlewares);
 
   app.use(router);
-  phases.forEach((phase) =>
-    middlewares[phase].forEach((middleware) =>
-      (/final/.test(phase) ? app : router).use(
-        ...(Array.isArray(middleware) ? middleware : [middleware]).map(
-          (middleware) => domain.bind(middleware)
-        )
-      )
-    )
-  );
+  phases.forEach((phase) => {
+    const container = /final/.test(phase) ? app : router;
+    middlewares[phase].forEach((middleware) => {
+      if (isPlainObject(middleware)) {
+        const { method = 'all', path = '*', handler } = middleware;
+        const handlers = [].concat(handler);
+        container[method](
+          path,
+          ...handlers.map((handler) => domain.bind(handler))
+        );
+      } else {
+        const middlewares = [].concat(middleware);
+        container.use(
+          ...middlewares.map((middleware) => domain.bind(middleware))
+        );
+      }
+    });
+  });
   app.locals.domain = domain;
 
   return app;
