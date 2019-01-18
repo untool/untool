@@ -61,9 +61,9 @@ The above example is functionally equivalent to directly working with `@untool/c
 
 ### `configureServer(app, middlewares, mode)` ([sequence](https://github.com/untool/mixinable/blob/master/README.md#defineparallel))
 
-This is a mixin hook defined by `@untool/express` that allows you to register Express middlewares and generally do whatever you like with `app`, the [`Application`](https://expressjs.com/en/api.html#app) instance it is using under the hood.
+This is a mixin hook defined by `@untool/express` that allows you to register Express middlewares or route handlers and generally do whatever you like with `app`, the [`Application`](https://expressjs.com/en/api.html#app) instance it is using under the hood.
 
-The second argument it is being called with is `middlewares`. It is a plain object containing middleware `Array`s sorted into phases: `initial`, `files`, `parse`, `routes`, and `final`. Additionally, each of these comes with `pre` and `post` variants.
+The second argument it is being called with is `middlewares`. It is a plain object containing middleware `Array`s sorted into phases: `initial`, `files`, `parse`, `routes`, and `final`. Additionally, each of these comes with `pre` and `post` variants. Use these phases-arrays to declaratively add middlewares and route handlers to our server.
 
 Its third argument is `mode`, and it can be one of the following: `develop`, `serve`, or `static`. Use it to conditionally register middlewares or reconfigure the app.
 
@@ -75,7 +75,11 @@ module.exports = class MyMixin extends Mixin {
     middlewares.routes.push((req, res, next) => next());
     if (mode === 'serve') {
       middlewares.preinitial.unshift((req, res, next) => next());
-      middlewares.postfinal.push((req, res, next) => next());
+      middlewares.postfinal.push({
+        path: '/foo',
+        method: 'get',
+        handler: (req, res, next) => next(),
+      });
     }
     return app;
   }
