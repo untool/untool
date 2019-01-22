@@ -20,4 +20,14 @@ module.exports = {
     join(__dirname, 'mixins', 'start'),
     join(__dirname, 'mixins', 'stats'),
   ],
+  mixinTypes: {
+    browser: {
+      mainFiles: ['mixin.browser', 'mixin.runtime', 'mixin'],
+      mainFields: ['mixin:browser', 'mixin:runtime', 'mixin'],
+    },
+    server: {
+      mainFiles: ['mixin.server', 'mixin.runtime', 'mixin'],
+      mainFields: ['mixin:server', 'mixin:runtime', 'mixin'],
+    },
+  },
 };
