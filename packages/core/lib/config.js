@@ -22,7 +22,7 @@ exports.getConfig = ({ untoolNamespace = 'untool', ...overrides } = {}) => {
 
   const { name = basename(rootDir), version = '0.0.0' } = pkgData;
 
-  const defaults = { rootDir, name, version };
+  const defaults = { rootDir, name, version, mixins: [] };
   const settings = loadConfig(untoolNamespace, pkgData, rootDir);
 
   const { mixins, ...raw } = merge(defaults, settings, overrides);
