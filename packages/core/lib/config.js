@@ -1,6 +1,4 @@
 'use strict';
-// This file is usually not being used at runtime, but only at buildtime.
-// @untool/webpack is taking care of providing runtime configuration.
 
 const { basename, dirname, join } = require('path');
 
@@ -20,15 +18,24 @@ exports.getConfig = ({ untoolNamespace = 'untool', ...overrides } = {}) => {
 
   loadEnv({ path: join(rootDir, '.env') });
 
-  const { name = basename(rootDir), version = '0.0.0' } = pkgData;
-
-  const defaults = { rootDir, name, version, mixins: [] };
+  const defaults = {
+    rootDir,
+    name: pkgData.name || basename(rootDir),
+    version: pkgData.version || '0.0.0',
+    mixins: [],
+    mixinTypes: {
+      core: {
+        mainFiles: ['mixin.core', 'mixin'],
+        mainFields: ['mixin:core', 'mixin'],
+      },
+    },
+  };
   const settings = loadConfig(untoolNamespace, pkgData, rootDir);
 
-  const { mixins, ...raw } = merge(defaults, settings, overrides);
+  const { mixins, mixinTypes, ...raw } = merge(defaults, settings, overrides);
   const config = {
     ...environmentalize(placeholdify(raw)),
-    _mixins: resolveMixins(rootDir, mixins),
+    _mixins: resolveMixins(rootDir, mixinTypes, mixins),
   };
   debug(config);
   return config;
