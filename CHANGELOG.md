@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-rc.19](https://github.com/untool/untool/compare/v1.0.0-rc.18...v1.0.0-rc.19) (2019-01-22)
+
+
+### Bug Fixes
+
+* **core:** add empty mixins array to defaults ([4e24751](https://github.com/untool/untool/commit/4e24751))
+* **webpack:** prevent needless rendering ([de2e1c1](https://github.com/untool/untool/commit/de2e1c1))
+
+
+
+
+
 # [1.0.0-rc.18](https://github.com/untool/untool/compare/v1.0.0-rc.17...v1.0.0-rc.18) (2019-01-18)
 
 
