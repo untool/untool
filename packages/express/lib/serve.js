@@ -40,9 +40,6 @@ module.exports = (mode, { configureServer }) => {
         container.use(
           ...middlewares.map((middleware) => {
             const fn = domain.bind(middleware);
-            // Keep the information of how many arguments the bound
-            // function takes for Express to know whether it's
-            // a router- or an error-handler.
             Object.defineProperty(fn, 'length', { value: middleware.length });
             return fn;
           })
