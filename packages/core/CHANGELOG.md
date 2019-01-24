@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.0.0-rc.20](https://github.com/untool/untool/compare/v1.0.0-rc.19...v1.0.0-rc.20) (2019-01-24)
+
+
+### Features
+
+* **core:** make mixin types configurable ([40c5399](https://github.com/untool/untool/commit/40c5399))
+
+
+
+
+
 # [1.0.0-rc.19](https://github.com/untool/untool/compare/v1.0.0-rc.18...v1.0.0-rc.19) (2019-01-22)
 
 
