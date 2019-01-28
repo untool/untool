@@ -62,6 +62,10 @@ If you need to extend its features, you will want to take a peek into the black 
 
 At some point, though, you will have to read our source files: if, for example, merely configuring [`@untool/webpack`](https://github.com/untool/untool/blob/master/packages/webpack/README.md) and using its existing hooks does not suffice for your requirements, you will probably want extend it.
 
+**Caveat**: please be advised that, given the sheer size of the code base `untool` is exposing through its hooks, we do not apply naïve [semver](https://semver.org) here: while we treat hook method signature changes as `major` changes, we consider more subtle changes such as the removal of a Webpack loader option as discussed in [this PR](https://github.com/untool/untool/pull/232) as `minor`.
+
+This means that, if you are building custom mixins based on `untool`, you might want to pin `untool` package versions in your `package.json` or at least use [tilde (`~`)](https://docs.npmjs.com/misc/semver#tilde-ranges-123-12-1) instead of the more commonly used [caret (`^`)](https://docs.npmjs.com/misc/semver#caret-ranges-123-025-004) to specify version ranges.
+
 ### Contribution
 
 We are using [git](https://git-scm.com), [lerna](https://lernajs.io) and [yarn](https://yarnpkg.com/en/) for building `untool`. To be able to help us out effectively, you have to have `git` and `yarn` globally available on your machine.
@@ -77,3 +81,5 @@ $ yarn install
 When you are finished implementing your contribution, go ahead and create a [pull request](https://help.github.com/articles/creating-a-pull-request/). If you are planning to add a feature, please open an [issue](https://github.com/untool/untool/issues/new) first and discuss your plans.
 
 All code in this repository is expected to be formatted using [prettier](https://prettier.io), and we will only merge valid [conventional commits](https://conventionalcommits.org) in order to enable automatic [versioning](https://semver.org).
+
+We will not usually accept pull requests introducing breaking changes unless we are preparing a `major` release: `untool` strives to be a solid and robust base for others to build upon.
