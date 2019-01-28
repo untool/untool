@@ -88,6 +88,8 @@ module.exports = class MyMixin extends Mixin {
 
 Implement this hook in your `@untool/core` [`core` mixin](https://github.com/untool/untool/blob/master/packages/core/README.md#mixins) and you will be able to set up Express in any way you like.
 
+**Caveat**: please do not rely on the exact number and order of middlewares and handlers passed to your mixin in the `middlewares` argument: it is highly dynamic and can be altered by other mixins (or configs). It can also change between `@untool/express` versions without triggering a `major` release.
+
 ### `inspectServer(server)` ([sequence](https://github.com/untool/mixinable/blob/master/README.md#defineparallel))
 
 This hook will give you a running, i.e. listening, instance of [`http.Server`](https://nodejs.org/api/http.html#http_class_http_server) or [`https.Server`](https://nodejs.org/api/https.html#https_class_https_server), depending on your `https` setting. This server will emit an additional `shutdown` event in case a graceful shutdown is triggered.
