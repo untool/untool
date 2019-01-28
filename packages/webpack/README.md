@@ -99,7 +99,7 @@ The above example is functionally equivalent to directly working with `@untool/c
 
 If you implement this mixin hook in your `@untool/core` [`core` mixin](https://github.com/untool/untool/blob/master/packages/core/README.md#mixins), you will be able to modify the different Webpack configs `untool` uses in any way you like.
 
-In addition to the actual `webpackConfig`, which, by the way, your implementation is expected to return, you will receive an array of all `loaderConfigs` and a `target` argument. This last argument can be `build`, `develop`, or `node`.
+In addition to the actual `webpackConfig`, which, by the way, your implementation is expected to return, you will receive an object containing all `loaderConfigs` and a `target` argument. This last argument can be `build`, `develop`, or `node`.
 
 ```javascript
 const { Mixin } = require('@untool/core');
@@ -111,7 +111,16 @@ module.exports = class MyMixin extends Mixin {
 };
 ```
 
-You can use whatever mechanism you like to modify the complicated structures Webpack configs unfortunately have to be.
+You can use whatever mechanism you like to modify the complicated structures Webpack configs unfortunately have to be. For convenience, `loaderConfigs` contains the following properties for you to inspect and modify specific loader configs directly:
+
+| Property           | Explanation                                                                                                               |
+| ------------------ | ------------------------------------------------------------------------------------------------------------------------- |
+| `jsLoaderConfig`   | [`babel-loader` config](https://github.com/babel/babel-loader)                                                            |
+| `urlLoaderConfig`  | [`url-loader` config](https://github.com/webpack-contrib/url-loader)                                                      |
+| `fileLoaderConfig` | [`file-loader` config](https://github.com/webpack-contrib/file-loader)                                                    |
+| `allLoaderConfigs` | `Array` of loader configs passed to [`oneOf` module loader rule](https://webpack.js.org/configuration/module/#rule-oneof) |
+
+**Caveat**: please be advised that, while we strive to provide very stable `webpackConfig` and `loaderConfigs` arguments, these may change in subtle ways between `minor` versions of `@untool/webpack`. For example, specific loader options may stop working. Additionally, other mixins may alter these arguments in relevant ways, so code accordingly.
 
 ### `inspectBuild(stats, config)` ([sequence](https://github.com/untool/mixinable/blob/master/README.md#defineparallel))
 
