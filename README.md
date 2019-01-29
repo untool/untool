@@ -43,10 +43,10 @@ The [`@untool/react`](https://github.com/untool/untool/tree/master/packages/reac
 As `untool` is completely modular, there is no single best way to install its different parts. Installing [`hops`](https://github.com/xing/hops), a full-blown development and runtime environment based on `untool`, is probably the most sensible way to get started, though.
 
 ```bash
-$ npx hops@next init --hops-version next --template hops-template-react@next foo
+$ yarn create hops-app my-hops-app
 ```
 
-After these steps, you are good to go: you can just run your app by executing the command `yarn start` inside your project folder.
+After these steps, you are good to go: you can just run your app by executing the command `yarn start` inside your new `my-hops-app` folder.
 
 ### Utilization
 
