@@ -38,11 +38,11 @@ module.exports = (mode, { configureServer }) => {
       } else {
         const middlewares = [].concat(middleware);
         container.use(
-          ...middlewares.map((middleware) => {
-            const fn = domain.bind(middleware);
-            Object.defineProperty(fn, 'length', { value: middleware.length });
-            return fn;
-          })
+          ...middlewares.map((middleware) =>
+            Object.defineProperty(domain.bind(middleware), 'length', {
+              value: middleware.length,
+            })
+          )
         );
       }
     });
