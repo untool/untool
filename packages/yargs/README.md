@@ -56,7 +56,7 @@ module.exports = class FooMixin extends Mixin {
 
 ### `configureCommand(definition)` ([sequence](https://github.com/untool/mixinable/blob/master/README.md#defineparallel))
 
-By implemention this method, your mixin can intercept and alter command configuration. Its main purpose is to enable you to add arguments to commands defined by other mixins.
+By implementing this method, your mixin can intercept and alter command configuration. Its main purpose is to enable you to add arguments to commands defined by other mixins.
 
 ```javascript
 const { Mixin } = require('@untool/core');
@@ -74,6 +74,8 @@ module.exports = class FooBarMixin extends Mixin {
   }
 };
 ```
+
+**Caveat**: please be advised that, while we strive to keep the `definition` argument very stable, it may change between `minor` versions of `@untool/*` packages that provide commands. Additionally, other mixins may alter the command you want to modify in relevant ways, so code accordingly.
 
 ### `handleArguments(argv)` ([sequence](https://github.com/untool/mixinable/blob/master/README.md#defineparallel))
 
