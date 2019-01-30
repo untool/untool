@@ -2,6 +2,15 @@
 
 const { getOptions } = require('loader-utils');
 
+const getHelpers = (type) =>
+  type === 'server'
+    ? `
+const { dirname, join } = require('path');
+const { sync: findUp } = require('find-up');
+const rootDir = dirname(findUp('package.json'));
+const expand = join.bind(null, rootDir);`
+    : '';
+
 const getConfig = (type, { _config: config }) =>
   JSON.stringify(config).replace(
     new RegExp(`"${config.rootDir}(.*?)"`, 'g'),
@@ -18,22 +27,19 @@ const getMixins = (type, { _mixins: mixins }) => {
 module.exports = function configLoader() {
   this.cacheable();
   const { type, config } = getOptions(this);
-  return [
-    'const utils = require("@untool/core/lib/utils");',
-    ...(type === 'server'
-      ? [
-          'const { dirname, join } = require("path");',
-          'const { sync: findUp } = require("find-up");',
-          'const root = dirname(findUp("package.json"));',
-          'const expand = (path) => join(root, path);',
-        ]
-      : []),
-    'const { environmentalize, placeholdify, merge } = utils;',
-    `const override = (...args) => merge(${getConfig(type, config)}, ...args);`,
-    'const functions = [override, placeholdify, environmentalize];',
-    'const getConfig = [].reduce.bind(functions, (res, fn) => fn(res));',
-    'const config = getConfig({})',
-    'exports.getConfig = (overrides = {}) => !Object.keys(overrides).length ? config : getConfig(overrides);',
-    `exports.getMixins = () => ${getMixins(type, config)};`,
-  ].join('\n');
+  return `
+${getHelpers(type)}
+const configs = {};
+exports.getConfig = (overrides = {}) => {
+  const key = Object.keys(overrides).length ? JSON.stringify(overrides) : '_';
+  if (!configs[key]) {
+    const { internal: utils } = require('@untool/core');
+    const { environmentalize, placeholdify, merge } = utils;
+    const raw = merge(${getConfig(type, config)}, overrides);
+    configs[key] = environmentalize(placeholdify(raw));
+  }
+  return configs[key];
+};
+exports.getMixins = () => ${getMixins(type, config)};
+`.trim();
 };
