@@ -27,4 +27,4 @@ exports.initialize = function initialize(overrides = {}, ...args) {
   return define(strategies, mixins)(config, ...args);
 };
 
-exports.internal = { getConfig };
+exports.internal = { getConfig, ...require('./lib/utils') };
