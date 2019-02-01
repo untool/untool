@@ -2,20 +2,7 @@
 
 const esc = require('serialize-javascript');
 
-const renderCSS = (css) =>
-  css.map((asset) => `<link rel="stylesheet" href="/${asset}" />`).join('');
-
-const renderJS = (js) =>
-  js.map((asset) => `<script src="/${asset}"></script>`).join('');
-
-const renderGlobals = (globals) => {
-  const entries = Object.entries(globals).map(([k, v]) => `${k}=${esc(v)}`);
-  return entries.length ? `<script>var ${entries.join(',')};</script>` : '';
-};
-
 module.exports = ({
-  markup,
-  mountpoint,
   fragments = {},
   globals = {},
   assets: { css = [], js = [] } = {},
@@ -28,15 +15,19 @@ module.exports = ({
     ${fragments.base || ''}
     ${fragments.meta || ''}
     ${fragments.link || ''}
-    ${renderCSS(css)}
+    ${css.map((asset) => `<link rel="stylesheet" href="${asset}" />`).join('')}
     ${fragments.style || ''}
     ${fragments.script || ''}
     ${fragments.headSuffix || ''}
   </head>
   <body ${fragments.bodyAttributes || ''}>
-    <div id="${mountpoint || ''}">${markup || ''}</div>
+    <div data-mountpoint>${fragments.reactMarkup || ''}</div>
     ${fragments.noscript || ''}
-    ${renderGlobals(globals)}
-    ${renderJS(js)}
+    <script>
+      ${Object.entries(globals)
+        .map(([key, value]) => `var ${key}=${esc(value)};`)
+        .join(' ')}
+    </script>
+    ${js.map((asset) => `<script src="${asset}"></script>`).join('')}
   </body>
 </html>`;

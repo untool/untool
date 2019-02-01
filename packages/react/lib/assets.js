@@ -2,10 +2,7 @@
 
 const { extname } = require('path');
 
-const { renderToString } = require('react-dom/server');
-const { Helmet } = require('react-helmet');
-
-function determineAssets(modules, stats) {
+module.exports = (stats, modules) => {
   const { entryFiles, vendorFiles, moduleFileMap } = stats;
   const moduleFiles = modules.reduce(
     (result, module) => [...result, ...moduleFileMap[module]],
@@ -30,17 +27,4 @@ function determineAssets(modules, stats) {
       },
       { css: [], js: [] }
     );
-}
-
-module.exports = function render(element, fetchedData, config, stats, modules) {
-  const markup = renderToString(element);
-  const helmet = Helmet.renderStatic();
-  const fragments = Object.entries(helmet).reduce(
-    (result, [key, value]) => ({ ...result, [key]: value.toString() }),
-    { headPrefix: '', headSuffix: '' }
-  );
-  const assets = determineAssets(modules, stats);
-  const { name: mountpoint, _env } = config;
-  const globals = { _env };
-  return { fetchedData, markup, fragments, assets, mountpoint, globals };
 };

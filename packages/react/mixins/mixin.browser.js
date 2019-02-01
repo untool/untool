@@ -26,14 +26,12 @@ class ReactMixin extends Mixin {
     return createElement(BrowserRouter, props, element);
   }
   render() {
-    const { name } = this.config;
-    const attribute = `data-${name}`;
-    const mountpoint = document.getElementById(name);
-    const isMounted = mountpoint.hasAttribute(attribute);
+    const mountpoint = document.querySelector('[data-mountpoint]');
+    const isMounted = mountpoint.hasAttribute('data-mounted');
     if (isMounted) {
       unmountComponentAtNode(mountpoint);
     } else {
-      mountpoint.setAttribute(attribute, '');
+      mountpoint.setAttribute('data-mounted', '');
     }
     Promise.resolve()
       .then(() => this.bootstrap())
