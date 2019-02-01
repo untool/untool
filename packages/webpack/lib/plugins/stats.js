@@ -2,6 +2,8 @@
 
 const { RawSource } = require('webpack-sources');
 
+const { trimTrailingSlash } = require('pathifist');
+
 const analyzeCompilation = ({ chunks, chunkGroups }) => {
   const entryChunks = chunks.filter(({ entryModule }) => !!entryModule);
   const vendorChunks = chunkGroups.reduce(
@@ -26,8 +28,13 @@ const analyzeCompilation = ({ chunks, chunkGroups }) => {
   return { entryChunks, vendorChunks, chunksByModule };
 };
 
-const extractFiles = ({ entryChunks, vendorChunks, chunksByModule }) => {
-  const gatherFiles = (result, { files }) => [...result, ...files];
+const extractFiles = (chunkData, rawPublicPath) => {
+  const publicPath = trimTrailingSlash(rawPublicPath);
+  const { entryChunks, vendorChunks, chunksByModule } = chunkData;
+  const gatherFiles = (result, { files }) => [
+    ...result,
+    ...files.map((file) => `${publicPath}/${file}`),
+  ];
   return {
     entryFiles: entryChunks.reduce(gatherFiles, []),
     vendorFiles: vendorChunks.reduce(gatherFiles, []),
@@ -43,13 +50,14 @@ exports.StatsPlugin = class StatsPlugin {
     this.apply = (compiler) => {
       compiler.hooks.compilation.tap('StatsPlugin', (compilation) => {
         compilation.hooks.additionalAssets.tap('StatsPlugin', () => {
+          const { publicPath } = compilation.outputOptions;
           if (compilation.compiler.isChild()) {
             return;
           }
           try {
             enhancedPromise.resolve({
               ...compilation.getStats().toJson({ source: false }),
-              ...extractFiles(analyzeCompilation(compilation)),
+              ...extractFiles(analyzeCompilation(compilation), publicPath),
             });
           } catch (error) {
             enhancedPromise.reject(error);
