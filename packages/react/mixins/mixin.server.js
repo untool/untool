@@ -3,7 +3,11 @@
 const { parse } = require('url');
 
 const { createElement } = require('react');
+const { renderToString } = require('react-dom/server');
 const { default: StaticRouter } = require('react-router-dom/es/StaticRouter');
+const {
+  Helmet: { renderStatic },
+} = require('react-helmet');
 
 const {
   override,
@@ -12,7 +16,7 @@ const {
 
 const { Mixin } = require('@untool/core');
 
-const render = require('../lib/render');
+const getAssets = require('../lib/assets');
 const template = require('../lib/template');
 
 class ReactMixin extends Mixin {
@@ -40,9 +44,16 @@ class ReactMixin extends Mixin {
       .then(() => this.bootstrap(req, res))
       .then(() => this.enhanceElement(this.element))
       .then((element) =>
-        this.fetchData({}, element).then((data) =>
-          render(element, data, this.config, this.stats, this.context.modules)
-        )
+        this.fetchData({}, element).then((fetchedData) => {
+          const reactMarkup = renderToString(element);
+          const fragments = Object.entries(renderStatic()).reduce(
+            (result, [key, value]) => ({ ...result, [key]: value.toString() }),
+            { reactMarkup, headPrefix: '', headSuffix: '' }
+          );
+          const assets = getAssets(this.stats, this.context.modules);
+          const globals = { _env: this.config._env };
+          return { fragments, assets, globals, fetchedData };
+        })
       )
       .then((initialData) => {
         if (this.context.miss) {
