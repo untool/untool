@@ -43,18 +43,17 @@ class ReactMixin extends Mixin {
     Promise.resolve()
       .then(() => this.bootstrap(req, res))
       .then(() => this.enhanceElement(this.element))
-      .then((element) =>
-        this.fetchData({}, element).then((fetchedData) => {
-          const reactMarkup = renderToString(element);
-          const fragments = Object.entries(renderStatic()).reduce(
-            (result, [key, value]) => ({ ...result, [key]: value.toString() }),
-            { reactMarkup, headPrefix: '', headSuffix: '' }
-          );
-          const assets = getAssets(this.stats, this.context.modules);
-          const globals = { _env: this.config._env };
-          return { fragments, assets, globals, fetchedData };
-        })
-      )
+      .then((element) => this.fetchData({}, element).then(() => element))
+      .then((element) => {
+        const reactMarkup = renderToString(element);
+        const fragments = Object.entries(renderStatic()).reduce(
+          (result, [key, value]) => ({ ...result, [key]: value.toString() }),
+          { reactMarkup, headPrefix: '', headSuffix: '' }
+        );
+        const assets = getAssets(this.stats, this.context.modules);
+        const globals = { _env: this.config._env };
+        return { fragments, assets, globals };
+      })
       .then((initialData) => {
         if (this.context.miss) {
           next();
