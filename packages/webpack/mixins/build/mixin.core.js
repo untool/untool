@@ -39,7 +39,10 @@ class WebpackBuildMixin extends Mixin {
           resolve(stats);
         }
       })
-    ).then((stats) => void this.inspectBuild(stats, webpackConfigs) || stats);
+    ).then((stats) => {
+      this.inspectBuild(stats, webpackConfigs);
+      return stats;
+    });
   }
   inspectBuild(stats) {
     debug(
