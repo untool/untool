@@ -6,14 +6,12 @@ const { default: withRouter } = require('react-router-dom/es/withRouter');
 
 const { initialize } = require('@untool/core');
 
-exports.render = function render(element, options) {
-  return function render(...args) {
-    const { render } = initialize({}, element, options);
-    if (!render) {
-      throw new Error("Can't use @untool/react mixin");
-    }
-    return render(...args);
-  };
+exports.render = (element, options) => (...args) => {
+  const { render } = initialize({}, element, options);
+  if (!render) {
+    throw new Error("Can't use @untool/react mixin");
+  }
+  return render(...args);
 };
 
 exports.Miss = withRouter(function Miss({ staticContext }) {
@@ -38,8 +36,8 @@ exports.Header = withRouter(function Header({ staticContext, name, value }) {
 });
 
 exports.importComponent = ({ load, moduleId }, name = 'default') => {
-  const ImportComponent = withRouter(
-    class ImportComponent extends Component {
+  const Importer = withRouter(
+    class Importer extends Component {
       constructor({ staticContext }) {
         super();
         if (staticContext) {
@@ -76,6 +74,6 @@ exports.importComponent = ({ load, moduleId }, name = 'default') => {
     }
   );
   return function Import({ loader, render, ...ownProps }) {
-    return createElement(ImportComponent, { loader, render, ownProps });
+    return createElement(Importer, { loader, render, ownProps });
   };
 };
