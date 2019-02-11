@@ -6,6 +6,7 @@ script:
   - commitlint-travis
   - yarn lint
   - yarn test
+  - yarn canarist
 
 node_js:
   - 'node'
