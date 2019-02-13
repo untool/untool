@@ -40,7 +40,7 @@
     "@commitlint/travis-cli": "^7.0.0",
     "ava": "^1.0.1",
     "babel-eslint": "^10.0.0",
-    "canarist": "^1.1.1",
+    "canarist": "^1.2.1",
     "cycle": "^1.0.3",
     "cz-conventional-changelog": "^2.1.0",
     "eslint": "^5.0.0",
