@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.1.0](https://github.com/untool/untool/compare/v1.0.0...v1.1.0) (2019-02-14)
+
+
+### Features
+
+* update dependency yargs to v13 ([ec99f47](https://github.com/untool/untool/commit/ec99f47))
+
+
+
+
+
 # [1.0.0](https://github.com/untool/untool/compare/v1.0.0-rc.20...v1.0.0) (2019-01-29)
 
 **Note:** Version bump only for package @untool/yargs
