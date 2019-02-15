@@ -21,17 +21,30 @@ module.exports = ({ types: t }) => ({
         t.assertCallExpression(call);
 
         const argument = call.get('arguments')[0];
-        t.assertStringLiteral(argument);
+
+        let importedComponent;
+        let load;
+
+        if (t.isStringLiteral(argument)) {
+          importedComponent = argument.node;
+          load = t.arrowFunctionExpression(
+            [],
+            t.callExpression(t.identifier('import'), [importedComponent])
+          );
+        } else {
+          t.assertArrowFunctionExpression(argument);
+          argument.traverse({
+            Import(path) {
+              importedComponent = path.parentPath.get('arguments')[0].node;
+            },
+          });
+
+          load = argument.node;
+        }
 
         argument.replaceWith(
           t.objectExpression([
-            t.objectProperty(
-              t.identifier('load'),
-              t.arrowFunctionExpression(
-                [],
-                t.callExpression(t.identifier('import'), [argument.node])
-              )
-            ),
+            t.objectProperty(t.identifier('load'), load),
             t.objectProperty(
               t.identifier('moduleId'),
               t.callExpression(
@@ -39,7 +52,7 @@ module.exports = ({ types: t }) => ({
                   t.identifier('require'),
                   t.identifier('resolveWeak')
                 ),
-                [argument.node]
+                [importedComponent]
               )
             ),
           ])
