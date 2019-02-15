@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/untool/untool#readme",
   "dependencies": {
-    "@untool/core": "^1.1.0",
+    "@untool/core": "~1.1.0",
     "mixinable": "^4.0.0",
     "pretty-ms": "^4.0.0",
     "yargs": "^13.0.0"
