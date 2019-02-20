@@ -2,16 +2,21 @@
 
 /* eslint-env browser */
 
-const { createElement } = require('react');
+const { createElement, isValidElement } = require('react');
 const { unmountComponentAtNode, hydrate, render } = require('react-dom');
 const { default: BrowserRouter } = require('react-router-dom/es/BrowserRouter');
+
+const isPlainObject = require('is-plain-object');
 
 const {
   override,
   async: { compose, parallel, pipe },
 } = require('mixinable');
 
-const { Mixin } = require('@untool/core');
+const {
+  Mixin,
+  internal: { validate, invariant },
+} = require('@untool/core');
 
 class ReactMixin extends Mixin {
   constructor(config, element, options) {
@@ -45,10 +50,46 @@ class ReactMixin extends Mixin {
 }
 
 ReactMixin.strategies = {
-  bootstrap: parallel,
-  enhanceElement: compose,
-  fetchData: pipe,
-  render: override,
+  bootstrap: validate(parallel, ({ length }) => {
+    invariant(length === 0, 'bootstrap(): Received obsolete argument(s)');
+  }),
+  enhanceElement: validate(
+    compose,
+    ([element]) => {
+      invariant(
+        isValidElement(element),
+        'enhanceElement(): Received invalid React element'
+      );
+    },
+    (result) => {
+      invariant(
+        isValidElement(result),
+        'enhanceElement(): Returned invalid React element'
+      );
+    }
+  ),
+  fetchData: validate(
+    pipe,
+    ([data, element]) => {
+      invariant(
+        isPlainObject(data),
+        'fetchData(): Received invalid data object'
+      );
+      invariant(
+        isValidElement(element),
+        'fetchData(): Received invalid React element'
+      );
+    },
+    (result) => {
+      invariant(
+        isPlainObject(result),
+        'fetchData(): Returned invalid data object'
+      );
+    }
+  ),
+  render: validate(override, ({ length }) => {
+    invariant(length === 0, 'render(): Received obsolete argument(s)');
+  }),
 };
 
 module.exports = ReactMixin;
