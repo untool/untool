@@ -5,6 +5,34 @@ const flatten = require('flat');
 const isPlainObject = require('is-plain-object');
 const escapeRegExp = require('escape-string-regexp');
 
+exports.invariant = (condition, message) => {
+  if (condition) return;
+  throw new Error(`Invariant violation: ${message}`);
+};
+
+exports.validate = (strategy, checkArgs = () => {}, checkResult = () => {}) =>
+  Object.defineProperty(
+    (functions, ...initialArgs) =>
+      strategy(
+        functions.map((fn) => (...callArgs) => {
+          checkArgs(callArgs, initialArgs);
+          const result = fn(...callArgs);
+          if (result && typeof result.then === 'function') {
+            return result.then((result) => {
+              checkResult(result, true, callArgs, initialArgs);
+              return result;
+            });
+          } else {
+            checkResult(result, false, callArgs, initialArgs);
+            return result;
+          }
+        }),
+        ...initialArgs
+      ),
+    'name',
+    { value: strategy.name }
+  );
+
 exports.merge = (...args) =>
   mergeWith({}, ...args, (objValue, srcValue, key) => {
     if (Array.isArray(objValue)) {
