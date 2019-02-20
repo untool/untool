@@ -31,8 +31,8 @@ exports.normalizeWebpackConfig = (config) => {
         [normalizePath(key)]: key.endsWith('.id')
           ? 0
           : typeof flatConfig[key] === 'string'
-            ? normalizePath(flatConfig[key])
-            : flatConfig[key],
+          ? normalizePath(flatConfig[key])
+          : flatConfig[key],
       }),
       {}
     )
