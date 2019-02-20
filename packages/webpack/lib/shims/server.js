@@ -1,6 +1,8 @@
 'use strict';
 
-require('source-map-support/register');
+if (!require('module').prototype._compile.__sourceMapSupport) {
+  require('source-map-support/register');
+}
 require('@babel/polyfill');
 
 if (module.hot) {

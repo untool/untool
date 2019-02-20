@@ -123,7 +123,7 @@ module.exports = function getConfig(config, name) {
       new EnvironmentPlugin({ NODE_ENV: 'development' }),
     ],
     performance: { hints: false },
-    devtool: isProduction ? 'source-map' : 'cheap-module-eval-source-map',
+    devtool: 'inline-source-map',
     watchOptions: { aggregateTimeout: 300, ignored: /node_modules/ },
   };
 };
