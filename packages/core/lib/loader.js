@@ -39,8 +39,8 @@ class Loader {
       const { config, filepath } = this.loadPreset(context, preset);
       const directory = dirname(filepath);
       if (config.mixins) {
-        config.mixins = config.mixins.map(
-          (mixin) => (mixin.startsWith('.') ? join(directory, mixin) : mixin)
+        config.mixins = config.mixins.map((mixin) =>
+          mixin.startsWith('.') ? join(directory, mixin) : mixin
         );
       }
       return merge(result, this.loadPresets(directory, config.presets), config);
