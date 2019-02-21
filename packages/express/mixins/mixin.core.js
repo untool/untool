@@ -1,10 +1,15 @@
 'use strict';
 
+const isPlainObject = require('is-plain-object');
+
 const {
   sync: { sequence, callable },
 } = require('mixinable');
 
-const { Mixin } = require('@untool/core');
+const {
+  Mixin,
+  internal: { validate, invariant },
+} = require('@untool/core');
 
 class ExpressMixin extends Mixin {
   runServer(mode) {
@@ -67,11 +72,62 @@ class ExpressMixin extends Mixin {
 }
 
 ExpressMixin.strategies = {
-  configureServer: sequence,
-  inspectServer: sequence,
-  runServer: callable,
-  createServer: callable,
-  createRenderer: callable,
+  configureServer: validate(sequence, ([app, middlewares, mode]) => {
+    invariant(
+      app && app.handle && app.route,
+      'configureServer(): Received invalid Express app'
+    );
+    invariant(
+      isPlainObject(middlewares) && Object.keys(middlewares).length >= 16,
+      'configureServer(): Received invalid middlewares object'
+    );
+    invariant(
+      typeof mode === 'string',
+      'configureServer(): Received invalid mode string'
+    );
+  }),
+  inspectServer: validate(sequence, ([server]) => {
+    invariant(
+      server && typeof server.listen === 'function',
+      'inspectServer(): Received invalid HTTP server instance'
+    );
+  }),
+  runServer: validate(callable, ([mode]) => {
+    invariant(
+      typeof mode === 'string',
+      'runServer(): Received invalid mode string'
+    );
+  }),
+  createServer: validate(
+    callable,
+    ([mode]) => {
+      invariant(
+        typeof mode === 'string',
+        'createServer(): Received invalid mode string'
+      );
+    },
+    (result) => {
+      invariant(
+        result && result.handle && result.route,
+        'createServer(): Returned invalid Express app'
+      );
+    }
+  ),
+  createRenderer: validate(
+    callable,
+    ({ length }) => {
+      invariant(
+        length === 0,
+        'createRenderer(): Received obsolete argument(s)'
+      );
+    },
+    (result) => {
+      invariant(
+        typeof result === 'function',
+        'createRenderer(): Returned invalid renderer function'
+      );
+    }
+  ),
 };
 
 module.exports = ExpressMixin;
