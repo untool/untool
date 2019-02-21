@@ -1,10 +1,20 @@
 'use strict';
 
+const isPlainObject = require('is-plain-object');
+
 const {
   sync: { sequence, override },
 } = require('mixinable');
 
-const { Mixin } = require('@untool/core');
+const {
+  Mixin,
+  internal: { validate, invariant },
+} = require('@untool/core');
+
+const sequenceWithReturn = (functions, definition, ...args) => {
+  sequence(functions, definition, ...args);
+  return definition;
+};
 
 class YargsMixin extends Mixin {
   handleError(error) {
@@ -15,10 +25,25 @@ class YargsMixin extends Mixin {
 }
 
 YargsMixin.strategies = {
-  registerCommands: sequence,
-  configureCommand: (...args) => sequence(...args) && args[1],
-  handleArguments: sequence,
-  handleError: override,
+  registerCommands: validate(sequence, ([yargs]) => {
+    invariant(
+      yargs && typeof yargs.command === 'function',
+      'registerCommands(): Received invalid yargs instance'
+    );
+  }),
+  configureCommand: validate(sequenceWithReturn, ([definition]) => {
+    invariant(
+      isPlainObject(definition) && definition.command && definition.builder,
+      'configureCommand(): Received invalid command definition'
+    );
+  }),
+  handleArguments: validate(sequence, ([args]) => {
+    invariant(
+      isPlainObject(args),
+      'handleArguments(): Received invalid arguments object'
+    );
+  }),
+  handleError: validate(override, () => {}, () => process.exit(1)),
 };
 
 module.exports = YargsMixin;
