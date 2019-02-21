@@ -3,12 +3,17 @@
 const { existsSync: exists } = require('fs');
 const { join } = require('path');
 
+const isPlainObject = require('is-plain-object');
+
 const EnhancedPromise = require('eprom');
 const {
   async: { callable },
 } = require('mixinable');
 
-const { Mixin } = require('@untool/core');
+const {
+  Mixin,
+  internal: { validate, invariant },
+} = require('@untool/core');
 
 class WebpackStatsMixin extends Mixin {
   constructor(...args) {
@@ -43,7 +48,18 @@ class WebpackStatsMixin extends Mixin {
 }
 
 WebpackStatsMixin.strategies = {
-  getBuildStats: callable,
+  getBuildStats: validate(
+    callable,
+    ({ length }) => {
+      invariant(length === 0, 'getBuildStats(): Received obsolete argument(s)');
+    },
+    (result) => {
+      invariant(
+        isPlainObject(result),
+        'getBuildStats(): Returned invalid stats data'
+      );
+    }
+  ),
 };
 
 module.exports = WebpackStatsMixin;
