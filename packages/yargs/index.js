@@ -3,7 +3,10 @@
 
 const createYargs = require('yargs');
 
-const { initialize } = require('@untool/core');
+const {
+  initialize,
+  internal: { invariant },
+} = require('@untool/core');
 
 const configure = (config, options) => ({
   run(...args) {
@@ -15,9 +18,10 @@ const configure = (config, options) => ({
       }
       const core = initialize(config, options);
       const { registerCommands, handleArguments, handleError } = core;
-      if (!(registerCommands && handleArguments && handleError)) {
-        throw new Error("Can't use @untool/yargs mixin");
-      }
+      invariant(
+        registerCommands && handleArguments && handleError,
+        "Can't use @untool/yargs mixin"
+      );
       process.on('uncaughtException', handleError);
       process.on('unhandledRejection', handleError);
       process.nextTick(() => {
