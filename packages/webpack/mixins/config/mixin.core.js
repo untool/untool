@@ -2,6 +2,8 @@
 
 const { existsSync: exists } = require('fs');
 
+const isPlainObject = require('is-plain-object');
+
 const debug = require('debug');
 const debugConfig = (target, config) =>
   debug(`untool:webpack:config:${target}`)(config);
@@ -10,7 +12,10 @@ const {
   sync: { sequence, callable },
 } = require('mixinable');
 
-const { Mixin } = require('@untool/core');
+const {
+  Mixin,
+  internal: { validate, invariant },
+} = require('@untool/core');
 
 class WebpackConfigMixin extends Mixin {
   getBuildConfig(target, baseConfig) {
@@ -60,9 +65,39 @@ class WebpackConfigMixin extends Mixin {
 }
 
 WebpackConfigMixin.strategies = {
-  getBuildConfig: callable,
-  collectBuildConfigs: sequence,
-  configureBuild: sequence,
+  getBuildConfig: validate(callable, ([target, baseConfig]) => {
+    invariant(
+      typeof target === 'string',
+      'getBuildConfig(): Received invalid target string'
+    );
+    invariant(
+      !baseConfig || typeof baseConfig === 'string',
+      'getBuildConfig(): Received invalid baseConfig string'
+    );
+  }),
+  collectBuildConfigs: validate(sequence, ([webpackConfigs]) => {
+    invariant(
+      Array.isArray(webpackConfigs),
+      'collectBuildConfigs(): Received invalid webpackConfigs array'
+    );
+  }),
+  configureBuild: validate(
+    sequence,
+    ([webpackConfig, loaderConfigs, target]) => {
+      invariant(
+        isPlainObject(webpackConfig),
+        'configureBuild(): Received invalid webpackConfig object'
+      );
+      invariant(
+        isPlainObject(loaderConfigs),
+        'configureBuild(): Received invalid loaderConfigs object'
+      );
+      invariant(
+        typeof target === 'string',
+        'configureBuild(): Received invalid target string'
+      );
+    }
+  ),
 };
 
 module.exports = WebpackConfigMixin;

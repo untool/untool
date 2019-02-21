@@ -9,7 +9,10 @@ const {
 
 const { join: joinUrl, ensureLeadingSlash } = require('pathifist');
 
-const { Mixin } = require('@untool/core');
+const {
+  Mixin,
+  internal: { validate, invariant },
+} = require('@untool/core');
 
 class WebpackRenderMixin extends Mixin {
   getRenderRequests() {
@@ -63,7 +66,21 @@ class WebpackRenderMixin extends Mixin {
 }
 
 WebpackRenderMixin.strategies = {
-  getRenderRequests: override,
+  getRenderRequests: validate(
+    override,
+    ({ length }) => {
+      invariant(
+        length === 0,
+        'getRenderRequests(): Received obsolete argument(s)'
+      );
+    },
+    (result) => {
+      invariant(
+        Array.isArray(result),
+        'getRenderRequests(): Returned invalid requests array'
+      );
+    }
+  ),
 };
 
 module.exports = WebpackRenderMixin;

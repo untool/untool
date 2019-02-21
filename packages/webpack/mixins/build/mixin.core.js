@@ -7,7 +7,10 @@ const {
   async: { callable },
 } = require('mixinable');
 
-const { Mixin } = require('@untool/core');
+const {
+  Mixin,
+  internal: { validate, invariant },
+} = require('@untool/core');
 
 class WebpackBuildMixin extends Mixin {
   clean() {
@@ -71,7 +74,7 @@ class WebpackBuildMixin extends Mixin {
         },
         handler: (argv) =>
           Promise.resolve(argv.clean && this.clean())
-            .then(this.build)
+            .then(() => this.build())
             .catch(this.handleError),
       })
     );
@@ -79,9 +82,30 @@ class WebpackBuildMixin extends Mixin {
 }
 
 WebpackBuildMixin.strategies = {
-  clean: callable,
-  build: callable,
-  inspectBuild: sequence,
+  clean: validate(
+    callable,
+    ({ length }) => {
+      invariant(length === 0, 'clean(): Received obsolete argument(s)');
+    },
+    (result, isAsync) => {
+      invariant(isAsync, 'clean(): Did not return a Promise');
+    }
+  ),
+  build: validate(
+    callable,
+    ({ length }) => {
+      invariant(length === 0, 'build(): Received obsolete argument(s)');
+    },
+    (result, isAsync) => {
+      invariant(isAsync, 'build(): Did not return a Promise');
+    }
+  ),
+  inspectBuild: validate(sequence, ([stats]) => {
+    invariant(
+      stats && typeof stats.toString === 'function',
+      'inspectBuild(): Received invalid Webpack Stats object'
+    );
+  }),
 };
 
 module.exports = WebpackBuildMixin;
