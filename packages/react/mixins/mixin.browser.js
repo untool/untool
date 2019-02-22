@@ -51,7 +51,7 @@ class ReactMixin extends Mixin {
 
 ReactMixin.strategies = {
   bootstrap: validate(parallel, ({ length }) => {
-    invariant(length === 0, 'bootstrap(): Received obsolete argument(s)');
+    invariant(length === 0, 'bootstrap(): Received unexpected argument(s)');
   }),
   enhanceElement: validate(
     compose,
@@ -88,7 +88,7 @@ ReactMixin.strategies = {
     }
   ),
   render: validate(override, ({ length }) => {
-    invariant(length === 0, 'render(): Received obsolete argument(s)');
+    invariant(length === 0, 'render(): Received unexpected argument(s)');
   }),
 };
 

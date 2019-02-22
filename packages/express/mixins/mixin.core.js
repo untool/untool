@@ -118,7 +118,7 @@ ExpressMixin.strategies = {
     ({ length }) => {
       invariant(
         length === 0,
-        'createRenderer(): Received obsolete argument(s)'
+        'createRenderer(): Received unexpected argument(s)'
       );
     },
     (result) => {
