@@ -85,7 +85,7 @@ WebpackBuildMixin.strategies = {
   clean: validate(
     callable,
     ({ length }) => {
-      invariant(length === 0, 'clean(): Received obsolete argument(s)');
+      invariant(length === 0, 'clean(): Received unexpected argument(s)');
     },
     (result, isAsync) => {
       invariant(isAsync, 'clean(): Did not return a Promise');
@@ -94,7 +94,7 @@ WebpackBuildMixin.strategies = {
   build: validate(
     callable,
     ({ length }) => {
-      invariant(length === 0, 'build(): Received obsolete argument(s)');
+      invariant(length === 0, 'build(): Received unexpected argument(s)');
     },
     (result, isAsync) => {
       invariant(isAsync, 'build(): Did not return a Promise');

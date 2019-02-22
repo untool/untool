@@ -51,7 +51,10 @@ WebpackStatsMixin.strategies = {
   getBuildStats: validate(
     callable,
     ({ length }) => {
-      invariant(length === 0, 'getBuildStats(): Received obsolete argument(s)');
+      invariant(
+        length === 0,
+        'getBuildStats(): Received unexpected argument(s)'
+      );
     },
     (result) => {
       invariant(

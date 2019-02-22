@@ -71,7 +71,7 @@ WebpackRenderMixin.strategies = {
     ({ length }) => {
       invariant(
         length === 0,
-        'getRenderRequests(): Received obsolete argument(s)'
+        'getRenderRequests(): Received unexpected argument(s)'
       );
     },
     (result) => {
