@@ -62,6 +62,7 @@ Header.propTypes = {
 exports.Header = withRouter(Header);
 
 exports.importComponent = ({ load, moduleId }, name = 'default') => {
+  const resolve = typeof name === 'function' ? name : (module) => module[name];
   class Importer extends Component {
     constructor({ staticContext }) {
       super();
@@ -69,7 +70,7 @@ exports.importComponent = ({ load, moduleId }, name = 'default') => {
         staticContext.modules.push(moduleId);
       }
       if (staticContext || __webpack_modules__[moduleId]) {
-        this.state = { Component: __webpack_require__(moduleId)[name] };
+        this.state = { Component: resolve(__webpack_require__(moduleId)) };
       } else {
         this.state = { loading: true };
       }
@@ -82,7 +83,7 @@ exports.importComponent = ({ load, moduleId }, name = 'default') => {
         Promise.resolve()
           .then(() => (loader ? loader(load) : load()))
           .then(
-            ({ [name]: Component }) => this.setState({ ...state, Component }),
+            (module) => this.setState({ ...state, Component: resolve(module) }),
             (error) => this.setState({ ...state, error })
           );
       }
