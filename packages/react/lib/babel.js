@@ -1,5 +1,13 @@
 'use strict';
 
+const path = require('path');
+
+function getName(name, filename, rootDir) {
+  return path
+    .relative(rootDir, path.join(path.dirname(filename), name))
+    .replace(/([^\w])/g, (match) => (match === '/' ? '~' : ''));
+}
+
 module.exports = ({ types: t }) => ({
   visitor: {
     ImportDeclaration(path) {
@@ -46,7 +54,15 @@ module.exports = ({ types: t }) => ({
               t.arrowFunctionExpression(
                 [],
                 t.callExpression(t.identifier('import'), [
-                  t.stringLiteral(importedComponent),
+                  t.addComment(
+                    t.stringLiteral(importedComponent),
+                    'leading',
+                    ` webpackChunkName: "${getName(
+                      importedComponent,
+                      this.file.opts.filename,
+                      this.opts.rootDir
+                    )}" `
+                  ),
                 ])
               )
             ),

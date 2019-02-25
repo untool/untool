@@ -91,7 +91,9 @@ module.exports = function getConfig(config, name) {
       publicPath: '/',
       pathinfo: true,
       filename: getAssetPath(`${config.name}-[chunkhash:12].js`),
-      chunkFilename: getAssetPath(`${config.name}-[id]-[chunkhash:12].js`),
+      chunkFilename: getAssetPath(
+        `${config.name}-[id]-[name]-[chunkhash:12].js`
+      ),
       devtoolModuleFilenameTemplate: (info) =>
         relative(config.rootDir, info.absoluteResourcePath),
     },
@@ -120,7 +122,7 @@ module.exports = function getConfig(config, name) {
     optimization: {
       splitChunks: {
         chunks: 'all',
-        name: false,
+        name: true,
       },
       minimizer: [
         new TerserPlugin({

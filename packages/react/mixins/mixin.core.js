@@ -15,7 +15,10 @@ module.exports = class ReactMixin extends Mixin {
         require.resolve('babel-plugin-transform-react-remove-prop-types')
       );
     }
-    jsLoaderConfig.options.plugins.push(require.resolve('../lib/babel'));
+    jsLoaderConfig.options.plugins.push([
+      require.resolve('../lib/babel'),
+      { rootDir: this.config.rootDir },
+    ]);
   }
   diagnose({ diagnoseDuplicatePackages }) {
     diagnoseDuplicatePackages('react', 'react-dom');
