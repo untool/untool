@@ -20,31 +20,36 @@ module.exports = ({ types: t }) => ({
         const call = refPath.parentPath;
         t.assertCallExpression(call);
 
-        const argument = call.get('arguments')[0];
+        const argument = call.get('arguments.0');
+        if (!argument) {
+          throw new Error(
+            '"importComponent" must be called with at least one parameter!'
+          );
+        }
 
         let importedComponent;
-        let load;
 
         if (t.isStringLiteral(argument)) {
-          importedComponent = argument.node;
-          load = t.arrowFunctionExpression(
-            [],
-            t.callExpression(t.identifier('import'), [importedComponent])
-          );
+          importedComponent = argument.node.value;
         } else {
           t.assertArrowFunctionExpression(argument);
-          argument.traverse({
-            Import(path) {
-              importedComponent = path.parentPath.get('arguments')[0].node;
-            },
-          });
+          t.assertCallExpression(argument.get('body'));
+          t.assertImport(argument.get('body.callee'));
 
-          load = argument.node;
+          importedComponent = argument.get('body.arguments.0').node.value;
         }
 
         argument.replaceWith(
           t.objectExpression([
-            t.objectProperty(t.identifier('load'), load),
+            t.objectProperty(
+              t.identifier('load'),
+              t.arrowFunctionExpression(
+                [],
+                t.callExpression(t.identifier('import'), [
+                  t.stringLiteral(importedComponent),
+                ])
+              )
+            ),
             t.objectProperty(
               t.identifier('moduleId'),
               t.callExpression(
@@ -52,7 +57,7 @@ module.exports = ({ types: t }) => ({
                   t.identifier('require'),
                   t.identifier('resolveWeak')
                 ),
-                [importedComponent]
+                [t.stringLiteral(importedComponent)]
               )
             ),
           ])
