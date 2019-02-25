@@ -53,7 +53,7 @@ export default () => <Status code={404} />;
 
 ### `<Header name value />`
 
-With this component, you can declaratively set arbitrary HTTP headers from your React application.
+With this component, you can declaratively set arbitrary HTTP headers from your React application. On the client side, it is effectively a no-op.
 
 ```javascript
 import { Header } from '@untool/react';
@@ -61,17 +61,29 @@ import { Header } from '@untool/react';
 export default () => <Header name="X-Foo" value="Bar" />;
 ```
 
-### `importComponent(module, [exportName])`
+### `importComponent(module|moduleLoader, [exportName|exportResolver])`
 
 Using the `importComponent` helper, you can asynchronously require components into your application to help you reduce asset sizes. It works similarly to [`react-loadable`](https://github.com/jamiebuilds/react-loadable), but is deeply integrated with `untool`.
 
 ```javascript
 import { importComponent } from '@untool/react';
 
-const Home = importComponent('./home');
+const Home = importComponent('./home', 'Home');
 
 export default () => <Home />;
 ```
+
+Additionally, `importComponent` supports an alternative syntax that helps with editor and type checker integration since it does not rely on plain strings. The snippet below is functionally equivalent to the one above:
+
+```javascript
+import { importComponent } from '@untool/react';
+
+const Home = importComponent(() => import('./home'), ({ Home }) => Home);
+
+export default () => <Home />;
+```
+
+If you do no specify an `exportName` or `exportResolver`, `importComponent` will fall back to the imported modules `default` export.
 
 `importComponent` itself returns a React component supporting some props that enable you to control module loading and (placeholder) rendering.
 
