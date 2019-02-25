@@ -27,6 +27,7 @@
     "babel-plugin-dynamic-import-node": "^2.0.0",
     "caniuse-lite": "^1.0.30000898",
     "debug": "^4.0.0",
+    "duplitect": "^1.0.3",
     "enhanced-resolve": "^4.0.0",
     "eprom": "^1.0.0",
     "file-loader": "^3.0.0",
@@ -48,5 +49,8 @@
   },
   "engines": {
     "node": ">8.6.0"
+  },
+  "scripts": {
+    "postinstall": "duplitect @untool/webpack"
   }
 }

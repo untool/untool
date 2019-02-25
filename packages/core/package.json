@@ -20,6 +20,7 @@
     "cosmiconfig": "^5.0.5",
     "debug": "^4.0.0",
     "dotenv": "^6.0.0",
+    "duplitect": "^1.0.3",
     "enhanced-resolve": "^4.0.0",
     "escape-string-regexp": "^1.0.5",
     "find-up": "^3.0.0",
@@ -31,5 +32,8 @@
   },
   "engines": {
     "node": ">8.6.0"
+  },
+  "scripts": {
+    "postinstall": "duplitect @untool/core"
   }
 }

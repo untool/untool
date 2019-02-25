@@ -3510,6 +3510,11 @@ duplexify@^3.4.2, duplexify@^3.6.0:
     readable-stream "^2.0.0"
     stream-shift "^1.0.0"
 
+duplitect@^1.0.3:
+  version "1.0.3"
+  resolved "https://registry.yarnpkg.com/duplitect/-/duplitect-1.0.3.tgz#d60be3907a549a230d2f04c4c4ea87640efb5a78"
+  integrity sha512-/sYPfcaufqwOIiF7SanmHZxWMwZMUdsOvlZsr6a8Xm4M9usgzUgqAdr9mSceDjIukhfbEoR8Qo2YzKb82xpjBQ==
+
 ecc-jsbn@~0.1.1:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/ecc-jsbn/-/ecc-jsbn-0.1.2.tgz#3a83a904e54353287874c564b7549386849a98c9"

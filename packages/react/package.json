@@ -23,6 +23,7 @@
     "@untool/core": "^1.1.0",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.19",
     "clone": "^2.1.2",
+    "duplitect": "^1.0.3",
     "is-plain-object": "^2.0.4",
     "mixinable": "^4.0.0",
     "prop-types": "^15.7.2",
@@ -36,5 +37,8 @@
   },
   "engines": {
     "node": ">8.6.0"
+  },
+  "scripts": {
+    "postinstall": "duplitect @untool/react"
   }
 }
