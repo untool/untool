@@ -5,7 +5,10 @@ import { Switch, Route, Link } from 'react-router-dom/es';
 import { Miss, render, importComponent } from 'untool';
 
 const Home = importComponent('./components/home');
-const About = importComponent('./components/about', 'About');
+const About = importComponent(
+  () => import('./components/about'),
+  ({ About }) => About
+);
 
 const preload = ({ Component, error, loading, ...props }) => {
   if (loading) return <p>Loading...</p>;
