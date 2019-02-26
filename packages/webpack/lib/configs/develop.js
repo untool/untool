@@ -87,8 +87,8 @@ module.exports = function getConfig(config, name) {
       path: config.buildDir,
       publicPath: '/',
       pathinfo: true,
-      filename: getAssetPath(`${config.name}.js`),
-      chunkFilename: getAssetPath(`${config.name}-[id].js`),
+      filename: getAssetPath(`${config.name}-main.js`),
+      chunkFilename: getAssetPath(`${config.name}-[id]-[name].js`),
       devtoolModuleFilenameTemplate: (info) =>
         relative(config.rootDir, info.absoluteResourcePath),
     },
@@ -113,7 +113,7 @@ module.exports = function getConfig(config, name) {
     },
     externals: [],
     optimization: {
-      splitChunks: { chunks: 'all', name: false },
+      splitChunks: { chunks: 'all', name: true },
     },
     plugins: [
       new (isProduction ? HashedModuleIdsPlugin : NamedModulesPlugin)(),
