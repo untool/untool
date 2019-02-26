@@ -45,21 +45,29 @@ module.exports = function getConfig(config, name) {
     },
   };
 
-  const urlLoaderConfig = {
-    test: [/\.(png|gif|jpe?g|webp)$/],
-    loader: require.resolve('url-loader'),
-    options: {
-      limit: 10000,
-      name: getAssetPath('[name]-[hash:16].[ext]'),
-    },
-  };
-
   const fileLoaderConfig = {
     exclude: [/\.(?:m?js|html|json)$/],
     loader: require.resolve('file-loader'),
     options: {
       name: getAssetPath('[name]-[hash:16].[ext]'),
     },
+  };
+
+  const urlLoaderConfig = {
+    test: [/\.(png|gif|jpe?g|webp)$/],
+    oneOf: [
+      {
+        resourceQuery: /noinline/,
+        ...fileLoaderConfig,
+      },
+      {
+        loader: require.resolve('url-loader'),
+        options: {
+          limit: 10000,
+          name: getAssetPath('[name]-[hash:16].[ext]'),
+        },
+      },
+    ],
   };
 
   const allLoaderConfigs = [jsLoaderConfig, urlLoaderConfig, fileLoaderConfig];
