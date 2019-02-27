@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/untool/untool/compare/v1.1.0...v1.2.0) (2019-02-27)
+
+
+### Bug Fixes
+
+* **express:** rely on Express to add app to req ([f392af6](https://github.com/untool/untool/commit/f392af6))
+
+
+### Features
+
+* **express:** add arg validation to mixin methods ([2dca3f8](https://github.com/untool/untool/commit/2dca3f8))
+
+
+
+
+
 # [1.1.0](https://github.com/untool/untool/compare/v1.0.0...v1.1.0) (2019-02-14)
 
 **Note:** Version bump only for package @untool/express

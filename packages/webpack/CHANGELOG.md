@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/untool/untool/compare/v1.1.0...v1.2.0) (2019-02-27)
+
+
+### Bug Fixes
+
+* **webpack:** re-enable node source maps ([3f40319](https://github.com/untool/untool/commit/3f40319))
+
+
+### Features
+
+* **webpack:** add arg validation to mixin methods ([b17d1a7](https://github.com/untool/untool/commit/b17d1a7))
+* **webpack:** allow to ignore url-loader for specific requests ([47ff03a](https://github.com/untool/untool/commit/47ff03a)), closes [xing/hops#557](https://github.com/xing/hops/issues/557)
+
+
+
+
+
 # [1.1.0](https://github.com/untool/untool/compare/v1.0.0...v1.1.0) (2019-02-14)
 
 

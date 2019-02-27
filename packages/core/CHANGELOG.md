@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/untool/untool/compare/v1.1.0...v1.2.0) (2019-02-27)
+
+
+### Features
+
+* **core:** introduce validation helpers ([c931a20](https://github.com/untool/untool/commit/c931a20))
+
+
+
+
+
 # [1.1.0](https://github.com/untool/untool/compare/v1.0.0...v1.1.0) (2019-02-14)
 
 

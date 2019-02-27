@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/untool/untool/compare/v1.1.0...v1.2.0) (2019-02-27)
+
+
+### Bug Fixes
+
+* **express:** rely on Express to add app to req ([f392af6](https://github.com/untool/untool/commit/f392af6))
+* **react:** only allow arrow function with single import() statement ([2bbbdcc](https://github.com/untool/untool/commit/2bbbdcc))
+* **webpack:** re-enable node source maps ([3f40319](https://github.com/untool/untool/commit/3f40319))
+
+
+### Features
+
+* **core:** introduce validation helpers ([c931a20](https://github.com/untool/untool/commit/c931a20))
+* **express:** add arg validation to mixin methods ([2dca3f8](https://github.com/untool/untool/commit/2dca3f8))
+* **react:** add arg validation to mixin methods ([c03e897](https://github.com/untool/untool/commit/c03e897))
+* **react:** add arg/prop validation to public API ([9150954](https://github.com/untool/untool/commit/9150954))
+* **react:** allow function as namespace resolver ([11d20a2](https://github.com/untool/untool/commit/11d20a2))
+* **react:** allow import load function in importComponent ([dbeea04](https://github.com/untool/untool/commit/dbeea04))
+* **webpack:** add arg validation to mixin methods ([b17d1a7](https://github.com/untool/untool/commit/b17d1a7))
+* **webpack:** allow to ignore url-loader for specific requests ([47ff03a](https://github.com/untool/untool/commit/47ff03a)), closes [xing/hops#557](https://github.com/xing/hops/issues/557)
+* **yargs:** add arg validation to mixin methods ([cced80e](https://github.com/untool/untool/commit/cced80e))
+
+
+
+
+
 # [1.1.0](https://github.com/untool/untool/compare/v1.0.0...v1.1.0) (2019-02-14)
 
 

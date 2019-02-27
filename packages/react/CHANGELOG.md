@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.2.0](https://github.com/untool/untool/compare/v1.1.0...v1.2.0) (2019-02-27)
+
+
+### Bug Fixes
+
+* **react:** only allow arrow function with single import() statement ([2bbbdcc](https://github.com/untool/untool/commit/2bbbdcc))
+
+
+### Features
+
+* **react:** add arg validation to mixin methods ([c03e897](https://github.com/untool/untool/commit/c03e897))
+* **react:** add arg/prop validation to public API ([9150954](https://github.com/untool/untool/commit/9150954))
+* **react:** allow function as namespace resolver ([11d20a2](https://github.com/untool/untool/commit/11d20a2))
+* **react:** allow import load function in importComponent ([dbeea04](https://github.com/untool/untool/commit/dbeea04))
+
+
+
+
+
 # [1.1.0](https://github.com/untool/untool/compare/v1.0.0...v1.1.0) (2019-02-14)
 
 **Note:** Version bump only for package @untool/react
