@@ -69,6 +69,30 @@ class ExpressMixin extends Mixin {
   handleArguments(argv) {
     this.options = { ...this.options, ...argv };
   }
+  runChecks(validateConfig) {
+    return validateConfig({
+      type: 'object',
+      properties: {
+        https: {
+          oneOf: [
+            {
+              type: 'object',
+              properties: {
+                keyFile: { type: 'string' },
+                certFile: { type: 'string' },
+              },
+            },
+            { type: 'boolean' },
+          ],
+        },
+        host: { type: 'string' },
+        port: { type: 'string' },
+        distDir: { type: 'string' },
+        gracePeriod: { type: 'number' },
+      },
+      required: ['https', 'host', 'port', 'distDir', 'gracePeriod'],
+    });
+  }
 }
 
 ExpressMixin.strategies = {
