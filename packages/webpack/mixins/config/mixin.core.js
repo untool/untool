@@ -62,6 +62,39 @@ class WebpackConfigMixin extends Mixin {
   handleArguments(argv) {
     this.options = { ...this.options, ...argv };
   }
+  runChecks(validateConfig) {
+    return validateConfig({
+      type: 'object',
+      properties: {
+        browsers: {
+          type: 'array',
+          items: { type: 'string', minLength: 1 },
+        },
+        node: { type: 'string', minLength: 1 },
+        locations: {
+          type: 'array',
+          items: { type: 'string', minLength: 1 },
+        },
+        basePath: { type: 'string' },
+        assetPath: { type: 'string' },
+        buildDir: { type: 'string', minLength: 1 },
+        serverDir: { type: 'string', minLength: 1 },
+        serverFile: { type: 'string', minLength: 1 },
+        statsFile: { type: 'string', minLength: 1 },
+      },
+      required: [
+        'browsers',
+        'node',
+        'locations',
+        'basePath',
+        'assetPath',
+        'buildDir',
+        'serverDir',
+        'serverFile',
+        'statsFile',
+      ],
+    });
+  }
 }
 
 WebpackConfigMixin.strategies = {
