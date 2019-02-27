@@ -20,6 +20,9 @@
   "homepage": "https://github.com/untool/untool#readme",
   "dependencies": {
     "@untool/core": "^1.2.0",
+    "ajv": "^6.9.2",
+    "duplitect": "^1.1.0",
+    "find-up": "^3.0.0",
     "mixinable": "^4.0.0",
     "pretty-ms": "^4.0.0",
     "yargs": "^13.0.0"

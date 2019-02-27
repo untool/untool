@@ -24,6 +24,15 @@ module.exports = class CLIMixin extends Mixin {
       console.log(`[${name}] started in ${mode} mode`);
     }
   }
+  handleWarning(...warnings) {
+    const { quiet } = this.options;
+    if (!quiet) {
+      const { name } = this.config;
+      warnings.forEach((warning) =>
+        console.warn(`[${name}] warning: ${warning}`)
+      );
+    }
+  }
   configureBuild(webpackConfig, loaderConfigs, target) {
     const { quiet } = this.options;
     if (!quiet && target === 'develop') {
