@@ -55,7 +55,9 @@ module.exports = ({ types: t }) => ({
               t.callExpression(
                 t.memberExpression(
                   t.identifier('require'),
-                  t.identifier('resolveWeak')
+                  t.identifier(
+                    this.opts.resolveAbsolutePaths ? 'resolve' : 'resolveWeak'
+                  )
                 ),
                 [t.stringLiteral(importedComponent)]
               )
