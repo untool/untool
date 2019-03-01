@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.3.0](https://github.com/untool/untool/compare/v1.2.0...v1.3.0) (2019-03-01)
+
+
+### Features
+
+* **react:** allow to instruct babel plugin to use require.resolve ([d614afe](https://github.com/untool/untool/commit/d614afe))
+
+
+
+
+
 # [1.2.0](https://github.com/untool/untool/compare/v1.1.0...v1.2.0) (2019-02-27)
 
 
