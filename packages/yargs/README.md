@@ -64,7 +64,7 @@ const { Mixin } = require('@untool/core');
 module.exports = class FooBarMixin extends Mixin {
   configureCommand(definition) {
     if (definition.command === 'foo') {
-      command.builder.bar = {
+      definition.builder.bar = {
         alias: 'b',
         default: false,
         describe: 'Enable bar',
