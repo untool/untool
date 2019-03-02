@@ -30,4 +30,21 @@ module.exports = {
       mainFields: ['mixin:server', 'mixin:runtime', 'mixin'],
     },
   },
+  configSchema: {
+    browsers: {
+      type: 'array',
+      items: { type: 'string', minLength: 1 },
+    },
+    node: { type: 'string', minLength: 1 },
+    locations: {
+      type: 'array',
+      items: { type: 'string', minLength: 1 },
+    },
+    basePath: { type: 'string' },
+    assetPath: { type: 'string' },
+    buildDir: { type: 'string', minLength: 1 },
+    serverDir: { type: 'string', minLength: 1 },
+    serverFile: { type: 'string', minLength: 1 },
+    statsFile: { type: 'string', minLength: 1 },
+  },
 };
