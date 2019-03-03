@@ -16,15 +16,19 @@ const configure = (config, options) => ({
       if (argv.production || argv.p) {
         process.env.NODE_ENV = 'production';
       }
-      const core = initialize(config, options);
-      const { registerCommands, handleArguments, handleError } = core;
+      const {
+        bootstrap,
+        registerCommands,
+        handleArguments,
+        handleError,
+      } = initialize(config, options);
       invariant(
-        registerCommands && handleArguments && handleError,
+        bootstrap && registerCommands && handleArguments && handleError,
         "Can't use @untool/yargs mixin"
       );
       process.on('uncaughtException', handleError);
       process.on('unhandledRejection', handleError);
-      process.nextTick(() => {
+      bootstrap().then(() => {
         registerCommands(
           yargs
             .usage('Usage: $0 <command> [options]')

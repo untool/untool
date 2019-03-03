@@ -2,8 +2,10 @@
 
 const isPlainObject = require('is-plain-object');
 
+const detectDuplicates = require('duplitect');
 const {
   sync: { sequence, override },
+  async: { parallel },
 } = require('mixinable');
 
 const {
@@ -11,12 +13,30 @@ const {
   internal: { validate, invariant },
 } = require('@untool/core');
 
-const sequenceWithReturn = (functions, definition, ...args) => {
-  sequence(functions, definition, ...args);
-  return definition;
+const sequenceWithReturn = (functions, arg, ...args) => {
+  sequence(functions, arg, ...args);
+  return arg;
+};
+
+const parallelWithFlatReturn = (...args) => {
+  return parallel(...args).then((results) => [].concat(...results));
 };
 
 class YargsMixin extends Mixin {
+  bootstrap() {
+    const { config } = this;
+    return this.runChecks().then((warnings) =>
+      [...config._warnings, ...warnings].forEach((warning) =>
+        this.handleWarning(warning)
+      )
+    );
+  }
+  runChecks() {
+    const { _workspace } = this.config;
+    return detectDuplicates(_workspace, '@untool/*').map(
+      (duplicate) => `package '${duplicate}' should be installed just once`
+    );
+  }
   handleError(error) {
     // eslint-disable-next-line no-console
     console.error(error.stack ? error.stack.toString() : error.toString());
@@ -25,6 +45,18 @@ class YargsMixin extends Mixin {
 }
 
 YargsMixin.strategies = {
+  bootstrap: validate(parallel, ({ length }) => {
+    invariant(length === 0, 'bootstrap(): Received unexpected argument(s)');
+  }),
+  runChecks: validate(
+    parallelWithFlatReturn,
+    ({ length }) => {
+      invariant(length === 0, 'runChecks(): Received unexpected argument(s)');
+    },
+    (result) => {
+      invariant(Array.isArray(result), 'runChecks(): Did not return array');
+    }
+  ),
   registerCommands: validate(sequence, ([yargs]) => {
     invariant(
       yargs && typeof yargs.command === 'function',
@@ -42,6 +74,9 @@ YargsMixin.strategies = {
       isPlainObject(args),
       'handleArguments(): Received invalid arguments object'
     );
+  }),
+  handleWarning: validate(override, ({ length }) => {
+    invariant(length === 1, 'handleWarning(): Did not receive warning');
   }),
   handleError: validate(override, () => {}, () => process.exit(1)),
 };
