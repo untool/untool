@@ -26,9 +26,7 @@ class YargsMixin extends Mixin {
   bootstrap() {
     const { config } = this;
     return this.runChecks().then((warnings) =>
-      [...config._warnings, ...warnings].forEach((warning) =>
-        this.handleWarning(warning)
-      )
+      this.inspectWarnings([...config._warnings, ...warnings])
     );
   }
   runChecks() {
@@ -37,10 +35,10 @@ class YargsMixin extends Mixin {
       (duplicate) => `package '${duplicate}' should be installed just once`
     );
   }
-  handleError(error) {
+  handleError(error, recoverable) {
     // eslint-disable-next-line no-console
     console.error(error.stack ? error.stack.toString() : error.toString());
-    process.exit(1);
+    if (!recoverable) process.exit(1);
   }
 }
 
@@ -57,6 +55,12 @@ YargsMixin.strategies = {
       invariant(Array.isArray(result), 'runChecks(): Did not return array');
     }
   ),
+  inspectWarnings: validate(sequence, ([warnings]) => {
+    invariant(
+      Array.isArray(warnings),
+      'inspectWarnings(): Did not receive warnings array'
+    );
+  }),
   registerCommands: validate(sequence, ([yargs]) => {
     invariant(
       yargs && typeof yargs.command === 'function',
@@ -75,10 +79,7 @@ YargsMixin.strategies = {
       'handleArguments(): Received invalid arguments object'
     );
   }),
-  handleWarning: validate(override, ({ length }) => {
-    invariant(length === 1, 'handleWarning(): Did not receive warning');
-  }),
-  handleError: validate(override, () => {}, () => process.exit(1)),
+  handleError: override,
 };
 
 module.exports = YargsMixin;

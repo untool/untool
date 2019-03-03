@@ -1,5 +1,4 @@
 'use strict';
-/* eslint-disable no-console */
 
 const { format } = require('url');
 
@@ -7,74 +6,86 @@ const prettyMS = require('pretty-ms');
 
 const { Mixin } = require('@untool/core');
 
+const Logger = require('../../lib/logger');
+const { logLevels } = Logger;
+
 module.exports = class CLIMixin extends Mixin {
+  constructor(...args) {
+    super(...args);
+    const { name, _workspace } = this.config;
+    this.logger = new Logger(name, _workspace);
+  }
   registerCommands(yargs) {
-    yargs.option('quiet', {
-      alias: 'q',
-      description: 'Silence log output',
-      type: 'boolean',
-    });
+    yargs
+      .option('quiet', {
+        alias: 'q',
+        description: 'Decrease log output',
+        count: true,
+      })
+      .option('verbose', {
+        alias: 'v',
+        description: 'Increase log output',
+        count: true,
+      });
   }
   handleArguments(argv) {
-    this.options = { ...this.options, ...argv };
-    const { quiet } = this.options;
-    if (!quiet) {
-      const { name } = this.config;
-      const mode = process.env.NODE_ENV || 'development';
-      console.log(`[${name}] started in ${mode} mode`);
-    }
+    const { quiet, verbose } = (this.options = { ...this.options, ...argv });
+    this.logger.setLogLevel(logLevels.info + verbose - quiet);
+    this.logger.info(
+      `started in ${process.env.NODE_ENV || 'development'} mode`
+    );
   }
-  handleWarning(warning) {
-    const { quiet } = this.options;
-    if (!quiet) {
-      const { name } = this.config;
-      console.warn(`[${name}] warning: ${warning}`);
-    }
+  handleError(error, recoverable) {
+    this.logger.error(error);
+    if (!recoverable) process.exit(1);
   }
   configureBuild(webpackConfig, loaderConfigs, target) {
-    const { quiet } = this.options;
-    if (!quiet && target === 'develop') {
-      const { name } = this.config;
+    if (target === 'develop') {
       webpackConfig.plugins.push({
-        apply(compiler) {
+        apply: (compiler) => {
           compiler.hooks.done.tap('LogPlugin', ({ endTime, startTime }) => {
             const duration = prettyMS(endTime - startTime);
-            console.log(`[${name}] built successfully in ${duration}`);
+            this.logger.info(`built successfully in ${duration}`);
           });
         },
       });
     }
-    return webpackConfig;
+  }
+  configureServer(app) {
+    const morgan = require('morgan');
+    app.use(
+      morgan('tiny', {
+        stream: {
+          write: (message) => this.logger.request(message.trimEnd()),
+        },
+      })
+    );
   }
   inspectBuild(stats) {
-    const { quiet } = this.options;
-    if (!quiet) {
-      const { name } = this.config;
-      const report = stats.toString({
-        chunks: false,
-        colors: false,
-        entrypoints: false,
-        hash: false,
-        modules: false,
-        version: false,
-      });
-      console.log(`[${name}] built successfully\n\n${report}\n`);
-    }
+    const report = stats.toString({
+      chunks: false,
+      colors: false,
+      entrypoints: false,
+      hash: false,
+      modules: false,
+      version: false,
+    });
+    this.logger.info(`built successfully\n\n${report}\n`);
   }
   inspectServer(server) {
-    const { quiet } = this.options;
-    if (!quiet) {
-      const { name, https, basePath: pathname = '' } = this.config;
-      const { port } = server.address();
-      const hostname = 'localhost';
-      const protocol = https ? 'https' : 'http';
-      const parts = { protocol, hostname, port, pathname };
-      console.log(`[${name}] listening at ${format(parts)}`);
-      server.on('shutdown', () => {
-        const { gracePeriod } = this.config;
-        const timeout = prettyMS(gracePeriod);
-        console.log(`[${name}] shutting down in ${timeout}`);
-      });
-    }
+    const { https, basePath: pathname = '' } = this.config;
+    const { port } = server.address();
+    const hostname = 'localhost';
+    const protocol = https ? 'https' : 'http';
+    const parts = { protocol, hostname, port, pathname };
+    this.logger.info(`listening at ${format(parts)}`);
+    server.on('shutdown', () => {
+      const { gracePeriod } = this.config;
+      const timeout = prettyMS(gracePeriod);
+      this.logger.warn(`shutting down in ${timeout}`);
+    });
+  }
+  inspectWarnings(warnings) {
+    warnings.forEach((warning) => this.logger.warn(warning));
   }
 };
