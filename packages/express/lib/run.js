@@ -47,15 +47,16 @@ module.exports = (app, { config, inspectServer, handleError }) => {
   const { domain } = app.locals;
   const { host, port, https } = config;
   const server = createServer(app, https);
-  domain.on('error', (error) =>
+  domain.on('error', (error) => {
+    handleError(error, true);
     shutdownServer(server, app, config).then(
-      () => handleError(error),
-      () => handleError(error)
-    )
-  );
+      () => process.exit(1),
+      (error) => handleError(error)
+    );
+  });
   process.on('SIGTERM', () =>
     shutdownServer(server, app, config).then(
-      () => process.exit(),
+      () => process.exit(0),
       (error) => handleError(error)
     )
   );

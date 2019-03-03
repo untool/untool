@@ -3,12 +3,14 @@
 const { create: createDomain } = require('domain');
 
 const debug = require('debug')('untool:express');
-const isPlainObject = require('is-plain-object');
+
 const express = require('express');
+const finalhandler = require('finalhandler');
+const isPlainObject = require('is-plain-object');
 
 const { Router } = express;
 
-module.exports = (mode, { configureServer }) => {
+module.exports = (mode, { configureServer, handleError }) => {
   const phases = ['initial', 'files', 'parse', 'routes', 'final'].reduce(
     (result, key) => [...result, `pre${key}`, key, `post${key}`],
     []
@@ -47,6 +49,12 @@ module.exports = (mode, { configureServer }) => {
       }
     });
   });
+  // eslint-disable-next-line no-unused-vars
+  app.use((err, req, res, next) =>
+    finalhandler(req, res, {
+      onerror: (error) => handleError(error, true),
+    })(err)
+  );
   app.locals.domain = domain;
 
   return app;
