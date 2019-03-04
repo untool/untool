@@ -56,7 +56,7 @@ module.exports = class CLIMixin extends Mixin {
     app.use(
       morgan('tiny', {
         stream: {
-          write: (message) => this.logger.request(message.trimEnd()),
+          write: (message) => this.logger.request(message.replace(/\s+$/, '')),
         },
       })
     );

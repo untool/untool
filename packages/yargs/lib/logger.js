@@ -32,7 +32,9 @@ module.exports = exports = class Logger {
   error(error) {
     const { level, name, prettyError } = this;
     if (level >= logLevels.error) {
-      console.error(`[${name}:error] ${prettyError.render(error).trimStart()}`);
+      console.error(
+        `[${name}:error] ${prettyError.render(error).replace(/^\s+/, '')}`
+      );
     }
   }
   warn(warning) {
