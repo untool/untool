@@ -7,6 +7,7 @@ const prettyMS = require('pretty-ms');
 const { Mixin } = require('@untool/core');
 
 const Logger = require('../../lib/logger');
+
 const { logLevels } = Logger;
 
 module.exports = class CLIMixin extends Mixin {
@@ -39,38 +40,22 @@ module.exports = class CLIMixin extends Mixin {
     this.logger.error(error);
     if (!recoverable) process.exit(1);
   }
-  configureBuild(webpackConfig, loaderConfigs, target) {
-    if (target === 'develop') {
-      webpackConfig.plugins.push({
-        apply: (compiler) => {
-          compiler.hooks.done.tap('LogPlugin', ({ endTime, startTime }) => {
-            const duration = prettyMS(endTime - startTime);
-            this.logger.info(`built successfully in ${duration}`);
-          });
-        },
-      });
-    }
+  configureBuild(webpackConfig) {
+    const { LoggerPlugin } = require('../../lib/webpack');
+    webpackConfig.plugins.push(new LoggerPlugin(this.logger));
   }
-  configureServer(app) {
+  configureServer(app, middlewares, mode) {
     const morgan = require('morgan');
-    app.use(
-      morgan('tiny', {
-        stream: {
-          write: (message) => this.logger.request(message.replace(/\s+$/, '')),
-        },
-      })
-    );
-  }
-  inspectBuild(stats) {
-    const report = stats.toString({
-      chunks: false,
-      colors: false,
-      entrypoints: false,
-      hash: false,
-      modules: false,
-      version: false,
-    });
-    this.logger.info(`built successfully\n\n${report}\n`);
+    if (mode !== 'static') {
+      app.use(
+        morgan('tiny', {
+          stream: {
+            write: (message) =>
+              this.logger.request(message.replace(/\s+$/, '')),
+          },
+        })
+      );
+    }
   }
   inspectServer(server) {
     const { https, basePath: pathname = '' } = this.config;
