@@ -8,6 +8,7 @@ const createStatsMiddleware = require('./lib/middlewares/stats');
 const { RenderPlugin } = require('./lib/plugins/render');
 const { StatsPlugin, StatsFilePlugin } = require('./lib/plugins/stats');
 
+const { BuildError, BuildWarning } = require('./lib/utils/errors');
 const configLoader = require('./lib/utils/loader');
 
 const configure = (config, options) => ({
@@ -26,6 +27,8 @@ const configure = (config, options) => ({
     RenderPlugin,
     StatsPlugin,
     StatsFilePlugin,
+    BuildError,
+    BuildWarning,
     configLoader,
   },
   configure,

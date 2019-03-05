@@ -38,7 +38,7 @@ class WebpackBuildMixin extends Mixin {
           reject(error);
         } else if (stats.hasErrors()) {
           const { errors } = stats.toJson();
-          reject(new Error(`Can't compile:\n${errors.join('\n')}`));
+          reject(new Error(`Build failed with ${errors.length} error(s)`));
         } else {
           resolve(stats);
         }

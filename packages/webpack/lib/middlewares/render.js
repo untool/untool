@@ -10,13 +10,7 @@ const requireFromString = require('require-from-string');
 
 const EnhancedPromise = require('eprom');
 
-const extractErrors = (stats) => {
-  const { errors } = stats.toJson();
-  const details = errors.map((error) =>
-    error.replace(/\033?\[[0-9]{1,2}m/g, '')
-  );
-  return details.join('\n');
-};
+const { BuildError } = require('../utils/errors');
 
 const getBuildPromise = (webpackConfig) => {
   const compiler = webpack(webpackConfig);
@@ -27,7 +21,7 @@ const getBuildPromise = (webpackConfig) => {
       if (compileError) {
         reject(compileError);
       } else if (stats.hasErrors()) {
-        reject(new Error(`Can't compile:\n${extractErrors(stats)}`));
+        reject(new BuildError(stats.toJson().errors.shift()));
       } else {
         const { path, filename } = webpackConfig.output;
         const filePath = join(path, filename);
@@ -50,7 +44,7 @@ const getWatchPromise = (webpackConfig) => {
       if (compileError) {
         reject(compileError);
       } else if (stats.hasErrors()) {
-        reject(new Error(`Can't compile:\n${extractErrors(stats)}`));
+        reject(new BuildError(stats.toJson().errors.shift()));
       } else {
         if (middleware) {
           process.kill(process.pid, 'SIGUSR2');
