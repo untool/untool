@@ -22,10 +22,10 @@ exports.LoggerPlugin = class LoggerPlugin {
       const hasErrors = stats.hasErrors();
       const duration = prettyMS(stats.endTime - stats.startTime);
       if (hasErrors) {
-        this.logger.error(`build target '${name}' failed after ${duration}`);
+        this.logger.info(`build target '${name}' failed after ${duration}`);
       } else {
         if (hasWarnings) {
-          this.logger.warn(
+          this.logger.info(
             `build target '${name}' finished with warnings after ${duration}`
           );
         } else {
