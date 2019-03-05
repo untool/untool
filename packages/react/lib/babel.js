@@ -39,31 +39,33 @@ module.exports = ({ types: t }) => ({
           importedComponent = argument.get('body.arguments.0').node.value;
         }
 
-        argument.replaceWith(
-          t.objectExpression([
-            t.objectProperty(
-              t.identifier('load'),
-              t.arrowFunctionExpression(
-                [],
-                t.callExpression(t.identifier('import'), [
-                  t.stringLiteral(importedComponent),
-                ])
-              )
-            ),
-            t.objectProperty(
+        const loadModuleFn = this.opts.resolveAbsolutePaths
+          ? 'require'
+          : 'import';
+        const load = t.objectProperty(
+          t.identifier('load'),
+          t.arrowFunctionExpression(
+            [],
+            t.callExpression(t.identifier(loadModuleFn), [
+              t.stringLiteral(importedComponent),
+            ])
+          )
+        );
+        const moduleId = this.opts.resolveAbsolutePaths
+          ? null
+          : t.objectProperty(
               t.identifier('moduleId'),
               t.callExpression(
                 t.memberExpression(
                   t.identifier('require'),
-                  t.identifier(
-                    this.opts.resolveAbsolutePaths ? 'resolve' : 'resolveWeak'
-                  )
+                  t.identifier('resolveWeak')
                 ),
                 [t.stringLiteral(importedComponent)]
               )
-            ),
-          ])
-        );
+            );
+        const properties = [load, moduleId].filter(Boolean);
+
+        argument.replaceWith(t.objectExpression(properties));
       });
     },
   },
