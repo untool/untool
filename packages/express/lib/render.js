@@ -12,6 +12,8 @@ module.exports = (app) => (options) =>
 
     const { req, res } = createMocks(reqOptions, resOptions);
 
+    req.mock = res.mock = true;
+
     res.on('finish', () => {
       if (res.statusCode !== 200) {
         reject(new Error(`Received status ${res.statusCode} for: ${req.url}`));
