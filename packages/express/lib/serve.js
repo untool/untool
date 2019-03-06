@@ -50,11 +50,14 @@ module.exports = (mode, { configureServer, handleError }) => {
     });
   });
   // eslint-disable-next-line no-unused-vars
-  app.use((err, req, res, next) =>
-    finalhandler(req, res, {
-      onerror: (error) => handleError(error, true),
-    })(err)
-  );
+  app.use((err, req, res, next) => {
+    if (res.mock) {
+      res.status(500).send();
+    } else {
+      handleError(err, true);
+      finalhandler(req, res)(err);
+    }
+  });
   app.locals.domain = domain;
 
   return app;
