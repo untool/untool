@@ -4,7 +4,7 @@
 const chalk = require('chalk');
 const escapeRegExp = require('escape-string-regexp');
 
-const logLevels = { error: 0, warn: 1, info: 2, verbose: 3, request: 4 };
+const logLevels = { error: 0, warn: 1, info: 2, request: 3 };
 
 const colorize = (string, color) => {
   return chalk.enabled ? chalk[color](string) : `[${string}]`;

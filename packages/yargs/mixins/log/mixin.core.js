@@ -44,14 +44,12 @@ module.exports = class CLIMixin extends Mixin {
     webpackConfig.plugins.push(new LoggerPlugin(this.logger));
   }
   configureServer(app, middlewares, mode) {
-    const morgan = require('morgan');
     if (mode !== 'static') {
+      const morgan = require('morgan');
+      const split = require('split');
       app.use(
         morgan('tiny', {
-          stream: {
-            write: (message) =>
-              this.logger.request(message.replace(/\s+$/, '')),
-          },
+          stream: split().on('data', (line) => this.logger.request(line)),
         })
       );
     }
