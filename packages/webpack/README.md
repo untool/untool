@@ -6,6 +6,8 @@
 
 Based on [`@untool/express`](https://github.com/untool/untool/blob/master/packages/express/README.md), it also features development and production servers. The former even comes with [hot module replacement (HMR)](https://webpack.js.org/concepts/hot-module-replacement/).
 
+During application startup, `@untool/webpack` runs a check to determine if Webpack is installed multiple times. If you see warnings telling you that this is the case, you will want to make sure you get rid of these duplicates, as they will almost certainly break things in interesting ways.
+
 ### Installation
 
 ```bash
