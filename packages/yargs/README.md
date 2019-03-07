@@ -4,6 +4,10 @@
 
 `@untool/yargs` is a [core mixin](https://github.com/untool/untool/blob/master/packages/core/README.md#mixins) powering `untool`'s command line interface and allowing other mixins to define their own commands. These custom commands will work exactly as those defined by `untool`'s own modules and can be called using executables such as [Hops CLI](https://github.com/xing/hops/blob/master/packages/cli/README.md).
 
+`@untool/yargs` runs a check to determine if any `@untool` npm packages are installed multiple times. If you see warnings telling you that this is the case, you will want to make sure you get rid of these duplicates, as they will almost certainly break things in interesting ways.
+
+Additionally, `@untool/yargs` helps validate your config. If you see warnings regarding your config, you will almost certainly want to resolve them.
+
 ### Installation
 
 ```bash
@@ -33,6 +37,20 @@ $ yarn exec un start # OR npx un start
 ## API
 
 `@untool/yargs` only has a couple of semi-private exports, but it exposes a couple of mixin hooks other mixins can implement, allowing them to alter or extend its functionality. These hooks will be called either by `@untool/yargs` itself or by others.
+
+### `bootstrap()` ([parallel](https://github.com/untool/mixinable/blob/master/README.md#defineparallel))
+
+Within this method, you are expected to set up your application. If you need to do something asynchronous at this point, just return a [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
+
+```javascript
+const { Mixin } = require('@untool/core');
+
+module.exports = class FooMixin extends Mixin {
+  bootstrap(yargs) {
+    return Promise.resolve();
+  }
+};
+```
 
 ### `registerCommands(yargs)` ([sequence](https://github.com/untool/mixinable/blob/master/README.md#defineparallel))
 
@@ -91,17 +109,52 @@ module.exports = class FooMixin extends Mixin {
 };
 ```
 
-### `handleError(error)` ([override](https://github.com/untool/mixinable/blob/master/README.md#defineoverride))
+### `handleError(error, recoverable)` ([override](https://github.com/untool/mixinable/blob/master/README.md#defineoverride))
 
-By implementing this method, you can intercept uncaught errors and unhandled promise rejections. **Make sure you terminate the process in which this method is being called.**
+By implementing this method, you can intercept uncaught errors and unhandled promise rejections. **Make sure you terminate the process in which this method is being called if `recoverable != true`.**
 
 ```javascript
 const { Mixin } = require('@untool/core');
 const { logError } = require('./logger');
 
 module.exports = class FooMixin extends Mixin {
-  handleError(error) {
-    logError(error).then(() => process.exit(1));
+  handleError(error, recoverable) {
+    logError(error);
+    if (!recoverable) {
+      process.exit(1);
+    }
+  }
+};
+```
+
+### `runChecks()` ([parallel](https://github.com/untool/mixinable/blob/master/README.md#defineparallel))
+
+By implementing this method, you can validate the setup of your application during startup. You can run arbitrary checks in here and are expected to return an array of warnings. If you need to do something asynchronous in this method, just return a [`Promise`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise).
+
+```javascript
+const { Mixin } = require('@untool/core');
+
+module.exports = class FooMixin extends Mixin {
+  runChecks(yargs) {
+    return new Promise((resolve) => {
+      1 + 1 === 2 ? resolve([]) : resolve(['Math is broken']);
+    });
+  }
+};
+```
+
+By default, these warnings are not being dealt with at all. If you, for example, want them to be printed out during app startup, you will have to make sure the `inspectWarnings` hook is also implemented (see below). In apps using the `untool` package directly, this is done by relying on the optional mixin `@untool/yargs/mixins/log`.
+
+### `inspectWarnings(warnings)` ([sequence](https://github.com/untool/mixinable/blob/master/README.md#defineparallel))
+
+By implementing this method, you can deal with warnings produced using `runChecks` hooks implemented elsewhere in your application (see above). In apps using the `untool` package directly, this is taken care of by the optional mixin `@untool/yargs/mixins/log`.
+
+```javascript
+const { Mixin } = require('@untool/core');
+
+module.exports = class FooMixin extends Mixin {
+  inspectWarnings(warnings) {
+    warnings.forEach((warning) => console.warn(warning));
   }
 };
 ```
