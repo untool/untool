@@ -19,12 +19,18 @@ matrix:
         - 'commitlint-travis'
         - 'yarn lint'
         - 'yarn test'
+      env:
+        - CACHE_NAME=latest
     - node_js: 'lts/*'
       name: 'LTS'
       script:
         - 'commitlint-travis'
         - 'yarn lint'
         - 'yarn test'
+      env:
+        - CACHE_NAME=lts
     - node_js: 'lts/*'
       name: 'Canary'
       script: 'yarn canarist'
+      env:
+        - CACHE_NAME=canary
