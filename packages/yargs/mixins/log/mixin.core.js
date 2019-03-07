@@ -1,7 +1,5 @@
 'use strict';
 
-const { format } = require('url');
-
 const prettyMS = require('pretty-ms');
 
 const { Mixin } = require('@untool/core');
@@ -30,7 +28,8 @@ module.exports = class CLIMixin extends Mixin {
       });
   }
   handleArguments(argv) {
-    const { quiet, verbose } = (this.options = { ...this.options, ...argv });
+    this.options = { ...this.options, ...argv };
+    const { quiet, verbose } = this.options;
     this.logger.setLogLevel(logLevels.info + verbose - quiet);
     this.logger.info(
       `started in ${process.env.NODE_ENV || 'development'} mode`
@@ -58,12 +57,10 @@ module.exports = class CLIMixin extends Mixin {
     }
   }
   inspectServer(server) {
-    const { https, basePath: pathname = '' } = this.config;
-    const { port } = server.address();
-    const hostname = 'localhost';
-    const protocol = https ? 'https' : 'http';
-    const parts = { protocol, hostname, port, pathname };
-    this.logger.info(`listening at ${format(parts)}`);
+    server.on('startup', (address) => {
+      const { basePath = '' } = this.config;
+      this.logger.info(`listening at ${address}/${basePath}`);
+    });
     server.on('shutdown', () => {
       const { gracePeriod } = this.config;
       const timeout = prettyMS(gracePeriod);
