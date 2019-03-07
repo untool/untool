@@ -25,6 +25,7 @@
     "mixinable": "^4.0.0",
     "morgan": "^1.9.1",
     "pretty-ms": "^4.0.0",
+    "split": "^1.0.1",
     "yargs": "^13.0.0"
   },
   "engines": {
