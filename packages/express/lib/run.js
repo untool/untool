@@ -2,6 +2,7 @@
 
 const { readFileSync: readFile } = require('fs');
 const { join } = require('path');
+const { format } = require('url');
 
 const { createServer: createHTTPServer } = require('http');
 const { createServer: createHTTPSServer } = require('https');
@@ -10,6 +11,8 @@ const portfinder = require('portfinder');
 
 const defaultKeyFile = join(__dirname, 'ssl', 'localhost.key');
 const defaultCertFile = join(__dirname, 'ssl', 'localhost.cert');
+
+const localHosts = ['127.0.0.1', '0.0.0.0', '::1', '::', ''];
 
 const createServer = (app, https) => {
   if (https) {
@@ -43,7 +46,13 @@ const getPort = (port) => {
   return port ? Promise.resolve(port) : portfinder.getPortPromise();
 };
 
-module.exports = (app, { config, inspectServer, handleError }) => {
+const formatUrl = (https, host, port) => {
+  const protocol = https ? 'https' : 'http';
+  const hostname = localHosts.includes(host) ? 'localhost' : host;
+  return format({ protocol, hostname, port });
+};
+
+module.exports = (app, { config, handleError, inspectServer }) => {
   const { domain } = app.locals;
   const { host, port, https } = config;
   const server = createServer(app, https);
@@ -64,10 +73,10 @@ module.exports = (app, { config, inspectServer, handleError }) => {
     (port) =>
       server.listen(port, host, (error) => {
         if (error) {
-          server.close();
           handleError(error);
         } else {
           inspectServer(server);
+          server.emit('startup', formatUrl(https, host, port));
         }
       }),
     handleError
