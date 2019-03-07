@@ -1,16 +1,30 @@
 language: node_js
 
-cache: yarn
+cache:
+  yarn: true
+  directories:
+    - node_modules
 
 before_install:
   - npm i -g yarn@latest
 
-script:
-  - commitlint-travis
-  - yarn lint
-  - yarn test
-  - yarn canarist
+install:
+  - yarn install --frozen-lockfile
 
-node_js:
-  - 'node'
-  - 'lts/*'
+matrix:
+  include:
+    - node_js: 'node'
+      name: 'Latest'
+      script:
+        - 'commitlint-travis'
+        - 'yarn lint'
+        - 'yarn test'
+    - node_js: 'lts/*'
+      name: 'LTS'
+      script:
+        - 'commitlint-travis'
+        - 'yarn lint'
+        - 'yarn test'
+    - node_js: 'lts/*'
+      name: 'Canary'
+      script: 'yarn canarist'
