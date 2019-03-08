@@ -1,10 +1,42 @@
 'use strict';
 
+const { EOL } = require('os');
+
 const prettyMS = require('pretty-ms');
+const prettyBytes = require('pretty-bytes');
+const chalk = require('chalk');
 
 const {
   internal: { BuildError, BuildWarning },
 } = require('@untool/webpack');
+
+const formatAssets = (assets) =>
+  assets
+    .filter(({ name }) => !name.endsWith('.map'))
+    .map(({ name, size, isOverSizeLimit }) => {
+      const prettySize = isOverSizeLimit
+        ? chalk.enabled
+          ? chalk.red(prettyBytes(size))
+          : `${prettyBytes(size)} !!!`
+        : prettyBytes(size);
+      return `${chalk.gray('-')} ${name} (${prettySize})`;
+    })
+    .join(EOL);
+
+const formatError = (name, duration, isRebuild) => {
+  const message = `bundling '${name}' failed after ${duration}`;
+  return isRebuild ? `re-${message}` : message;
+};
+
+const formatWarning = (name, duration, assets, isRebuild) => {
+  const message = `bundling '${name}' finished with warnings after ${duration}`;
+  return isRebuild ? `re-${message}` : `${message}\n${formatAssets(assets)}`;
+};
+
+const formatSuccess = (name, duration, assets, isRebuild) => {
+  const message = `bundling '${name}' finished after ${duration}`;
+  return isRebuild ? `re-${message}` : `${message}\n${formatAssets(assets)}`;
+};
 
 exports.LoggerPlugin = class LoggerPlugin {
   constructor(logger) {
@@ -17,25 +49,25 @@ exports.LoggerPlugin = class LoggerPlugin {
       if (this.lastHashes[name] === stats.hash) {
         return;
       }
-      this.lastHashes[name] = stats.hash;
+      const { hash, startTime, endTime } = stats;
+      const isRebuild = this.lastHashes[name];
+      const duration = prettyMS(endTime - startTime);
+
       const hasWarnings = stats.hasWarnings();
       const hasErrors = stats.hasErrors();
-      const duration = prettyMS(stats.endTime - stats.startTime);
+
+      const { assets, errors, warnings, children } = stats.toJson();
+
       if (hasErrors) {
-        this.logger.info(`build target '${name}' failed after ${duration}`);
+        this.logger.info(formatError(name, duration, isRebuild));
       } else {
         if (hasWarnings) {
-          this.logger.info(
-            `build target '${name}' finished with warnings after ${duration}`
-          );
+          this.logger.info(formatWarning(name, duration, assets, isRebuild));
         } else {
-          this.logger.info(
-            `build target '${name}' succeeded after ${duration}`
-          );
+          this.logger.info(formatSuccess(name, duration, assets, isRebuild));
         }
       }
       if (hasErrors || hasWarnings) {
-        const { errors, warnings, children } = stats.toJson();
         errors
           .concat(...children.map((c) => c.errors))
           .forEach((error) => this.logger.error(new BuildError(error)));
@@ -43,6 +75,7 @@ exports.LoggerPlugin = class LoggerPlugin {
           .concat(...children.map((c) => c.warnings))
           .forEach((warning) => this.logger.warn(new BuildWarning(warning)));
       }
+      this.lastHashes[name] = hash;
     });
   }
 };
