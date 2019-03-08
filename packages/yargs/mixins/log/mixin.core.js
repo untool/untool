@@ -35,9 +35,8 @@ module.exports = class CLIMixin extends Mixin {
       `started in ${process.env.NODE_ENV || 'development'} mode`
     );
   }
-  handleError(error, recoverable) {
+  handleError(error) {
     this.logger.error(error);
-    if (!recoverable) process.exit(1);
   }
   configureBuild(webpackConfig) {
     const { LoggerPlugin } = require('../../lib/webpack');
