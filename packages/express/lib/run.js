@@ -26,7 +26,10 @@ const createServer = (app, https) => {
 
 const shutdownServer = (server, { locals }, { gracePeriod }) => {
   const timeoutPromise = new Promise((resolve, reject) =>
-    setTimeout(() => reject(new Error('timeout')), gracePeriod)
+    setTimeout(
+      () => reject(new Error('Failed to gracefully shut down server')),
+      gracePeriod
+    )
   );
   if (!locals.shuttingDown) {
     locals.shuttingDown = true;
