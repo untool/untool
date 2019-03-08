@@ -141,8 +141,9 @@ module.exports = function getConfig(config, name) {
       new EnvironmentPlugin({ NODE_ENV: 'development' }),
     ],
     performance: {
-      hints: 'warning',
+      hints: false,
       maxEntrypointSize: 262144,
+      maxAssetSize: 262144,
     },
     devtool: 'hidden-source-map',
   };

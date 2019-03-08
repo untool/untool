@@ -130,7 +130,11 @@ module.exports = function getConfig(config, name) {
       isProduction ? { apply: () => {} } : new HotModuleReplacementPlugin(),
       new EnvironmentPlugin({ NODE_ENV: 'development' }),
     ],
-    performance: { hints: false },
+    performance: {
+      hints: false,
+      maxEntrypointSize: 5242880,
+      maxAssetSize: 5242880,
+    },
     devtool: 'inline-source-map',
     watchOptions: { aggregateTimeout: 300, ignored: /node_modules/ },
   };
