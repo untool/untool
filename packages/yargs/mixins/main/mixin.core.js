@@ -22,6 +22,11 @@ const parallelWithFlatReturn = (...args) => {
   return parallel(...args).then((results) => [].concat(...results));
 };
 
+const overrideHandleError = (functions, error, recoverable) => {
+  override(functions, error, recoverable);
+  if (!recoverable) process.exit(1);
+};
+
 class YargsMixin extends Mixin {
   bootstrap() {
     const { config } = this;
@@ -35,10 +40,9 @@ class YargsMixin extends Mixin {
       (duplicate) => `package '${duplicate}' should be installed just once`
     );
   }
-  handleError(error, recoverable) {
+  handleError(error) {
     // eslint-disable-next-line no-console
-    console.error(error.stack ? error.stack.toString() : error.toString());
-    if (!recoverable) process.exit(1);
+    console.error(error.stack || error);
   }
 }
 
@@ -79,7 +83,7 @@ YargsMixin.strategies = {
       'handleArguments(): Received invalid arguments object'
     );
   }),
-  handleError: override,
+  handleError: overrideHandleError,
 };
 
 module.exports = YargsMixin;
