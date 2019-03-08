@@ -21,7 +21,7 @@ module.exports = exports = class Logger {
   }
   renderError(error) {
     const { workspace } = this;
-    return (error.stack || error).replace(
+    return String(error.stack || error).replace(
       new RegExp(escapeRegExp(workspace), 'g'),
       '.'
     );
