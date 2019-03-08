@@ -111,7 +111,7 @@ module.exports = class FooMixin extends Mixin {
 
 ### `handleError(error, recoverable)` ([override](https://github.com/untool/mixinable/blob/master/README.md#defineoverride))
 
-By implementing this method, you can intercept uncaught errors and unhandled promise rejections. **Make sure you terminate the process in which this method is being called if `recoverable != true`.**
+By implementing this method, you can handle exceptions occuring in your application - even uncaught errors and unhandled promise rejections. **If `receoverable' is 'false`, `@untool/yargs` will automatically terminate the [running process](https://nodejs.org/api/process.html#process_warning_using_uncaughtexception_correctly).**
 
 ```javascript
 const { Mixin } = require('@untool/core');
@@ -120,9 +120,6 @@ const { logError } = require('./logger');
 module.exports = class FooMixin extends Mixin {
   handleError(error, recoverable) {
     logError(error);
-    if (!recoverable) {
-      process.exit(1);
-    }
   }
 };
 ```
