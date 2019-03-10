@@ -50,7 +50,5 @@ test('browser lifecycle hooks', (t) =>
 
       api.getMixin().then((mixin) => t.snapshot(mixin)),
       api.getConfig().then((config) => t.snapshot(config)),
-
-      api.getDevReady().then(() => t.pass()),
     ])
   ));
