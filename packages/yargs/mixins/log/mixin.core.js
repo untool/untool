@@ -44,13 +44,8 @@ module.exports = class CLIMixin extends Mixin {
   }
   configureServer(app, middlewares, mode) {
     if (mode !== 'static') {
-      const morgan = require('morgan');
-      const split = require('split');
-      app.use(
-        morgan('tiny', {
-          stream: split().on('data', (line) => this.logger.request(line)),
-        })
-      );
+      const { loggerMiddleware } = require('../../lib/request');
+      app.use(loggerMiddleware(this.logger));
     }
   }
   inspectServer(server) {
