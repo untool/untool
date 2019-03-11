@@ -45,9 +45,6 @@ class LogMixin extends Mixin {
   handleError(error) {
     this.getLogger().error(error);
   }
-  inspectWarnings(warnings) {
-    warnings.forEach((warning) => this.getLogger().warn(warning));
-  }
 }
 
 LogMixin.strategies = {
