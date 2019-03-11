@@ -137,6 +137,7 @@
         [
           "untool",
           "core",
+          "doctor",
           "express",
           "react",
           "webpack",
