@@ -1,5 +1,6 @@
 'use strict';
 
+const prettyMS = require('pretty-ms');
 const isPlainObject = require('is-plain-object');
 
 const {
@@ -46,6 +47,24 @@ class ExpressMixin extends Mixin {
         })
       );
       middlewares.postfiles.push(helmet.noCache());
+      if (typeof this.getLogger === 'function') {
+        const loggerMiddleware = require('../lib/log');
+        app.use(loggerMiddleware(this.getLogger()));
+      }
+    }
+  }
+  inspectServer(server) {
+    if (typeof this.getLogger === 'function') {
+      const logger = this.getLogger();
+      server.on('startup', (address) => {
+        const { basePath = '' } = this.config;
+        logger.info(`listening at ${address}/${basePath}`);
+      });
+      server.on('shutdown', () => {
+        const { gracePeriod } = this.config;
+        const timeout = prettyMS(gracePeriod);
+        logger.warn(`shutting down in ${timeout}`);
+      });
     }
   }
   registerCommands(yargs) {
