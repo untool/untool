@@ -23,10 +23,6 @@
     "chalk": "^2.4.2",
     "duplitect": "^2.0.0",
     "mixinable": "^4.0.0",
-    "morgan": "^1.9.1",
-    "pretty-bytes": "^5.1.0",
-    "pretty-ms": "^4.0.0",
-    "split": "^1.0.1",
     "yargs": "^13.0.0"
   },
   "engines": {
