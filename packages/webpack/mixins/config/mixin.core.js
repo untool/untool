@@ -58,6 +58,10 @@ class WebpackConfigMixin extends Mixin {
       configLoaderConfig.options.type = 'browser';
     }
     module.rules.push(configLoaderConfig);
+    if (typeof this.getLogger === 'function') {
+      const { LoggerPlugin } = require('../../lib/plugins/log');
+      webpackConfig.plugins.push(new LoggerPlugin(this.getLogger()));
+    }
   }
   handleArguments(argv) {
     this.options = { ...this.options, ...argv };
