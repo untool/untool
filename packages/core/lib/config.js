@@ -51,11 +51,12 @@ exports.getConfig = ({ untoolNamespace = 'untool', ...overrides } = {}) => {
   const settings = loadConfig(untoolNamespace, pkgData, rootDir);
 
   const raw = merge(defaults, settings, overrides);
-  const { mixins, mixinTypes, configSchema, ...clean } = raw;
+  const { presets, mixins, mixinTypes, configSchema, ...clean } = raw;
   const processed = environmentalize(placeholdify(clean));
 
   const config = {
     ...processed,
+    _presets: presets,
     _mixins: resolveMixins(rootDir, mixinTypes, mixins),
     _warnings: validate(processed, configSchema),
     _workspace: lockFile ? dirname(lockFile) : rootDir,

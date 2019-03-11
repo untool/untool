@@ -39,6 +39,9 @@ exports.merge = (...args) =>
       if ('mixins' === key) {
         return [...objValue, ...srcValue];
       }
+      if ('presets' === key) {
+        return [...srcValue, ...objValue];
+      }
       return srcValue;
     }
   });

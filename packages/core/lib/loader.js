@@ -77,7 +77,5 @@ exports.loadConfig = (namespace, pkgData, rootDir) => {
   const settings = loader.loadSettings(rootDir);
   const presets = loader.loadPresets(rootDir, settings.presets);
 
-  // eslint-disable-next-line no-unused-vars
-  const { presets: _, ...config } = merge(presets, settings);
-  return config;
+  return merge(presets, settings);
 };
