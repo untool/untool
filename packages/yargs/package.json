@@ -23,6 +23,7 @@
     "chalk": "^2.4.2",
     "duplitect": "^2.0.0",
     "mixinable": "^4.0.0",
+    "word-wrap": "^1.2.3",
     "yargs": "^13.0.0"
   },
   "engines": {
