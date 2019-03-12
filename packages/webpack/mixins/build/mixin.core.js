@@ -2,7 +2,6 @@
 
 const debug = require('debug')('untool:webpack:stats');
 
-const detectDuplicates = require('duplitect');
 const {
   sync: { sequence },
   async: { callable },
@@ -80,11 +79,9 @@ class WebpackBuildMixin extends Mixin {
       })
     );
   }
-  runChecks() {
-    const { _workspace } = this.config;
-    return detectDuplicates(_workspace, 'webpack').map(
-      (duplicate) => `package '${duplicate}' should be installed just once`
-    );
+  diagnose(doctor) {
+    doctor.detectDuplicatePackages('webpack');
+    doctor.detectInvalidPackageVersion(__dirname, 'core-js');
   }
 }
 
