@@ -2,7 +2,7 @@
 
 const { basename, dirname, join } = require('path');
 
-const { load: loadEnv } = require('dotenv');
+const { config: loadEnv } = require('dotenv');
 const { sync: findUp } = require('find-up');
 const Ajv = require('ajv');
 
