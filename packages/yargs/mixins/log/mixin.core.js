@@ -9,15 +9,13 @@ const {
   internal: { validate, invariant },
 } = require('@untool/core');
 
-const Logger = require('../../lib/logger');
-
-const { logLevels } = Logger;
+const { createLogger, logLevels } = require('../../lib/logger');
 
 class LogMixin extends Mixin {
   constructor(...args) {
     super(...args);
     const { name, _workspace } = this.config;
-    this.logger = new Logger(name, _workspace);
+    this.logger = createLogger(name, _workspace);
   }
   getLogger() {
     return this.logger;
