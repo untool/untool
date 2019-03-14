@@ -2,7 +2,6 @@
 
 const isPlainObject = require('is-plain-object');
 
-const detectDuplicates = require('duplitect');
 const {
   sync: { sequence, override },
   async: { parallel },
@@ -18,28 +17,12 @@ const sequenceWithReturn = (functions, arg, ...args) => {
   return arg;
 };
 
-const parallelWithFlatReturn = (...args) => {
-  return parallel(...args).then((results) => [].concat(...results));
-};
-
 const overrideHandleError = (functions, error, recoverable) => {
   override(functions, error, recoverable);
   if (!recoverable) process.exit(1);
 };
 
 class YargsMixin extends Mixin {
-  bootstrap() {
-    const { config } = this;
-    return this.runChecks().then((warnings) =>
-      this.inspectWarnings([...config._warnings, ...warnings])
-    );
-  }
-  runChecks() {
-    const { _workspace } = this.config;
-    return detectDuplicates(_workspace, '@untool/*').map(
-      (duplicate) => `package '${duplicate}' should be installed just once`
-    );
-  }
   handleError(error) {
     // eslint-disable-next-line no-console
     console.error(error.stack || error);
@@ -49,21 +32,6 @@ class YargsMixin extends Mixin {
 YargsMixin.strategies = {
   bootstrap: validate(parallel, ({ length }) => {
     invariant(length === 0, 'bootstrap(): Received unexpected argument(s)');
-  }),
-  runChecks: validate(
-    parallelWithFlatReturn,
-    ({ length }) => {
-      invariant(length === 0, 'runChecks(): Received unexpected argument(s)');
-    },
-    (result) => {
-      invariant(Array.isArray(result), 'runChecks(): Did not return array');
-    }
-  ),
-  inspectWarnings: validate(sequence, ([warnings]) => {
-    invariant(
-      Array.isArray(warnings),
-      'inspectWarnings(): Did not receive warnings array'
-    );
   }),
   registerCommands: validate(sequence, ([yargs]) => {
     invariant(
