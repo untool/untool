@@ -3,8 +3,10 @@
 const prettyMS = require('pretty-ms');
 const isPlainObject = require('is-plain-object');
 
+const EnhancedPromise = require('eprom');
 const {
-  sync: { sequence, callable },
+  async: { callable: callableAsync },
+  sync: { sequence, callable: callableSync },
 } = require('mixinable');
 
 const {
@@ -13,6 +15,10 @@ const {
 } = require('@untool/core');
 
 class ExpressMixin extends Mixin {
+  constructor(...args) {
+    super(...args);
+    this.serverAddressPromise = new EnhancedPromise();
+  }
   runServer(mode) {
     const run = require('../lib/run');
     const app = this.createServer(mode);
@@ -26,6 +32,9 @@ class ExpressMixin extends Mixin {
     const create = require('../lib/render');
     const app = this.createServer('static');
     return create(app);
+  }
+  getServerAddress() {
+    return Promise.resolve(this.serverAddressPromise);
   }
   configureServer(app, middlewares, mode) {
     if (mode !== 'static') {
@@ -58,6 +67,7 @@ class ExpressMixin extends Mixin {
       const logger = this.getLogger();
       server.on('startup', (address) => {
         const { basePath = '' } = this.config;
+        this.serverAddressPromise.resolve(address);
         logger.info(`listening at ${address}/${basePath}`);
       });
       server.on('shutdown', () => {
@@ -111,14 +121,30 @@ ExpressMixin.strategies = {
       'inspectServer(): Received invalid HTTP server instance'
     );
   }),
-  runServer: validate(callable, ([mode]) => {
+  getServerAddress: validate(
+    callableAsync,
+    ({ length }) => {
+      invariant(
+        length === 0,
+        'getServerAddress(): Received unexpected argument(s)'
+      );
+    },
+    (result, isAsync) => {
+      invariant(
+        typeof result === 'string',
+        'getServerAddress(): Returned invalid address string'
+      );
+      invariant(isAsync, 'getServerAddress(): Returned no promise');
+    }
+  ),
+  runServer: validate(callableSync, ([mode]) => {
     invariant(
       typeof mode === 'string',
       'runServer(): Received invalid mode string'
     );
   }),
   createServer: validate(
-    callable,
+    callableSync,
     ([mode]) => {
       invariant(
         typeof mode === 'string',
@@ -133,7 +159,7 @@ ExpressMixin.strategies = {
     }
   ),
   createRenderer: validate(
-    callable,
+    callableSync,
     ({ length }) => {
       invariant(
         length === 0,
