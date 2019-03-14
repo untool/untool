@@ -17,7 +17,7 @@ exports.validate = (strategy, checkArgs = () => {}, checkResult = () => {}) =>
         functions.map((fn) => (...callArgs) => {
           checkArgs(callArgs, initialArgs);
           const result = fn(...callArgs);
-          if (result && typeof result.then === 'function') {
+          if (result && result instanceof Promise) {
             return result.then((result) => {
               checkResult(result, true, callArgs, initialArgs);
               return result;
