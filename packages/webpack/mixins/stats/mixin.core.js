@@ -18,32 +18,32 @@ const {
 class WebpackStatsMixin extends Mixin {
   constructor(...args) {
     super(...args);
-    this.enhancedPromise = new EnhancedPromise();
+    this.statsPromise = new EnhancedPromise();
   }
   getBuildStats() {
-    return Promise.resolve(this.enhancedPromise);
+    return Promise.resolve(this.statsPromise);
   }
   configureBuild(webpackConfig, loaderConfigs, target) {
     const { plugins } = webpackConfig;
     if (target === 'develop' || target === 'build') {
       const { StatsPlugin } = require('../../lib/plugins/stats');
-      plugins.unshift(new StatsPlugin(this.enhancedPromise));
+      plugins.unshift(new StatsPlugin(this.statsPromise));
     }
     if (target === 'node') {
       const { StatsFilePlugin } = require('../../lib/plugins/stats');
-      plugins.unshift(new StatsFilePlugin(this.enhancedPromise, this.config));
+      plugins.unshift(new StatsFilePlugin(this.statsPromise, this.config));
     }
   }
   configureServer(app, middlewares, mode) {
     if (mode === 'serve') {
       const { serverDir, statsFile } = this.config;
       const statsFilePath = join(serverDir, statsFile);
-      this.enhancedPromise.resolve(
+      this.statsPromise.resolve(
         exists(statsFilePath) ? require(statsFilePath) : {}
       );
     }
     const createStatsMiddleware = require('../../lib/middlewares/stats');
-    middlewares.preroutes.push(createStatsMiddleware(this.enhancedPromise));
+    middlewares.preroutes.push(createStatsMiddleware(this.statsPromise));
   }
 }
 
