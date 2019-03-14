@@ -3,5 +3,5 @@
 const { join } = require('path');
 
 module.exports = {
-  mixins: [join(__dirname, 'mixins', 'main')],
+  mixins: [join(__dirname, 'mixins')],
 };

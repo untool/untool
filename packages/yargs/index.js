@@ -51,10 +51,8 @@ const configure = (config, options) => ({
   configure,
 });
 
+module.exports = configure();
+
 if (require.main === module) {
-  const { join } = require('path');
-  module.exports = configure({ mixins: [join(__dirname, 'mixins', 'log')] });
   module.exports.run();
-} else {
-  module.exports = configure();
 }
