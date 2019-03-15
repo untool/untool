@@ -138,6 +138,7 @@
           "untool",
           "core",
           "express",
+          "info",
           "react",
           "webpack",
           "yargs"
