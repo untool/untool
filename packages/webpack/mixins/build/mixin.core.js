@@ -1,8 +1,9 @@
 'use strict';
 
+const { dirname } = require('path');
+
 const debug = require('debug')('untool:webpack:stats');
 
-const detectDuplicates = require('duplitect');
 const {
   sync: { sequence },
   async: { callable },
@@ -80,10 +81,12 @@ class WebpackBuildMixin extends Mixin {
       })
     );
   }
-  runChecks() {
-    const { _workspace } = this.config;
-    return detectDuplicates(_workspace, 'webpack').map(
-      (duplicate) => `package '${duplicate}' should be installed just once`
+  diagnose({ diagnoseDuplicatePackages, diagnoseInvalidPackages }) {
+    diagnoseDuplicatePackages('webpack');
+    diagnoseInvalidPackages(__dirname, '@babel/polyfill');
+    diagnoseInvalidPackages(
+      dirname(require.resolve('@babel/polyfill/package.json')),
+      'core-js'
     );
   }
 }
