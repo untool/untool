@@ -7,9 +7,10 @@ const yargs = require('@untool/yargs');
 const express = require('@untool/express');
 const webpack = require('@untool/webpack');
 const react = require('@untool/react');
+const info = require('@untool/info');
 
 const configure = (...args) => ({
-  ...[yargs, express, webpack, react]
+  ...[yargs, express, webpack, react, info]
     .map(({ configure }) => configure(...args))
     .reduce(
       (result, exports) => ({

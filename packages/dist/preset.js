@@ -6,5 +6,6 @@ module.exports = {
     '@untool/express',
     '@untool/webpack',
     '@untool/react',
+    '@untool/info',
   ],
 };
