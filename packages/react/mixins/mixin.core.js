@@ -1,7 +1,5 @@
 'use strict';
 
-const detectDuplicates = require('duplitect');
-
 const { Mixin } = require('@untool/core');
 
 module.exports = class ReactMixin extends Mixin {
@@ -19,10 +17,7 @@ module.exports = class ReactMixin extends Mixin {
     }
     jsLoaderConfig.options.plugins.push(require.resolve('../lib/babel'));
   }
-  runChecks() {
-    const { _workspace } = this.config;
-    return detectDuplicates(_workspace, 'react', 'react-dom').map(
-      (duplicate) => `package '${duplicate}' should be installed just once`
-    );
+  diagnose({ diagnoseDuplicatePackages }) {
+    diagnoseDuplicatePackages('react', 'react-dom');
   }
 };
