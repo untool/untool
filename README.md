@@ -83,3 +83,5 @@ When you are finished implementing your contribution, go ahead and create a [pul
 All code in this repository is expected to be formatted using [prettier](https://prettier.io), and we will only merge valid [conventional commits](https://conventionalcommits.org) in order to enable automatic [versioning](https://semver.org).
 
 We will not usually accept pull requests introducing breaking changes unless we are preparing a `major` release: `untool` strives to be a solid and robust base for others to build upon.
+
+Releasing untool requires the environment variable `GH_TOKEN` (https://github.com/lerna/lerna/tree/master/commands/version#--github-release)[to be set] to a valid (https://help.github.com/en/articles/creating-a-personal-access-token-for-the-command-line)[GitHub access token] with the `public_repo` scope in order to publish the release notes to the [GitHub releases page](https://github.com/untool/untool/releases).
