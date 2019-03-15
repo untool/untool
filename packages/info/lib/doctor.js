@@ -3,7 +3,7 @@
 const define = require('mixinable');
 
 const {
-  sync: { callable: callable, sequence },
+  sync: { callable, sequence },
 } = define;
 
 const strategies = {
