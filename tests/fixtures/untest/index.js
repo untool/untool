@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { Fragment } from 'react';
-import { Switch, Route, Link } from 'react-router-dom/es';
+import { Switch, Route, Link } from 'react-router-dom';
 
 import { Miss, render, importComponent } from 'untool';
 
