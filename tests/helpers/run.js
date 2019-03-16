@@ -30,7 +30,7 @@ const bootstrap = () =>
 module.exports = (...args) =>
   bootstrap().then((rootDir) => {
     process.chdir(rootDir);
-    process.nextTick(() => run(...args));
+    process.nextTick(() => run(...args, '-qq'));
 
     const { events } = require(join(rootDir, 'instrument', 'mixin.core'));
     const api = {
