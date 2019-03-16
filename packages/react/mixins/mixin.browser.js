@@ -4,7 +4,7 @@
 
 const { createElement, isValidElement } = require('react');
 const { unmountComponentAtNode, hydrate, render } = require('react-dom');
-const { default: BrowserRouter } = require('react-router-dom/es/BrowserRouter');
+const { BrowserRouter } = require('react-router-dom');
 
 const isPlainObject = require('is-plain-object');
 

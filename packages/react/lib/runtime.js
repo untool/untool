@@ -2,7 +2,7 @@
 /* global __webpack_modules__, __webpack_require__ */
 
 const { isValidElement, createElement, Component } = require('react');
-const { default: withRouter } = require('react-router-dom/es/withRouter');
+const { withRouter } = require('react-router-dom');
 const isPlainObject = require('is-plain-object');
 const PropTypes = require('prop-types');
 

@@ -4,7 +4,7 @@ const { parse } = require('url');
 
 const { createElement, isValidElement } = require('react');
 const { renderToString } = require('react-dom/server');
-const { default: StaticRouter } = require('react-router-dom/es/StaticRouter');
+const { StaticRouter } = require('react-router-dom');
 const {
   Helmet: { renderStatic },
 } = require('react-helmet');
