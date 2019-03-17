@@ -84,4 +84,4 @@ All code in this repository is expected to be formatted using [prettier](https:/
 
 We will not usually accept pull requests introducing breaking changes unless we are preparing a `major` release: `untool` strives to be a solid and robust base for others to build upon.
 
-Releasing untool requires the environment variable `GH_TOKEN` (https://github.com/lerna/lerna/tree/master/commands/version#--github-release)[to be set] to a valid (https://help.github.com/en/articles/creating-a-personal-access-token-for-the-command-line)[GitHub access token] with the `public_repo` scope in order to publish the release notes to the [GitHub releases page](https://github.com/untool/untool/releases).
+Releasing untool requires the environment variable `GH_TOKEN` [to be set](https://github.com/lerna/lerna/tree/master/commands/version#--github-release) to a valid [GitHub access token](https://help.github.com/en/articles/creating-a-personal-access-token-for-the-command-line) with the `public_repo` scope in order to publish the release notes to the [GitHub releases page](https://github.com/untool/untool/releases).
