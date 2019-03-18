@@ -59,6 +59,7 @@ If you need to extend its features, you will want to take a peek into the black 
 - [`@untool/express`](https://github.com/untool/untool/blob/master/packages/express/README.md): development and production server implementation
 - [`@untool/webpack`](https://github.com/untool/untool/blob/master/packages/webpack/README.md): webpack setup (including Babel)
 - [`@untool/react`](https://github.com/untool/untool/blob/master/packages/react/README.md): universal React implementation
+- [`@untool/info`](https://github.com/untool/untool/blob/master/packages/info/README.md): logging and preflight checks
 
 At some point, though, you will have to read our source files: if, for example, merely configuring [`@untool/webpack`](https://github.com/untool/untool/blob/master/packages/webpack/README.md) and using its existing hooks does not suffice for your requirements, you will probably want extend it.
 
