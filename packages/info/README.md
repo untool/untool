@@ -1,6 +1,6 @@
 # `@untool/info`
 
-[![travis](https://img.shields.io/travis/untool/untool/master.svg)](https://travis-ci.org/untool/untool)&nbsp;[![npm](https://img.shields.io/npm/v/@untool%2Finfo.svg)](https://www.npmjs.com/package/@untool%2Finfo)
+[![travis](https://img.shields.io/travis/untool/untool/master.svg)](https://travis-ci.org/untool/untool)&nbsp;[![npm](https://img.shields.io/npm/v/@untool%2Finfo.svg)](https://www.npmjs.com/package/@untool/info)
 
 `@untool/info` is a [core mixin](https://github.com/untool/untool/blob/master/packages/core/README.md#mixins) providing output for `untool`'s command line interface. Besides that, it allows other mixins to define pre-flight checks that are run during application startup.
 

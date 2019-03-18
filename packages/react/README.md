@@ -1,6 +1,6 @@
 # `@untool/react`
 
-[![travis](https://img.shields.io/travis/untool/untool/master.svg)](https://travis-ci.org/untool/untool)&nbsp;[![npm](https://img.shields.io/npm/v/@untool%2Freact.svg)](https://www.npmjs.com/package/@untool%2Freact)
+[![travis](https://img.shields.io/travis/untool/untool/master.svg)](https://travis-ci.org/untool/untool)&nbsp;[![npm](https://img.shields.io/npm/v/@untool%2Freact.svg)](https://www.npmjs.com/package/@untool/react)
 
 `@untool/react`'s main runtime exports are a couple of React components that allow implementers to declaratively control server (or system) behavior. Additionally, `@untool/react` features full support for [`react-router`](https://github.com/ReactTraining/react-router)'s and [`react-helmet`](https://github.com/nfl/react-helmet)'s components.
 

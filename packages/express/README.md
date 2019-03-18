@@ -1,6 +1,6 @@
 # `@untool/express`
 
-[![travis](https://img.shields.io/travis/untool/untool/master.svg)](https://travis-ci.org/untool/untool)&nbsp;[![npm](https://img.shields.io/npm/v/@untool%2Fexpress.svg)](https://www.npmjs.com/package/@untool%2Fexpress)
+[![travis](https://img.shields.io/travis/untool/untool/master.svg)](https://travis-ci.org/untool/untool)&nbsp;[![npm](https://img.shields.io/npm/v/@untool%2Fexpress.svg)](https://www.npmjs.com/package/@untool/express)
 
 `@untool/express` provides both an `untool` [preset](https://github.com/untool/untool/blob/master/packages/core/README.md#presets) and a [mixin](https://github.com/untool/untool/blob/master/packages/core/README.md#mixins) to set up your project to work with [Express](https://expressjs.com).
 

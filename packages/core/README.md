@@ -1,6 +1,6 @@
 # `@untool/core`
 
-[![travis](https://img.shields.io/travis/untool/untool/master.svg)](https://travis-ci.org/untool/untool)&nbsp;[![npm](https://img.shields.io/npm/v/@untool%2Fcore.svg)](https://www.npmjs.com/package/@untool%2Fcore)
+[![travis](https://img.shields.io/travis/untool/untool/master.svg)](https://travis-ci.org/untool/untool)&nbsp;[![npm](https://img.shields.io/npm/v/@untool%2Fcore.svg)](https://www.npmjs.com/package/@untool/core)
 
 `@untool/core` is the functional foundation every other `untool` component is built upon. It contains a comprehensive configuration engine and a mixin base class.
 
