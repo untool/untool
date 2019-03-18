@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/untool/untool/compare/v1.3.1...v1.4.0) (2019-03-18)
+
+
+### Bug Fixes
+
+* **yargs:** re-enable and tweak request logging ([d48119a](https://github.com/untool/untool/commit/d48119a))
+* **yargs:** restore node v8 compatibility ([a95932b](https://github.com/untool/untool/commit/a95932b))
+
+
+### Features
+
+* **yargs:** add `bootstrap` and `runChecks` hooks ([3adc3e6](https://github.com/untool/untool/commit/3adc3e6))
+* **yargs:** add full webpack error handling ([ef43e26](https://github.com/untool/untool/commit/ef43e26))
+* **yargs:** add request logging, verbose flag ([b16f3b6](https://github.com/untool/untool/commit/b16f3b6))
+* **yargs:** add support for arbitrary message types ([a8591d0](https://github.com/untool/untool/commit/a8591d0))
+* **yargs:** colorize log output ([575a6b5](https://github.com/untool/untool/commit/575a6b5))
+* **yargs:** improve webpack logging ([d8532f8](https://github.com/untool/untool/commit/d8532f8))
+* **yargs:** tweak express request log output ([de5f5dd](https://github.com/untool/untool/commit/de5f5dd))
+
+
+
+
+
 ## [1.3.1](https://github.com/untool/untool/compare/v1.3.0...v1.3.1) (2019-03-07)
 
 **Note:** Version bump only for package @untool/yargs

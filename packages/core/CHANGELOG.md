@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/untool/untool/compare/v1.3.1...v1.4.0) (2019-03-18)
+
+
+### Bug Fixes
+
+* update dependency dotenv to v7 ([3c8d183](https://github.com/untool/untool/commit/3c8d183))
+
+
+### Features
+
+* **core:** add config schema validation ([ac1c2b0](https://github.com/untool/untool/commit/ac1c2b0))
+
+
+
+
+
 ## [1.3.1](https://github.com/untool/untool/compare/v1.3.0...v1.3.1) (2019-03-07)
 
 **Note:** Version bump only for package @untool/core

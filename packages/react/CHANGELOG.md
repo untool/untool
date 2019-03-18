@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/untool/untool/compare/v1.3.1...v1.4.0) (2019-03-18)
+
+
+### Bug Fixes
+
+* **react:** switch to supported react router imports ([1e3f04b](https://github.com/untool/untool/commit/1e3f04b))
+
+
+### Features
+
+* **react:** implement `runChecks` hook ([1d61f0a](https://github.com/untool/untool/commit/1d61f0a))
+* **react:** implement diagnose hook ([859e58b](https://github.com/untool/untool/commit/859e58b))
+
+
+
+
+
 ## [1.3.1](https://github.com/untool/untool/compare/v1.3.0...v1.3.1) (2019-03-07)
 
 **Note:** Version bump only for package @untool/react

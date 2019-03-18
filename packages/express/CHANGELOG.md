@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.4.0](https://github.com/untool/untool/compare/v1.3.1...v1.4.0) (2019-03-18)
+
+
+### Bug Fixes
+
+* **express:** make error handler work in static mode ([834931f](https://github.com/untool/untool/commit/834931f))
+
+
+### Features
+
+* **express:** add `getServerAddress` hook ([3772328](https://github.com/untool/untool/commit/3772328))
+* **express:** add config schema ([73d1031](https://github.com/untool/untool/commit/73d1031))
+* **express:** emit startup event ([cae549b](https://github.com/untool/untool/commit/cae549b))
+* **express:** introduce log middleware ([79f77c7](https://github.com/untool/untool/commit/79f77c7))
+* **express:** use central logging facility ([bc5bd7f](https://github.com/untool/untool/commit/bc5bd7f))
+
+
+
+
+
 ## [1.3.1](https://github.com/untool/untool/compare/v1.3.0...v1.3.1) (2019-03-07)
 
 **Note:** Version bump only for package @untool/express
