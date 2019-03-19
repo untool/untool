@@ -16,9 +16,6 @@ module.exports = class DuplicatePackagesDiagnosisMixins {
     );
     this.diagnoses = [...this.diagnoses, ...diagnoses];
   }
-  getDiagnoses() {
-    return [...this.diagnoses];
-  }
   logDiagnoses(logger) {
     const { diagnoses } = this;
     if (diagnoses.length) {

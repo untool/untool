@@ -19,9 +19,6 @@ module.exports = class InvalidPackageDiagnosisMixins {
       );
     }
   }
-  getDiagnoses() {
-    return [...this.diagnoses];
-  }
   logDiagnoses(logger) {
     const { diagnoses } = this;
     if (diagnoses.length) {

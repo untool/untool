@@ -11,9 +11,6 @@ module.exports = class ConfigDiagnosisMixins {
     const { _warnings: diagnoses } = this.config;
     this.diagnoses = diagnoses;
   }
-  getDiagnoses() {
-    return [...this.diagnoses];
-  }
   logDiagnoses(logger) {
     const { diagnoses } = this;
     if (diagnoses.length) {
