@@ -22,10 +22,6 @@ module.exports = class GenericDiagnosisMixin {
       diagnosesMap.set(handler, diagnoses);
     }
   }
-  getDiagnoses() {
-    const { diagnosesMap } = this;
-    return [].concat(...diagnosesMap.values());
-  }
   logDiagnoses(logger) {
     const { diagnosesMap } = this;
     diagnosesMap.forEach((diagnoses, handler) => handler(diagnoses, logger));

@@ -11,9 +11,6 @@ const strategies = {
   diagnoseDuplicatePackages: callable,
   diagnoseInvalidPackages: callable,
   submitDiagnosis: callable,
-  getDiagnoses: (...args) => {
-    return sequence(...args).then((results) => [].concat(...results));
-  },
   logDiagnoses: sequence,
 };
 
