@@ -6,9 +6,15 @@
   />
 </p>
 
-# untool
-
-[![travis](https://img.shields.io/travis/untool/untool/master.svg)](https://travis-ci.org/untool/untool)&nbsp;[![npm](https://img.shields.io/npm/v/untool.svg)](https://www.npmjs.com/package/untool)
+<p align="center">
+  <a href="https://travis-ci.org/untool/untool">
+    <img src="https://img.shields.io/travis/untool/untool/master.svg">
+  </a>
+  <a href="https://www.npmjs.com/package/untool">
+    <img src="https://img.shields.io/npm/v/untool.svg">
+  </a>
+</p>
+<p>&nbsp;</p>
 
 `untool` is a JavaScript tool designed to streamline configuration and usage of other JavaScript tools. By default, it comes with a basic development and runtime environment for universal React applications. This environment is highly modular. Every one of its default modules is configurable and extensible - and entirely optional.
 
