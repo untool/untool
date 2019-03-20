@@ -1,5 +1,8 @@
 'use strict';
 
+const escapeJS = require('jsesc');
+const escapeRegExp = require('escape-string-regexp');
+
 const { getOptions } = require('loader-utils');
 
 const getHelpers = (type) =>
@@ -12,14 +15,14 @@ const expand = join.bind(null, rootDir);`
     : '';
 
 const getConfig = (type, { _config: config }) =>
-  JSON.stringify(config).replace(
-    new RegExp(`"${config.rootDir}(.*?)"`, 'g'),
-    type === 'server' ? 'expand(".$1")' : '".$1"'
+  escapeJS(config).replace(
+    new RegExp(`'${escapeRegExp(config.rootDir)}(.*?)'`, 'g'),
+    type === 'server' ? "expand('.$1')" : "'.$1'"
   );
 
 const getMixins = (type, { _mixins: mixins }) => {
   const requires = (mixins[type] || []).map(
-    (mixin) => `((m) => m.default || m )(require('${mixin}'))`
+    (mixin) => `((m) => m.default || m )(require('${escapeJS(mixin)}'))`
   );
   return `[${requires.join(',')}]`;
 };
