@@ -35,6 +35,7 @@ module.exports = function getConfig(config, name) {
             modules: false,
             useBuiltIns: 'usage',
             targets: { browsers: config.browsers },
+            corejs: 2,
             include: [],
             exclude: [],
           },
