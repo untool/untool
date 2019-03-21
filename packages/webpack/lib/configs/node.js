@@ -34,6 +34,7 @@ module.exports = function getConfig(config, name) {
             modules: false,
             useBuiltIns: 'entry',
             targets: { node: config.node },
+            corejs: 2,
             include: [],
             exclude: [],
           },
