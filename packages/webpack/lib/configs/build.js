@@ -21,7 +21,7 @@ module.exports = function getConfig(config, name) {
 
   const jsLoaderConfig = {
     test: [/\.m?js$/],
-    exclude: [/node_modules\/core-js/],
+    exclude: [/node_modules[/\\]core-js/],
     loader: require.resolve('babel-loader'),
     options: {
       babelrc: false,
