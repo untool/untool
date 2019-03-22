@@ -12,12 +12,12 @@ const EnhancedPromise = require('eprom');
 
 const { BuildError } = require('../utils/errors');
 
-const getBuildPromise = (webpackConfig) => {
+const getMiddlewarePromise = (webpackConfig, watch) => {
   const compiler = webpack(webpackConfig);
   compiler.outputFileSystem = new MemoryFS();
   sourceMapSupport.install({ environment: 'node', hookRequire: true });
-  return new Promise((resolve, reject) => {
-    compiler.run((compileError, stats) => {
+  return new EnhancedPromise((resolve, reject, reset) => {
+    const handler = (compileError, stats) => {
       if (compileError) {
         reject(compileError);
       } else if (stats.hasErrors()) {
@@ -31,39 +31,20 @@ const getBuildPromise = (webpackConfig) => {
           resolve(requireFromString(fileContents, filePath));
         });
       }
-    });
-  });
-};
-
-const getWatchPromise = (webpackConfig) => {
-  const compiler = webpack(webpackConfig);
-  let middleware = null;
-  return new EnhancedPromise((resolve, reject, reset) => {
-    compiler.hooks.watchRun.tap('RenderMiddleware', () => reset());
-    compiler.watch(webpackConfig.watchOptions, (compileError, stats) => {
-      if (compileError) {
-        reject(compileError);
-      } else if (stats.hasErrors()) {
-        reject(new BuildError(stats.toJson().errors.shift()));
-      } else {
-        if (middleware) {
-          process.kill(process.pid, 'SIGUSR2');
-        } else {
-          const { path, filename } = webpackConfig.output;
-          const filePath = join(path, filename);
-          middleware = require(filePath);
-        }
-        resolve(middleware);
-      }
-    });
+    };
+    if (watch) {
+      compiler.hooks.watchRun.tap('RenderMiddleware', () => reset());
+      compiler.watch(webpackConfig.watchOptions, handler);
+    } else {
+      compiler.run(handler);
+    }
   });
 };
 
 module.exports = function createRenderMiddleware(webpackConfig, watch) {
-  const getPromise = watch ? getWatchPromise : getBuildPromise;
-  const enhancedPromise = getPromise(webpackConfig);
+  const middlewarePromise = getMiddlewarePromise(webpackConfig, watch);
   return function renderMiddleware(req, res, next) {
-    enhancedPromise
+    middlewarePromise
       .then((middleware) => middleware(req, res, next))
       .catch(next);
   };
