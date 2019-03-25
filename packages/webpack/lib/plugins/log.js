@@ -6,9 +6,7 @@ const prettyMS = require('pretty-ms');
 const prettyBytes = require('pretty-bytes');
 const chalk = require('chalk');
 
-const {
-  internal: { BuildError, BuildWarning },
-} = require('@untool/webpack');
+const { BuildError } = require('../utils/errors');
 
 const formatAssets = (assets) =>
   assets
@@ -73,7 +71,7 @@ exports.LoggerPlugin = class LoggerPlugin {
           .forEach((error) => this.logger.error(new BuildError(error)));
         warnings
           .concat(...children.map((c) => c.warnings))
-          .forEach((warning) => this.logger.warn(new BuildWarning(warning)));
+          .forEach((warning) => this.logger.warn(warning));
       }
       this.lastHashes[name] = hash;
     });
