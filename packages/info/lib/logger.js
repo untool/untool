@@ -1,18 +1,8 @@
 'use strict';
 /* eslint-disable no-console */
 
-const { EOL } = require('os');
-
 const chalk = require('chalk');
-const wordWrap = require('word-wrap');
 const escapeRegExp = require('escape-string-regexp');
-
-const wrap = (string) =>
-  wordWrap(string, {
-    indent: '',
-    newline: EOL,
-    width: process.stdout.columns,
-  });
 
 const colorize = (string, color) => {
   return chalk.enabled ? chalk[color](string) : `[${string}]`;
@@ -25,44 +15,41 @@ class Logger {
     this.name = name;
     this.workspace = _workspace;
     this.level = logLevels.info;
-    this.levels = logLevels;
   }
   setLogLevel(level) {
     this.level = level;
   }
-  renderError(error) {
-    const { workspace } = this;
-    return String(error.stack || error).replace(
+  error(error) {
+    const { level, name, workspace } = this;
+    const prefix = colorize(`${name}:error`, 'red');
+    const message = String(error.stack || error).replace(
       new RegExp(escapeRegExp(workspace), 'g'),
       '.'
     );
-  }
-  error(error) {
-    const { level, name } = this;
-    const prefix = colorize(`${name}:error`, 'red');
     if (level >= logLevels.error) {
-      console.error(wrap(`${prefix} ${this.renderError(error)}`));
+      console.error(`${prefix} ${message}`);
     }
   }
   warn(warning) {
     const { level, name } = this;
     const prefix = colorize(`${name}:warning`, 'yellow');
+    const message = String(warning.stack || warning);
     if (level >= logLevels.warn) {
-      console.warn(wrap(`${prefix} ${this.renderError(warning)}`));
+      console.warn(`${prefix} ${message}`);
     }
   }
   info(message) {
     const { level, name } = this;
     const prefix = colorize(`${name}:info`, 'gray');
     if (level >= logLevels.info) {
-      console.log(wrap(`${prefix} ${message}`));
+      console.log(`${prefix} ${message}`);
     }
   }
   _(type, message) {
     const { level, name } = this;
     const prefix = colorize(`${name}:${type}`, 'gray');
     if (level >= logLevels.verbose) {
-      console.log(wrap(`${prefix} ${message}`));
+      console.log(`${prefix} ${message}`);
     }
   }
 }
