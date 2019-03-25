@@ -87,7 +87,7 @@ module.exports = function getConfig(config, name) {
     mode: isProduction ? 'production' : 'development',
     bail: isProduction,
     context: config.rootDir,
-    entry: require.resolve('../shims/server'),
+    entry: require.resolve('../shims/node'),
     output: {
       path: config.serverDir,
       publicPath: '/',
