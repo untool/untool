@@ -90,7 +90,7 @@ module.exports = function getConfig(config, name) {
     entry: isProduction
       ? require.resolve('../shims/server')
       : [
-          require.resolve('webpack/hot/signal'),
+          require.resolve('webpack/hot/signal') + '?RELOAD',
           require.resolve('../shims/server'),
         ],
     output: {
