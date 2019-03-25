@@ -47,7 +47,7 @@ const getWatchPromise = (webpackConfig) => {
         reject(new BuildError(stats.toJson().errors.shift()));
       } else {
         if (middleware) {
-          process.kill(process.pid, 'SIGUSR2');
+          process.emit('RELOAD');
         } else {
           const { path, filename } = webpackConfig.output;
           const filePath = join(path, filename);
