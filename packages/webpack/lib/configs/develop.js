@@ -83,6 +83,7 @@ module.exports = function getConfig(config, name) {
     mode: 'development',
     context: config.rootDir,
     entry: [
+      require.resolve('../shims/event-source'),
       require.resolve('webpack-hot-middleware/client'),
       require.resolve('../shims/browser'),
     ],
