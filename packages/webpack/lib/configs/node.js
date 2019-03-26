@@ -83,7 +83,7 @@ module.exports = function getConfig(config, name) {
       allLoaderConfigs,
     },
     name,
-    target: 'node',
+    target: 'async-node',
     mode: isProduction ? 'production' : 'development',
     bail: isProduction,
     context: config.rootDir,
