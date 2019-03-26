@@ -4,26 +4,13 @@ const { basename, dirname, join } = require('path');
 
 const { config: loadEnv } = require('dotenv');
 const { sync: findUp } = require('find-up');
-const Ajv = require('ajv');
 
 const debug = require('debug')('untool:config');
 
 const { loadConfig } = require('./loader');
 const { resolveMixins } = require('./resolver');
+const { validate } = require('./validator');
 const { environmentalize, placeholdify, merge } = require('./utils');
-const { configureAjv } = require('./configure-ajv');
-
-const validate = (config, properties) => {
-  const ajv = new Ajv({ allErrors: true });
-  configureAjv(ajv);
-  if (ajv.validate({ properties }, config)) {
-    return [];
-  } else {
-    return ajv.errors.map(
-      ({ dataPath, message }) => `config${dataPath} ${message}`
-    );
-  }
-};
 
 exports.getConfig = ({ untoolNamespace = 'untool', ...overrides } = {}) => {
   const pkgFile = findUp('package.json');
