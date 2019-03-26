@@ -42,9 +42,9 @@ module.exports = {
     },
     basePath: { type: 'string' },
     assetPath: { type: 'string' },
-    buildDir: { type: 'string', minLength: 1 },
-    serverDir: { type: 'string', minLength: 1 },
-    serverFile: { type: 'string', minLength: 1 },
-    statsFile: { type: 'string', minLength: 1 },
+    buildDir: { type: 'string', minLength: 1, absolutePath: true },
+    serverDir: { type: 'string', minLength: 1, absolutePath: true },
+    serverFile: { type: 'string', minLength: 1, absolutePath: false },
+    statsFile: { type: 'string', minLength: 1, absolutePath: false },
   },
 };
