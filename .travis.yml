@@ -31,6 +31,7 @@ matrix:
         - CACHE_NAME=lts
     - node_js: 'lts/*'
       name: 'Canary'
-      script: 'yarn canarist || :'
+      # script: 'yarn canarist || :'
+      script: 'yarn canarist'
       env:
         - CACHE_NAME=canary
