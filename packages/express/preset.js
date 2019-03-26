@@ -15,8 +15,8 @@ module.exports = {
         {
           type: 'object',
           properties: {
-            keyFile: { type: 'string', minLength: 1 },
-            certFile: { type: 'string', minLength: 1 },
+            keyFile: { type: 'string', minLength: 1, absolutePath: true },
+            certFile: { type: 'string', minLength: 1, absolutePath: true },
           },
         },
         { type: 'boolean' },
@@ -24,7 +24,7 @@ module.exports = {
     },
     host: { type: 'string' },
     port: { oneOf: [{ type: 'string' }, { type: 'number' }] },
-    distDir: { type: 'string', minLength: 1 },
+    distDir: { type: 'string', minLength: 1, absolutePath: true },
     gracePeriod: { type: 'number' },
   },
 };

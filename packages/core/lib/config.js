@@ -11,9 +11,11 @@ const debug = require('debug')('untool:config');
 const { loadConfig } = require('./loader');
 const { resolveMixins } = require('./resolver');
 const { environmentalize, placeholdify, merge } = require('./utils');
+const { configureAjv } = require('./configure-ajv');
 
 const validate = (config, properties) => {
   const ajv = new Ajv({ allErrors: true });
+  configureAjv(ajv);
   if (ajv.validate({ properties }, config)) {
     return [];
   } else {
@@ -43,7 +45,7 @@ exports.getConfig = ({ untoolNamespace = 'untool', ...overrides } = {}) => {
       },
     },
     configSchema: {
-      rootDir: { type: 'string', minLength: 1 },
+      rootDir: { type: 'string', minLength: 1, absolutePath: true },
       name: { type: 'string', minLength: 1 },
       version: { type: 'string', minLength: 1 },
     },
