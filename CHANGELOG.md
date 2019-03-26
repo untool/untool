@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.5.0](https://github.com/untool/untool/compare/v1.4.1...v1.5.0) (2019-03-26)
+
+
+### Bug Fixes
+
+* **webpack:** polyfill EventSource to make HMR work on Win/Edge ([50071dc](https://github.com/untool/untool/commit/50071dc))
+* **webpack:** use async-node target to circumvent Node 11.11.0 bug ([3b6cada](https://github.com/untool/untool/commit/3b6cada))
+* **webpack:** use events instead of signals to make hmr work on windows ([dfae72a](https://github.com/untool/untool/commit/dfae72a))
+
+
+### Features
+
+* **core:** add "absolutePath" keyword to ajv config validation ([7dca480](https://github.com/untool/untool/commit/7dca480))
+
+
+
+
+
 ## [1.4.1](https://github.com/untool/untool/compare/v1.4.0...v1.4.1) (2019-03-22)
 
 
