@@ -88,10 +88,10 @@ module.exports = function getConfig(config, name) {
     bail: isProduction,
     context: config.rootDir,
     entry: isProduction
-      ? require.resolve('../shims/server')
+      ? require.resolve('../shims/node')
       : [
           require.resolve('webpack/hot/signal') + '?RELOAD',
-          require.resolve('../shims/server'),
+          require.resolve('../shims/node'),
         ],
     output: {
       path: config.serverDir,
