@@ -85,7 +85,7 @@ module.exports = function getConfig(config, name) {
     mode: isProduction ? 'production' : 'development',
     bail: isProduction,
     context: config.rootDir,
-    entry: require.resolve('../shims/browser'),
+    entry: require.resolve('../shims/build'),
     output: {
       path: config.buildDir,
       publicPath: '/',
