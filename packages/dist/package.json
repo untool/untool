@@ -25,6 +25,7 @@
   "dependencies": {
     "@untool/core": "^1.5.0",
     "@untool/express": "^1.5.0",
+    "@untool/info": "^1.5.0",
     "@untool/react": "^1.5.0",
     "@untool/webpack": "^1.5.0",
     "@untool/yargs": "^1.5.0",
