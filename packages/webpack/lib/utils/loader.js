@@ -46,3 +46,5 @@ exports.getConfig = (overrides = {}) => {
 exports.getMixins = () => ${getMixins(type, config)};
 `.trim();
 };
+
+module.exports.path = __filename;

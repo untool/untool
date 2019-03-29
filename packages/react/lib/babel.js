@@ -66,3 +66,5 @@ module.exports = ({ types: t }) => ({
     },
   },
 });
+
+module.exports.path = __filename;
