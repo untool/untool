@@ -18,7 +18,7 @@ matrix:
       script:
         - 'commitlint-travis'
         - 'yarn lint'
-        - 'yarn test'
+        - 'yarn test -s'
       env:
         - CACHE_NAME=latest
     - node_js: 'lts/*'
@@ -26,7 +26,7 @@ matrix:
       script:
         - 'commitlint-travis'
         - 'yarn lint'
-        - 'yarn test'
+        - 'yarn test -s'
       env:
         - CACHE_NAME=lts
     - node_js: 'lts/*'
