@@ -14,6 +14,11 @@ const {
   internal: { validate, invariant },
 } = require('@untool/core');
 
+const {
+  getHoistedVersionWarning,
+  versionMismatchReporter,
+} = require('../../lib/utils/validation');
+
 class WebpackBuildMixin extends Mixin {
   clean() {
     const rimraf = require('rimraf');
@@ -81,12 +86,21 @@ class WebpackBuildMixin extends Mixin {
       })
     );
   }
-  diagnose({ detectDuplicatePackages, diagnoseInvalidPackages }) {
+  diagnose({ detectDuplicatePackages, collectResults }) {
     detectDuplicatePackages('webpack');
-    diagnoseInvalidPackages(__dirname, '@babel/polyfill');
-    diagnoseInvalidPackages(
-      dirname(require.resolve('@babel/polyfill/package.json')),
-      'core-js'
+
+    const { _workspace } = this.config;
+
+    collectResults(
+      versionMismatchReporter,
+      ...[
+        getHoistedVersionWarning(_workspace, __dirname, '@babel/polyfill'),
+        getHoistedVersionWarning(
+          _workspace,
+          dirname(require.resolve('@babel/polyfill/package.json')),
+          'core-js'
+        ),
+      ].filter(Boolean)
     );
   }
 }

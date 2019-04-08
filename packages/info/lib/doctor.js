@@ -9,7 +9,6 @@ const {
 const strategies = {
   validateConfig: callable,
   detectDuplicatePackages: callable,
-  diagnoseInvalidPackages: callable,
   collectResults: callable,
   logResults: sequence,
 };
@@ -17,7 +16,6 @@ const strategies = {
 const mixins = [
   require('./diagnoses/config'),
   require('./diagnoses/duplicates'),
-  require('./diagnoses/invalids'),
   require('./diagnoses/generic'),
 ];
 
