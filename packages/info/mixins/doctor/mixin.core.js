@@ -16,14 +16,14 @@ class DoctorMixin extends Mixin {
     super(...args);
     this.doctor = createDoctor(this.config);
   }
-  diagnose({ diagnoseConfig, diagnoseDuplicatePackages }) {
-    diagnoseConfig();
-    diagnoseDuplicatePackages('@untool/*');
+  diagnose({ validateConfig, detectDuplicatePackages }) {
+    validateConfig();
+    detectDuplicatePackages('@untool/*');
   }
   bootstrap() {
     const { doctor } = this;
     return this.diagnose(doctor).then((results) =>
-      doctor.submitDiagnosis(
+      doctor.collectResults(
         ...[].concat(...results.filter((result) => result !== undefined))
       )
     );
@@ -31,7 +31,7 @@ class DoctorMixin extends Mixin {
   handleArguments() {
     const { doctor } = this;
     const logger = this.getLogger();
-    doctor.logDiagnoses(logger);
+    doctor.logResults(logger);
   }
 }
 

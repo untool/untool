@@ -3,25 +3,24 @@
 const chalk = require('chalk');
 const detectDuplicates = require('duplitect');
 
-module.exports = class DuplicatePackagesDiagnosisMixins {
+module.exports = class DetectDuplicatePackagesMixin {
   constructor(config) {
     this.config = config;
-    this.diagnoses = [];
+    this.duplicates = [];
   }
-  diagnoseDuplicatePackages(...packages) {
+  detectDuplicatePackages(...packages) {
     const { _workspace } = this.config;
     const duplicates = detectDuplicates(_workspace, ...packages);
-    const diagnoses = duplicates.map(
-      (duplicate) => `package ${duplicate} may not be installed more than once`
+    this.duplicates.push(
+      ...duplicates.map(
+        (name) => `package ${name} may not be installed more than once`
+      )
     );
-    this.diagnoses = [...this.diagnoses, ...diagnoses];
   }
-  logDiagnoses(logger) {
-    const { diagnoses } = this;
-    if (diagnoses.length) {
-      const warnings = diagnoses.map(
-        (diagnosis) => `${chalk.yellow('-')} ${diagnosis}`
-      );
+  logResults(logger) {
+    const { duplicates } = this;
+    if (duplicates.length) {
+      const warnings = duplicates.map((name) => `${chalk.yellow('-')} ${name}`);
       logger.warn(
         'Problematic duplicate package(s) detected:\n' + warnings.join('\n')
       );

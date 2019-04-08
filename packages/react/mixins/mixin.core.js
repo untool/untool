@@ -17,7 +17,7 @@ module.exports = class ReactMixin extends Mixin {
     }
     jsLoaderConfig.options.plugins.push(require.resolve('../lib/babel'));
   }
-  diagnose({ diagnoseDuplicatePackages }) {
-    diagnoseDuplicatePackages('react', 'react-dom');
+  diagnose({ detectDuplicatePackages }) {
+    detectDuplicatePackages('react', 'react-dom');
   }
 };

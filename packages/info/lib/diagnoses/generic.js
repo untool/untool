@@ -1,29 +1,29 @@
 'use strict';
 
-const defaultHandler = (diagnoses, logger) => {
-  diagnoses.forEach((diagnosis) => logger.warn(diagnosis));
+const defaultHandler = (messages, logger) => {
+  messages.forEach((message) => logger.warn(message));
 };
 
-module.exports = class GenericDiagnosisMixin {
+module.exports = class GenericValidationMixin {
   constructor() {
-    this.diagnosesMap = new Map();
+    this.messagesMap = new Map();
   }
-  submitDiagnosis(handler, ...diagnoses) {
-    const { diagnosesMap } = this;
+  collectResults(handler, ...messages) {
+    const { messagesMap } = this;
     if (typeof handler !== 'function') {
       if (handler) {
-        diagnoses.unshift(handler);
+        messages.unshift(handler);
       }
       handler = defaultHandler;
     }
-    if (diagnosesMap.has(handler)) {
-      diagnosesMap.set(handler, [...diagnosesMap.get(handler), ...diagnoses]);
+    if (messagesMap.has(handler)) {
+      messagesMap.get(handler).push(...messages);
     } else {
-      diagnosesMap.set(handler, diagnoses);
+      messagesMap.set(handler, messages);
     }
   }
-  logDiagnoses(logger) {
-    const { diagnosesMap } = this;
-    diagnosesMap.forEach((diagnoses, handler) => handler(diagnoses, logger));
+  logResults(logger) {
+    const { messagesMap } = this;
+    messagesMap.forEach((messages, handler) => handler(messages, logger));
   }
 };
