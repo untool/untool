@@ -81,8 +81,8 @@ class WebpackBuildMixin extends Mixin {
       })
     );
   }
-  diagnose({ diagnoseDuplicatePackages, diagnoseInvalidPackages }) {
-    diagnoseDuplicatePackages('webpack');
+  diagnose({ detectDuplicatePackages, diagnoseInvalidPackages }) {
+    detectDuplicatePackages('webpack');
     diagnoseInvalidPackages(__dirname, '@babel/polyfill');
     diagnoseInvalidPackages(
       dirname(require.resolve('@babel/polyfill/package.json')),

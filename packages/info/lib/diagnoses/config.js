@@ -2,23 +2,23 @@
 
 const chalk = require('chalk');
 
-module.exports = class ConfigDiagnosisMixins {
+module.exports = class ConfigValidationMixin {
   constructor(config) {
     this.config = config;
-    this.diagnoses = [];
+    this.warnings = [];
   }
-  diagnoseConfig() {
-    const { _warnings: diagnoses } = this.config;
-    this.diagnoses = diagnoses;
+  validateConfig() {
+    const { _warnings } = this.config;
+    this.warnings = _warnings;
   }
-  logDiagnoses(logger) {
-    const { diagnoses } = this;
-    if (diagnoses.length) {
-      const warnings = diagnoses.map(
-        (diagnosis) => `${chalk.yellow('-')} ${diagnosis}`
-      );
+  logResults(logger) {
+    const { warnings } = this;
+    if (warnings.length) {
       logger.warn(
-        'Invalid configuration value(s) detected:\n' + warnings.join('\n')
+        'Invalid configuration value(s) detected:\n' +
+          warnings
+            .map((message) => `${chalk.yellow('-')} ${message}`)
+            .join('\n')
       );
       logger.hint(
         'Fix invalid configuration value(s):\n' +

@@ -7,11 +7,11 @@ const {
 } = define;
 
 const strategies = {
-  diagnoseConfig: callable,
-  diagnoseDuplicatePackages: callable,
+  validateConfig: callable,
+  detectDuplicatePackages: callable,
   diagnoseInvalidPackages: callable,
-  submitDiagnosis: callable,
-  logDiagnoses: sequence,
+  collectResults: callable,
+  logResults: sequence,
 };
 
 const mixins = [
