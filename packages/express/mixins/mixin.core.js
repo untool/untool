@@ -8,6 +8,7 @@ const {
   async: { callable: callableAsync },
   sync: { sequence, callable: callableSync },
 } = require('mixinable');
+const { trimLeadingSlash } = require('pathifist');
 
 const {
   Mixin,
@@ -68,7 +69,7 @@ class ExpressMixin extends Mixin {
       server.on('startup', (address) => {
         const { basePath = '' } = this.config;
         this.serverAddressPromise.resolve(address);
-        logger.info(`listening at ${address}/${basePath}`);
+        logger.info(`listening at ${address}/${trimLeadingSlash(basePath)}`);
       });
       server.on('shutdown', () => {
         const { gracePeriod } = this.config;
