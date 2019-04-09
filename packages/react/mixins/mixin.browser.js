@@ -12,6 +12,7 @@ const {
   override,
   async: { compose, parallel, pipe },
 } = require('mixinable');
+const { ensureLeadingSlash, trimTrailingSlash } = require('pathifist');
 
 const {
   Mixin,
@@ -26,7 +27,7 @@ class ReactMixin extends Mixin {
   enhanceElement(element) {
     const props = {
       ...this.options.router,
-      basename: this.config.basePath,
+      basename: trimTrailingSlash(ensureLeadingSlash(this.config.basePath)),
     };
     return createElement(BrowserRouter, props, element);
   }
