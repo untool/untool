@@ -14,9 +14,9 @@ const strategies = {
 };
 
 const mixins = [
-  require('./diagnoses/config'),
-  require('./diagnoses/duplicates'),
-  require('./diagnoses/generic'),
+  require('./validators/config'),
+  require('./validators/duplicates'),
+  require('./validators/generic'),
 ];
 
 exports.createDoctor = define(strategies, mixins);
