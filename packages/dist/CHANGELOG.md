@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.6.0](https://github.com/untool/untool/compare/v1.5.1...v1.6.0) (2019-04-09)
+
+
+### Bug Fixes
+
+* **untool:** add missing peerDependencies to dist package ([a9d4a9c](https://github.com/untool/untool/commit/a9d4a9c))
+
+
+
+
+
 ## [1.5.1](https://github.com/untool/untool/compare/v1.5.0...v1.5.1) (2019-03-27)
 
 
