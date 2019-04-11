@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.1](https://github.com/untool/untool/compare/v1.6.0...v1.6.1) (2019-04-11)
+
+
+### Bug Fixes
+
+* **info:** make sure logger can be `util.inspect`ed ([09c1656](https://github.com/untool/untool/commit/09c1656))
+
+
+
+
+
 # [1.6.0](https://github.com/untool/untool/compare/v1.5.1...v1.6.0) (2019-04-09)
 
 
