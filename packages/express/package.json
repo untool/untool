@@ -26,7 +26,6 @@
     "finalhandler": "^1.1.1",
     "helmet": "^3.12.1",
     "is-plain-object": "^2.0.4",
-    "micromatch": "^3.1.10",
     "mime": "^2.2.2",
     "mixinable": "^4.0.0",
     "morgan": "^1.9.1",
