@@ -60,6 +60,7 @@ class Logger {
 exports.createLogger = (...args) =>
   new Proxy(new Logger(...args), {
     get(logger, prop) {
+      if (typeof prop !== 'string') return logger[prop];
       return prop in logger
         ? typeof logger[prop] === 'function'
           ? logger[prop].bind(logger)
