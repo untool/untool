@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.6.2](https://github.com/untool/untool/compare/v1.6.1...v1.6.2) (2019-04-15)
+
+
+### Bug Fixes
+
+* **react:** normalize base path before passing it to the router ([382de10](https://github.com/untool/untool/commit/382de10))
+
+
+
+
+
 ## [1.6.1](https://github.com/untool/untool/compare/v1.6.0...v1.6.1) (2019-04-11)
 
 **Note:** Version bump only for package @untool/react
