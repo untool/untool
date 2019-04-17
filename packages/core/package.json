@@ -22,7 +22,7 @@
     "debug": "^4.0.0",
     "dotenv": "^7.0.0",
     "enhanced-resolve": "^4.0.0",
-    "escape-string-regexp": "^1.0.5",
+    "escape-string-regexp": "^2.0.0",
     "find-up": "^3.0.0",
     "flat": "^4.0.0",
     "is-plain-object": "^2.0.4",
