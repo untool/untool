@@ -54,7 +54,13 @@ exports.LoggerPlugin = class LoggerPlugin {
       const hasWarnings = stats.hasWarnings();
       const hasErrors = stats.hasErrors();
 
-      const { assets, errors, warnings, children } = stats.toJson();
+      const { assets, errors, warnings, children } = stats.toJson({
+        all: false,
+        assets: true,
+        errors: true,
+        warnings: true,
+        children: true,
+      });
 
       if (hasErrors) {
         this.logger.info(formatError(name, duration, isRebuild));
