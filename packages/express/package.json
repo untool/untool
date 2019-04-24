@@ -33,7 +33,7 @@
     "pathifist": "^1.0.0",
     "portfinder": "^1.0.19",
     "pretty-bytes": "^5.1.0",
-    "pretty-ms": "^4.0.0",
+    "pretty-ms": "^5.0.0",
     "split": "^1.0.1",
     "supports-color": "^6.0.0"
   },
