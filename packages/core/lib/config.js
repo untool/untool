@@ -48,6 +48,7 @@ exports.getConfig = ({ untoolNamespace = 'untool', ...overrides } = {}) => {
     _mixins: resolveMixins(rootDir, mixinTypes, mixins),
     _warnings: validate(processed, configSchema),
     _workspace: lockFile ? dirname(lockFile) : rootDir,
+    _overrides: { untoolNamespace, ...overrides },
   };
   debug(config);
   return config;
