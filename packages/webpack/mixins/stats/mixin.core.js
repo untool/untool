@@ -29,7 +29,14 @@ class WebpackStatsMixin extends Mixin {
       const { StatsPlugin } = require('../../lib/plugins/stats');
       plugins.unshift(new StatsPlugin(this.statsPromise));
     }
-    if (target === 'node') {
+    const isStaticBuild =
+      this.options.static &&
+      (process.env.NODE_ENV === 'production' ||
+        this.options._.includes('build'));
+    if (
+      target === 'node' &&
+      (isStaticBuild || process.env.NODE_ENV === 'production')
+    ) {
       const { StatsFilePlugin } = require('../../lib/plugins/stats');
       plugins.unshift(new StatsFilePlugin(this.statsPromise, this.config));
     }
@@ -44,6 +51,9 @@ class WebpackStatsMixin extends Mixin {
     }
     const createStatsMiddleware = require('../../lib/middlewares/stats');
     middlewares.preroutes.push(createStatsMiddleware(this.statsPromise));
+  }
+  handleArguments(argv) {
+    this.options = { ...this.options, ...argv };
   }
 }
 

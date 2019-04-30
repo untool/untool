@@ -43,9 +43,12 @@ class LogMixin extends Mixin {
     const command = commands.join(' ');
     const logger = this.getLogger();
     logger.setLogLevel(logLevels.info + verbose - quiet);
-    logger.info(
-      `running '${command}' in '${process.env.NODE_ENV || 'development'}' mode`
-    );
+    if (!this.options.isChildProcess) {
+      logger.info(
+        `running '${command}' in '${process.env.NODE_ENV ||
+          'development'}' mode`
+      );
+    }
   }
   handleError(error) {
     this.getLogger().error(error);
