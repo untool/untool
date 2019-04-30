@@ -38,7 +38,7 @@ test('server lifecycle hooks', (t) =>
     ])
   ));
 
-test('browser lifecycle hooks', (t) =>
+test.serial('browser lifecycle hooks', (t) =>
   browse('start').then((api) =>
     Promise.all([
       api.navigate('/').then((res) => t.snapshot(res)),
@@ -53,4 +53,5 @@ test('browser lifecycle hooks', (t) =>
 
       api.getDevReady().then(() => t.pass()),
     ])
-  ));
+  )
+);
