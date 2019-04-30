@@ -24,7 +24,7 @@
     "babel-plugin-transform-react-remove-prop-types": "^0.4.19",
     "clone": "^2.1.2",
     "duplitect": "^2.0.1",
-    "is-plain-object": "^2.0.4",
+    "is-plain-object": "^3.0.0",
     "mixinable": "^4.0.0",
     "pathifist": "^1.0.0",
     "prop-types": "^15.7.2",
