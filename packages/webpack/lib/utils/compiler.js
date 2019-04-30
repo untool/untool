@@ -1,5 +1,6 @@
 'use strict';
 
+const { fork } = require('child_process');
 const { join } = require('path');
 const webpack = require('webpack');
 const MemoryFS = require('memory-fs');
@@ -50,3 +51,17 @@ function createWatchCompiler(webpackConfig, callback) {
   );
 }
 exports.createWatchCompiler = createWatchCompiler;
+
+function forkWatchCompiler(filename, buildConfigArgs, extra, callback) {
+  const child = fork(filename);
+  child.on('message', callback);
+  child.send({
+    name: 'start',
+    buildConfigArgs,
+    overrides: extra.overrides,
+    options: extra.options,
+  });
+
+  process.on('exit', () => child.kill());
+}
+exports.forkWatchCompiler = forkWatchCompiler;
