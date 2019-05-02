@@ -2,7 +2,7 @@
 
 const mergeWith = require('lodash.mergewith');
 const flatten = require('flat');
-const isPlainObject = require('is-plain-object');
+const isPlainObject = require('is-plain-obj');
 const escapeRegExp = require('escape-string-regexp');
 
 exports.invariant = (condition, message) => {

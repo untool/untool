@@ -25,7 +25,7 @@
     "escape-string-regexp": "^2.0.0",
     "find-up": "^3.0.0",
     "flat": "^4.0.0",
-    "is-plain-object": "^2.0.4",
+    "is-plain-obj": "^2.0.0",
     "lodash.mergewith": "^4.6.1",
     "mixinable": "^4.0.0",
     "supports-color": "^6.0.0"

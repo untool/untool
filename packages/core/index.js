@@ -1,7 +1,7 @@
 'use strict';
 
 const debug = require('debug')('untool:core');
-const isPlainObject = require('is-plain-object');
+const isPlainObject = require('is-plain-obj');
 const define = require('mixinable');
 
 const { getConfig, getMixins } = require('./lib/config');

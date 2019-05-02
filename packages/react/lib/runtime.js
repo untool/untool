@@ -3,7 +3,7 @@
 
 const { isValidElement, createElement, Component } = require('react');
 const { withRouter } = require('react-router-dom');
-const isPlainObject = require('is-plain-object');
+const isPlainObject = require('is-plain-obj');
 const PropTypes = require('prop-types');
 
 const {

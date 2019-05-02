@@ -1,6 +1,6 @@
 'use strict';
 
-const isPlainObject = require('is-plain-object');
+const isPlainObject = require('is-plain-obj');
 
 const {
   sync: { sequence, override },
