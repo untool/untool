@@ -8,8 +8,8 @@ const { StaticRouter } = require('react-router-dom');
 const isPlainObject = require('is-plain-object');
 
 const {
-  override,
-  async: { compose, parallel, pipe },
+  override: overrideSync,
+  async: { compose, parallel, pipe, override: overrideAsync },
 } = require('mixinable');
 const { ensureLeadingSlash, trimTrailingSlash } = require('pathifist');
 
@@ -42,12 +42,15 @@ class ReactMixin extends Mixin {
     };
     return createElement(StaticRouter, props, element);
   }
+  renderToFragments(element) {
+    return renderToFragments(element);
+  }
   render(req, res, next) {
     Promise.resolve()
       .then(() => this.bootstrap(req, res))
       .then(() => this.enhanceElement(this.element))
       .then((element) =>
-        this.fetchData({}, element).then(() => renderToFragments(element))
+        this.fetchData({}, element).then(() => this.renderToFragments(element))
       )
       .then((fragments) => {
         if (this.context.miss) {
@@ -132,7 +135,7 @@ ReactMixin.strategies = {
       );
     }
   ),
-  render: validate(override, ([req, res, next]) => {
+  render: validate(overrideSync, ([req, res, next]) => {
     invariant(
       req && req.app && req.url,
       'render(): Received invalid HTTP request object'
@@ -146,6 +149,21 @@ ReactMixin.strategies = {
       'render(): Received invalid next() function'
     );
   }),
+  renderToFragments: validate(
+    overrideAsync,
+    ([element]) => {
+      invariant(
+        isValidElement(element),
+        'renderToFragments(): Received invalid React element'
+      );
+    },
+    (result) => {
+      invariant(
+        isPlainObject(result),
+        'renderToFragments(): Returned invalid result'
+      );
+    }
+  ),
 };
 
 module.exports = ReactMixin;
