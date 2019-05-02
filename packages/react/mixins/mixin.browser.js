@@ -6,7 +6,7 @@ const { createElement, isValidElement } = require('react');
 const { unmountComponentAtNode, hydrate, render } = require('react-dom');
 const { BrowserRouter } = require('react-router-dom');
 
-const isPlainObject = require('is-plain-object');
+const isPlainObject = require('is-plain-obj');
 
 const {
   override,

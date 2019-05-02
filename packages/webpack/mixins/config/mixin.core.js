@@ -2,7 +2,7 @@
 
 const { existsSync: exists } = require('fs');
 
-const isPlainObject = require('is-plain-object');
+const isPlainObject = require('is-plain-obj');
 
 const debug = require('debug');
 const debugConfig = (target, config) =>

@@ -6,7 +6,7 @@ const debug = require('debug')('untool:express');
 
 const express = require('express');
 const finalhandler = require('finalhandler');
-const isPlainObject = require('is-plain-object');
+const isPlainObject = require('is-plain-obj');
 
 const { Router } = express;
 

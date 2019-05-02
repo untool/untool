@@ -3,7 +3,7 @@
 const { existsSync: exists } = require('fs');
 const { join } = require('path');
 
-const isPlainObject = require('is-plain-object');
+const isPlainObject = require('is-plain-obj');
 
 const EnhancedPromise = require('eprom');
 const {

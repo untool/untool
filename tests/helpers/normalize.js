@@ -1,7 +1,7 @@
 const { dirname, join } = require('path');
 const { readdirSync, statSync } = require('fs');
 
-const isPlainObject = require('is-plain-object');
+const isPlainObject = require('is-plain-obj');
 
 const flatten = require('flat');
 const { unflatten } = flatten;
