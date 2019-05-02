@@ -3,11 +3,7 @@
 const { parse } = require('url');
 
 const { createElement, isValidElement } = require('react');
-const { renderToString } = require('react-dom/server');
 const { StaticRouter } = require('react-router-dom');
-const {
-  Helmet: { renderStatic },
-} = require('react-helmet');
 
 const isPlainObject = require('is-plain-object');
 
@@ -24,6 +20,7 @@ const {
 
 const getAssets = require('../lib/assets');
 const template = require('../lib/template');
+const renderToFragments = require('../lib/fragments');
 
 class ReactMixin extends Mixin {
   constructor(config, element, options) {
@@ -49,29 +46,26 @@ class ReactMixin extends Mixin {
     Promise.resolve()
       .then(() => this.bootstrap(req, res))
       .then(() => this.enhanceElement(this.element))
-      .then((element) => this.fetchData({}, element).then(() => element))
-      .then((element) => {
-        const reactMarkup = renderToString(element);
-        const fragments = Object.entries(renderStatic()).reduce(
-          (result, [key, value]) => ({ ...result, [key]: value.toString() }),
-          { reactMarkup, headPrefix: '', headSuffix: '' }
-        );
-        const assets = getAssets(this.stats, this.context.modules);
-        const globals = { _env: this.config._env };
-        return { fragments, assets, globals };
-      })
-      .then((initialData) => {
+      .then((element) =>
+        this.fetchData({}, element).then(() => renderToFragments(element))
+      )
+      .then((fragments) => {
         if (this.context.miss) {
           next();
-        } else if (this.context.url) {
-          this.context.headers && res.set(this.context.headers);
-          res.redirect(this.context.status || 301, this.context.url);
         } else {
-          this.context.headers && res.set(this.context.headers);
-          res.status(this.context.status || 200);
-          return this.getTemplateData(initialData).then((templateData) =>
-            res.send(template(templateData))
-          );
+          if (this.context.headers) {
+            res.set(this.context.headers);
+          }
+          if (this.context.url) {
+            res.redirect(this.context.status || 301, this.context.url);
+          } else {
+            res.status(this.context.status || 200);
+            const assets = getAssets(this.stats, this.context.modules);
+            const globals = { _env: this.config._env };
+            this.getTemplateData({ fragments, assets, globals }).then(
+              (templateData) => res.send(template(templateData))
+            );
+          }
         }
       })
       .catch(next);
