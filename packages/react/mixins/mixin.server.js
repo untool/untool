@@ -45,6 +45,13 @@ class ReactMixin extends Mixin {
   renderToFragments(element) {
     return renderToFragments(element);
   }
+  renderTemplate(fragments, modules, stats) {
+    const assets = getAssets(stats, modules);
+    const globals = { _env: this.config._env };
+    return this.getTemplateData({ fragments, assets, globals }).then(
+      (templateData) => template(templateData)
+    );
+  }
   render(req, res, next) {
     Promise.resolve()
       .then(() => this.bootstrap(req, res))
@@ -63,11 +70,11 @@ class ReactMixin extends Mixin {
             res.redirect(this.context.status || 301, this.context.url);
           } else {
             res.status(this.context.status || 200);
-            const assets = getAssets(this.stats, this.context.modules);
-            const globals = { _env: this.config._env };
-            this.getTemplateData({ fragments, assets, globals }).then(
-              (templateData) => res.send(template(templateData))
-            );
+            return this.renderTemplate(
+              fragments,
+              this.context.modules,
+              this.stats
+            ).then((page) => res.send(page));
           }
         }
       })
@@ -117,6 +124,25 @@ ReactMixin.strategies = {
       invariant(
         isPlainObject(result),
         'fetchData(): Returned invalid data object'
+      );
+    }
+  ),
+  renderTemplate: validate(
+    overrideAsync,
+    ([fragments, modules]) => {
+      invariant(
+        isPlainObject(fragments),
+        'renderTemplate(): Received invalid object'
+      );
+      invariant(
+        Array.isArray(modules),
+        'renderTemplate(): Received invalid modules array'
+      );
+    },
+    (result) => {
+      invariant(
+        typeof result === 'string',
+        'renderTemplate(): Returned invalid result'
       );
     }
   ),
