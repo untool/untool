@@ -18,9 +18,9 @@ const {
   internal: { validate, invariant },
 } = require('@untool/core');
 
+const renderToFragments = require('../lib/fragments');
 const getAssets = require('../lib/assets');
 const template = require('../lib/template');
-const renderToFragments = require('../lib/fragments');
 
 class ReactMixin extends Mixin {
   constructor(config, element, options) {
@@ -45,8 +45,8 @@ class ReactMixin extends Mixin {
   renderToFragments(element) {
     return renderToFragments(element);
   }
-  renderTemplate(fragments, modules, stats) {
-    const assets = getAssets(stats, modules);
+  renderTemplate(fragments, { modules }) {
+    const assets = getAssets(this.stats, modules);
     const globals = { _env: this.config._env };
     return this.getTemplateData({ fragments, assets, globals }).then(
       (templateData) => template(templateData)
@@ -70,11 +70,9 @@ class ReactMixin extends Mixin {
             res.redirect(this.context.status || 301, this.context.url);
           } else {
             res.status(this.context.status || 200);
-            return this.renderTemplate(
-              fragments,
-              this.context.modules,
-              this.stats
-            ).then((page) => res.send(page));
+            return this.renderTemplate(fragments, this.context).then((page) =>
+              res.send(page)
+            );
           }
         }
       })
@@ -159,14 +157,14 @@ ReactMixin.strategies = {
   ),
   renderTemplate: validate(
     overrideAsync,
-    ([fragments, modules]) => {
+    ([fragments, context]) => {
       invariant(
         isPlainObject(fragments),
-        'renderTemplate(): Received invalid object'
+        'renderTemplate(): Received invalid fragments object'
       );
       invariant(
-        Array.isArray(modules),
-        'renderTemplate(): Received invalid modules array'
+        isPlainObject(context),
+        'renderTemplate(): Received invalid context object'
       );
     },
     (result) => {
