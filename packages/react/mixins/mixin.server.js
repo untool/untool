@@ -127,6 +127,36 @@ ReactMixin.strategies = {
       );
     }
   ),
+  getTemplateData: validate(
+    pipe,
+    ([data]) => {
+      invariant(
+        isPlainObject(data),
+        'getTemplateData(): Received invalid data object'
+      );
+    },
+    (result) => {
+      invariant(
+        isPlainObject(result),
+        'getTemplateData(): Returned invalid data object'
+      );
+    }
+  ),
+  renderToFragments: validate(
+    overrideAsync,
+    ([element]) => {
+      invariant(
+        isValidElement(element),
+        'renderToFragments(): Received invalid React element'
+      );
+    },
+    (result) => {
+      invariant(
+        isPlainObject(result),
+        'renderToFragments(): Returned invalid result'
+      );
+    }
+  ),
   renderTemplate: validate(
     overrideAsync,
     ([fragments, modules]) => {
@@ -146,21 +176,6 @@ ReactMixin.strategies = {
       );
     }
   ),
-  getTemplateData: validate(
-    pipe,
-    ([data]) => {
-      invariant(
-        isPlainObject(data),
-        'getTemplateData(): Received invalid data object'
-      );
-    },
-    (result) => {
-      invariant(
-        isPlainObject(result),
-        'getTemplateData(): Returned invalid data object'
-      );
-    }
-  ),
   render: validate(overrideSync, ([req, res, next]) => {
     invariant(
       req && req.app && req.url,
@@ -175,21 +190,6 @@ ReactMixin.strategies = {
       'render(): Received invalid next() function'
     );
   }),
-  renderToFragments: validate(
-    overrideAsync,
-    ([element]) => {
-      invariant(
-        isValidElement(element),
-        'renderToFragments(): Received invalid React element'
-      );
-    },
-    (result) => {
-      invariant(
-        isPlainObject(result),
-        'renderToFragments(): Returned invalid result'
-      );
-    }
-  ),
 };
 
 module.exports = ReactMixin;
