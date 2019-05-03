@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/untool/untool/compare/v1.6.2...v1.7.0) (2019-05-03)
+
+
+### Bug Fixes
+
+* update dependency pretty-ms to v5 ([603f32f](https://github.com/untool/untool/commit/603f32f))
+
+
+
+
+
 ## [1.6.2](https://github.com/untool/untool/compare/v1.6.1...v1.6.2) (2019-04-15)
 
 

@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.7.0](https://github.com/untool/untool/compare/v1.6.2...v1.7.0) (2019-05-03)
+
+
+### Bug Fixes
+
+* update dependency dotenv to v8 ([c6d8ae7](https://github.com/untool/untool/commit/c6d8ae7))
+* **core:** take last Mixin constructor arg as options object ([2837734](https://github.com/untool/untool/commit/2837734))
+* **webpack:** keep config loader small by reducing dependencies ([c7dc8dc](https://github.com/untool/untool/commit/c7dc8dc))
+* update dependency escape-string-regexp to v2 ([a4aac60](https://github.com/untool/untool/commit/a4aac60))
+* update dependency pretty-ms to v5 ([603f32f](https://github.com/untool/untool/commit/603f32f))
+
+
+### Features
+
+* **react:** export renderToFragments function ([0d26c44](https://github.com/untool/untool/commit/0d26c44))
+* **react:** introduce renderTemplate hook ([c876ae9](https://github.com/untool/untool/commit/c876ae9))
+* **react:** introduce renderToFragments mixin hook ([b932fc8](https://github.com/untool/untool/commit/b932fc8))
+
+
+
+
+
 ## [1.6.2](https://github.com/untool/untool/compare/v1.6.1...v1.6.2) (2019-04-15)
 
 

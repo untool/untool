@@ -1,6 +1,6 @@
 {
   "name": "untool",
-  "version": "1.6.2",
+  "version": "1.7.0",
   "description": "javascript tooling platform",
   "jsnext": "lib/runtime.js",
   "bin": {
@@ -23,12 +23,12 @@
   },
   "homepage": "https://github.com/untool/untool#readme",
   "dependencies": {
-    "@untool/core": "^1.6.2",
-    "@untool/express": "^1.6.2",
-    "@untool/info": "^1.6.2",
-    "@untool/react": "^1.6.2",
-    "@untool/webpack": "^1.6.2",
-    "@untool/yargs": "^1.6.2",
+    "@untool/core": "^1.7.0",
+    "@untool/express": "^1.7.0",
+    "@untool/info": "^1.7.0",
+    "@untool/react": "^1.7.0",
+    "@untool/webpack": "^1.7.0",
+    "@untool/yargs": "^1.7.0",
     "mixinable": "^4.0.0"
   },
   "peerDependencies": {
