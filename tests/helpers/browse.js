@@ -2,8 +2,6 @@ const puppeteer = require('puppeteer');
 
 const EventEmitter = require('./promise');
 
-const run = require('./run');
-
 const { normalizeResponse } = require('./normalize');
 
 const createConsoleEvents = (page, type = 'log') => {
@@ -18,8 +16,8 @@ const createConsoleEvents = (page, type = 'log') => {
   return emitter;
 };
 
-module.exports = (...args) =>
-  run(...args).then((api) =>
+module.exports = (apiPromise) =>
+  apiPromise.then((api) =>
     Promise.all([api.getServer(), puppeteer.launch({ args: ['--no-sandbox'] })])
       .then(([server, browser]) => Promise.all([server, browser.newPage()]))
       .then(([server, page]) => {

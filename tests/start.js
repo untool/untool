@@ -4,8 +4,10 @@ const run = require('./helpers/run');
 const serve = require('./helpers/serve');
 const browse = require('./helpers/browse');
 
+test.before((t) => (t.context.runPromise = run('start')));
+
 test('core lifecycle hooks', (t) =>
-  run('start').then((api) =>
+  t.context.runPromise.then((api) =>
     Promise.all([
       api.getArgTypes('constructor').then((args) => t.snapshot(args)),
       api.getArgTypes('registerCommands').then((args) => t.snapshot(args)),
@@ -23,7 +25,7 @@ test('core lifecycle hooks', (t) =>
   ));
 
 test('server lifecycle hooks', (t) =>
-  serve('start').then((api) =>
+  serve(t.context.runPromise).then((api) =>
     Promise.all([
       api.navigate('/').then((res) => t.snapshot(res)),
 
@@ -39,7 +41,7 @@ test('server lifecycle hooks', (t) =>
   ));
 
 test('browser lifecycle hooks', (t) =>
-  browse('start').then((api) =>
+  browse(t.context.runPromise).then((api) =>
     Promise.all([
       api.navigate('/').then((res) => t.snapshot(res)),
 
