@@ -4,8 +4,10 @@ const run = require('./helpers/run');
 const serve = require('./helpers/serve');
 const browse = require('./helpers/browse');
 
+test.before((t) => (t.context.apiPromise = run('start', '-p')));
+
 test('core lifecycle hooks', (t) =>
-  run('start', '-p').then((api) =>
+  t.context.apiPromise.then((api) =>
     Promise.all([
       api.getArgTypes('constructor').then((args) => t.snapshot(args)),
       api.getArgTypes('registerCommands').then((args) => t.snapshot(args)),
@@ -25,7 +27,7 @@ test('core lifecycle hooks', (t) =>
   ));
 
 test('server lifecycle hooks', (t) =>
-  serve('start', '-p').then((api) =>
+  serve(t.context.apiPromise).then((api) =>
     Promise.all([
       api.navigate('/').then((res) => t.snapshot(res)),
 
@@ -40,8 +42,8 @@ test('server lifecycle hooks', (t) =>
     ])
   ));
 
-test.serial('browser lifecycle hooks', (t) =>
-  browse('start', '-p').then((api) =>
+test('browser lifecycle hooks', (t) =>
+  browse(t.context.apiPromise).then((api) =>
     Promise.all([
       api.navigate('/').then((res) => t.snapshot(res)),
 
@@ -53,5 +55,4 @@ test.serial('browser lifecycle hooks', (t) =>
       api.getMixin().then((mixin) => t.snapshot(mixin)),
       api.getConfig().then((config) => t.snapshot(config)),
     ])
-  )
-);
+  ));
