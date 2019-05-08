@@ -2,8 +2,10 @@ const test = require('ava');
 
 const run = require('./helpers/run');
 
+test.before((t) => (t.context.runPromise = run('build')));
+
 test('core lifecycle hooks', (t) =>
-  run('build').then((api) =>
+  t.context.runPromise.then((api) =>
     Promise.all([
       api.getArgTypes('constructor').then((args) => t.snapshot(args)),
       api.getArgTypes('registerCommands').then((args) => t.snapshot(args)),

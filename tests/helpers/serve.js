@@ -2,8 +2,6 @@ const { join } = require('path');
 
 const supertest = require('supertest');
 
-const run = require('./run');
-
 const {
   normalizeConfig,
   normalizeMixin,
@@ -11,8 +9,8 @@ const {
   normalizeArgTypes,
 } = require('./normalize');
 
-module.exports = (...args) =>
-  run(...args).then((api) => {
+module.exports = (apiPromise) =>
+  apiPromise.then((api) => {
     const { events } = require(join(api.rootDir, 'instrument', 'mixin.server'));
     return {
       getArg(...args) {
