@@ -13,7 +13,7 @@ module.exports = class DetectDuplicatePackagesMixin {
     const duplicates = detectDuplicates(_workspace, ...packages);
     this.duplicates.push(
       ...duplicates.map(
-        (name) => `package ${name} may not be installed more than once`
+        (name) => `package "${name}" may not be installed more than once`
       )
     );
   }
