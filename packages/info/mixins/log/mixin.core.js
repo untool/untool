@@ -15,6 +15,7 @@ class LogMixin extends Mixin {
   constructor(...args) {
     super(...args);
     this.logger = createLogger(this.config);
+    this.handleArguments(this.options);
   }
   getLogger() {
     return this.logger;
@@ -39,11 +40,12 @@ class LogMixin extends Mixin {
   }
   handleArguments(argv) {
     this.options = { ...this.options, ...argv };
-    const { quiet, verbose, _: commands } = this.options;
+    const { quiet = 0, verbose = 0, _: commands = [] } = this.options;
     const command = commands.join(' ');
     const logger = this.getLogger();
     logger.setLogLevel(logLevels.info + verbose - quiet);
-    if (typeof process.send === 'undefined') {
+    const isChildProcess = typeof process.send === 'function';
+    if (!isChildProcess) {
       logger.info(
         `running '${command}' in '${process.env.NODE_ENV ||
           'development'}' mode`
