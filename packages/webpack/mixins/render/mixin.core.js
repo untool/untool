@@ -57,7 +57,7 @@ class WebpackRenderMixin extends Mixin {
         describe: 'Statically build locations',
         type: 'boolean',
       };
-      if (command === 'start') {
+      if (command === 'start' && process.env.NODE_ENV !== 'production') {
         builder.static.implies = ['static', 'production'];
         builder.static.describe += ' (requires --production, -p)';
       }
