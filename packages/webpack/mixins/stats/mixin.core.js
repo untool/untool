@@ -29,14 +29,9 @@ class WebpackStatsMixin extends Mixin {
       const { StatsPlugin } = require('../../lib/plugins/stats');
       plugins.unshift(new StatsPlugin(this.statsPromise));
     }
-    const isStaticBuild =
-      this.options.static &&
-      (process.env.NODE_ENV === 'production' ||
-        this.options._.includes('build'));
-    if (
-      target === 'node' &&
-      (isStaticBuild || process.env.NODE_ENV === 'production')
-    ) {
+    const isBuild =
+      this.options._.includes('build') || process.env.NODE_ENV === 'production';
+    if (target === 'node' && isBuild) {
       const { StatsFilePlugin } = require('../../lib/plugins/stats');
       plugins.unshift(new StatsFilePlugin(this.statsPromise, this.config));
     }
