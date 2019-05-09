@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0](https://github.com/untool/untool/compare/v1.7.0...v1.8.0) (2019-05-09)
+
+
+### Features
+
+* **webpack:** fork compiler in render middleware to utilize extra cores ([3328645](https://github.com/untool/untool/commit/3328645))
+
+
+
+
+
 # [1.7.0](https://github.com/untool/untool/compare/v1.6.2...v1.7.0) (2019-05-03)
 
 **Note:** Version bump only for package @untool/info

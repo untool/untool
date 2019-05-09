@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.8.0](https://github.com/untool/untool/compare/v1.7.0...v1.8.0) (2019-05-09)
+
+
+### Features
+
+* **core:** store overrides from  in config ([8689916](https://github.com/untool/untool/commit/8689916))
+
+
+
+
+
 # [1.7.0](https://github.com/untool/untool/compare/v1.6.2...v1.7.0) (2019-05-03)
 
 
