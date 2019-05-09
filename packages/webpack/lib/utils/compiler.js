@@ -77,39 +77,37 @@ exports.createWatchCompiler = createWatchCompiler;
 process.on('message', (message) => {
   if (message.name !== 'start') return;
   const { buildConfigArgs, overrides, options } = message;
-  const { bootstrap, handleArguments, getBuildConfig } = initialize(overrides);
-  bootstrap().then(() => {
-    handleArguments(options);
-    const webpackConfig = getBuildConfig(...buildConfigArgs);
-    try {
-      const compiler = webpack(webpackConfig);
-      compiler.hooks.watchRun.tap('RenderMiddleware', () =>
-        process.send({ type: 'reset' })
-      );
-      compiler.watch(webpackConfig.watchOptions, (compileError, stats) => {
-        if (compileError) {
-          process.send({
-            type: 'reject',
-            reason: new CompilerError(compileError),
-          });
-        } else if (stats.hasErrors()) {
-          process.send({
-            type: 'reject',
-            reason: new BuildError(
-              stats.toJson({ all: false, errors: true }).errors.shift()
-            ),
-          });
-        } else {
-          const { path, filename } = webpackConfig.output;
-          const filepath = join(path, filename);
-          process.send({ type: 'resolve', data: filepath });
-        }
-      });
-    } catch (error) {
-      process.send({
-        type: 'reject',
-        reason: serializeError(error),
-      });
-    }
-  });
+  const { handleArguments, getBuildConfig } = initialize(overrides);
+  handleArguments(options);
+  const webpackConfig = getBuildConfig(...buildConfigArgs);
+  try {
+    const compiler = webpack(webpackConfig);
+    compiler.hooks.watchRun.tap('RenderMiddleware', () =>
+      process.send({ type: 'reset' })
+    );
+    compiler.watch(webpackConfig.watchOptions, (compileError, stats) => {
+      if (compileError) {
+        process.send({
+          type: 'reject',
+          reason: new CompilerError(compileError),
+        });
+      } else if (stats.hasErrors()) {
+        process.send({
+          type: 'reject',
+          reason: new BuildError(
+            stats.toJson({ all: false, errors: true }).errors.shift()
+          ),
+        });
+      } else {
+        const { path, filename } = webpackConfig.output;
+        const filepath = join(path, filename);
+        process.send({ type: 'resolve', data: filepath });
+      }
+    });
+  } catch (error) {
+    process.send({
+      type: 'reject',
+      reason: serializeError(error),
+    });
+  }
 });
