@@ -77,9 +77,9 @@ exports.createWatchCompiler = createWatchCompiler;
 process.on('message', (message) => {
   if (message.name !== 'start') return;
   const { buildConfigArgs, overrides, options } = message;
-  const { handleArguments, getBuildConfig } = initialize(overrides);
-  handleArguments(options);
-  const webpackConfig = getBuildConfig(...buildConfigArgs);
+  const webpackConfig = initialize(overrides, options).getBuildConfig(
+    ...buildConfigArgs
+  );
   try {
     const compiler = webpack(webpackConfig);
     compiler.hooks.watchRun.tap('RenderMiddleware', () =>
