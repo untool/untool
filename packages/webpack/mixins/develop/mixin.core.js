@@ -8,7 +8,11 @@ class WebpackDevelopMixin extends Mixin {
       const webpack = require('webpack');
       const createWebpackDevMiddleware = require('webpack-dev-middleware');
       const createWebpackHotMiddleware = require('webpack-hot-middleware');
-      const webpackDevelopConfig = this.getBuildConfig('develop');
+      const webpackDevelopConfig = this.getBuildConfig(
+        'develop',
+        undefined,
+        true
+      );
       const compiler = webpack(webpackDevelopConfig);
       middlewares.initial.push(
         createWebpackDevMiddleware(compiler, {

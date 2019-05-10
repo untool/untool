@@ -18,7 +18,7 @@ const {
 } = require('@untool/core');
 
 class WebpackConfigMixin extends Mixin {
-  getBuildConfig(target, baseConfig) {
+  getBuildConfig(target, baseConfig, watch = false) {
     const { loaderConfigs = {}, ...webpackConfig } = (() => {
       switch (baseConfig || target) {
         case 'build':
@@ -34,7 +34,7 @@ class WebpackConfigMixin extends Mixin {
           throw new Error(`Can't get build config ${baseConfig || target}`);
       }
     })();
-    this.configureBuild(webpackConfig, loaderConfigs, target);
+    this.configureBuild(webpackConfig, loaderConfigs, target, watch);
     debugConfig(target, webpackConfig);
     return webpackConfig;
   }
@@ -69,7 +69,7 @@ class WebpackConfigMixin extends Mixin {
 }
 
 WebpackConfigMixin.strategies = {
-  getBuildConfig: validate(callable, ([target, baseConfig]) => {
+  getBuildConfig: validate(callable, ([target, baseConfig, watch]) => {
     invariant(
       typeof target === 'string',
       'getBuildConfig(): Received invalid target string'
@@ -77,6 +77,10 @@ WebpackConfigMixin.strategies = {
     invariant(
       !baseConfig || typeof baseConfig === 'string',
       'getBuildConfig(): Received invalid baseConfig string'
+    );
+    invariant(
+      typeof watch === 'undefined' || typeof watch === 'boolean',
+      'getBuildConfig(): Received invalid watch boolean'
     );
   }),
   collectBuildConfigs: validate(sequence, ([webpackConfigs]) => {
