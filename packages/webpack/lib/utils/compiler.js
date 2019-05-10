@@ -10,8 +10,8 @@ const sourceMapSupport = require('source-map-support');
 const serializeError = require('serialize-error');
 
 const EnhancedPromise = require('eprom');
-const { initialize } = require('@untool/core');
 
+const { configure } = require('../../');
 const { BuildError, CompilerError } = require('../utils/errors');
 
 function createCompiler(webpackConfig) {
@@ -77,7 +77,7 @@ exports.createWatchCompiler = createWatchCompiler;
 process.on('message', (message) => {
   if (message.name !== 'start') return;
   const { buildConfigArgs, overrides, options } = message;
-  const webpackConfig = initialize(overrides, options).getBuildConfig(
+  const webpackConfig = configure(overrides, options).getBuildConfig(
     ...buildConfigArgs
   );
   try {
