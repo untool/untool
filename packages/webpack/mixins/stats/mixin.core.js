@@ -19,6 +19,7 @@ class WebpackStatsMixin extends Mixin {
   constructor(...args) {
     super(...args);
     this.statsPromise = new EnhancedPromise();
+    this.handleArguments(this.options);
   }
   getBuildStats() {
     return Promise.resolve(this.statsPromise);
@@ -29,9 +30,7 @@ class WebpackStatsMixin extends Mixin {
       const { StatsPlugin } = require('../../lib/plugins/stats');
       plugins.unshift(new StatsPlugin(this.statsPromise));
     }
-    const isBuild =
-      this.options._.includes('build') || process.env.NODE_ENV === 'production';
-    if (target === 'node' && isBuild) {
+    if (target === 'node' && this.writeStats) {
       const { StatsFilePlugin } = require('../../lib/plugins/stats');
       plugins.unshift(new StatsFilePlugin(this.statsPromise, this.config));
     }
@@ -49,6 +48,11 @@ class WebpackStatsMixin extends Mixin {
   }
   handleArguments(argv) {
     this.options = { ...this.options, ...argv };
+    const { _: commands = [] } = this.options;
+    const isProduction = process.env.NODE_ENV === 'production';
+    this.writeStats =
+      commands.includes('build') ||
+      (commands.includes('start') && isProduction);
   }
 }
 
