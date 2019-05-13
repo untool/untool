@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.2](https://github.com/untool/untool/compare/v1.8.1...v1.8.2) (2019-05-13)
+
+
+### Bug Fixes
+
+* **info:** configure loglevel in LogMixin constructor ([c81b12e](https://github.com/untool/untool/commit/c81b12e))
+
+
+
+
+
 ## [1.8.1](https://github.com/untool/untool/compare/v1.8.0...v1.8.1) (2019-05-09)
 
 **Note:** Version bump only for package @untool/info

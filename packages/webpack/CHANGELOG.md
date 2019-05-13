@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.8.2](https://github.com/untool/untool/compare/v1.8.1...v1.8.2) (2019-05-13)
+
+
+### Bug Fixes
+
+* **webpack:** allow "start -s" when NODE_ENV=production ([ab7d90d](https://github.com/untool/untool/commit/ab7d90d))
+* **webpack:** disallow non-production "un start -s" ([600056a](https://github.com/untool/untool/commit/600056a))
+* update dependency find-up to v4 ([af3049f](https://github.com/untool/untool/commit/af3049f))
+* **webpack:** get rid of handleArguments call in child process ([1683f83](https://github.com/untool/untool/commit/1683f83))
+* **webpack:** skip bootstrap in child process to skip doctor checks ([68908d1](https://github.com/untool/untool/commit/68908d1))
+
+
+
+
+
 ## [1.8.1](https://github.com/untool/untool/compare/v1.8.0...v1.8.1) (2019-05-09)
 
 
