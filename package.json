@@ -77,7 +77,12 @@
         ]
       },
       "https://github.com/xing/hops.git"
-    ]
+    ],
+    "rootManifest": {
+      "resolutions": {
+        "fs-extra": "7.0.1"
+      }
+    }
   },
   "renovate": {
     "extends": [
