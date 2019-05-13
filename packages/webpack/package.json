@@ -34,7 +34,7 @@
     "escape-string-regexp": "^2.0.0",
     "eventsource": "^1.0.7",
     "file-loader": "^3.0.0",
-    "find-up": "^3.0.0",
+    "find-up": "^4.0.0",
     "is-plain-obj": "^2.0.0",
     "jsesc": "^2.5.2",
     "loader-utils": "^1.1.0",
