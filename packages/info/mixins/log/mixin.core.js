@@ -45,7 +45,7 @@ class LogMixin extends Mixin {
     const logger = this.getLogger();
     logger.setLogLevel(logLevels.info + verbose - quiet);
     const isChildProcess = typeof process.send === 'function';
-    if (!isChildProcess) {
+    if (command && !isChildProcess) {
       logger.info(
         `running '${command}' in '${process.env.NODE_ENV ||
           'development'}' mode`
