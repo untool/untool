@@ -57,6 +57,7 @@ exports.LoggerPlugin = class LoggerPlugin {
       const { assets, errors, warnings, children } = stats.toJson({
         all: false,
         assets: true,
+        performance: true,
         errors: true,
         warnings: true,
         children: true,
