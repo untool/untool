@@ -71,6 +71,15 @@ exports.LoggerPlugin = class LoggerPlugin {
         } else {
           this.logger.info(formatSuccess(name, duration, assets, isRebuild));
         }
+        const assetsOverSizeLimit = assets.some(
+          ({ isOverSizeLimit }) => isOverSizeLimit
+        );
+        if (assetsOverSizeLimit) {
+          this.logger.warn('Some assets exceed the recommended size limit!');
+          this.logger.hint(
+            'Please consider using import() or the importComponent() function to lazy load some parts of the application.'
+          );
+        }
       }
       if (hasErrors || hasWarnings) {
         errors
