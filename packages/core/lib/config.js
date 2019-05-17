@@ -12,10 +12,14 @@ const { resolveMixins } = require('./resolver');
 const { validate } = require('./validator');
 const { environmentalize, placeholdify, merge } = require('./utils');
 
-exports.getConfig = ({ untoolNamespace = 'untool', ...overrides } = {}) => {
-  const pkgFile = findUp('package.json');
+exports.getConfig = ({
+  untoolRootDir,
+  untoolNamespace = 'untool',
+  ...overrides
+} = {}) => {
+  const rootDir = untoolRootDir || dirname(findUp('package.json'));
+  const pkgFile = join(rootDir, 'package.json');
   const pkgData = require(pkgFile);
-  const rootDir = dirname(pkgFile);
   const lockFile = findUp('yarn.lock', { cwd: rootDir });
 
   loadEnv({ path: join(rootDir, '.env') });
@@ -48,7 +52,7 @@ exports.getConfig = ({ untoolNamespace = 'untool', ...overrides } = {}) => {
     _mixins: resolveMixins(rootDir, mixinTypes, mixins),
     _warnings: validate(processed, configSchema),
     _workspace: lockFile ? dirname(lockFile) : rootDir,
-    _overrides: { untoolNamespace, ...overrides },
+    _overrides: { untoolRootDir, untoolNamespace, ...overrides },
   };
   debug(config);
   return config;
