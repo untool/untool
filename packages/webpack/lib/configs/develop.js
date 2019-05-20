@@ -2,11 +2,7 @@
 
 const { relative } = require('path');
 
-const {
-  EnvironmentPlugin,
-  HotModuleReplacementPlugin,
-  NamedModulesPlugin,
-} = require('webpack');
+const { EnvironmentPlugin, HotModuleReplacementPlugin } = require('webpack');
 
 const { join, trimSlashes } = require('pathifist');
 
@@ -114,7 +110,6 @@ module.exports = function getConfig(config, name) {
       splitChunks: { chunks: 'all', name: false },
     },
     plugins: [
-      new NamedModulesPlugin(),
       new HotModuleReplacementPlugin(),
       new EnvironmentPlugin({ NODE_ENV: 'development' }),
     ],

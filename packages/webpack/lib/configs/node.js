@@ -5,8 +5,6 @@ const { resolve } = require('path');
 const {
   EnvironmentPlugin,
   HotModuleReplacementPlugin,
-  HashedModuleIdsPlugin,
-  NamedModulesPlugin,
   optimize: { LimitChunkCountPlugin },
 } = require('webpack');
 
@@ -127,7 +125,6 @@ module.exports = function getConfig(config, name) {
     },
     plugins: [
       new LimitChunkCountPlugin({ maxChunks: 1 }),
-      new (isProduction ? HashedModuleIdsPlugin : NamedModulesPlugin)(),
       isProduction ? { apply: () => {} } : new HotModuleReplacementPlugin(),
       new EnvironmentPlugin({ NODE_ENV: 'development' }),
     ],
