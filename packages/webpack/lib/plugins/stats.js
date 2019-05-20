@@ -4,8 +4,12 @@ const { RawSource } = require('webpack-sources');
 
 const { trimTrailingSlash } = require('pathifist');
 
-const analyzeCompilation = ({ chunks, chunkGroups }) => {
-  const entryChunks = chunks.filter(({ entryModule }) => !!entryModule);
+const analyzeCompilation = (compilation) => {
+  const chunks = Array.from(compilation.chunks);
+  const chunkGroups = Array.from(compilation.chunkGroups);
+  const entryChunks = chunks.filter((chunk) =>
+    compilation.chunkGraph.hasChunkEntryDependentChunks(chunk)
+  );
   const vendorChunks = chunkGroups.reduce(
     (result, { chunks }) => [
       ...result,
@@ -15,16 +19,16 @@ const analyzeCompilation = ({ chunks, chunkGroups }) => {
     ],
     []
   );
-  const chunksByModule = chunks.reduce(
-    (result, chunk) =>
-      Array.from(chunk.modulesIterable).reduce((result, module) => {
-        const { chunks } = chunkGroups.find(({ chunks }) =>
-          chunks.includes(chunk)
-        );
-        return [...result, [module.id, chunks]];
-      }, result),
-    []
-  );
+  const chunksByModule = chunks.reduce((result, chunk) => {
+    return Array.from(
+      compilation.chunkGraph.getChunkModulesIterable(chunk)
+    ).reduce((result, module) => {
+      const { chunks } = chunkGroups.find(({ chunks }) => {
+        return chunks.includes(chunk);
+      });
+      return [...result, [compilation.chunkGraph.getModuleId(module), chunks]];
+    }, result);
+  }, []);
   return { entryChunks, vendorChunks, chunksByModule };
 };
 
