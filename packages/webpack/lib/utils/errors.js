@@ -5,24 +5,10 @@ const { EOL } = require('os');
 const stripAnsi = require('strip-ansi');
 const serializeError = require('serialize-error');
 
-class BuildError extends Error {
-  constructor(stack) {
-    super();
-    this.name = this.constructor.name;
-    this.stack = `${this.name}: ${stripAnsi(stack)}`;
-    this.message = this.stack.slice(0, this.stack.indexOf(EOL));
-  }
-  toJSON() {
-    return this.stack;
-  }
-}
-
-exports.BuildError = BuildError;
-
-class CompilerError extends Error {
+class SerializableError extends Error {
   constructor(error) {
     super();
-    if (error && typeof error === 'object' && error.name && error.message) {
+    if (error && typeof error === 'object' && error.message) {
       Object.assign(this, error);
     } else {
       this.message = error;
@@ -30,6 +16,26 @@ class CompilerError extends Error {
   }
   toJSON() {
     return serializeError(this);
+  }
+}
+
+class BuildError extends SerializableError {
+  constructor(error) {
+    super(error);
+    this.name = this.constructor.name;
+    if (typeof error === 'string') {
+      this.stack = `${this.name}: ${stripAnsi(error)}`;
+      this.message = this.stack.slice(0, this.stack.indexOf(EOL));
+    }
+  }
+}
+
+exports.BuildError = BuildError;
+
+class CompilerError extends SerializableError {
+  constructor(error) {
+    super(error);
+    this.name = this.constructor.name;
   }
 }
 
