@@ -4,8 +4,6 @@ const { dirname, relative } = require('path');
 
 const {
   EnvironmentPlugin,
-  HashedModuleIdsPlugin,
-  NamedModulesPlugin,
   optimize: { ModuleConcatenationPlugin },
 } = require('webpack');
 
@@ -123,6 +121,7 @@ module.exports = function getConfig(config, name) {
     },
     externals: [],
     optimization: {
+      moduleIds: isProduction ? 'hased' : 'named',
       splitChunks: {
         chunks: 'all',
         name: false,
@@ -137,7 +136,6 @@ module.exports = function getConfig(config, name) {
       ],
     },
     plugins: [
-      new (isProduction ? HashedModuleIdsPlugin : NamedModulesPlugin)(),
       new ModuleConcatenationPlugin(),
       new EnvironmentPlugin({ NODE_ENV: 'development' }),
     ],
