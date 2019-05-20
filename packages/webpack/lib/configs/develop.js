@@ -82,7 +82,7 @@ module.exports = function getConfig(config, name) {
       path: config.buildDir,
       publicPath: '/',
       pathinfo: true,
-      filename: getAssetPath(`${config.name}.js`),
+      filename: getAssetPath(`${config.name}-[id].js`),
       chunkFilename: getAssetPath(`${config.name}-[id].js`),
       devtoolModuleFilenameTemplate: (info) =>
         relative(config.rootDir, info.absoluteResourcePath),
@@ -127,6 +127,6 @@ module.exports = function getConfig(config, name) {
       maxAssetSize: 52428800,
     },
     devtool: 'cheap-module-eval-source-map',
-    watchOptions: { aggregateTimeout: 300, ignored: /node_modules/ },
+    watchOptions: { aggregateTimeout: 300, ignored: '**/node_modules/**' },
   };
 };

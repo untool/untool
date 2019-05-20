@@ -139,6 +139,6 @@ module.exports = function getConfig(config, name) {
       maxAssetSize: 52428800,
     },
     devtool: 'inline-source-map',
-    watchOptions: { aggregateTimeout: 300, ignored: /node_modules/ },
+    watchOptions: { aggregateTimeout: 300, ignored: '**/node_modules/**' },
   };
 };
