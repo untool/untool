@@ -12,7 +12,7 @@ const { serializeError } = require('serialize-error');
 const EnhancedPromise = require('eprom');
 
 const { configure } = require('../../');
-const { BuildError, CompilerError } = require('../utils/errors');
+const { SerializableError } = require('../utils/errors');
 
 function createCompiler(webpackConfig) {
   const compiler = webpack(webpackConfig);
@@ -21,10 +21,10 @@ function createCompiler(webpackConfig) {
   return new Promise((resolve, reject) => {
     compiler.run((compileError, stats) => {
       if (compileError) {
-        reject(new CompilerError(compileError));
+        reject(new SerializableError(compileError));
       } else if (stats.hasErrors()) {
         reject(
-          new BuildError(
+          new SerializableError(
             stats.toJson({ all: false, errors: true }).errors.shift()
           )
         );
@@ -58,11 +58,7 @@ function createWatchCompiler(buildConfigArgs, options, overrides) {
   return new EnhancedPromise((resolve, reject, reset) => {
     child.on('message', ({ type, data, reason }) => {
       if (type === 'reject') {
-        reject(
-          typeof reason === 'string'
-            ? new BuildError(reason)
-            : new CompilerError(reason)
-        );
+        reject(new SerializableError(reason));
       } else if (type === 'reset') {
         reset();
       } else if (type === 'resolve') {
@@ -89,12 +85,12 @@ process.on('message', (message) => {
       if (compileError) {
         process.send({
           type: 'reject',
-          reason: new CompilerError(compileError),
+          reason: new SerializableError(compileError),
         });
       } else if (stats.hasErrors()) {
         process.send({
           type: 'reject',
-          reason: new BuildError(
+          reason: new SerializableError(
             stats.toJson({ all: false, errors: true }).errors.shift()
           ),
         });

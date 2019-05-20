@@ -6,7 +6,7 @@ const prettyMS = require('pretty-ms');
 const prettyBytes = require('pretty-bytes');
 const chalk = require('chalk');
 
-const { BuildError } = require('../utils/errors');
+const { SerializableError } = require('../utils/errors');
 
 const statsToJsonOptions = {
   all: false,
@@ -97,7 +97,7 @@ exports.LoggerPlugin = class LoggerPlugin {
       if (hasErrors || hasWarnings) {
         errors
           .concat(...children.map((c) => c.errors))
-          .forEach((error) => this.logger.error(new BuildError(error)));
+          .forEach((error) => this.logger.error(new SerializableError(error)));
         warnings
           .concat(...children.map((c) => c.warnings))
           .forEach((warning) => this.logger.warn(warning));
