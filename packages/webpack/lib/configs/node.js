@@ -133,8 +133,8 @@ module.exports = function getConfig(config, name) {
     ],
     performance: {
       hints: false,
-      maxEntrypointSize: 5242880,
-      maxAssetSize: 5242880,
+      maxEntrypointSize: 52428800,
+      maxAssetSize: 52428800,
     },
     devtool: 'inline-source-map',
     watchOptions: { aggregateTimeout: 300, ignored: /node_modules/ },
