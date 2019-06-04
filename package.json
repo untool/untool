@@ -38,7 +38,7 @@
     "@commitlint/cli": "^8.0.0",
     "@commitlint/config-conventional": "^8.0.0",
     "@commitlint/travis-cli": "^8.0.0",
-    "ava": "^1.0.1",
+    "ava": "^2.0.0",
     "babel-eslint": "^10.0.0",
     "canarist": "^1.2.1",
     "cycle": "^1.0.3",
