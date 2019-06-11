@@ -35,7 +35,7 @@
     "pretty-bytes": "^5.1.0",
     "pretty-ms": "^5.0.0",
     "split": "^1.0.1",
-    "supports-color": "^6.0.0"
+    "supports-color": "^7.0.0"
   },
   "engines": {
     "node": ">8.6.0"
