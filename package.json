@@ -102,16 +102,29 @@
     "extends": [
       "config:base"
     ],
-    "ignoreDeps": [
-      "prettier"
-    ],
     "lockFileMaintenance": {
       "enabled": true
     },
-    "pinVersions": false,
-    "prCreation": "not-pending",
+    "ignoreDeps": [
+      "prettier"
+    ],
     "semanticCommits": true,
-    "semanticPrefix": "chore:"
+    "semanticCommitScope": "{{parentDir}}",
+    "packageRules": [
+      {
+        "paths": ["package.json"],
+        "semanticCommitScope": null
+      },
+      {
+        "depTypeList": ["devDependencies"],
+        "rangeStrategy": "bump"
+      },
+      {
+        "depTypeList": ["peerDependencies"],
+        "rangeStrategy": "widen"
+      }
+    ],
+    "prCreation": "not-pending"
   },
   "prettier": {
     "arrowParens": "always",
