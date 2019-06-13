@@ -60,7 +60,7 @@
     "react-helmet": "^5.2.0",
     "react-redux": "^7.0.0",
     "react-router-dom": "^4.2.2 || ^5.0.0",
-    "redux": "^4.0.0",
+    "redux": "^4.0.1",
     "rimraf": "^2.6.2",
     "supertest": "^4.0.0",
     "uuid": "^3.2.1"
