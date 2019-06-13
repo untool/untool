@@ -124,6 +124,7 @@
         "rangeStrategy": "widen"
       }
     ],
+    "pinVersions": false,
     "prCreation": "not-pending"
   },
   "prettier": {
