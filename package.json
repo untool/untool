@@ -47,7 +47,7 @@
     "eslint-config-prettier": "^4.0.0",
     "eslint-plugin-prettier": "^3.0.0",
     "flat": "^4.0.0",
-    "husky": "^2.0.0",
+    "husky": "^2.4.1",
     "is-plain-obj": "^2.0.0",
     "lerna": "^3.0.0",
     "lint-staged": "^8.0.0",
