@@ -34,7 +34,7 @@
     "packages/*"
   ],
   "devDependencies": {
-    "@babel/core": "^7.4.0",
+    "@babel/core": "^7.4.5",
     "@commitlint/cli": "^8.0.0",
     "@commitlint/config-conventional": "^8.0.0",
     "@commitlint/travis-cli": "^8.0.0",
