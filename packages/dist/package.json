@@ -29,7 +29,7 @@
     "@untool/react": "^1.8.3",
     "@untool/webpack": "^1.8.3",
     "@untool/yargs": "^1.8.3",
-    "mixinable": "^4.0.0"
+    "mixinable": "4.0.0"
   },
   "peerDependencies": {
     "react": "^16.4.0",

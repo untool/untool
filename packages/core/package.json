@@ -16,19 +16,19 @@
   },
   "homepage": "https://github.com/untool/untool#readme",
   "dependencies": {
-    "ajv": "^6.9.2",
-    "check-error": "^1.0.2",
-    "cosmiconfig": "^5.0.5",
-    "debug": "^4.0.0",
-    "dotenv": "^8.0.0",
-    "enhanced-resolve": "^4.0.0",
-    "escape-string-regexp": "^2.0.0",
-    "find-up": "^4.0.0",
-    "flat": "^4.0.0",
-    "is-plain-obj": "^2.0.0",
-    "lodash.mergewith": "^4.6.1",
-    "mixinable": "^4.0.0",
-    "supports-color": "^7.0.0"
+    "ajv": "6.10.0",
+    "check-error": "1.0.2",
+    "cosmiconfig": "5.2.1",
+    "debug": "4.1.1",
+    "dotenv": "8.0.0",
+    "enhanced-resolve": "4.1.0",
+    "escape-string-regexp": "2.0.0",
+    "find-up": "4.0.0",
+    "flat": "4.1.0",
+    "is-plain-obj": "2.0.0",
+    "lodash.mergewith": "4.6.1",
+    "mixinable": "4.0.0",
+    "supports-color": "7.0.0"
   },
   "engines": {
     "node": ">8.6.0"
