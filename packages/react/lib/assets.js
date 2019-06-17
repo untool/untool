@@ -8,11 +8,7 @@ module.exports = (stats, modules) => {
     (result, module) => [...result, ...moduleFileMap[module]],
     []
   );
-  return [
-    ...vendorFiles.sort((a, b) => b.localeCompare(a)),
-    ...moduleFiles.sort((a, b) => b.localeCompare(a)),
-    ...entryFiles.sort((a, b) => b.localeCompare(a)),
-  ]
+  return [...vendorFiles, ...moduleFiles, ...entryFiles]
     .filter(
       (asset, index, self) =>
         self.indexOf(asset) === index &&
