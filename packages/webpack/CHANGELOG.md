@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/untool/untool/compare/v1.8.3...v1.9.0) (2019-06-17)
+
+
+### Bug Fixes
+
+* update dependency file-loader to v4 ([3b6fe52](https://github.com/untool/untool/commit/3b6fe52))
+* update dependency supports-color to v7 ([998bffc](https://github.com/untool/untool/commit/998bffc))
+* update dependency url-loader to v2 ([023f537](https://github.com/untool/untool/commit/023f537))
+* **webpack:** report assets over size limit ([b9f0d9f](https://github.com/untool/untool/commit/b9f0d9f))
+* **webpack:** suppress node build size warnings ([4a25339](https://github.com/untool/untool/commit/4a25339))
+
+
+### Features
+
+* **webpack:** print explanatory message if bundles exceed size limits ([ced133b](https://github.com/untool/untool/commit/ced133b))
+
+
+
+
+
 ## [1.8.3](https://github.com/untool/untool/compare/v1.8.2...v1.8.3) (2019-05-13)
 
 **Note:** Version bump only for package @untool/webpack

@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.9.0](https://github.com/untool/untool/compare/v1.8.3...v1.9.0) (2019-06-17)
+
+
+### Bug Fixes
+
+* **react:** rely on webpack to sort chunks correctly ([c11a85e](https://github.com/untool/untool/commit/c11a85e))
+
+
+
+
+
 ## [1.8.3](https://github.com/untool/untool/compare/v1.8.2...v1.8.3) (2019-05-13)
 
 **Note:** Version bump only for package @untool/react
