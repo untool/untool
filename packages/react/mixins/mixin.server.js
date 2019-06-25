@@ -5,7 +5,7 @@ const { parse } = require('url');
 const { createElement, isValidElement } = require('react');
 const { StaticRouter } = require('react-router-dom');
 
-const isPlainObject = require('is-plain-object');
+const isPlainObject = require('is-plain-obj');
 
 const {
   override: overrideSync,
