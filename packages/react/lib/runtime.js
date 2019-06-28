@@ -82,11 +82,21 @@ exports.importComponent = ({ load, moduleId }, name = 'default') => {
         const state = { Component: null, error: null, loading: false };
         Promise.resolve()
           .then(() => (loader ? loader(load) : load()))
-          .then(
-            (module) => this.setState({ ...state, Component: resolve(module) }),
-            (error) => this.setState({ ...state, error })
-          );
+          .then((module) => {
+            if (this._isMounted) {
+              this.setState({ ...state, Component: resolve(module) });
+            }
+          })
+          .catch((error) => {
+            if (this._isMounted) {
+              this.setState({ ...state, error });
+            }
+          });
       }
+      this._isMounted = true;
+    }
+    componentWillUnmount() {
+      this._isMounted = false;
     }
     render() {
       const {
