@@ -1,6 +1,6 @@
 {
   "name": "@untool/webpack",
-  "version": "1.9.0",
+  "version": "1.9.1",
   "description": "untool webpack mixin",
   "repository": {
     "type": "git",
@@ -19,9 +19,9 @@
     "@babel/core": "^7.4.0",
     "@babel/plugin-syntax-dynamic-import": "^7.0.0",
     "@babel/preset-env": "^7.4.2",
-    "@untool/core": "^1.9.0",
-    "@untool/express": "^1.9.0",
-    "@untool/yargs": "^1.9.0",
+    "@untool/core": "^1.9.1",
+    "@untool/express": "^1.9.1",
+    "@untool/yargs": "^1.9.1",
     "babel-loader": "^8.0.6",
     "babel-plugin-dynamic-import-node": "^2.0.0",
     "caniuse-lite": "^1.0.30000898",

@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.1](https://github.com/untool/untool/compare/v1.9.0...v1.9.1) (2019-07-01)
+
+
+### Bug Fixes
+
+* **react:** prevent state updates after unmounting ([1871a48](https://github.com/untool/untool/commit/1871a48))
+* **react:** use is-plain-obj instead of is-plain-object ([6b0304e](https://github.com/untool/untool/commit/6b0304e))
+
+
+
+
+
 # [1.9.0](https://github.com/untool/untool/compare/v1.8.3...v1.9.0) (2019-06-17)
 
 
