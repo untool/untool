@@ -1,7 +1,5 @@
 'use strict';
 
-const { dirname } = require('path');
-
 const debug = require('debug')('untool:webpack:stats');
 
 const {
@@ -93,14 +91,9 @@ class WebpackBuildMixin extends Mixin {
 
     collectResults(
       versionMismatchReporter,
-      ...[
-        getHoistedVersionWarning(_workspace, __dirname, '@babel/polyfill'),
-        getHoistedVersionWarning(
-          _workspace,
-          dirname(require.resolve('@babel/polyfill/package.json')),
-          'core-js'
-        ),
-      ].filter(Boolean)
+      ...[getHoistedVersionWarning(_workspace, __dirname, 'core-js')].filter(
+        Boolean
+      )
     );
   }
 }

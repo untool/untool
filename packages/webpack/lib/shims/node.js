@@ -3,7 +3,7 @@
 if (!require('module').prototype._compile.__sourceMapSupport) {
   require('source-map-support/register');
 }
-require('@babel/polyfill');
+require('core-js');
 
 if (module.hot) {
   require('webpack/hot/log').setLogLevel('none');
