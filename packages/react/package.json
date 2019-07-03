@@ -28,7 +28,8 @@
     "mixinable": "^4.0.0",
     "pathifist": "^1.0.0",
     "prop-types": "^15.7.2",
-    "serialize-javascript": "^1.4.0"
+    "serialize-javascript": "^1.4.0",
+    "snyk": "^1.189.0"
   },
   "peerDependencies": {
     "react": "^16.4.0",
@@ -38,5 +39,10 @@
   },
   "engines": {
     "node": ">8.6.0"
-  }
+  },
+  "scripts": {
+    "snyk-protect": "snyk protect",
+    "prepublish": "npm run snyk-protect"
+  },
+  "snyk": true
 }
