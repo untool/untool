@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.2](https://github.com/untool/untool/compare/v1.9.1...v1.9.2) (2019-07-11)
+
+
+### Bug Fixes
+
+* **core:** upgrade lodash dependency ([918fb7b](https://github.com/untool/untool/commit/918fb7b))
+
+
+
+
+
 ## [1.9.1](https://github.com/untool/untool/compare/v1.9.0...v1.9.1) (2019-07-01)
 
 **Note:** Version bump only for package @untool/core

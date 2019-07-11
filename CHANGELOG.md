@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.2](https://github.com/untool/untool/compare/v1.9.1...v1.9.2) (2019-07-11)
+
+
+### Bug Fixes
+
+* bump lodash version globally ([feb6c1f](https://github.com/untool/untool/commit/feb6c1f))
+* **core:** upgrade lodash dependency ([918fb7b](https://github.com/untool/untool/commit/918fb7b))
+* **webpack:** revert [#416](https://github.com/untool/untool/issues/416) (core-js upgrade) ([74b981e](https://github.com/untool/untool/commit/74b981e))
+* update dependency core-js to v3 ([6b11458](https://github.com/untool/untool/commit/6b11458))
+
+
+
+
+
 ## [1.9.1](https://github.com/untool/untool/compare/v1.9.0...v1.9.1) (2019-07-01)
 
 
