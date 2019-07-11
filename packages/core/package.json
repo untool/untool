@@ -26,7 +26,7 @@
     "find-up": "^4.0.0",
     "flat": "^4.0.0",
     "is-plain-obj": "^2.0.0",
-    "lodash.mergewith": "^4.6.1",
+    "lodash.mergewith": "^4.6.2",
     "mixinable": "^4.0.0",
     "supports-color": "^7.0.0"
   },
