@@ -33,6 +33,9 @@
   "workspaces": [
     "packages/*"
   ],
+  "resolutions": {
+    "lodash": "^4.17.13"
+  },
   "devDependencies": {
     "@babel/core": "^7.4.5",
     "@commitlint/cli": "^8.0.0",
