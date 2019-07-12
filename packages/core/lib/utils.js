@@ -35,11 +35,10 @@ exports.validate = (strategy, checkArgs = () => {}, checkResult = () => {}) =>
 
 exports.merge = (...args) =>
   mergeWith({}, ...args, (objValue, srcValue, key) => {
-    if (Array.isArray(objValue)) {
-      if ('mixins' === key) {
-        return [...objValue, ...srcValue];
-      }
-      return srcValue;
+    if (Array.isArray(objValue) && 'mixins' === key) {
+      return [...objValue, ...srcValue].filter(
+        (curr, index, self) => self.indexOf(curr) === index
+      );
     }
   });
 
