@@ -17,7 +17,7 @@ class InstrumentMixin extends Mixin {
   }
   configureBuild(...args) {
     events.emit('configureBuild', ...args);
-    const [webpackConfig, , target] = args;
+    const [webpackConfig, , { target }] = args;
     if (target === 'node') {
       webpackConfig.externals = [
         function(context, request, callback) {

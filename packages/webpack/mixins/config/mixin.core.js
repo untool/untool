@@ -1,6 +1,6 @@
 'use strict';
 
-const { existsSync: exists } = require('fs');
+const { basename } = require('path');
 
 const isPlainObject = require('is-plain-obj');
 
@@ -18,33 +18,27 @@ const {
 } = require('@untool/core');
 
 class WebpackConfigMixin extends Mixin {
-  getBuildConfig(target, baseConfig) {
-    const { loaderConfigs = {}, ...webpackConfig } = (() => {
-      switch (baseConfig || target) {
-        case 'build':
-          return require('../../lib/configs/build')(this.config, target);
-        case 'develop':
-          return require('../../lib/configs/develop')(this.config, target);
-        case 'node':
-          return require('../../lib/configs/node')(this.config, target);
-        default:
-          if (baseConfig && exists(baseConfig)) {
-            return require(baseConfig)(this.config, target);
-          }
-          throw new Error(`Can't get build config ${baseConfig || target}`);
-      }
-    })();
-    this.configureBuild(webpackConfig, loaderConfigs, target);
+  getBuildConfig(target, watch = false) {
+    const getBuildConfig = ['browser', 'node'].includes(target)
+      ? require(`../../lib/configs/${target}`)
+      : require(target);
+    target = basename(target, '.js');
+    const { loaderConfigs = {}, ...webpackConfig } = getBuildConfig(
+      this.config,
+      target,
+      watch
+    );
+    this.configureBuild(webpackConfig, loaderConfigs, { target, watch });
     debugConfig(target, webpackConfig);
     return webpackConfig;
   }
   collectBuildConfigs(webpackConfigs) {
-    webpackConfigs.push(this.getBuildConfig('build'));
+    webpackConfigs.push(this.getBuildConfig('browser'));
     if (!this.options.static) {
       webpackConfigs.push(this.getBuildConfig('node'));
     }
   }
-  configureBuild(webpackConfig, loaderConfigs, target) {
+  configureBuild(webpackConfig, loaderConfigs, { target }) {
     const { module } = webpackConfig;
     const configLoaderConfig = {
       test: require.resolve('@untool/core/lib/config'),
@@ -53,9 +47,6 @@ class WebpackConfigMixin extends Mixin {
     };
     if (target === 'node') {
       configLoaderConfig.options.type = 'server';
-    }
-    if (target === 'develop' || target === 'build') {
-      configLoaderConfig.options.type = 'browser';
     }
     module.rules.push(configLoaderConfig);
     if (typeof this.getLogger === 'function') {
@@ -69,14 +60,14 @@ class WebpackConfigMixin extends Mixin {
 }
 
 WebpackConfigMixin.strategies = {
-  getBuildConfig: validate(callable, ([target, baseConfig]) => {
+  getBuildConfig: validate(callable, ([target, watch]) => {
     invariant(
       typeof target === 'string',
       'getBuildConfig(): Received invalid target string'
     );
     invariant(
-      !baseConfig || typeof baseConfig === 'string',
-      'getBuildConfig(): Received invalid baseConfig string'
+      typeof watch === 'undefined' || typeof watch === 'boolean',
+      'getBuildConfig(): Received invalid watch boolean'
     );
   }),
   collectBuildConfigs: validate(sequence, ([webpackConfigs]) => {
@@ -85,23 +76,24 @@ WebpackConfigMixin.strategies = {
       'collectBuildConfigs(): Received invalid webpackConfigs array'
     );
   }),
-  configureBuild: validate(
-    sequence,
-    ([webpackConfig, loaderConfigs, target]) => {
-      invariant(
-        isPlainObject(webpackConfig),
-        'configureBuild(): Received invalid webpackConfig object'
-      );
-      invariant(
-        isPlainObject(loaderConfigs),
-        'configureBuild(): Received invalid loaderConfigs object'
-      );
-      invariant(
-        typeof target === 'string',
-        'configureBuild(): Received invalid target string'
-      );
-    }
-  ),
+  configureBuild: validate(sequence, ([webpackConfig, loaderConfigs, env]) => {
+    invariant(
+      isPlainObject(webpackConfig),
+      'configureBuild(): Received invalid webpackConfig object'
+    );
+    invariant(
+      isPlainObject(loaderConfigs),
+      'configureBuild(): Received invalid loaderConfigs object'
+    );
+    invariant(
+      typeof env.target === 'string',
+      'configureBuild(): Received invalid env.target string'
+    );
+    invariant(
+      typeof env.watch === 'boolean',
+      'configureBuild(): Received invalid env.watch boolean'
+    );
+  }),
 };
 
 module.exports = WebpackConfigMixin;

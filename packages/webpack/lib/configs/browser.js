@@ -4,16 +4,21 @@ const { relative } = require('path');
 
 const {
   EnvironmentPlugin,
+  HashedModuleIdsPlugin,
   HotModuleReplacementPlugin,
   NamedModulesPlugin,
+  optimize: { ModuleConcatenationPlugin },
 } = require('webpack');
+
+const TerserPlugin = require('terser-webpack-plugin');
 
 const { join, trimSlashes } = require('pathifist');
 
 const getModules = require('../utils/modules');
 
-module.exports = function getConfig(config, name) {
+module.exports = function getConfig(config, name, watch) {
   const getAssetPath = (...arg) => trimSlashes(join(config.assetPath, ...arg));
+  const isProduction = process.env.NODE_ENV === 'production';
 
   const jsLoaderConfig = {
     test: [/\.m?js$/],
@@ -21,9 +26,9 @@ module.exports = function getConfig(config, name) {
     loader: require.resolve('babel-loader'),
     options: {
       babelrc: false,
-      compact: false,
+      compact: isProduction,
       cacheDirectory: true,
-      cacheIdentifier: `development:${name}`,
+      cacheIdentifier: `${process.env.NODE_ENV || 'development'}:browser`,
       presets: [
         [
           require.resolve('@babel/preset-env'),
@@ -77,22 +82,29 @@ module.exports = function getConfig(config, name) {
       fileLoaderConfig,
       allLoaderConfigs,
     },
-    name,
-    mode: 'development',
+    name: 'browser',
+    mode: isProduction ? 'production' : 'development',
+    bail: isProduction,
     context: config.rootDir,
-    entry: require.resolve('../shims/develop'),
+    entry: require.resolve(watch ? '../shims/develop' : '../shims/build'),
     output: {
       path: config.buildDir,
       publicPath: '/',
       pathinfo: true,
-      filename: getAssetPath(`${config.name}.js`),
-      chunkFilename: getAssetPath(`${config.name}-[id].js`),
+      filename: getAssetPath(
+        `${config.name}${watch ? '' : '-[chunkhash:12]'}.js`
+      ),
+      chunkFilename: getAssetPath(
+        `${config.name}-[id]${watch ? '' : '-[chunkhash:12]'}.js`
+      ),
       devtoolModuleFilenameTemplate: (info) =>
         relative(config.rootDir, info.absoluteResourcePath),
     },
     resolve: {
       modules: getModules(config.rootDir),
-      alias: { '@untool/entrypoint': config.rootDir },
+      alias: {
+        '@untool/entrypoint': config.rootDir,
+      },
       extensions: ['.mjs', '.js'],
       mainFields: [
         'esnext:browser',
@@ -111,19 +123,38 @@ module.exports = function getConfig(config, name) {
     },
     externals: [],
     optimization: {
-      splitChunks: { chunks: 'all', name: false },
+      splitChunks: {
+        chunks: 'all',
+        name: false,
+      },
+      minimizer: isProduction
+        ? [
+            new TerserPlugin({
+              cache: true,
+              parallel: true,
+              sourceMap: true,
+              terserOptions: {
+                compress: {
+                  inline: 1, // https://github.com/mishoo/UglifyJS2/issues/2842
+                },
+                output: { comments: false },
+              },
+            }),
+          ]
+        : [],
     },
     plugins: [
-      new NamedModulesPlugin(),
-      new HotModuleReplacementPlugin(),
+      new (isProduction ? HashedModuleIdsPlugin : NamedModulesPlugin)(),
+      new (watch ? HotModuleReplacementPlugin : ModuleConcatenationPlugin)(),
       new EnvironmentPlugin({ NODE_ENV: 'development' }),
     ],
     performance: {
       hints: false,
-      maxEntrypointSize: 5242880,
-      maxAssetSize: 5242880,
+      maxEntrypointSize: isProduction ? 262144 : 5242880,
+      maxAssetSize: isProduction ? 262144 : 5242880,
+      assetFilter: (filename) => filename.endsWith('.js'),
     },
-    devtool: 'cheap-module-eval-source-map',
+    devtool: watch ? 'cheap-module-eval-source-map' : 'hidden-source-map',
     watchOptions: { aggregateTimeout: 300, ignored: /node_modules/ },
   };
 };

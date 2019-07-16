@@ -15,7 +15,7 @@ test('core lifecycle hooks', (t) =>
       api.getMixin().then((mixin) => t.snapshot(mixin)),
       api.getConfig().then((config) => t.snapshot(config)),
 
-      api.getWebpackConfig('build').then((config) => t.snapshot(config)),
+      api.getWebpackConfig('browser').then((config) => t.snapshot(config)),
       api.getWebpackConfig('node').then((config) => t.snapshot(config)),
 
       api.getArtefacts().then((artefacts) => t.snapshot(artefacts)),

@@ -25,8 +25,8 @@ class WebpackRenderMixin extends Mixin {
       return isString ? { url } : { ...location, url };
     });
   }
-  configureBuild(webpackConfig, loaderConfigs, target) {
-    if (target === 'build' && this.options.static) {
+  configureBuild(webpackConfig, loaderConfigs, { target, watch }) {
+    if (target === 'browser' && !watch) {
       const { plugins } = webpackConfig;
       const { RenderPlugin } = require('../../lib/plugins/render');
       plugins.push(
