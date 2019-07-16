@@ -19,7 +19,7 @@ const {
 
 class WebpackConfigMixin extends Mixin {
   getBuildConfig(target, watch = false) {
-    const getBuildConfig = ['browser', 'node'].includes(target)
+    const getBuildConfig = ['browser', 'server'].includes(target)
       ? require(`../../lib/configs/${target}`)
       : require(target);
     target = basename(target, '.js');
@@ -35,7 +35,7 @@ class WebpackConfigMixin extends Mixin {
   collectBuildConfigs(webpackConfigs) {
     webpackConfigs.push(this.getBuildConfig('browser'));
     if (!this.options.static) {
-      webpackConfigs.push(this.getBuildConfig('node'));
+      webpackConfigs.push(this.getBuildConfig('server'));
     }
   }
   configureBuild(webpackConfig, loaderConfigs, { target }) {
@@ -45,9 +45,6 @@ class WebpackConfigMixin extends Mixin {
       loader: require.resolve('../../lib/utils/loader'),
       options: { type: target, config: this.config },
     };
-    if (target === 'node') {
-      configLoaderConfig.options.type = 'server';
-    }
     module.rules.push(configLoaderConfig);
     if (typeof this.getLogger === 'function') {
       const { LoggerPlugin } = require('../../lib/plugins/log');

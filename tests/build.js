@@ -16,7 +16,7 @@ test('core lifecycle hooks', (t) =>
       api.getConfig().then((config) => t.snapshot(config)),
 
       api.getWebpackConfig('browser').then((config) => t.snapshot(config)),
-      api.getWebpackConfig('node').then((config) => t.snapshot(config)),
+      api.getWebpackConfig('server').then((config) => t.snapshot(config)),
 
       api.getArtefacts().then((artefacts) => t.snapshot(artefacts)),
     ])

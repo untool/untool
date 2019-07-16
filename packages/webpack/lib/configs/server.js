@@ -14,7 +14,7 @@ const { join, trimSlashes } = require('pathifist');
 
 const getModules = require('../utils/modules');
 
-module.exports = function getConfig(config, name) {
+module.exports = function getConfig(config) {
   const getAssetPath = (...arg) => trimSlashes(join(config.assetPath, ...arg));
   const isProduction = process.env.NODE_ENV === 'production';
 
@@ -26,7 +26,7 @@ module.exports = function getConfig(config, name) {
       babelrc: false,
       compact: isProduction,
       cacheDirectory: true,
-      cacheIdentifier: `${process.env.NODE_ENV || 'development'}:${name}`,
+      cacheIdentifier: `${process.env.NODE_ENV || 'development'}:server`,
       presets: [
         [
           require.resolve('@babel/preset-env'),
@@ -82,16 +82,16 @@ module.exports = function getConfig(config, name) {
       fileLoaderConfig,
       allLoaderConfigs,
     },
-    name,
+    name: 'server',
     target: 'async-node',
     mode: isProduction ? 'production' : 'development',
     bail: isProduction,
     context: config.rootDir,
     entry: isProduction
-      ? require.resolve('../shims/node')
+      ? require.resolve('../shims/server')
       : [
           require.resolve('webpack/hot/signal') + '?RELOAD',
-          require.resolve('../shims/node'),
+          require.resolve('../shims/server'),
         ],
     output: {
       path: config.serverDir,
