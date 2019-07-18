@@ -145,6 +145,7 @@ module.exports = function getConfig(config, name) {
       hints: false,
       maxEntrypointSize: 262144,
       maxAssetSize: 262144,
+      assetFilter: (filename) => filename.endsWith('.js'),
     },
     devtool: 'hidden-source-map',
   };

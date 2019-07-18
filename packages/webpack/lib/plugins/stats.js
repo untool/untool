@@ -46,7 +46,7 @@ const extractFiles = (chunkData, rawPublicPath) => {
 };
 
 exports.StatsPlugin = class StatsPlugin {
-  constructor(enhancedPromise) {
+  constructor(enhancedPromise, { statsFile }) {
     this.apply = (compiler) => {
       compiler.hooks.compilation.tap('StatsPlugin', (compilation) => {
         compilation.hooks.additionalAssets.tap('StatsPlugin', () => {
@@ -55,33 +55,20 @@ exports.StatsPlugin = class StatsPlugin {
             return;
           }
           try {
-            enhancedPromise.resolve({
+            const stats = {
               ...compilation.getStats().toJson({ source: false }),
               ...extractFiles(analyzeCompilation(compilation), publicPath),
-            });
+            };
+            compilation.assets[statsFile] = new RawSource(
+              JSON.stringify(stats)
+            );
+            enhancedPromise.resolve(stats);
           } catch (error) {
             enhancedPromise.reject(error);
           }
         });
       });
       compiler.hooks.watchRun.tap('StatsPlugin', () => enhancedPromise.reset());
-    };
-  }
-};
-
-exports.StatsFilePlugin = class StatsFilePlugin {
-  constructor(enhancedPromise, { statsFile }) {
-    this.apply = (compiler) => {
-      compiler.hooks.compilation.tap('StatsFilePlugin', (compilation) =>
-        compilation.hooks.additionalAssets.tapPromise('StatsFilePlugin', () =>
-          enhancedPromise.then(
-            (stats) =>
-              (compilation.assets[statsFile] = new RawSource(
-                JSON.stringify(stats)
-              ))
-          )
-        )
-      );
     };
   }
 };

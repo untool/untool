@@ -28,17 +28,13 @@ class WebpackStatsMixin extends Mixin {
     const { plugins } = webpackConfig;
     if (target === 'develop' || target === 'build') {
       const { StatsPlugin } = require('../../lib/plugins/stats');
-      plugins.unshift(new StatsPlugin(this.statsPromise));
-    }
-    if (target === 'node' && this.writeStats) {
-      const { StatsFilePlugin } = require('../../lib/plugins/stats');
-      plugins.unshift(new StatsFilePlugin(this.statsPromise, this.config));
+      plugins.unshift(new StatsPlugin(this.statsPromise, this.config));
     }
   }
   configureServer(app, middlewares, mode) {
     if (mode === 'serve') {
-      const { serverDir, statsFile } = this.config;
-      const statsFilePath = join(serverDir, statsFile);
+      const { buildDir, statsFile } = this.config;
+      const statsFilePath = join(buildDir, statsFile);
       this.statsPromise.resolve(
         exists(statsFilePath) ? require(statsFilePath) : {}
       );
@@ -48,11 +44,6 @@ class WebpackStatsMixin extends Mixin {
   }
   handleArguments(argv) {
     this.options = { ...this.options, ...argv };
-    const { _: commands = [] } = this.options;
-    const isProduction = process.env.NODE_ENV === 'production';
-    this.writeStats =
-      commands.includes('build') ||
-      (commands.includes('start') && isProduction);
   }
 }
 
