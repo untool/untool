@@ -1,8 +1,5 @@
 'use strict';
 
-const { existsSync: exists } = require('fs');
-const { join } = require('path');
-
 const {
   async: { override },
 } = require('mixinable');
@@ -35,19 +32,14 @@ class WebpackRenderMixin extends Mixin {
     }
   }
   configureServer(app, middlewares, mode) {
-    if (mode === 'static' || mode === 'develop') {
-      const createRenderMiddleware = require('../../lib/middlewares/render');
-      middlewares.routes.push(
-        createRenderMiddleware(['server'], mode === 'develop', this)
-      );
-    }
-    if (mode === 'serve') {
-      const { serverDir, serverFile } = this.config;
-      const serverFilePath = join(serverDir, serverFile);
-      if (exists(serverFilePath)) {
-        middlewares.routes.push(require(serverFilePath));
-      }
-    }
+    const createRenderMiddleware = require('../../lib/middlewares/render');
+    middlewares.routes.push(
+      createRenderMiddleware(
+        mode === 'static' || mode === 'develop',
+        mode === 'develop',
+        this
+      )
+    );
   }
   configureCommand({ command, builder }) {
     if (command === 'start' || command === 'build') {

@@ -4,19 +4,34 @@ const { Mixin } = require('untool');
 
 const events = new EventEmitter();
 
+const emit =
+  typeof process.send === 'function' &&
+  process.env.IS_UNTOOL_CHILD_PROCESS_COMPILER === 'true'
+    ? (...args) =>
+        process.send({
+          name: 'instrument-mixin-event',
+          args,
+        })
+    : events.emit.bind(events);
+
+process.on('debug-child-message', (message) => {
+  if (message.name !== 'instrument-mixin-event') return;
+  events.emit(...message.args);
+});
+
 class InstrumentMixin extends Mixin {
   constructor(...args) {
     super(...args);
-    events.emit('constructor', this, ...args);
+    emit('constructor', this, ...args);
   }
   configureServer(...args) {
-    events.emit('configureServer', ...args);
+    emit('configureServer', ...args);
   }
   inspectServer(...args) {
-    events.emit('inspectServer', ...args);
+    emit('inspectServer', ...args);
   }
   configureBuild(...args) {
-    events.emit('configureBuild', ...args);
+    emit('configureBuild', ...args);
     const [webpackConfig, , { target }] = args;
     if (target === 'server') {
       webpackConfig.externals = [
@@ -30,13 +45,13 @@ class InstrumentMixin extends Mixin {
     }
   }
   inspectBuild(...args) {
-    events.emit('inspectBuild', ...args);
+    emit('inspectBuild', ...args);
   }
   registerCommands(...args) {
-    events.emit('registerCommands', ...args);
+    emit('registerCommands', ...args);
   }
   handleArguments(...args) {
-    events.emit('handleArguments', ...args);
+    emit('handleArguments', ...args);
   }
 }
 

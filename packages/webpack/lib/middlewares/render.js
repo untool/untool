@@ -1,18 +1,23 @@
 'use strict';
 
-const { createCompiler, createWatchCompiler } = require('../utils/compiler');
+const { join } = require('path');
+const { existsSync: exists } = require('fs');
+const { createCompiler } = require('../utils/compiler');
 
-module.exports = (buildConfigArgs, watch, mixin) => {
+module.exports = (build, watch, { options, config }) => {
+  const { _overrides: overrides, serverDir, serverFile } = config;
+  const serverFilePath = join(serverDir, serverFile);
   let enhancedPromise;
-  if (mixin) {
-    const { options, config, getBuildConfig } = mixin;
-    const { _overrides: overrides } = config;
-    const webpackConfig = getBuildConfig(...buildConfigArgs);
-    enhancedPromise = watch
-      ? createWatchCompiler(buildConfigArgs, options, overrides)
-      : createCompiler(webpackConfig);
+  if (build) {
+    enhancedPromise = createCompiler(
+      { target: 'server', watch },
+      options,
+      overrides
+    );
+  } else if (exists(serverFilePath)) {
+    enhancedPromise = Promise.resolve(require(serverFilePath));
   } else {
-    enhancedPromise = createCompiler(buildConfigArgs);
+    enhancedPromise = Promise.resolve((req, res, next) => next());
   }
   return function renderMiddleware(req, res, next) {
     enhancedPromise

@@ -8,6 +8,7 @@ const createStatsMiddleware = require('./lib/middlewares/stats');
 const { RenderPlugin } = require('./lib/plugins/render');
 const { StatsPlugin } = require('./lib/plugins/stats');
 
+const { createCompiler } = require('./lib/utils/compiler');
 const { BuildError } = require('./lib/utils/errors');
 const configLoader = require('./lib/utils/loader');
 
@@ -22,6 +23,7 @@ const configure = (config, options) => ({
     return initialize(config, options).getBuildConfig(...args);
   },
   internal: {
+    createCompiler,
     createWebpackMiddleware,
     createStatsMiddleware,
     RenderPlugin,
