@@ -96,7 +96,10 @@
           ""
         ]
       },
-      "https://github.com/xing/hops.git"
+      {
+        "repository": "https://github.com/xing/hops.git",
+        "branch": "next"
+      }
     ]
   },
   "renovate": {
