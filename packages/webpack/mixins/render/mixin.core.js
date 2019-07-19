@@ -41,20 +41,6 @@ class WebpackRenderMixin extends Mixin {
       )
     );
   }
-  configureCommand({ command, builder }) {
-    if (command === 'start' || command === 'build') {
-      builder.static = {
-        alias: 's',
-        default: false,
-        describe: 'Statically build locations',
-        type: 'boolean',
-      };
-      if (command === 'start' && process.env.NODE_ENV !== 'production') {
-        builder.static.implies = ['static', 'production'];
-        builder.static.describe += ' (requires --production, -p)';
-      }
-    }
-  }
   handleArguments(argv) {
     this.options = { ...this.options, ...argv };
   }

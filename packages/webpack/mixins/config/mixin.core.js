@@ -34,9 +34,6 @@ class WebpackConfigMixin extends Mixin {
   }
   collectBuildConfigs(webpackConfigs) {
     webpackConfigs.push(this.getBuildConfig('browser'));
-    if (!this.options.static) {
-      webpackConfigs.push(this.getBuildConfig('server'));
-    }
   }
   configureBuild(webpackConfig, loaderConfigs, { target }) {
     const { module } = webpackConfig;
