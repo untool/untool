@@ -1,6 +1,6 @@
 {
   "name": "@untool/yargs",
-  "version": "1.9.2",
+  "version": "1.9.3",
   "description": "untool yargs mixin",
   "bin": {
     "un": "./index.js"
@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/untool/untool#readme",
   "dependencies": {
-    "@untool/core": "^1.9.2",
+    "@untool/core": "^1.9.3",
     "is-plain-obj": "^2.0.0",
     "mixinable": "^4.0.0",
     "yargs": "^13.0.0"
