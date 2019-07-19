@@ -32,12 +32,9 @@ class WebpackBuildMixin extends Mixin {
   }
   build() {
     const webpack = require('webpack');
-    const webpackConfigs = [];
-    this.collectBuildConfigs(webpackConfigs);
+    const webpackConfig = this.getBuildConfig('browser');
     return new Promise((resolve, reject) =>
-      webpack(
-        webpackConfigs.length === 1 ? webpackConfigs[0] : webpackConfigs
-      ).run((error, stats) => {
+      webpack(webpackConfig).run((error, stats) => {
         if (error) {
           reject(error);
         } else if (stats.hasErrors()) {
@@ -48,7 +45,7 @@ class WebpackBuildMixin extends Mixin {
         }
       })
     ).then((stats) => {
-      this.inspectBuild(stats, webpackConfigs);
+      this.inspectBuild(stats, webpackConfig);
       return stats;
     });
   }

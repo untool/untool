@@ -32,9 +32,6 @@ class WebpackConfigMixin extends Mixin {
     debugConfig(target, webpackConfig);
     return webpackConfig;
   }
-  collectBuildConfigs(webpackConfigs) {
-    webpackConfigs.push(this.getBuildConfig('browser'));
-  }
   configureBuild(webpackConfig, loaderConfigs, { target }) {
     const { module } = webpackConfig;
     const configLoaderConfig = {
@@ -62,12 +59,6 @@ WebpackConfigMixin.strategies = {
     invariant(
       typeof watch === 'undefined' || typeof watch === 'boolean',
       'getBuildConfig(): Received invalid watch boolean'
-    );
-  }),
-  collectBuildConfigs: validate(sequence, ([webpackConfigs]) => {
-    invariant(
-      Array.isArray(webpackConfigs),
-      'collectBuildConfigs(): Received invalid webpackConfigs array'
     );
   }),
   configureBuild: validate(sequence, ([webpackConfig, loaderConfigs, env]) => {
