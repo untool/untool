@@ -88,7 +88,7 @@ module.exports = function getConfig(config, name, watch) {
     context: config.rootDir,
     entry: require.resolve(watch ? '../shims/develop' : '../shims/build'),
     output: {
-      path: config.buildDir,
+      path: config.publicDir,
       publicPath: '/',
       pathinfo: true,
       filename: getAssetPath(

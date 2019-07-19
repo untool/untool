@@ -1,7 +1,7 @@
 'use strict';
 
 const { existsSync: exists } = require('fs');
-const { join } = require('path');
+const { join, relative } = require('path');
 
 const isPlainObject = require('is-plain-obj');
 
@@ -28,7 +28,9 @@ class WebpackStatsMixin extends Mixin {
     const { plugins } = webpackConfig;
     if (target === 'browser') {
       const { StatsPlugin } = require('../../lib/plugins/stats');
-      plugins.unshift(new StatsPlugin(this.statsPromise, this.config));
+      const { statsFile, buildDir, publicDir } = this.config;
+      const statsFilePath = relative(publicDir, join(buildDir, statsFile));
+      plugins.unshift(new StatsPlugin(this.statsPromise, statsFilePath));
     }
   }
   configureServer(app, middlewares, mode) {

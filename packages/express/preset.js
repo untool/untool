@@ -6,7 +6,7 @@ module.exports = {
   https: false,
   host: '[HOST]',
   port: '[PORT]',
-  distDir: join('<rootDir>', 'dist'),
+  distDir: join('<publicDir>'),
   gracePeriod: 30000,
   mixins: [join(__dirname, 'mixins')],
   configSchema: {

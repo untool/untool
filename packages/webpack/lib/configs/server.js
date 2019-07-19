@@ -94,7 +94,7 @@ module.exports = function getConfig(config) {
           require.resolve('../shims/server'),
         ],
     output: {
-      path: config.serverDir,
+      path: config.buildDir,
       publicPath: '/',
       pathinfo: true,
       filename: config.serverFile,

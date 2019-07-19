@@ -20,15 +20,10 @@ const {
 class WebpackBuildMixin extends Mixin {
   clean() {
     const rimraf = require('rimraf');
-    const { buildDir, serverDir } = this.config;
-    return Promise.all([
-      new Promise((resolve, reject) =>
-        rimraf(buildDir, (error) => (error ? reject(error) : resolve()))
-      ),
-      new Promise((resolve, reject) =>
-        rimraf(serverDir, (error) => (error ? reject(error) : resolve()))
-      ),
-    ]);
+    const { buildDir } = this.config;
+    return new Promise((resolve, reject) =>
+      rimraf(buildDir, (error) => (error ? reject(error) : resolve()))
+    );
   }
   build() {
     const webpack = require('webpack');

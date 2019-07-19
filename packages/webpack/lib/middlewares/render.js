@@ -5,8 +5,8 @@ const { existsSync: exists } = require('fs');
 const { createCompiler } = require('../utils/compiler');
 
 module.exports = (build, watch, { options, config }) => {
-  const { _overrides: overrides, serverDir, serverFile } = config;
-  const serverFilePath = join(serverDir, serverFile);
+  const { _overrides: overrides, buildDir, serverFile } = config;
+  const serverFilePath = join(buildDir, serverFile);
   let enhancedPromise;
   if (build) {
     enhancedPromise = createCompiler(

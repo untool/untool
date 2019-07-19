@@ -46,7 +46,7 @@ const extractFiles = (chunkData, rawPublicPath) => {
 };
 
 exports.StatsPlugin = class StatsPlugin {
-  constructor(enhancedPromise, { statsFile }) {
+  constructor(enhancedPromise, statsFile) {
     this.apply = (compiler) => {
       compiler.hooks.compilation.tap('StatsPlugin', (compilation) => {
         compilation.hooks.additionalAssets.tap('StatsPlugin', () => {

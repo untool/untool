@@ -9,7 +9,7 @@ const run = require('./run');
 const { normalizeResponse, normalizeArgTypes } = require('./normalize');
 
 const prepareDir = (rootDir) => {
-  const distDir = join(rootDir, 'dist');
+  const distDir = join(rootDir, 'dist', 'public');
   const indexFile = join(distDir, 'index.html');
   mkdirp(distDir);
   writeFileSync(indexFile, '<h3>meep</h3>');
