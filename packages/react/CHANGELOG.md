@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.9.4](https://github.com/untool/untool/compare/v1.9.3...v1.9.4) (2019-07-23)
+
+**Note:** Version bump only for package @untool/react
+
+
+
+
+
 ## [1.9.3](https://github.com/untool/untool/compare/v1.9.2...v1.9.3) (2019-07-19)
 
 **Note:** Version bump only for package @untool/react
