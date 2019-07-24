@@ -5,13 +5,13 @@
   "registry": "https://registry.npmjs.org/",
   "command": {
     "version": {
-      "forcePublish": true,
-      "preid": "rc"
-    },
-    "publish": {
       "message": "chore: release %s",
       "conventionalCommits": true,
-      "createRelease": "github"
+      "createRelease": "github",
+      "forcePublish": true
+    },
+    "publish": {
+      "preDistTag": "next"
     }
   }
 }
