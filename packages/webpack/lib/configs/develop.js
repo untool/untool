@@ -121,7 +121,7 @@ module.exports = function getConfig(config, name) {
     performance: {
       hints: false,
       maxEntrypointSize: 5242880,
-      maxAssetSize: 5242880,
+      maxAssetSize: 52428800,
     },
     devtool: 'cheap-module-eval-source-map',
     watchOptions: { aggregateTimeout: 300, ignored: /node_modules/ },
