@@ -8,6 +8,15 @@ const chalk = require('chalk');
 
 const { BuildError } = require('../utils/errors');
 
+const statsToJsonOptions = {
+  all: false,
+  assets: true,
+  performance: true,
+  errors: true,
+  warnings: true,
+  children: true,
+};
+
 const formatAssets = (assets) =>
   assets
     .filter(({ name }) => !name.endsWith('.map'))
@@ -37,8 +46,10 @@ const formatSuccess = (name, duration, assets, isRebuild) => {
 };
 
 exports.LoggerPlugin = class LoggerPlugin {
-  constructor(logger) {
+  constructor(logger, performance, target) {
     this.logger = logger;
+    this.performance = performance;
+    this.target = target;
     this.lastHashes = {};
   }
   apply(compiler) {
@@ -47,21 +58,32 @@ exports.LoggerPlugin = class LoggerPlugin {
       if (this.lastHashes[name] === stats.hash) {
         return;
       }
+      const { hints, maxAssetSize } = this.performance;
       const { hash, startTime, endTime } = stats;
       const isRebuild = this.lastHashes[name];
       const duration = prettyMS(endTime - startTime);
+      const { assets } = stats.toJson(statsToJsonOptions);
+      const shouldEmitAssetSizeFeedback =
+        ['warning', 'error'].includes(hints) && this.target === 'build';
+      const assetsOverSizeLimit =
+        shouldEmitAssetSizeFeedback &&
+        assets.some(({ isOverSizeLimit }) => isOverSizeLimit);
 
+      if (assetsOverSizeLimit && !isRebuild) {
+        const message = `Some assets exceed the size limit of ${prettyBytes(
+          maxAssetSize
+        )}.`;
+        if (hints === 'error') {
+          stats.compilation.errors.push(message);
+        }
+        if (hints === 'warning') {
+          stats.compilation.warnings.push(message);
+        }
+      }
+
+      const { errors, warnings, children } = stats.toJson(statsToJsonOptions);
       const hasWarnings = stats.hasWarnings();
       const hasErrors = stats.hasErrors();
-
-      const { assets, errors, warnings, children } = stats.toJson({
-        all: false,
-        assets: true,
-        performance: true,
-        errors: true,
-        warnings: true,
-        children: true,
-      });
 
       if (hasErrors) {
         this.logger.info(formatError(name, duration, isRebuild));
@@ -70,15 +92,6 @@ exports.LoggerPlugin = class LoggerPlugin {
           this.logger.info(formatWarning(name, duration, assets, isRebuild));
         } else {
           this.logger.info(formatSuccess(name, duration, assets, isRebuild));
-        }
-        const assetsOverSizeLimit = assets.some(
-          ({ isOverSizeLimit }) => isOverSizeLimit
-        );
-        if (assetsOverSizeLimit && !isRebuild) {
-          this.logger.warn('Some assets exceed the recommended size limit!');
-          this.logger.hint(
-            'Please consider using import() or the importComponent() function to lazy load some parts of the application.'
-          );
         }
       }
       if (hasErrors || hasWarnings) {

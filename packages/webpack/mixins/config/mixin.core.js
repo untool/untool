@@ -45,7 +45,7 @@ class WebpackConfigMixin extends Mixin {
     }
   }
   configureBuild(webpackConfig, loaderConfigs, target) {
-    const { module } = webpackConfig;
+    const { module, performance } = webpackConfig;
     const configLoaderConfig = {
       test: require.resolve('@untool/core/lib/config'),
       loader: require.resolve('../../lib/utils/loader'),
@@ -60,7 +60,10 @@ class WebpackConfigMixin extends Mixin {
     module.rules.push(configLoaderConfig);
     if (typeof this.getLogger === 'function') {
       const { LoggerPlugin } = require('../../lib/plugins/log');
-      webpackConfig.plugins.push(new LoggerPlugin(this.getLogger()));
+      webpackConfig.plugins.push(
+        new LoggerPlugin(this.getLogger(), { ...performance }, target)
+      );
+      webpackConfig.performance.hints = false;
     }
   }
   handleArguments(argv) {
