@@ -106,6 +106,7 @@
     "lockFileMaintenance": {
       "enabled": true
     },
+    "postUpdateOptions": ["yarnDedupeHighest"],
     "ignoreDeps": [
       "prettier"
     ],
