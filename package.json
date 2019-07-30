@@ -101,43 +101,8 @@
   },
   "renovate": {
     "extends": [
-      "config:base"
-    ],
-    "lockFileMaintenance": {
-      "enabled": true
-    },
-    "postUpdateOptions": ["yarnDedupeHighest"],
-    "ignoreDeps": [
-      "prettier"
-    ],
-    "semanticCommits": true,
-    "semanticCommitScope": "{{parentDir}}",
-    "packageRules": [
-      {
-        "paths": [
-          "package.json"
-        ],
-        "semanticCommitScope": null
-      },
-      {
-        "depTypeList": [
-          "devDependencies"
-        ],
-        "updateTypes": [
-          "major",
-          "minor"
-        ],
-        "rangeStrategy": "bump"
-      },
-      {
-        "depTypeList": [
-          "peerDependencies"
-        ],
-        "rangeStrategy": "widen"
-      }
-    ],
-    "pinVersions": false,
-    "prCreation": "not-pending"
+      "github>untool/renovate-config:base"
+    ]
   },
   "prettier": {
     "arrowParens": "always",
