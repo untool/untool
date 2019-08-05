@@ -60,7 +60,7 @@ exports.LoggerPlugin = class LoggerPlugin {
       }
       const { hints, maxAssetSize } = this.performance;
       const { hash, startTime, endTime } = stats;
-      const isRebuild = this.lastHashes[name];
+      const isRebuild = Boolean(this.lastHashes[name]);
       const duration = prettyMS(endTime - startTime);
       const { assets } = stats.toJson(statsToJsonOptions);
       const shouldEmitAssetSizeFeedback =
