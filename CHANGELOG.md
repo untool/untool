@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [1.10.0](https://github.com/untool/untool/compare/v1.9.4...v1.10.0) (2019-08-12)
+
+
+### Features
+
+* **webpack:** revamp performance size violation feedback ([18fd00e](https://github.com/untool/untool/commit/18fd00e))
+
+
+
+
+
 ## [1.9.4](https://github.com/untool/untool/compare/v1.9.3...v1.9.4) (2019-07-23)
 
 
