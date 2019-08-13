@@ -26,7 +26,7 @@
     "babel-plugin-dynamic-import-node": "^2.0.0",
     "caniuse-lite": "^1.0.30000898",
     "chalk": "^3.0.0",
-    "core-js": "^2.6.9",
+    "core-js": "^3.0.0",
     "debug": "^4.0.0",
     "directory-index": "^0.1.0",
     "duplitect": "^2.0.1",
