@@ -5,6 +5,7 @@ const { isValidElement, createElement, Component } = require('react');
 const { withRouter } = require('react-router-dom');
 const isPlainObject = require('is-plain-obj');
 const PropTypes = require('prop-types');
+const deprecate = require('depd')('@untool/react');
 
 const {
   initialize,
@@ -63,6 +64,11 @@ exports.Header = withRouter(Header);
 
 exports.importComponent = ({ load, moduleId }, name = 'default') => {
   const resolve = typeof name === 'function' ? name : (module) => module[name];
+  if (typeof name === 'string' && name !== 'default') {
+    deprecate(
+      '[DEP002] Using a string to resolve the module of `importComponent` is deprecated and will be removed in a future major release (https://github.com/untool/untool/blob/master/DEPRECATIONS.md).'
+    );
+  }
   class Importer extends Component {
     constructor({ staticContext }) {
       super();
