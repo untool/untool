@@ -1,6 +1,6 @@
 'use strict';
 
-const { resolve } = require('path');
+const { dirname, resolve } = require('path');
 
 const {
   EnvironmentPlugin,
@@ -20,7 +20,7 @@ module.exports = function getConfig(config, name) {
 
   const jsLoaderConfig = {
     test: [/\.m?js$/],
-    exclude: [/node_modules[/\\]core-js/],
+    exclude: [/node_modules[/\\](webpack[/\\]buildin|core-js)/],
     loader: require.resolve('babel-loader'),
     options: {
       babelrc: false,
@@ -34,7 +34,7 @@ module.exports = function getConfig(config, name) {
             modules: false,
             useBuiltIns: 'entry',
             targets: { node: config.node },
-            corejs: 2,
+            corejs: 3,
             include: [],
             exclude: [],
           },
@@ -104,7 +104,10 @@ module.exports = function getConfig(config, name) {
     },
     resolve: {
       modules: getModules(config.rootDir),
-      alias: { '@untool/entrypoint': config.rootDir },
+      alias: {
+        '@untool/entrypoint': config.rootDir,
+        'core-js': dirname(require.resolve('core-js/package.json')),
+      },
       extensions: ['.mjs', '.js'],
       mainFields: [
         'esnext:server',
