@@ -1,5 +1,7 @@
 'use strict';
 
+const deprecate = require('depd')('@untool/react');
+
 module.exports = ({ types: t }) => ({
   visitor: {
     ImportDeclaration(path) {
@@ -31,6 +33,9 @@ module.exports = ({ types: t }) => ({
 
         if (t.isStringLiteral(argument)) {
           importedComponent = argument.node.value;
+          deprecate(
+            '[DEP001] Using a string as loader for `importComponent` is deprecated and will be removed in a future major release (https://github.com/untool/untool/blob/master/DEPRECATIONS.md).'
+          );
         } else {
           t.assertArrowFunctionExpression(argument);
           t.assertCallExpression(argument.get('body'));
