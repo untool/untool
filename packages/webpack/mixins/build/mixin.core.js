@@ -12,11 +12,6 @@ const {
   internal: { validate, invariant },
 } = require('@untool/core');
 
-const {
-  getHoistedVersionWarning,
-  versionMismatchReporter,
-} = require('../../lib/utils/validation');
-
 class WebpackBuildMixin extends Mixin {
   clean() {
     const rimraf = require('rimraf');
@@ -84,17 +79,8 @@ class WebpackBuildMixin extends Mixin {
       })
     );
   }
-  diagnose({ detectDuplicatePackages, collectResults }) {
+  diagnose({ detectDuplicatePackages }) {
     detectDuplicatePackages('webpack');
-
-    const { _workspace } = this.config;
-
-    collectResults(
-      versionMismatchReporter,
-      ...[getHoistedVersionWarning(_workspace, __dirname, 'core-js')].filter(
-        Boolean
-      )
-    );
   }
 }
 
