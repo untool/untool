@@ -17,7 +17,7 @@ module.exports = function getConfig(config, name) {
 
   const jsLoaderConfig = {
     test: [/\.m?js$/],
-    exclude: [/node_modules[/\\]core-js/],
+    exclude: [/node_modules[/\\](webpack[/\\]buildin|core-js)/],
     loader: require.resolve('babel-loader'),
     options: {
       babelrc: false,
@@ -31,7 +31,7 @@ module.exports = function getConfig(config, name) {
             modules: false,
             useBuiltIns: 'usage',
             targets: { browsers: config.browsers },
-            corejs: 2,
+            corejs: 3,
             include: [],
             exclude: [],
           },
@@ -97,6 +97,7 @@ module.exports = function getConfig(config, name) {
         'regenerator-runtime': dirname(
           require.resolve('regenerator-runtime/package.json')
         ),
+        'core-js': dirname(require.resolve('core-js/package.json')),
       },
       extensions: ['.mjs', '.js'],
       mainFields: [
