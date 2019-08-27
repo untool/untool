@@ -75,7 +75,7 @@ exports.placeholdify = (config) => {
 exports.environmentalize = (_config) => {
   const _env = {};
   const env = global._env || process.env;
-  const regExp = /\[(\w+?)\]/g;
+  const regExp = /\[([a-zA-Z_][a-zA-Z0-9_]*)(?:=(.*?))?\]/g;
   const replaceRecursive = (item) => {
     if (Array.isArray(item)) {
       return item.map(replaceRecursive);
@@ -90,8 +90,8 @@ exports.environmentalize = (_config) => {
       );
     }
     if (regExp.test(item)) {
-      return item.replace(regExp, (_, key) =>
-        replaceRecursive((_env[key] = env[key] || ''))
+      return item.replace(regExp, (_, key, fallback) =>
+        replaceRecursive((_env[key] = env[key] || fallback || ''))
       );
     }
     return item;
