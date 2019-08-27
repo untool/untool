@@ -3,7 +3,8 @@
   "license": "MIT",
   "untool": {
     "locations": ["/", "/about"],
-    "mixins": ["./instrument"]
+    "mixins": ["./instrument"],
+    "arbitraryValue": "[ENV_VAR=some-arbitrary-string]"
   },
   "dependencies": {
     "untool": "*"
