@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0-alpha.0](https://github.com/untool/untool/compare/v1.10.0...v2.0.0-alpha.0) (2019-08-30)
+
+
+### Bug Fixes
+
+* upgrade portfinder to 1.0.23 ([6b1622a](https://github.com/untool/untool/commit/6b1622a))
+
+
+
+
+
 ## [1.10.1](https://github.com/untool/untool/compare/v1.10.0...v1.10.1) (2019-09-11)
 
 
