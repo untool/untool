@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0-alpha.0](https://github.com/untool/untool/compare/v1.10.0...v2.0.0-alpha.0) (2019-08-30)
+
+
+### Bug Fixes
+
+* update dependency rimraf to v3 ([0d6e4ce](https://github.com/untool/untool/commit/0d6e4ce))
+
+
+### Features
+
+* **webpack:** upgrade to core-js version 3 ([f97f919](https://github.com/untool/untool/commit/f97f919))
+
+
+
+
+
 ## [1.10.1](https://github.com/untool/untool/compare/v1.10.0...v1.10.1) (2019-09-11)
 
 
