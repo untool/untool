@@ -43,6 +43,7 @@
     "pathifist": "^1.0.0",
     "pretty-bytes": "^5.1.0",
     "pretty-ms": "^5.0.0",
+    "regenerator-runtime": "^0.13.3",
     "require-from-string": "^2.0.1",
     "rimraf": "^3.0.0",
     "serialize-error": "^4.1.0",
