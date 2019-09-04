@@ -40,6 +40,8 @@
     "is-plain-obj": "^2.0.0",
     "jsesc": "^2.5.2",
     "loader-utils": "^1.2.3",
+    "lodash.get": "^4.4.2",
+    "lodash.set": "^4.3.2",
     "memory-fs": "^0.5.0",
     "mixinable": "^4.0.0",
     "pathifist": "^1.0.0",

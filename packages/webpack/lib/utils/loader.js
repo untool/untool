@@ -14,13 +14,13 @@ const rootDir = dirname(findUp('package.json'));
 const expand = join.bind(null, rootDir);`
     : '';
 
-const getConfig = (type, { _config: config }) =>
+const getConfig = (type, config, rootDir) =>
   escapeJS(config).replace(
-    new RegExp(`'${escapeRegExp(config.rootDir)}(.*?)'`, 'g'),
+    new RegExp(`'${escapeRegExp(rootDir)}(.*?)'`, 'g'),
     type === 'server' ? "expand('.$1')" : "'.$1'"
   );
 
-const getMixins = (type, { _mixins: mixins }) => {
+const getMixins = (type, mixins) => {
   const requires = (mixins[type] || []).map(
     (mixin) => `((m) => m.default || m )(require('${escapeJS(mixin)}'))`
   );
@@ -29,7 +29,7 @@ const getMixins = (type, { _mixins: mixins }) => {
 
 module.exports = function configLoader() {
   this.cacheable();
-  const { type, config } = getOptions(this);
+  const { type, mixins, config, rootDir } = getOptions(this);
   return `
 ${getHelpers(type)}
 const configs = {};
@@ -38,12 +38,14 @@ exports.getConfig = (overrides = {}) => {
   if (!configs[key]) {
     const utils = require('@untool/core/lib/utils');
     const { environmentalize, placeholdify, merge } = utils;
-    const raw = merge(${getConfig(type, config)}, overrides);
-    configs[key] = environmentalize(placeholdify(raw));
+    const raw = merge(${getConfig(type, config, rootDir)}, overrides);
+    configs[key] = environmentalize(placeholdify(raw), ${escapeJS(
+      config.browserWhitelist
+    )});
   }
   return configs[key];
 };
-exports.getMixins = () => ${getMixins(type, config)};
+exports.getMixins = () => ${getMixins(type, mixins)};
 `.trim();
 };
 
