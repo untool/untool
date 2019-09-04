@@ -1,6 +1,6 @@
 'use strict';
 
-const { relative } = require('path');
+const { dirname, relative } = require('path');
 
 const {
   EnvironmentPlugin,
@@ -92,7 +92,12 @@ module.exports = function getConfig(config, name) {
     },
     resolve: {
       modules: getModules(config.rootDir),
-      alias: { '@untool/entrypoint': config.rootDir },
+      alias: {
+        '@untool/entrypoint': config.rootDir,
+        'regenerator-runtime': dirname(
+          require.resolve('regenerator-runtime/package.json')
+        ),
+      },
       extensions: ['.mjs', '.js'],
       mainFields: [
         'esnext:browser',
