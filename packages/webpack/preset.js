@@ -30,7 +30,14 @@ module.exports = {
       mainFields: ['mixin:server', 'mixin:runtime', 'mixin'],
     },
   },
+  browserWhitelist: {
+    basePath: true,
+  },
   configSchema: {
+    browserWhitelist: {
+      type: 'object',
+      additionalProperties: { type: 'boolean' },
+    },
     browsers: {
       type: 'array',
       items: { type: 'string', minLength: 1 },
