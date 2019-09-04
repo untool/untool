@@ -72,11 +72,11 @@ exports.placeholdify = (config) => {
   return replaceRecursive(config);
 };
 
-exports.environmentalize = (_config) => {
+exports.environmentalize = (_config, whitelist = {}) => {
   const _env = {};
   const env = global._env || process.env;
   const regExp = /\[([a-zA-Z_][a-zA-Z0-9_]*)(?:=(.*?))?\]/g;
-  const replaceRecursive = (item) => {
+  const replaceRecursive = (item, path = []) => {
     if (Array.isArray(item)) {
       return item.map(replaceRecursive);
     }
@@ -84,15 +84,19 @@ exports.environmentalize = (_config) => {
       return Object.entries(item).reduce(
         (result, [key, value]) => ({
           ...result,
-          [key]: replaceRecursive(value),
+          [key]: replaceRecursive(value, [...path, key]),
         }),
         {}
       );
     }
     if (regExp.test(item)) {
-      return item.replace(regExp, (_, key, fallback) =>
-        replaceRecursive((_env[key] = env[key] || fallback || ''))
-      );
+      return item.replace(regExp, (_, key, fallback) => {
+        const replaced = env[key] || fallback || '';
+        if (whitelist[path.join('.')]) {
+          _env[key] = replaced;
+        }
+        return replaceRecursive(replaced);
+      });
     }
     return item;
   };

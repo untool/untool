@@ -3,6 +3,8 @@
 const { existsSync: exists } = require('fs');
 
 const isPlainObject = require('is-plain-obj');
+const get = require('lodash.get');
+const set = require('lodash.set');
 
 const debug = require('debug');
 const debugConfig = (target, config) =>
@@ -49,13 +51,27 @@ class WebpackConfigMixin extends Mixin {
     const configLoaderConfig = {
       test: require.resolve('@untool/core/lib/config'),
       loader: require.resolve('../../lib/utils/loader'),
-      options: { type: target, config: this.config },
+      options: {
+        type: target,
+        mixins: this.config._mixins,
+        config: this.config._config,
+        rootDir: this.config._config.rootDir,
+      },
     };
     if (target === 'node') {
       configLoaderConfig.options.type = 'server';
     }
     if (target === 'develop' || target === 'build') {
       configLoaderConfig.options.type = 'browser';
+      configLoaderConfig.options.config = Object.entries(
+        this.config.browserWhitelist
+      ).reduce((config, [keyPath, visible]) => {
+        const value = get(this.config._config, keyPath);
+        if (visible && typeof value !== 'undefined') {
+          return set(config, keyPath, value);
+        }
+        return config;
+      }, {});
     }
     module.rules.push(configLoaderConfig);
     if (typeof this.getLogger === 'function') {
