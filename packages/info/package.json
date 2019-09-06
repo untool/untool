@@ -20,6 +20,7 @@
     "chalk": "^2.4.2",
     "duplitect": "^2.0.1",
     "enhanced-resolve": "^4.1.0",
+    "escape-string-regexp": "^2.0.0",
     "mixinable": "^4.0.0"
   },
   "engines": {
