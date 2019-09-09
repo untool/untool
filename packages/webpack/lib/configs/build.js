@@ -129,9 +129,6 @@ module.exports = function getConfig(config, name) {
         new TerserPlugin({
           extractComments: false,
           terserOptions: {
-            compress: {
-              inline: 1, // https://github.com/mishoo/UglifyJS2/issues/2842
-            },
             output: { comments: false },
           },
         }),
