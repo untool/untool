@@ -4,7 +4,9 @@
   "untool": {
     "locations": ["/", "/about"],
     "mixins": ["./instrument"],
-    "arbitraryValue": "[ENV_VAR=some-arbitrary-string]"
+    "arbitraryValue1": "[ENV_VAR=some-arbitrary-string-1]",
+    "arbitraryValue2": "lorem[ENV_VAR=/ipsum/]dolor",
+    "arbitraryValue3": "[ENV_VAR=] & void"
   },
   "dependencies": {
     "untool": "*"
