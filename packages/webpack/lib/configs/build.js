@@ -127,9 +127,7 @@ module.exports = function getConfig(config, name) {
       },
       minimizer: [
         new TerserPlugin({
-          cache: true,
-          parallel: true,
-          sourceMap: true,
+          extractComments: false,
           terserOptions: {
             compress: {
               inline: 1, // https://github.com/mishoo/UglifyJS2/issues/2842
