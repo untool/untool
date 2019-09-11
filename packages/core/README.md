@@ -49,6 +49,17 @@ There is another kind of placeholders. It can be used to reference other configu
 }
 ```
 
+To prevent sensitive data provided to `@untool/core` from being leaked to the browser in a universal web app, there's a `browserWhitelist`-property on the configuration object. Assuming you have a config like the one in the code block above and you only want to expose the values `"foo"` and `"baz"` to the browser (which would be redundant, but nevermind…), you would have to white-list them like this:
+
+```json
+{
+  "browserWhitelist": {
+    "foo": true,
+    "bar.baz": true
+  }
+}
+```
+
 `@untool/core` looks for configuration data in a couple of places. It only uses the first config it finds, so make sure you do not have multiple configs lying around:
 
 - an `untool` property in your project's `package.json` file
