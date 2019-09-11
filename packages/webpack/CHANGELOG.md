@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.1](https://github.com/untool/untool/compare/v1.10.0...v1.10.1) (2019-09-11)
+
+
+### Bug Fixes
+
+* always resolve regenerator-runtime to included dependency ([ce97827](https://github.com/untool/untool/commit/ce97827))
+* remove workaround & re-enable all compression options of uglify ([ac6bd4e](https://github.com/untool/untool/commit/ac6bd4e)), closes [/github.com/mishoo/UglifyJS2/issues/2842#issuecomment-415642909](https://github.com//github.com/mishoo/UglifyJS2/issues/2842/issues/issuecomment-415642909)
+* update dependency rimraf to v3 ([0d6e4ce](https://github.com/untool/untool/commit/0d6e4ce))
+* update dependency terser-webpack-plugin to v2 ([18eb48d](https://github.com/untool/untool/commit/18eb48d))
+* **webpack:** add directory-index as dependency ([70b2285](https://github.com/untool/untool/commit/70b2285))
+
+
+
+
+
 # [1.10.0](https://github.com/untool/untool/compare/v1.9.4...v1.10.0) (2019-08-12)
 
 
