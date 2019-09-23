@@ -3,7 +3,7 @@
 const { EOL } = require('os');
 
 const stripAnsi = require('strip-ansi');
-const serializeError = require('serialize-error');
+const { serializeError } = require('serialize-error');
 
 class BuildError extends Error {
   constructor(stack) {

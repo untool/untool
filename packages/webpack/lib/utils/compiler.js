@@ -7,7 +7,7 @@ const requireFromString = require('require-from-string');
 const webpack = require('webpack');
 const MemoryFS = require('memory-fs');
 const sourceMapSupport = require('source-map-support');
-const serializeError = require('serialize-error');
+const { serializeError } = require('serialize-error');
 
 const EnhancedPromise = require('eprom');
 
