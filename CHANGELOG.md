@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0-alpha.1](https://github.com/untool/untool/compare/v1.10.1...v2.0.0-alpha.1) (2019-09-27)
+
+
+### Bug Fixes
+
+* adapt to breaking changes in serialize-error package ([4880f7e](https://github.com/untool/untool/commit/4880f7e))
+* update dependency serialize-error to v5 ([b69818e](https://github.com/untool/untool/commit/b69818e))
+* **react:** deprecate string arguments for importComponent ([0ff48de](https://github.com/untool/untool/commit/0ff48de))
+
+
+### Features
+
+* **core:** add default value syntax for env variables ([0e700b4](https://github.com/untool/untool/commit/0e700b4)), closes [#448](https://github.com/untool/untool/issues/448)
+* **express:** add compression to production server ([c87546f](https://github.com/untool/untool/commit/c87546f))
+* **webpack:** upgrade to core-js version 3 ([0792d22](https://github.com/untool/untool/commit/0792d22))
+
+
+
+
+
 # [2.0.0-alpha.0](https://github.com/untool/untool/compare/v1.10.0...v2.0.0-alpha.0) (2019-08-30)
 
 
