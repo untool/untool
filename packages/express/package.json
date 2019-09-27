@@ -1,6 +1,6 @@
 {
   "name": "@untool/express",
-  "version": "2.0.0-alpha.1",
+  "version": "2.0.0-alpha.2",
   "description": "untool express mixin",
   "repository": {
     "type": "git",
@@ -16,8 +16,8 @@
   },
   "homepage": "https://github.com/untool/untool#readme",
   "dependencies": {
-    "@untool/core": "^2.0.0-alpha.1",
-    "@untool/yargs": "^2.0.0-alpha.1",
+    "@untool/core": "^2.0.0-alpha.2",
+    "@untool/yargs": "^2.0.0-alpha.2",
     "chalk": "^2.4.2",
     "compression": "^1.7.4",
     "debug": "^4.0.0",
