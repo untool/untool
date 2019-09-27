@@ -62,6 +62,10 @@ class ExpressMixin extends Mixin {
         app.use(loggerMiddleware(this.getLogger()));
       }
     }
+
+    if (mode === 'serve' && process.env.NODE_ENV === 'production') {
+      middlewares.prefiles.push(require('compression')());
+    }
   }
   inspectServer(server) {
     if (typeof this.getLogger === 'function') {
