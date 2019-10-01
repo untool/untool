@@ -2,11 +2,16 @@
 
 const indexFile = require('directory-index');
 const { RawSource } = require('webpack-sources');
-
+const deprecate = require('depd')('@untool/webpack');
 const { trimLeadingSlash } = require('pathifist');
 
 exports.RenderPlugin = class RenderPlugin {
   constructor(render, requests) {
+    deprecate(
+      '[DEP003] Static rendering is deprecated and will be removed in a future major release ' +
+        '(https://github.com/untool/untool/blob/master/DEPRECATIONS.md#dep003).'
+    );
+
     this.apply = (compiler) => {
       compiler.hooks.compilation.tap('RenderPlugin', (compilation) => {
         if (compilation.compiler.isChild()) {
