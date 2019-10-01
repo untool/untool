@@ -1,6 +1,6 @@
 # Deprecations
 
-### DEP001
+## DEP001
 
 Using a string as loader for `importComponent` is deprecated and will be removed in a future major release.
 
@@ -9,7 +9,7 @@ Using a string as loader for `importComponent` is deprecated and will be removed
 + importComponent(() => import('./my-cool-component'));
 ```
 
-### DEP002
+## DEP002
 
 Using a string to resolve the module of `importComponent` is deprecated and will be removed in a future major release.
 
