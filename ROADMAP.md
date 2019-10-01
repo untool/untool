@@ -26,7 +26,7 @@ Medium priority:
 
 Low priority:
 
-- [ ] deprecate static rendering
+- [x] deprecate static rendering
 - [ ] collapse `hops-express` into `@untool/express`
 
 Nice to have:
