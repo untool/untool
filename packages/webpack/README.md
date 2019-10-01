@@ -42,9 +42,11 @@ This is equivalent to manually setting `$NODE_ENV` before calling the actual com
 $ NODE_ENV=production un build
 ```
 
-##### `-s` / `--static`
+##### `-s` / `--static` (**deprecated**)
 
 In `static` mode, static HTML pages will be generated for the [`locations`](https://github.com/untool/untool/blob/master/packages/express/README.md#locations) configured for your application. In `no-static` mode, `server.js` and `stats.json` files will be created instead.
+
+**Note**: Static rendering is deprecated and will be removed in a future major release.
 
 ### `develop`
 
