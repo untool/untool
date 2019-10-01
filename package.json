@@ -99,7 +99,12 @@
         "repository": "https://github.com/xing/hops.git",
         "branch": "next"
       }
-    ]
+    ],
+    "rootManifest": {
+      "resolutions": {
+        "core-js": "^3"
+      }
+    }
   },
   "renovate": {
     "extends": [
