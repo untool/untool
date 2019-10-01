@@ -17,3 +17,7 @@ Using a string to resolve the module of `importComponent` is deprecated and will
 - importComponent(() => import('./my-cool-component'), 'MyCoolComponent');
 + importComponent(() => import('./my-cool-component'), namespace => namespace.MyCoolComponent);
 ```
+
+## DEP003
+
+Static rendering is deprecated and will be removed in a future major release.
