@@ -20,6 +20,7 @@
     "@untool/yargs": "^2.0.0-alpha.2",
     "chalk": "^3.0.0",
     "compression": "^1.7.4",
+    "cookie-parser": "^1.4.4",
     "debug": "^4.0.0",
     "directory-index": "^0.1.0",
     "eprom": "^1.0.0",
