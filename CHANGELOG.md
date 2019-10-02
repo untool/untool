@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0-alpha.3](https://github.com/untool/untool/compare/v2.0.0-alpha.2...v2.0.0-alpha.3) (2019-10-02)
+
+
+### Bug Fixes
+
+* **express:** use preinitial phase for helmet middlware ([a80fc19](https://github.com/untool/untool/commit/a80fc19))
+
+
+### Features
+
+* **express:** add cookie-parser middleware ([ade3554](https://github.com/untool/untool/commit/ade3554))
+
+
+### BREAKING CHANGES
+
+* **express:** moved helmet middleware from initial phase to preinitial.
+
+
+
+
+
 # [2.0.0-alpha.2](https://github.com/untool/untool/compare/v2.0.0-alpha.1...v2.0.0-alpha.2) (2019-09-27)
 
 **Note:** Version bump only for package ununtool
