@@ -69,7 +69,7 @@ exports.normalizeArgTypes = (obj) => {
     return Object.keys(obj).reduce(
       (result, key) => ({
         ...result,
-        [key]: exports.normalizeArgTypes(obj[key]),
+        [key]: key === 'argv' ? null : exports.normalizeArgTypes(obj[key]),
       }),
       {}
     );
