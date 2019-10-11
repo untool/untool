@@ -10,6 +10,7 @@ const {
 
 const configure = (config, options) => ({
   run(...args) {
+    console.log(new Date(), '@untool/yargs run() called with args: %o', args);
     try {
       const yargs = args.length ? createYargs(args) : createYargs;
       const { argv } = yargs.help(false);
@@ -29,6 +30,10 @@ const configure = (config, options) => ({
       process.on('uncaughtException', handleError);
       process.on('unhandledRejection', handleError);
       bootstrap().then(() => {
+        console.log(
+          new Date(),
+          '@untool/yargs after bootstrap - calling registerCommands'
+        );
         registerCommands(
           yargs
             .usage('Usage: $0 <command> [options]')

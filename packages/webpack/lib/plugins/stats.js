@@ -74,12 +74,15 @@ exports.StatsFilePlugin = class StatsFilePlugin {
     this.apply = (compiler) => {
       compiler.hooks.compilation.tap('StatsFilePlugin', (compilation) =>
         compilation.hooks.additionalAssets.tapPromise('StatsFilePlugin', () =>
-          enhancedPromise.then(
-            (stats) =>
-              (compilation.assets[statsFile] = new RawSource(
-                JSON.stringify(stats)
-              ))
-          )
+          enhancedPromise.then((stats) => {
+            console.log(
+              new Date(),
+              'StatsFilePlugin: enhancedPromise has been resolved'
+            );
+            compilation.assets[statsFile] = new RawSource(
+              JSON.stringify(stats)
+            );
+          })
         )
       );
     };
