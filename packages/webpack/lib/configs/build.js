@@ -49,7 +49,7 @@ module.exports = function getConfig(config, name) {
     exclude: [/\.(?:m?js|html|json)$/],
     loader: require.resolve('file-loader'),
     options: {
-      name: getAssetPath('[name]-[hash:16].[ext]'),
+      name: getAssetPath('[name]-[contenthash:16].[ext]'),
     },
   };
 
@@ -64,7 +64,7 @@ module.exports = function getConfig(config, name) {
         loader: require.resolve('url-loader'),
         options: {
           limit: 10000,
-          name: getAssetPath('[name]-[hash:16].[ext]'),
+          name: getAssetPath('[name]-[contenthash:16].[ext]'),
         },
       },
     ],
@@ -86,6 +86,7 @@ module.exports = function getConfig(config, name) {
     context: config.rootDir,
     entry: require.resolve('../shims/build'),
     output: {
+      // ecmaVersion: 2015,
       path: config.buildDir,
       publicPath: '/',
       pathinfo: true,
@@ -103,6 +104,7 @@ module.exports = function getConfig(config, name) {
         ),
         'core-js': dirname(require.resolve('core-js/package.json')),
       },
+      // consider using `experiments.mjs: true`: https://github.com/webpack/changelog-v5/blob/master/MIGRATION%20GUIDE.md#cleanup-configuration
       extensions: ['.mjs', '.js'],
       mainFields: [
         'esnext:browser',
@@ -121,7 +123,7 @@ module.exports = function getConfig(config, name) {
     },
     externals: [],
     optimization: {
-      moduleIds: isProduction ? 'hased' : 'named',
+      // consider using the defaults: https://github.com/webpack/changelog-v5/blob/master/MIGRATION%20GUIDE.md#cleanup-configuration
       splitChunks: {
         chunks: 'all',
         name: false,

@@ -60,7 +60,12 @@ exports.StatsPlugin = class StatsPlugin {
           }
           try {
             enhancedPromise.resolve({
-              ...compilation.getStats().toJson({ source: false }),
+              ...compilation.getStats().toJson({
+                source: false,
+                modules: false,
+                chunkModules: false,
+                chunkRootModules: false,
+              }),
               ...extractFiles(analyzeCompilation(compilation), publicPath),
             });
           } catch (error) {

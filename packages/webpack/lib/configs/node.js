@@ -48,7 +48,7 @@ module.exports = function getConfig(config, name) {
     exclude: [/\.(?:m?js|html|json)$/],
     loader: require.resolve('file-loader'),
     options: {
-      name: getAssetPath('[name]-[hash:16].[ext]'),
+      name: getAssetPath('[name]-[contenthash:16].[ext]'),
       emitFile: false,
     },
   };
@@ -64,7 +64,7 @@ module.exports = function getConfig(config, name) {
         loader: require.resolve('url-loader'),
         options: {
           limit: 10000,
-          name: getAssetPath('[name]-[hash:16].[ext]'),
+          name: getAssetPath('[name]-[contenthash:16].[ext]'),
           emitFile: false,
         },
       },
@@ -93,6 +93,7 @@ module.exports = function getConfig(config, name) {
           require.resolve('../shims/node'),
         ],
     output: {
+      // ecmaVersion: 2015,
       path: config.serverDir,
       publicPath: '/',
       pathinfo: true,
@@ -107,6 +108,7 @@ module.exports = function getConfig(config, name) {
         '@untool/entrypoint': config.rootDir,
         'core-js': dirname(require.resolve('core-js/package.json')),
       },
+      // consider using `experiments.mjs: true`: https://github.com/webpack/changelog-v5/blob/master/MIGRATION%20GUIDE.md#cleanup-configuration
       extensions: ['.mjs', '.js'],
       mainFields: [
         'esnext:server',
@@ -125,11 +127,9 @@ module.exports = function getConfig(config, name) {
     },
     externals: [],
     optimization: {
-      moduleIds: isProduction ? 'hased' : 'named',
       minimizer: [],
     },
     plugins: [
-      new LimitChunkCountPlugin({ maxChunks: 1 }),
       isProduction ? { apply: () => {} } : new HotModuleReplacementPlugin(),
       new EnvironmentPlugin({ NODE_ENV: 'development' }),
     ],
