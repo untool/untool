@@ -8,6 +8,11 @@ module.exports = class ReactMixin extends Mixin {
     fileLoaderConfig.exclude.push(/\.jsx$/);
     jsLoaderConfig.test.push(/\.jsx$/);
 
+    // TODO: remove with next major version
+    webpackConfig.resolve.alias['react-helmet'] = require.resolve(
+      '../lib/react-helmet-shim'
+    );
+
     jsLoaderConfig.options.presets.push(require.resolve('@babel/preset-react'));
 
     if (target !== 'develop' && process.env.NODE_ENV === 'production') {
