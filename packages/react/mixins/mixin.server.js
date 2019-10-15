@@ -4,6 +4,7 @@ const { parse } = require('url');
 
 const { createElement, isValidElement } = require('react');
 const { StaticRouter } = require('react-router-dom');
+const { HelmetProvider } = require('react-helmet-async');
 
 const isPlainObject = require('is-plain-obj');
 
@@ -40,7 +41,11 @@ class ReactMixin extends Mixin {
       basename: trimTrailingSlash(ensureLeadingSlash(this.config.basePath)),
       context: this.context,
     };
-    return createElement(StaticRouter, props, element);
+    return createElement(
+      StaticRouter,
+      props,
+      createElement(HelmetProvider, { context: this.context }, element)
+    );
   }
   renderToFragments(element) {
     return renderToFragments(element);
@@ -60,6 +65,13 @@ class ReactMixin extends Mixin {
         this.fetchData({}, element).then(() => this.renderToFragments(element))
       )
       .then((fragments) => {
+        Object.assign(
+          fragments,
+          Object.entries(this.context.helmet).reduce(
+            (result, [key, value]) => ({ ...result, [key]: value.toString() }),
+            { headPrefix: '', headSuffix: '' }
+          )
+        );
         if (this.context.miss) {
           next();
         } else {
