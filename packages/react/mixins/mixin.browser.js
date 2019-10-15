@@ -5,6 +5,7 @@
 const { createElement, isValidElement } = require('react');
 const { unmountComponentAtNode, hydrate, render } = require('react-dom');
 const { BrowserRouter } = require('react-router-dom');
+const { HelmetProvider } = require('react-helmet-async');
 
 const isPlainObject = require('is-plain-obj');
 
@@ -29,7 +30,11 @@ class ReactMixin extends Mixin {
       ...this.options.router,
       basename: trimTrailingSlash(ensureLeadingSlash(this.config.basePath)),
     };
-    return createElement(BrowserRouter, props, element);
+    return createElement(
+      BrowserRouter,
+      props,
+      createElement(HelmetProvider, {}, element)
+    );
   }
   render() {
     const mountpoint = document.querySelector('[data-mountpoint]');
