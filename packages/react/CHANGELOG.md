@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0-alpha.4](https://github.com/untool/untool/compare/v1.10.1...v2.0.0-alpha.4) (2019-10-24)
+
+
+### Bug Fixes
+
+* **react:** add deprecation notice for users of `react-helmet` ([5b404e7](https://github.com/untool/untool/commit/5b404e7a3789176a7c2e5bce385673edf28c3051))
+* **react:** deprecate string arguments for importComponent ([53ae307](https://github.com/untool/untool/commit/53ae307ffc6f0e46dc9a76f7d55999c6e3c4fac8))
+
+
+### Features
+
+* bump all packages to their latest available versions ([884ec8e](https://github.com/untool/untool/commit/884ec8e4b918dfc7f259998d05239bf5458147c3))
+* **react:** replace react-helmet with react-helmet-async ([8f6bc21](https://github.com/untool/untool/commit/8f6bc21c72c9b8301237e8ecfa5850ed99f9517c)), closes [/github.com/gaearon/react-side-effect/issues/54#issuecomment-520056590](https://github.com//github.com/gaearon/react-side-effect/issues/54/issues/issuecomment-520056590)
+
+
+### BREAKING CHANGES
+
+* **react:** Replace `react-helmet` with `react-helmet-async`
+* The following peer dependencies have increased versions
+- `react` & `react-dom`: 16.8.0
+- `react-router-dom`: 5.0.0
+
+
+
+
+
 # [2.0.0-alpha.3](https://github.com/untool/untool/compare/v2.0.0-alpha.2...v2.0.0-alpha.3) (2019-10-02)
 
 **Note:** Version bump only for package @untool/react

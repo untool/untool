@@ -3,6 +3,24 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0-alpha.4](https://github.com/untool/untool/compare/v1.10.1...v2.0.0-alpha.4) (2019-10-24)
+
+
+### Features
+
+* bump all packages to their latest available versions ([884ec8e](https://github.com/untool/untool/commit/884ec8e4b918dfc7f259998d05239bf5458147c3))
+
+
+### BREAKING CHANGES
+
+* The following peer dependencies have increased versions
+- `react` & `react-dom`: 16.8.0
+- `react-router-dom`: 5.0.0
+
+
+
+
+
 # [2.0.0-alpha.3](https://github.com/untool/untool/compare/v2.0.0-alpha.2...v2.0.0-alpha.3) (2019-10-02)
 
 **Note:** Version bump only for package @untool/info
