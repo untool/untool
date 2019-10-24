@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0-alpha.4](https://github.com/untool/untool/compare/v1.10.1...v2.0.0-alpha.4) (2019-10-24)
+
+
+### Bug Fixes
+
+* **express:** use preinitial phase for helmet middlware ([b32dce5](https://github.com/untool/untool/commit/b32dce56f0a2384de824be7f1aa77afc0cb07320))
+
+
+### Features
+
+* **express:** add compression to production server ([258b71c](https://github.com/untool/untool/commit/258b71ced99551eb56d61399926e72a4d16e2a32))
+* **express:** add cookie-parser middleware ([e7aea1c](https://github.com/untool/untool/commit/e7aea1c92872447be0b707f95d373a35cec0b423))
+* bump all packages to their latest available versions ([884ec8e](https://github.com/untool/untool/commit/884ec8e4b918dfc7f259998d05239bf5458147c3))
+
+
+### BREAKING CHANGES
+
+* The following peer dependencies have increased versions
+- `react` & `react-dom`: 16.8.0
+- `react-router-dom`: 5.0.0
+* **express:** moved helmet middleware from initial phase to preinitial.
+
+
+
+
+
 # [2.0.0-alpha.3](https://github.com/untool/untool/compare/v2.0.0-alpha.2...v2.0.0-alpha.3) (2019-10-02)
 
 
