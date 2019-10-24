@@ -3,6 +3,31 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0-alpha.4](https://github.com/untool/untool/compare/v1.10.1...v2.0.0-alpha.4) (2019-10-24)
+
+
+### Bug Fixes
+
+* update dependency flat to v5 ([c616e38](https://github.com/untool/untool/commit/c616e38af25a498c2495bd133b8b3ed3d314277f))
+
+
+### Features
+
+* **core:** add default value syntax for env variables ([fb1e8b3](https://github.com/untool/untool/commit/fb1e8b3069348bb2cab331b9e82de835d3c8bce9)), closes [#448](https://github.com/untool/untool/issues/448)
+* bump all packages to their latest available versions ([884ec8e](https://github.com/untool/untool/commit/884ec8e4b918dfc7f259998d05239bf5458147c3))
+* only include white-listed config in webpack bundle and env vars ([ba1a6ff](https://github.com/untool/untool/commit/ba1a6ffab756a5028c6f43e3c20194ab1925081c)), closes [#446](https://github.com/untool/untool/issues/446)
+
+
+### BREAKING CHANGES
+
+* The following peer dependencies have increased versions
+- `react` & `react-dom`: 16.8.0
+- `react-router-dom`: 5.0.0
+
+
+
+
+
 # [2.0.0-alpha.3](https://github.com/untool/untool/compare/v2.0.0-alpha.2...v2.0.0-alpha.3) (2019-10-02)
 
 **Note:** Version bump only for package @untool/core
