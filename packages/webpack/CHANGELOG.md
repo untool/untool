@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0-alpha.4](https://github.com/untool/untool/compare/v1.10.1...v2.0.0-alpha.4) (2019-10-24)
+
+
+### Bug Fixes
+
+* adapt to breaking changes in serialize-error package ([4880f7e](https://github.com/untool/untool/commit/4880f7ee898bc2339b6e73cdd0d20e9be88c3f9c))
+* update dependency memory-fs to ^0.5.0 ([57f5edc](https://github.com/untool/untool/commit/57f5edcb877e83821db9a2196c37493ebfae290a))
+* update dependency serialize-error to v5 ([b69818e](https://github.com/untool/untool/commit/b69818eccd0213d42f47424032f4785b0fbaf00d))
+
+
+### Features
+
+* **webpack:** upgrade to core-js version 3 ([0bc9af7](https://github.com/untool/untool/commit/0bc9af7d5d0f9460b99d3231904d5643d6b44fb9))
+* bump all packages to their latest available versions ([884ec8e](https://github.com/untool/untool/commit/884ec8e4b918dfc7f259998d05239bf5458147c3))
+* only include white-listed config in webpack bundle and env vars ([ba1a6ff](https://github.com/untool/untool/commit/ba1a6ffab756a5028c6f43e3c20194ab1925081c)), closes [#446](https://github.com/untool/untool/issues/446)
+
+
+### BREAKING CHANGES
+
+* The following peer dependencies have increased versions
+- `react` & `react-dom`: 16.8.0
+- `react-router-dom`: 5.0.0
+
+
+
+
+
 # [2.0.0-alpha.3](https://github.com/untool/untool/compare/v2.0.0-alpha.2...v2.0.0-alpha.3) (2019-10-02)
 
 **Note:** Version bump only for package @untool/webpack
