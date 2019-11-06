@@ -23,7 +23,7 @@
     "reset": "git clean -dfx && yarn",
     "pretest": "git clean -dfX tests/fixtures/untest",
     "posttest": "git clean -dfXq tests/fixtures",
-    "preinstall": "node -e \"process.exit(process.env.npm_execpath.indexOf('yarn') > -1 ? 0 : 1)\""
+    "preinstall": "node -e \"process.exit(process.env.npm_execpath.includes('yarn') ? 0 : 1)\""
   },
   "repository": {
     "type": "git",
