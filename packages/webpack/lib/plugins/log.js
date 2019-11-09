@@ -22,7 +22,7 @@ const formatAssets = (assets) =>
     .filter(({ name }) => !name.endsWith('.map'))
     .map(({ name, size, isOverSizeLimit }) => {
       const prettySize = isOverSizeLimit
-        ? chalk.enabled
+        ? chalk.level > 0
           ? chalk.red(prettyBytes(size))
           : `${prettyBytes(size)} !!!`
         : prettyBytes(size);
