@@ -2,7 +2,7 @@
 
 const { dirname, join } = require('path');
 
-const cosmiconfig = require('cosmiconfig');
+const { cosmiconfigSync: cosmiconfig } = require('cosmiconfig');
 const { compatibleMessage } = require('check-error');
 
 const { merge } = require('./utils');
@@ -14,12 +14,12 @@ class Loader {
     this.pkgData = pkgData;
   }
   load(context, module) {
-    const { loadSync } = cosmiconfig(this.namespace);
-    return loadSync(resolvePreset(context, module));
+    const { load } = cosmiconfig(this.namespace);
+    return load(resolvePreset(context, module));
   }
   search(stopDir) {
-    const { searchSync } = cosmiconfig(this.namespace, { stopDir });
-    return searchSync(stopDir);
+    const { search } = cosmiconfig(this.namespace, { stopDir });
+    return search(stopDir);
   }
   loadPreset(context, preset) {
     try {
