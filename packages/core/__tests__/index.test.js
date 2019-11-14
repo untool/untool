@@ -112,6 +112,7 @@ test('Should support validate stategie decorator', (t) => {
     mixins: [join(__dirname, 'fixtures', 'validate-mixin')],
   });
 
-  t.throws(() => instance.validateAndFail(), 'This is invalid');
+  t.throws(() => instance.validateAndFailArgs(), 'This is invalid');
+  t.throws(() => instance.validateAndFailResult(), 'This is invalid');
   t.is(instance.validateAndSucceed(), 'Call result');
 });
