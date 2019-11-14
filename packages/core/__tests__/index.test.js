@@ -16,7 +16,7 @@ test('Should connect mixins through strategies', (t) => {
     ],
   });
 
-  t.is(instance.callMe(), 'execute operation');
+  t.is(instance.callFirst(), 'execute callSecond');
 });
 
 test('Should support override stategie by order of mixins', (t) => {
@@ -33,8 +33,8 @@ test('Should support override stategie by order of mixins', (t) => {
     ],
   });
 
-  t.is(instance1.overridden(), 'from another-mixin');
-  t.is(instance2.overridden(), 'from a-mixin');
+  t.is(instance1.override(), 'from another-mixin');
+  t.is(instance2.override(), 'from a-mixin');
 });
 
 test('Should support parallel stategie', (t) => {
