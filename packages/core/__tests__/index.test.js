@@ -106,3 +106,12 @@ test('Should allow env-vars in the configuration which are resolved', (t) => {
   t.is(config.result2, 'default-value');
   t.is(config.result3, 'value');
 });
+
+test('Should support validate stategie decorator', (t) => {
+  const instance = initialize({
+    mixins: [join(__dirname, 'fixtures', 'validate-mixin')],
+  });
+
+  t.throws(() => instance.validateAndFail(), 'This is invalid');
+  t.is(instance.validateAndSucceed(), 'Call result');
+});
