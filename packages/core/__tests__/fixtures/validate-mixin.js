@@ -5,8 +5,12 @@ const {
 } = require('../..');
 
 class ValidateMixin extends Mixin {
-  validateAndFail() {
+  validateAndFailArgs() {
     throw new Error('This should not be executed');
+  }
+
+  validateAndFailResult() {
+    return 'some value';
   }
 
   validateAndSucceed() {
@@ -15,9 +19,16 @@ class ValidateMixin extends Mixin {
 }
 
 ValidateMixin.strategies = {
-  validateAndFail: validate(callable, () => {
+  validateAndFailArgs: validate(callable, () => {
     throw new Error('This is invalid');
   }),
+  validateAndFailResult: validate(
+    callable,
+    () => {},
+    () => {
+      throw new Error('This is invalid');
+    }
+  ),
   validateAndSucceed: validate(callable),
 };
 
