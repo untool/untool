@@ -2,11 +2,11 @@ const { callable, override, parallel, pipe, compose } = require('mixinable');
 const { Mixin } = require('../..');
 
 class AnotherMixin extends Mixin {
-  operation() {
-    return 'execute operation';
+  callSecond() {
+    return 'execute callSecond';
   }
 
-  overridden() {
+  override() {
     return 'from another-mixin';
   }
 
@@ -24,8 +24,8 @@ class AnotherMixin extends Mixin {
 }
 
 AnotherMixin.strategies = {
-  operation: callable,
-  overridden: override,
+  callSecond: callable,
+  override,
   parallel,
   pipe,
   compose,
