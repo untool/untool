@@ -71,3 +71,38 @@ test('Should support compose stategie', (t) => {
     'a-mixin': { 'another-mixin': { input: 0 } },
   });
 });
+
+test('Should allow placeholders in the configuration which are resolved', (t) => {
+  const instance = initialize({
+    key: 'value',
+    nested: {
+      key: 'value',
+    },
+    result1: '<key>',
+    result2: '<nested.key>',
+    mixins: [join(__dirname, 'fixtures', 'config-mixin')],
+  });
+
+  const config = instance.getConfig();
+
+  t.is(config.result1, 'value');
+  t.is(config.result2, 'value');
+});
+
+test('Should allow env-vars in the configuration which are resolved', (t) => {
+  process.env.UNTOOL_TEST_KEY = 'value';
+  process.env.ENV_KEY_WITH_DEFAULT2 = 'value';
+
+  const instance = initialize({
+    result1: '[UNTOOL_TEST_KEY]',
+    result2: '[ENV_KEY_WITH_DEFAULT1=default-value]',
+    result3: '[ENV_KEY_WITH_DEFAULT2=default-value]',
+    mixins: [join(__dirname, 'fixtures', 'config-mixin')],
+  });
+
+  const config = instance.getConfig();
+
+  t.is(config.result1, 'value');
+  t.is(config.result2, 'default-value');
+  t.is(config.result3, 'value');
+});
