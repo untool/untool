@@ -159,7 +159,7 @@ With this method, you can wrap the React root element with additional components
 const { Mixin } = require('@untool/core');
 
 module.exports = class FooMixin extends Mixin {
-  bootstrap(element) {
+  enhanceElement(element) {
     return element;
   }
 };
