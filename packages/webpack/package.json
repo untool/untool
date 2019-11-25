@@ -34,7 +34,7 @@
     "eprom": "^1.0.0",
     "escape-string-regexp": "^2.0.0",
     "event-source-polyfill": "^1.0.5",
-    "file-loader": "^4.0.0",
+    "file-loader": "^5.0.0",
     "find-up": "^4.0.0",
     "is-plain-obj": "^2.0.0",
     "jsesc": "^2.5.2",
