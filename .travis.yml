@@ -13,16 +13,16 @@ install:
 
 matrix:
   include:
-    - node_js: 'node'
-      name: 'Latest'
+    - node_js: 'lts/*'
+      name: 'LTS/*'
       script:
         - 'commitlint-travis'
         - 'yarn lint'
         - 'yarn test'
       env:
         - CACHE_NAME=latest
-    - node_js: 'lts/*'
-      name: 'LTS'
+    - node_js: 'lts/dubnium'
+      name: 'LTS/Dubnium'
       script:
         - 'commitlint-travis'
         - 'yarn lint'
