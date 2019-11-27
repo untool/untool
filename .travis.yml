@@ -5,6 +5,10 @@ cache:
   directories:
     - node_modules
 
+env:
+  global:
+    - DEBUG=canarist
+
 before_install:
   - npm i -g yarn@latest
 

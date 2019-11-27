@@ -97,7 +97,7 @@
       },
       {
         "repository": "https://github.com/xing/hops.git",
-        "branch": "next"
+        "branch": "update-file-loader"
       }
     ],
     "rootManifest": {
