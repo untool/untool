@@ -78,7 +78,7 @@ exports.environmentalize = (_config, whitelist = {}) => {
   const regExp = /\[([a-zA-Z_][a-zA-Z0-9_]*)(?:=(.*?))?\]/g;
   const replaceRecursive = (item, path = []) => {
     if (Array.isArray(item)) {
-      return item.map(replaceRecursive);
+      return item.map((nestedItem) => replaceRecursive(nestedItem, path));
     }
     if (isPlainObject(item)) {
       return Object.entries(item).reduce(
