@@ -16,9 +16,9 @@
   },
   "homepage": "https://github.com/untool/untool#readme",
   "dependencies": {
-    "@babel/core": "^7.6.3",
-    "@babel/plugin-syntax-dynamic-import": "^7.2.0",
-    "@babel/preset-env": "^7.6.3",
+    "@babel/core": "^7.7.0",
+    "@babel/plugin-syntax-dynamic-import": "^7.7.0",
+    "@babel/preset-env": "^7.7.0",
     "@untool/core": "^2.0.0-alpha.4",
     "@untool/express": "^2.0.0-alpha.4",
     "@untool/yargs": "^2.0.0-alpha.4",
