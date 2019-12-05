@@ -6,11 +6,11 @@ This package is an (optional) consolidated entry point to all other `@untool/*` 
 
 Please refer to the respective packages for further information:
 
-- [`@untool/core`](https://github.com/untool/untool/blob/master/packages/core/README.md): central base module all other packages rely upon
-- [`@untool/yargs`](https://github.com/untool/untool/blob/master/packages/yargs/README.md): command line interface engine
-- [`@untool/express`](https://github.com/untool/untool/blob/master/packages/express/README.md): development and production server implementation
-- [`@untool/webpack`](https://github.com/untool/untool/blob/master/packages/webpack/README.md): webpack setup (including Babel)
-- [`@untool/react`](https://github.com/untool/untool/blob/master/packages/react/README.md): universal React implementation
+- [`@untool/core`](../core/README.md): central base module all other packages rely upon
+- [`@untool/yargs`](../yargs/README.md): command line interface engine
+- [`@untool/express`](../express/README.md): development and production server implementation
+- [`@untool/webpack`](../webpack/README.md): webpack setup (including Babel)
+- [`@untool/react`](../react/README.md): universal React implementation
 
 ### Installation
 
@@ -30,7 +30,7 @@ $ yarn exec un start
 
 ### Runtime
 
-`untool` re-exports everything that [`@untool/core`](https://github.com/untool/untool/blob/master/packages/core/README.md) and [`@untool/react`](https://github.com/untool/untool/blob/master/packages/react/README.md) provide, meaning you can simply use it like this in your runtime code:
+`untool` re-exports everything that [`@untool/core`](../core/README.md) and [`@untool/react`](../react/README.md) provide, meaning you can simply use it like this in your runtime code:
 
 ```javascript
 import { render, importComponent } from 'untool';
@@ -38,7 +38,7 @@ import { render, importComponent } from 'untool';
 
 ### Core
 
-`untool` re-exports everything that [`@untool/core`](https://github.com/untool/untool/blob/master/packages/core/README.md), [`@untool/yargs`](https://github.com/untool/untool/blob/master/packages/yargs/README.md), [`@untool/express`](https://github.com/untool/untool/blob/master/packages/express/README.md), [`@untool/webpack`](https://github.com/untool/untool/blob/master/packages/webpack/README.md) and [`@untool/react`](https://github.com/untool/untool/blob/master/packages/react/README.md) provide. Use it in your Node.js code like this:
+`untool` re-exports everything that [`@untool/core`](../core/README.md), [`@untool/yargs`](../yargs/README.md), [`@untool/express`](../express/README.md), [`@untool/webpack`](../webpack/README.md) and [`@untool/react`](../react/README.md) provide. Use it in your Node.js code like this:
 
 ```javascript
 const { Mixin } = require('untool');

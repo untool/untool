@@ -23,7 +23,7 @@ It allows you to set up mixins and pull in presets. Mixins provide extra functio
 }
 ```
 
-`@untool/core` comes with support for environment specific configuration. For example, [`@untool/express`](https://github.com/untool/untool/blob/master/packages/express/README.md) uses this placeholder based mechanism to bind the server port to the value of an environment variable.
+`@untool/core` comes with support for environment specific configuration. For example, [`@untool/express`](../express/README.md) uses this placeholder based mechanism to bind the server port to the value of an environment variable.
 
 ```json
 {
@@ -190,6 +190,6 @@ Note that you can call all defined mixinable methods directly on your mixin inst
 
 ### `initialize([configOverrides], [options])`
 
-This is a semi-private function that is mainly being used internally, for example by [`@untool/yargs`](https://github.com/untool/untool/blob/master/packages/yargs/README.md). It returns the core mixin container - this allows you to call all defined mixin methods.
+This is a semi-private function that is mainly being used internally, for example by [`@untool/yargs`](../yargs/README.md). It returns the core mixin container - this allows you to call all defined mixin methods.
 
 You will only ever have to call it if you want to use `@untool/core` programmatically. You can pass it an `configOverrides` object that will be merged into the main config object, and and options object mixins might use instead of CLI arguments.
