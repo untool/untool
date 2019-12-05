@@ -4,9 +4,9 @@
 
 `@untool/react`'s main runtime exports are a couple of React components that allow implementers to declaratively control server (or system) behavior. Additionally, `@untool/react` features full support for [`react-router`](https://github.com/ReactTraining/react-router)'s and [`react-helmet`](https://github.com/nfl/react-helmet)'s components.
 
-`@untool/react` provides all three types of `@untool/core` [mixin types](https://github.com/untool/untool/blob/master/packages/core/README.md#mixins). Its `core` mixin uses `@untool/webpack`'s [`configureBuild`](https://github.com/untool/untool/blob/master/packages/webpack/README.md#configurebuildwebpackconfig-loaderconfigs-target-pipe) hook to add some settings specific to [React](https://reactjs.org), for example support for [JSX](https://reactjs.org/docs/introducing-jsx.html) syntax.
+`@untool/react` provides all three types of `@untool/core` [mixin types](../core/README.md#mixins). Its `core` mixin uses `@untool/webpack`'s [`configureBuild`](../webpack/README.md#configurebuildwebpackconfig-loaderconfigs-target-pipe) hook to add some settings specific to [React](https://reactjs.org), for example support for [JSX](https://reactjs.org/docs/introducing-jsx.html) syntax.
 
-Its `runtime`, i.e. `browser` and `server`, mixins are a bit more interesting as they are `untool`'s only default [`render`](https://github.com/untool/untool/blob/master/packages/core/README.md#renderargs-runtime-only) mixins. They set up [React](https://reactjs.org) for client- and server-side rendering. Additionally, they provide mixin hooks of their own to allow you to add your own features, for example [Redux](https://redux.js.org) support.
+Its `runtime`, i.e. `browser` and `server`, mixins are a bit more interesting as they are `untool`'s only default [`render`](../core/README.md#renderargs-runtime-only) mixins. They set up [React](https://reactjs.org) for client- and server-side rendering. Additionally, they provide mixin hooks of their own to allow you to add your own features, for example [Redux](https://redux.js.org) support.
 
 During application startup, `@untool/react` runs a check to determine if certain npm packages are installed multiple times. If you see warnings telling you that this is the case, you will want to make sure you get rid of these duplicates, as they will almost certainly break things in interesting ways.
 
@@ -80,7 +80,10 @@ Additionally, `importComponent` supports an alternative syntax that helps with e
 ```javascript
 import { importComponent } from '@untool/react';
 
-const Home = importComponent(() => import('./home'), ({ Home }) => Home);
+const Home = importComponent(
+  () => import('./home'),
+  ({ Home }) => Home
+);
 
 export default () => <Home />;
 ```
@@ -149,7 +152,7 @@ module.exports = class FooMixin extends Mixin {
 };
 ```
 
-Remember you can register custom middlewares using [`@untool/express`](https://github.com/untool/untool/blob/master/packages/express/README.md#initializeserverapp-target-sequence) instead of implementing elaborate request or response handling logic inside your runtime mixin.
+Remember you can register custom middlewares using [`@untool/express`](../express/README.md#initializeserverapp-target-sequence) instead of implementing elaborate request or response handling logic inside your runtime mixin.
 
 ### `enhanceElement(element)` ([compose](https://github.com/untool/mixinable/blob/master/README.md#definecompose))
 
