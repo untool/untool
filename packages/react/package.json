@@ -18,8 +18,8 @@
   },
   "homepage": "https://github.com/untool/untool#readme",
   "dependencies": {
-    "@babel/core": "^7.6.3",
-    "@babel/preset-react": "^7.6.3",
+    "@babel/core": "^7.7.0",
+    "@babel/preset-react": "^7.7.0",
     "@untool/core": "^2.0.0-alpha.5",
     "babel-plugin-transform-react-remove-prop-types": "^0.4.24",
     "clone": "^2.1.2",
