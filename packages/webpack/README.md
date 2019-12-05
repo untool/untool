@@ -2,9 +2,9 @@
 
 [![travis](https://img.shields.io/travis/untool/untool/master.svg)](https://travis-ci.org/untool/untool)&nbsp;[![npm](https://img.shields.io/npm/v/@untool%2Fwebpack.svg)](https://www.npmjs.com/package/@untool/webpack)
 
-`@untool/webpack` is the largest and most complex of `untool`'s core packages. It contains half of its total lines of code and provides both a [preset](https://github.com/untool/untool/blob/master/packages/core/README.md#presets) and a [core mixin](https://github.com/untool/untool/blob/master/packages/core/README.md#mixins). It provides a comprehensive, but rather minimal [`Webpack`](https://webpack.js.org) setup as a basis for your own configurations.
+`@untool/webpack` is the largest and most complex of `untool`'s core packages. It contains half of its total lines of code and provides both a [preset](../core/README.md#presets) and a [core mixin](../core/README.md#mixins). It provides a comprehensive, but rather minimal [`Webpack`](https://webpack.js.org) setup as a basis for your own configurations.
 
-Based on [`@untool/express`](https://github.com/untool/untool/blob/master/packages/express/README.md), it also features development and production servers. The former even comes with [hot module replacement (HMR)](https://webpack.js.org/concepts/hot-module-replacement/).
+Based on [`@untool/express`](../express/README.md), it also features development and production servers. The former even comes with [hot module replacement (HMR)](https://webpack.js.org/concepts/hot-module-replacement/).
 
 During application startup, `@untool/webpack` runs a check to determine if Webpack is installed multiple times. If you see warnings telling you that this is the case, you will want to make sure you get rid of these duplicates, as they will almost certainly break things in interesting ways.
 
@@ -20,7 +20,7 @@ $ yarn add @untool/webpack # OR npm install @untool/webpack
 
 This is the most basic of `@untool/webpack`'s commands - and it simply performs a Webpack build according to its arguments and configuration. It will not only start an usual browser build, but also one for the server-side version of your application.
 
-Whether it uses said server-side build to generate static HTML pages depends on the arguments it is being called with - and it works best in tandem with `@untool/express`' [`serve` command](https://github.com/untool/untool/blob/master/packages/express/README.md#serve);
+Whether it uses said server-side build to generate static HTML pages depends on the arguments it is being called with - and it works best in tandem with `@untool/express`' [`serve` command](../express/README.md#serve);
 
 ```bash
 $ un build -ps && un serve -ps
@@ -44,7 +44,7 @@ $ NODE_ENV=production un build
 
 ##### `-s` / `--static`
 
-In `static` mode, static HTML pages will be generated for the [`locations`](https://github.com/untool/untool/blob/master/packages/express/README.md#locations) configured for your application. In `no-static` mode, `server.js` and `stats.json` files will be created instead.
+In `static` mode, static HTML pages will be generated for the [`locations`](../express/README.md#locations) configured for your application. In `no-static` mode, `server.js` and `stats.json` files will be created instead.
 
 ### `develop`
 
@@ -76,7 +76,7 @@ $ NODE_ENV=production un start
 
 ##### `-s` / `--static`
 
-In `static` mode, static HTML pages will be generated for the [`locations`](https://github.com/untool/untool/blob/master/packages/express/README.md#locations) configured for your application.
+In `static` mode, static HTML pages will be generated for the [`locations`](../express/README.md#locations) configured for your application.
 
 ## API
 
@@ -95,11 +95,11 @@ const { build } = configure(configOverrides, options);
 build();
 ```
 
-The above example is functionally equivalent to directly working with `@untool/core`'s [`bootstrap`](https://github.com/untool/untool/blob/master/packages/core/README.md#bootstrapconfigoverrides-options-build-only) export.
+The above example is functionally equivalent to directly working with `@untool/core`'s [`bootstrap`](../core/README.md#bootstrapconfigoverrides-options-build-only) export.
 
 ### `configureBuild(webpackConfig, loaderConfigs, target)` ([sequence](https://github.com/untool/mixinable/blob/master/README.md#defineparallel))
 
-If you implement this mixin hook in your `@untool/core` [`core` mixin](https://github.com/untool/untool/blob/master/packages/core/README.md#mixins), you will be able to modify the different Webpack configs `untool` uses in any way you like.
+If you implement this mixin hook in your `@untool/core` [`core` mixin](../core/README.md#mixins), you will be able to modify the different Webpack configs `untool` uses in any way you like.
 
 In addition to the actual `webpackConfig`, which, by the way, your implementation is expected to return, you will receive an object containing all `loaderConfigs` and a `target` argument. This last argument can be `build`, `develop`, or `node`.
 
@@ -115,11 +115,11 @@ module.exports = class MyMixin extends Mixin {
 
 You can use whatever mechanism you like to modify the complicated structures Webpack configs unfortunately have to be. For convenience, `loaderConfigs` contains the following properties for you to inspect and modify specific loader configs directly:
 
-| Property           | Explanation                                                                                                               |
-| ------------------ | ------------------------------------------------------------------------------------------------------------------------- |
-| `jsLoaderConfig`   | [`babel-loader` config](https://github.com/babel/babel-loader)                                                            |
-| `urlLoaderConfig`  | [`url-loader` config](https://github.com/webpack-contrib/url-loader)                                                      |
-| `fileLoaderConfig` | [`file-loader` config](https://github.com/webpack-contrib/file-loader)                                                    |
+| Property | Explanation |
+| --- | --- |
+| `jsLoaderConfig` | [`babel-loader` config](https://github.com/babel/babel-loader) |
+| `urlLoaderConfig` | [`url-loader` config](https://github.com/webpack-contrib/url-loader) |
+| `fileLoaderConfig` | [`file-loader` config](https://github.com/webpack-contrib/file-loader) |
 | `allLoaderConfigs` | `Array` of loader configs passed to [`oneOf` module loader rule](https://webpack.js.org/configuration/module/#rule-oneof) |
 
 **Caveat**: please be advised that, while we strive to provide very stable `webpackConfig` and `loaderConfigs` arguments, these may change in subtle ways between `minor` versions of `@untool/webpack`. For example, specific loader options may stop working. Additionally, other mixins may alter these arguments in relevant ways, so code accordingly.
@@ -246,7 +246,7 @@ Path of your server build output. It will only be used in `production`, non-`sta
 
 ### `serverFile`
 
-Path of your server output file, relative to [`serverDir`](https://github.com/untool/untool/blob/master/packages/webpack/README.md#serverdir). It will only be generated in `production`, non-`static` mode and is being used internally.
+Path of your server output file, relative to [`serverDir`](../webpack/README.md#serverdir). It will only be generated in `production`, non-`static` mode and is being used internally.
 
 ```json
 {
@@ -256,7 +256,7 @@ Path of your server output file, relative to [`serverDir`](https://github.com/un
 
 ### `statsFile`
 
-Path of your stats file, relative to [`serverDir`](https://github.com/untool/untool/blob/master/packages/webpack/README.md#serverdir). It will only be generated in `production`, non-`static` mode and is being used internally.
+Path of your stats file, relative to [`serverDir`](../webpack/README.md#serverdir). It will only be generated in `production`, non-`static` mode and is being used internally.
 
 ```json
 {
