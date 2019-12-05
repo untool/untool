@@ -2,7 +2,7 @@
 
 [![travis](https://img.shields.io/travis/untool/untool/master.svg)](https://travis-ci.org/untool/untool)&nbsp;[![npm](https://img.shields.io/npm/v/@untool%2Finfo.svg)](https://www.npmjs.com/package/@untool/info)
 
-`@untool/info` is a [core mixin](https://github.com/untool/untool/blob/master/packages/core/README.md#mixins) providing output for `untool`'s command line interface. Besides that, it allows other mixins to define pre-flight checks that are run during application startup.
+`@untool/info` is a [core mixin](../core/README.md#mixins) providing output for `untool`'s command line interface. Besides that, it allows other mixins to define pre-flight checks that are run during application startup.
 
 ### Installation
 
@@ -73,4 +73,4 @@ module.exports = class FooMixin extends Mixin {
 };
 ```
 
-Additionally, you can use the helper methods defined on our semi-private [doctor](https://github.com/untool/untool/blob/master/packages/info/lib/doctor.js) object that is being passed into this hook.
+Additionally, you can use the helper methods defined on our semi-private [doctor](../info/lib/doctor.js) object that is being passed into this hook.

@@ -2,7 +2,7 @@
 
 [![travis](https://img.shields.io/travis/untool/untool/master.svg)](https://travis-ci.org/untool/untool)&nbsp;[![npm](https://img.shields.io/npm/v/@untool%2Fyargs.svg)](https://www.npmjs.com/package/@untool/yargs)
 
-`@untool/yargs` is a [core mixin](https://github.com/untool/untool/blob/master/packages/core/README.md#mixins) powering `untool`'s command line interface and allowing other mixins to define their own commands. These custom commands will work exactly as those defined by `untool`'s own modules and can be called using executables such as [Hops CLI](https://github.com/xing/hops/blob/master/packages/cli/README.md).
+`@untool/yargs` is a [core mixin](../core/README.md#mixins) powering `untool`'s command line interface and allowing other mixins to define their own commands. These custom commands will work exactly as those defined by `untool`'s own modules and can be called using executables such as [Hops CLI](https://github.com/xing/hops/blob/master/packages/cli/README.md).
 
 ### Installation
 

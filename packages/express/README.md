@@ -2,7 +2,7 @@
 
 [![travis](https://img.shields.io/travis/untool/untool/master.svg)](https://travis-ci.org/untool/untool)&nbsp;[![npm](https://img.shields.io/npm/v/@untool%2Fexpress.svg)](https://www.npmjs.com/package/@untool/express)
 
-`@untool/express` provides both an `untool` [preset](https://github.com/untool/untool/blob/master/packages/core/README.md#presets) and a [mixin](https://github.com/untool/untool/blob/master/packages/core/README.md#mixins) to set up your project to work with [Express](https://expressjs.com).
+`@untool/express` provides both an `untool` [preset](../core/README.md#presets) and a [mixin](../core/README.md#mixins) to set up your project to work with [Express](https://expressjs.com).
 
 It does not only provide full featured development and production mode servers, but also a mechanism for rendering static files using Express style middlewares without having to launch an actual server.
 
@@ -18,7 +18,7 @@ $ yarn add @untool/express # OR npm install @untool/express
 
 ### `serve`
 
-`@untool/express` registers a single command using [`@untool/yargs`](https://github.com/untool/untool/blob/master/packages/yargs/README.md#registercommandsyargs-pipe): `serve`. As to be expected, this command launches a stand-alone Express server featuring [Helmet](https://helmetjs.github.io) and a [Express' static](https://expressjs.com/en/4x/api.html#express.static) file server middlewares.
+`@untool/express` registers a single command using [`@untool/yargs`](../yargs/README.md#registercommandsyargs-pipe): `serve`. As to be expected, this command launches a stand-alone Express server featuring [Helmet](https://helmetjs.github.io) and a [Express' static](https://expressjs.com/en/4x/api.html#express.static) file server middlewares.
 
 ```bash
 $ un serve -ps
@@ -57,7 +57,7 @@ const { runServer } = configure(configOverrides, options);
 runServer();
 ```
 
-The above example is functionally equivalent to directly working with `@untool/core`'s [`bootstrap`](https://github.com/untool/untool/blob/master/packages/core/README.md#bootstrapconfigoverrides-options-build-only) export.
+The above example is functionally equivalent to directly working with `@untool/core`'s [`bootstrap`](../core/README.md#bootstrapconfigoverrides-options-build-only) export.
 
 ### `configureServer(app, middlewares, mode)` ([sequence](https://github.com/untool/mixinable/blob/master/README.md#defineparallel))
 
@@ -86,7 +86,7 @@ module.exports = class MyMixin extends Mixin {
 };
 ```
 
-Implement this hook in your `@untool/core` [`core` mixin](https://github.com/untool/untool/blob/master/packages/core/README.md#mixins) and you will be able to set up Express in any way you like.
+Implement this hook in your `@untool/core` [`core` mixin](../core/README.md#mixins) and you will be able to set up Express in any way you like.
 
 **Caveat**: please do not rely on the exact number and order of middlewares and handlers passed to your mixin in the `middlewares` argument: it is highly dynamic and can be altered by other mixins (or configs). It can also change between `@untool/express` versions without triggering a `major` release.
 
@@ -96,13 +96,13 @@ This hook will give you a running, i.e. listening, instance of [`http.Server`](h
 
 ### `runServer(mode)` ([callable](https://github.com/untool/mixinable/blob/master/README.md#defineoverride))
 
-If you want to programmatically start a production ready Express server set up using `@untool/express`' [config](https://github.com/untool/untool/blob/master/packages/express/README.md#settings), you can use this utility mixin method. It accepts a string: `serve` or `develop`.
+If you want to programmatically start a production ready Express server set up using `@untool/express`' [config](../express/README.md#settings), you can use this utility mixin method. It accepts a string: `serve` or `develop`.
 
 _This method is also exported so that you can use it in your own, non-mixin code. Import it like so: `import { runServer } from '@untool/express';`. In this mode, it also accepts another argument, `options`, which you can pass any CLI argument to._
 
 ### `createServer(mode)` ([callable](https://github.com/untool/mixinable/blob/master/README.md#defineoverride))
 
-To create an Express app to use in your own server, you can use this utility mixin method. It uses `@untool/express`' [settings](https://github.com/untool/untool/blob/master/packages/express/README.md#settings) for its configuration. It accepts a string: `serve`, `develop` or `static`.
+To create an Express app to use in your own server, you can use this utility mixin method. It uses `@untool/express`' [settings](../express/README.md#settings) for its configuration. It accepts a string: `serve`, `develop` or `static`.
 
 _This method is also exported so that you can use it in your own, non-mixin code. Import it like so: `import { createServer } from '@untool/express';`. In this mode, it also accepts another argument, `options`, which you can pass any CLI argument to._
 
@@ -114,7 +114,7 @@ _This method is also exported so that you can use it in your own, non-mixin code
 
 ## Settings
 
-`@untool/express` defines a couple of settings as a preset for `@untool/core`'s [configuration engine](https://github.com/untool/untool/blob/master/packages/core/README.md#configuration). You can manage and access them using the mechanisms outlined there.
+`@untool/express` defines a couple of settings as a preset for `@untool/core`'s [configuration engine](../core/README.md#configuration). You can manage and access them using the mechanisms outlined there.
 
 | Property      | Type               | Default            |
 | ------------- | ------------------ | ------------------ |
