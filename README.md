@@ -20,7 +20,7 @@
 
 ## Docs
 
-[Read the docs here](https://github.com/untool/untool/tree/master/DOCUMENTATION.md).
+[Read the docs here](https://github.com/untool/untool/tree/v1.x/DOCUMENTATION.md).
 
 ## Contribution
 
