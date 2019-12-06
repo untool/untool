@@ -96,10 +96,7 @@
           ""
         ]
       },
-      {
-        "repository": "https://github.com/xing/hops.git",
-        "branch": "v11.x"
-      }
+      "https://github.com/xing/hops.git"
     ]
   },
   "renovate": {
