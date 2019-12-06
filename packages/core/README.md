@@ -37,6 +37,14 @@ Now if you start your app in an environment in which the corresponding variable 
 $ PORT=12345 un start
 ```
 
+Furthermore those placeholders accept fallback values. So — regarding our example — if there's no `PORT`-variable given _at runtime_, `@untool/core` is able to fall back to a value provided via the configuration.
+
+```json
+{
+  "port": "[PORT=3000]"
+}
+```
+
 There is another kind of placeholders. It can be used to reference other configuration values. Nested structures will be flattened before being used for placeholder substitution.
 
 ```json
