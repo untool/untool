@@ -3,6 +3,32 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0-alpha.5](https://github.com/untool/untool/compare/v1.10.1...v2.0.0-alpha.5) (2019-12-06)
+
+
+### chore
+
+* **untool:** bump minimum required node version ([13a9a8c](https://github.com/untool/untool/commit/13a9a8c381427ecf3092810c7abd12cd19b25ff9))
+
+
+### Features
+
+* **react:** replace react-helmet with react-helmet-async ([91339bb](https://github.com/untool/untool/commit/91339bb9dccd29a652cd4033e88c3bf6fb817f37)), closes [/github.com/gaearon/react-side-effect/issues/54#issuecomment-520056590](https://github.com//github.com/gaearon/react-side-effect/issues/54/issues/issuecomment-520056590)
+* bump all packages to their latest available versions ([e2c2d87](https://github.com/untool/untool/commit/e2c2d87e7de56b3a9c17c3e7eb7136e37e61b26e))
+
+
+### BREAKING CHANGES
+
+* **untool:** Untool drops support for Node v8 & non-LTS versions
+* **react:** Replace `react-helmet` with `react-helmet-async`
+* The following peer dependencies have increased versions
+- `react` & `react-dom`: 16.8.0
+- `react-router-dom`: 5.0.0
+
+
+
+
+
 # [2.0.0-alpha.4](https://github.com/untool/untool/compare/v1.10.1...v2.0.0-alpha.4) (2019-10-24)
 
 

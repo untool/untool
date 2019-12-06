@@ -3,6 +3,40 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0-alpha.5](https://github.com/untool/untool/compare/v1.10.1...v2.0.0-alpha.5) (2019-12-06)
+
+
+### Bug Fixes
+
+* **core:** enable whitelisting of nested arrays ([ef7abcc](https://github.com/untool/untool/commit/ef7abccc693ee5fb24c1c17bc7a33098aafed0b1))
+* update dependency cosmiconfig to v6 ([7b2fc26](https://github.com/untool/untool/commit/7b2fc2618ebd474141dceb4470aec8914331ad84))
+* update dependency flat to v5 ([c616e38](https://github.com/untool/untool/commit/c616e38af25a498c2495bd133b8b3ed3d314277f))
+* use updated exports from cosmiconfig ([f4c991e](https://github.com/untool/untool/commit/f4c991e2411555ae14c9287bf8002a5a880fbf6e))
+
+
+### chore
+
+* **core:** bump minimum required node version ([cca1bcb](https://github.com/untool/untool/commit/cca1bcbd9db34e7d8d8fa912a7a6b6402fc4f7cc))
+
+
+### Features
+
+* bump all packages to their latest available versions ([e2c2d87](https://github.com/untool/untool/commit/e2c2d87e7de56b3a9c17c3e7eb7136e37e61b26e))
+* only include white-listed config in webpack bundle and env vars ([b20f621](https://github.com/untool/untool/commit/b20f621791ec18bdf2a7fa29262e1ae8cc15b8e1)), closes [#446](https://github.com/untool/untool/issues/446)
+* **core:** add default value syntax for env variables ([d041a64](https://github.com/untool/untool/commit/d041a6418f1eea6dad2c0697c61c0b70d6d3c69b)), closes [#448](https://github.com/untool/untool/issues/448)
+
+
+### BREAKING CHANGES
+
+* **core:** Untool drops support for Node v8 & non-LTS versions
+* The following peer dependencies have increased versions
+- `react` & `react-dom`: 16.8.0
+- `react-router-dom`: 5.0.0
+
+
+
+
+
 # [2.0.0-alpha.4](https://github.com/untool/untool/compare/v1.10.1...v2.0.0-alpha.4) (2019-10-24)
 
 

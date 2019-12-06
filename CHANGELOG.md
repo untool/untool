@@ -3,6 +3,69 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0-alpha.5](https://github.com/untool/untool/compare/v1.10.1...v2.0.0-alpha.5) (2019-12-06)
+
+
+### Bug Fixes
+
+* **core:** enable whitelisting of nested arrays ([ef7abcc](https://github.com/untool/untool/commit/ef7abccc693ee5fb24c1c17bc7a33098aafed0b1))
+* update dependency cosmiconfig to v6 ([7b2fc26](https://github.com/untool/untool/commit/7b2fc2618ebd474141dceb4470aec8914331ad84))
+* use updated exports from cosmiconfig ([f4c991e](https://github.com/untool/untool/commit/f4c991e2411555ae14c9287bf8002a5a880fbf6e))
+* **express:** use preinitial phase for helmet middlware ([3f3d4a9](https://github.com/untool/untool/commit/3f3d4a9c4d63a2d8a4c35608404058368ea47241))
+* **react:** add deprecation notice for users of `react-helmet` ([0c8ca94](https://github.com/untool/untool/commit/0c8ca947f2bea4ff95470b1c6243426bf987771b))
+* **react:** deprecate string arguments for importComponent ([d3cc27f](https://github.com/untool/untool/commit/d3cc27fd81e00c846884a40eae67d0016e08d515))
+* adapt to breaking changes in serialize-error package ([4880f7e](https://github.com/untool/untool/commit/4880f7ee898bc2339b6e73cdd0d20e9be88c3f9c))
+* correct build script to be platform neutral ([4533f9a](https://github.com/untool/untool/commit/4533f9a32aa0a3eb9ed1b7bc6f01be56d2c4c552))
+* error in readme ([7023744](https://github.com/untool/untool/commit/70237446a0e76d17d341b7b6267e35d786fb87f5))
+* update dependency chalk to v3 ([6b46fd1](https://github.com/untool/untool/commit/6b46fd1c8c479ac139927a0d26a902aa88a7a244))
+* update dependency flat to v5 ([c616e38](https://github.com/untool/untool/commit/c616e38af25a498c2495bd133b8b3ed3d314277f))
+* update dependency memory-fs to ^0.5.0 ([57f5edc](https://github.com/untool/untool/commit/57f5edcb877e83821db9a2196c37493ebfae290a))
+* update dependency serialize-error to v5 ([b69818e](https://github.com/untool/untool/commit/b69818eccd0213d42f47424032f4785b0fbaf00d))
+* update dependency strip-ansi to v6 ([1312b77](https://github.com/untool/untool/commit/1312b77ee70a8e27a2065f0b183b9ed9ed28baa4))
+* update dependency url-loader to v3 ([7b20b8f](https://github.com/untool/untool/commit/7b20b8f6a3ffb4836f00d34cf13a1089a23ac19d))
+
+
+### chore
+
+* **core:** bump minimum required node version ([cca1bcb](https://github.com/untool/untool/commit/cca1bcbd9db34e7d8d8fa912a7a6b6402fc4f7cc))
+* **express:** bump minimum required node version ([2252abd](https://github.com/untool/untool/commit/2252abd8994d9dbca8a85feb6db5d0bfd823801b))
+* **info:** bump minimum required node version ([c6c1b70](https://github.com/untool/untool/commit/c6c1b701489bae68f0dba9d8b298db2d59d8735f))
+* **react:** bump minimum required node version ([65624ac](https://github.com/untool/untool/commit/65624ac6aa088480a8e6ac3081e515d9b2859e11))
+* **untool:** bump minimum required node version ([13a9a8c](https://github.com/untool/untool/commit/13a9a8c381427ecf3092810c7abd12cd19b25ff9))
+* **webpack:** bump minimum required node version ([55c6966](https://github.com/untool/untool/commit/55c6966308b70bd123783116641627eb9f3f5c88))
+* **yargs:** bump minimum required node version ([657443b](https://github.com/untool/untool/commit/657443bc46ae93b7994fef7958a01b9566243c33))
+
+
+### Features
+
+* **react:** replace react-helmet with react-helmet-async ([91339bb](https://github.com/untool/untool/commit/91339bb9dccd29a652cd4033e88c3bf6fb817f37)), closes [/github.com/gaearon/react-side-effect/issues/54#issuecomment-520056590](https://github.com//github.com/gaearon/react-side-effect/issues/54/issues/issuecomment-520056590)
+* bump all packages to their latest available versions ([e2c2d87](https://github.com/untool/untool/commit/e2c2d87e7de56b3a9c17c3e7eb7136e37e61b26e))
+* only include white-listed config in webpack bundle and env vars ([b20f621](https://github.com/untool/untool/commit/b20f621791ec18bdf2a7fa29262e1ae8cc15b8e1)), closes [#446](https://github.com/untool/untool/issues/446)
+* **core:** add default value syntax for env variables ([d041a64](https://github.com/untool/untool/commit/d041a6418f1eea6dad2c0697c61c0b70d6d3c69b)), closes [#448](https://github.com/untool/untool/issues/448)
+* **express:** add compression to production server ([ba58f03](https://github.com/untool/untool/commit/ba58f0393e855ef0f216bb2025c98485fa32e0b6))
+* **express:** add cookie-parser middleware ([42de2c5](https://github.com/untool/untool/commit/42de2c5723b0a08b94521ef41fc22b6479d3002c))
+* **webpack:** upgrade to core-js version 3 ([d3786d6](https://github.com/untool/untool/commit/d3786d62269fa7f12e3417146fabe525a51c5731))
+
+
+### BREAKING CHANGES
+
+* **yargs:** Untool drops support for Node v8 & non-LTS versions
+* **webpack:** Untool drops support for Node v8 & non-LTS versions
+* **react:** Untool drops support for Node v8 & non-LTS versions
+* **info:** Untool drops support for Node v8 & non-LTS versions
+* **untool:** Untool drops support for Node v8 & non-LTS versions
+* **express:** Untool drops support for Node v8 & non-LTS versions
+* **core:** Untool drops support for Node v8 & non-LTS versions
+* **react:** Replace `react-helmet` with `react-helmet-async`
+* The following peer dependencies have increased versions
+- `react` & `react-dom`: 16.8.0
+- `react-router-dom`: 5.0.0
+* **express:** moved helmet middleware from initial phase to preinitial.
+
+
+
+
+
 # [2.0.0-alpha.4](https://github.com/untool/untool/compare/v1.10.1...v2.0.0-alpha.4) (2019-10-24)
 
 

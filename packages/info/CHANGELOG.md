@@ -3,6 +3,35 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0-alpha.5](https://github.com/untool/untool/compare/v1.10.1...v2.0.0-alpha.5) (2019-12-06)
+
+
+### Bug Fixes
+
+* update dependency chalk to v3 ([6b46fd1](https://github.com/untool/untool/commit/6b46fd1c8c479ac139927a0d26a902aa88a7a244))
+
+
+### chore
+
+* **info:** bump minimum required node version ([c6c1b70](https://github.com/untool/untool/commit/c6c1b701489bae68f0dba9d8b298db2d59d8735f))
+
+
+### Features
+
+* bump all packages to their latest available versions ([e2c2d87](https://github.com/untool/untool/commit/e2c2d87e7de56b3a9c17c3e7eb7136e37e61b26e))
+
+
+### BREAKING CHANGES
+
+* **info:** Untool drops support for Node v8 & non-LTS versions
+* The following peer dependencies have increased versions
+- `react` & `react-dom`: 16.8.0
+- `react-router-dom`: 5.0.0
+
+
+
+
+
 # [2.0.0-alpha.4](https://github.com/untool/untool/compare/v1.10.1...v2.0.0-alpha.4) (2019-10-24)
 
 

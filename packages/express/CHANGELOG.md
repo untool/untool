@@ -3,6 +3,39 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.0.0-alpha.5](https://github.com/untool/untool/compare/v1.10.1...v2.0.0-alpha.5) (2019-12-06)
+
+
+### Bug Fixes
+
+* **express:** use preinitial phase for helmet middlware ([3f3d4a9](https://github.com/untool/untool/commit/3f3d4a9c4d63a2d8a4c35608404058368ea47241))
+* update dependency chalk to v3 ([6b46fd1](https://github.com/untool/untool/commit/6b46fd1c8c479ac139927a0d26a902aa88a7a244))
+
+
+### chore
+
+* **express:** bump minimum required node version ([2252abd](https://github.com/untool/untool/commit/2252abd8994d9dbca8a85feb6db5d0bfd823801b))
+
+
+### Features
+
+* bump all packages to their latest available versions ([e2c2d87](https://github.com/untool/untool/commit/e2c2d87e7de56b3a9c17c3e7eb7136e37e61b26e))
+* **express:** add compression to production server ([ba58f03](https://github.com/untool/untool/commit/ba58f0393e855ef0f216bb2025c98485fa32e0b6))
+* **express:** add cookie-parser middleware ([42de2c5](https://github.com/untool/untool/commit/42de2c5723b0a08b94521ef41fc22b6479d3002c))
+
+
+### BREAKING CHANGES
+
+* **express:** Untool drops support for Node v8 & non-LTS versions
+* The following peer dependencies have increased versions
+- `react` & `react-dom`: 16.8.0
+- `react-router-dom`: 5.0.0
+* **express:** moved helmet middleware from initial phase to preinitial.
+
+
+
+
+
 # [2.0.0-alpha.4](https://github.com/untool/untool/compare/v1.10.1...v2.0.0-alpha.4) (2019-10-24)
 
 
