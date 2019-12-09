@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.2](https://github.com/untool/untool/compare/v1.10.1...v1.10.2) (2019-12-09)
+
+
+### Bug Fixes
+
+* update dependency chalk to v3 ([6b46fd1](https://github.com/untool/untool/commit/6b46fd1c8c479ac139927a0d26a902aa88a7a244))
+
+
+
+
+
 ## [1.10.1](https://github.com/untool/untool/compare/v1.10.0...v1.10.1) (2019-09-11)
 
 

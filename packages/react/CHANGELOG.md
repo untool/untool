@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.2](https://github.com/untool/untool/compare/v1.10.1...v1.10.2) (2019-12-09)
+
+
+### Bug Fixes
+
+* **react:** update serialize-javascript package ([fcf549d](https://github.com/untool/untool/commit/fcf549d4676531c6db2aa4ffd57b4192bbd39df9))
+* error in readme ([7023744](https://github.com/untool/untool/commit/70237446a0e76d17d341b7b6267e35d786fb87f5))
+
+
+
+
+
 ## [1.10.1](https://github.com/untool/untool/compare/v1.10.0...v1.10.1) (2019-09-11)
 
 

@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.2](https://github.com/untool/untool/compare/v1.10.1...v1.10.2) (2019-12-09)
+
+
+### Bug Fixes
+
+* adapt to breaking changes in serialize-error package ([4880f7e](https://github.com/untool/untool/commit/4880f7ee898bc2339b6e73cdd0d20e9be88c3f9c))
+* update dependency chalk to v3 ([6b46fd1](https://github.com/untool/untool/commit/6b46fd1c8c479ac139927a0d26a902aa88a7a244))
+* update dependency memory-fs to ^0.5.0 ([57f5edc](https://github.com/untool/untool/commit/57f5edcb877e83821db9a2196c37493ebfae290a))
+* update dependency serialize-error to v5 ([b69818e](https://github.com/untool/untool/commit/b69818eccd0213d42f47424032f4785b0fbaf00d))
+* update dependency strip-ansi to v6 ([1312b77](https://github.com/untool/untool/commit/1312b77ee70a8e27a2065f0b183b9ed9ed28baa4))
+* update dependency url-loader to v3 ([7b20b8f](https://github.com/untool/untool/commit/7b20b8f6a3ffb4836f00d34cf13a1089a23ac19d))
+
+
+
+
+
 ## [1.10.1](https://github.com/untool/untool/compare/v1.10.0...v1.10.1) (2019-09-11)
 
 
