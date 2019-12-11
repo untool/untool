@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [1.10.4](https://github.com/untool/untool/compare/v1.10.3...v1.10.4) (2019-12-11)
+
+
+### Bug Fixes
+
+* upgrade terser-webpack-plugin to latest version ([286572a](https://github.com/untool/untool/commit/286572a51661e4c443874a55909051c9bbc8e7bf))
+
+
+
+
+
 ## [1.10.3](https://github.com/untool/untool/compare/v1.10.2...v1.10.3) (2019-12-09)
 
 
