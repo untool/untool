@@ -190,7 +190,7 @@ This is the target Node.js version Babel's [`preset-env`](https://babeljs.io/doc
 
 ```json
 {
-  "node": "8.10"
+  "node": "12.13"
 }
 ```
 
@@ -205,6 +205,8 @@ Locations are treated as relative to your configured `basePath`: you will not ha
   "locations": ["/foo", "/bar"]
 }
 ```
+
+**Note:** [the prerendering of static HTML pages has been deprecated](../../DEPRECATIONS.md#dep003) and will be removed in the next major release of `untool`.
 
 ### `basePath`
 
