@@ -2,7 +2,7 @@
 
 [![travis](https://img.shields.io/travis/untool/untool/master.svg)](https://travis-ci.org/untool/untool)&nbsp;[![npm](https://img.shields.io/npm/v/@untool%2Freact.svg)](https://www.npmjs.com/package/@untool/react)
 
-`@untool/react`'s main runtime exports are a couple of React components that allow implementers to declaratively control server (or system) behavior. Additionally, `@untool/react` features full support for [`react-router`](https://github.com/ReactTraining/react-router)'s and [`react-helmet`](https://github.com/nfl/react-helmet)'s components.
+`@untool/react`'s main runtime exports are a couple of React components that allow implementers to declaratively control server (or system) behavior. Additionally, `@untool/react` features full support for [`react-router`](https://github.com/ReactTraining/react-router)'s and [`react-helmet-async`](https://github.com/staylor/react-helmet-async)'s components.
 
 `@untool/react` provides all three types of `@untool/core` [mixin types](../core/README.md#mixins). Its `core` mixin uses `@untool/webpack`'s [`configureBuild`](../webpack/README.md#configurebuildwebpackconfig-loaderconfigs-target-pipe) hook to add some settings specific to [React](https://reactjs.org), for example support for [JSX](https://reactjs.org/docs/introducing-jsx.html) syntax.
 
@@ -13,7 +13,7 @@ During application startup, `@untool/react` runs a check to determine if certain
 ### Installation
 
 ```bash
-$ yarn add @untool/react react react-dom react-router-dom react-helmet
+$ yarn add @untool/react react react-dom react-router-dom react-helmet-async
 # OR npm install @untool/react react react-dom react-router-dom react-helmet
 ```
 
@@ -65,17 +65,7 @@ export default () => <Header name="X-Foo" value="Bar" />;
 
 ### `importComponent(module|moduleLoader, [exportName|exportResolver])`
 
-Using the `importComponent` helper, you can asynchronously require components into your application to help you reduce asset sizes. It works similarly to [`react-loadable`](https://github.com/jamiebuilds/react-loadable), but is deeply integrated with `untool`.
-
-```javascript
-import { importComponent } from '@untool/react';
-
-const Home = importComponent('./home', 'Home');
-
-export default () => <Home />;
-```
-
-Additionally, `importComponent` supports an alternative syntax that helps with editor and type checker integration since it does not rely on plain strings. The snippet below is functionally equivalent to the one above:
+Using the `importComponent` helper, you can asynchronously require components into your application to help you reduce asset sizes. It works similarly to [`react-loadable`](https://github.com/jamiebuilds/react-loadable), but is deeply integrated with `untool` and e.g. supports server-side-rendering.
 
 ```javascript
 import { importComponent } from '@untool/react';
@@ -88,7 +78,7 @@ const Home = importComponent(
 export default () => <Home />;
 ```
 
-If you do no specify an `exportName` or `exportResolver`, `importComponent` will fall back to the imported modules `default` export.
+If you do not specify an `exportName` or `exportResolver`, `importComponent` will fall back to the imported modules `default` export.
 
 `importComponent` itself returns a React component supporting some props that enable you to control module loading and (placeholder) rendering.
 
