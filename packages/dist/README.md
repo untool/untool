@@ -11,6 +11,7 @@ Please refer to the respective packages for further information:
 - [`@untool/express`](../express/README.md): development and production server implementation
 - [`@untool/webpack`](../webpack/README.md): webpack setup (including Babel)
 - [`@untool/react`](../react/README.md): universal React implementation
+- [`@untool/info`](../info/README.md): logging and preflight checks
 
 ### Installation
 
