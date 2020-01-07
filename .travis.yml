@@ -14,20 +14,20 @@ install:
 matrix:
   include:
     - node_js: '10.13'
-      name: 'LTS Maintenance'
+      name: 'Test on Node.js 10'
       script: 'yarn test'
       env:
-        - CACHE_NAME=maintenance
+        - CACHE_NAME=node-v10
     - node_js: '12.13'
-      name: 'LTS Active'
+      name: 'Test on Node.js 12'
       before_script:
         - 'commitlint-travis'
         - 'yarn lint'
       script: 'yarn test'
       env:
-        - CACHE_NAME=active
-    - node_js: '12.13'
-      name: 'Canary'
+        - CACHE_NAME=node-v12
+    - node_js: 'node'
+      name: 'Canarist test on Node.js latest'
       script: 'yarn canarist'
       env:
         - CACHE_NAME=canary
