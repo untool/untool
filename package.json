@@ -112,13 +112,13 @@
     ],
     "baseBranches": [
       "master",
-      "v12.x",
-      "v11.x"
+      "v2.x",
+      "v1.x"
     ],
     "packageRules": [
       {
         "baseBranchList": [
-          "v11.x"
+          "v1.x"
         ],
         "major": {
           "enabled": false
