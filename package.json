@@ -109,6 +109,24 @@
   "renovate": {
     "extends": [
       "@untool/renovate-config:base"
+    ],
+    "baseBranches": [
+      "master",
+      "v12.x",
+      "v11.x"
+    ],
+    "packageRules": [
+      {
+        "baseBranchList": [
+          "v11.x"
+        ],
+        "major": {
+          "enabled": false
+        },
+        "minor": {
+          "enabled": false
+        }
+      }
     ]
   },
   "prettier": "@untool/prettier-config",
