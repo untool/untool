@@ -110,6 +110,7 @@
     "extends": [
       "@untool/renovate-config:base"
     ],
+    "masterIssue": true,
     "baseBranches": [
       "master",
       "v2.x",
