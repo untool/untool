@@ -68,6 +68,34 @@ To prevent sensitive data provided to `@untool/core` from being leaked to the br
 }
 ```
 
+**Note:** Have in mind that you must explicitly whitelist config properties, that hold an environment variable placeholder, otherwise the interpolation fails.
+
+```json
+{
+  "foo": {
+    "bar": "[FOOBAR]"
+  },
+  "browserWhitelist": {
+    "foo.bar": true
+  }
+}
+```
+
+If you instead whitelist the whole nested object, that holds this property, `@untool/core` is currently not able to detect the placeholder.
+
+```json
+{
+  "foo": {
+    "bar": "[FOOBAR]"
+  },
+  "browserWhitelist": {
+    "foo": true
+  }
+}
+```
+
+Besides that, whitelisting of nested objects as a whole is fine. Also this is considered a bug and will be fixed in one of the next minor releases.
+
 `@untool/core` looks for configuration data in a couple of places. It only uses the first config it finds, so make sure you do not have multiple configs lying around:
 
 - an `untool` property in your project's `package.json` file
