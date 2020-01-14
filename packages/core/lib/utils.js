@@ -37,9 +37,10 @@ exports.merge = (...args) =>
   mergeWith({}, ...args, (objValue, srcValue, key) => {
     if (Array.isArray(objValue)) {
       if ('mixins' === key) {
-        return [...objValue, ...srcValue].filter(
-          (curr, index, self) => self.indexOf(curr) === index
-        );
+        return [
+          ...objValue.filter((curr) => !srcValue.includes(curr)),
+          ...srcValue,
+        ];
       }
       return srcValue;
     }
