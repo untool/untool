@@ -10,7 +10,12 @@ const debug = require('debug')('untool:config');
 const { loadConfig } = require('./loader');
 const { resolveMixins } = require('./resolver');
 const { validate } = require('./validator');
-const { environmentalize, placeholdify, merge } = require('./utils');
+const {
+  environmentalize,
+  placeholdify,
+  merge: mergeFactory,
+  getMixinSortOrder,
+} = require('./utils');
 
 exports.getConfig = ({ untoolNamespace = 'untool', ...overrides } = {}) => {
   const pkgFile = findUp('package.json');
@@ -39,6 +44,7 @@ exports.getConfig = ({ untoolNamespace = 'untool', ...overrides } = {}) => {
   };
   const settings = loadConfig(untoolNamespace, pkgData, rootDir);
 
+  const merge = mergeFactory(getMixinSortOrder(settings, overrides));
   const raw = merge(defaults, settings, overrides);
   const { mixins, mixinTypes, configSchema, ...clean } = raw;
   const processed = environmentalize(placeholdify(clean));
