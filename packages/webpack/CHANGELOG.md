@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.0.1](https://github.com/untool/untool/compare/v2.0.0...v2.0.1) (2020-01-20)
+
+
+### Bug Fixes
+
+* **core:** set mixin deduplication order based on preset config ([2191ac1](https://github.com/untool/untool/commit/2191ac19f77f593e25e0198cc8d0d123daa8dd7d)), closes [#542](https://github.com/untool/untool/issues/542)
+
+
+
+
+
 # [2.0.0](https://github.com/untool/untool/compare/v2.0.0-beta.1...v2.0.0) (2020-01-06)
 
 **Note:** Version bump only for package @untool/webpack
