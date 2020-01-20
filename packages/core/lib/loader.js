@@ -5,7 +5,7 @@ const { dirname, join } = require('path');
 const { cosmiconfigSync: cosmiconfig } = require('cosmiconfig');
 const { compatibleMessage } = require('check-error');
 
-const { merge } = require('./utils');
+const { merge: mergeFactory, getMixinSortOrder } = require('./utils');
 const { resolve, resolvePreset, isResolveError } = require('./resolver');
 
 class Loader {
@@ -34,7 +34,7 @@ class Loader {
       }
     }
   }
-  loadPresets(context, presets = []) {
+  loadPresets(context, merge, presets = []) {
     return presets.reduce((result, preset) => {
       const { config, filepath } = this.loadPreset(context, preset);
       const directory = dirname(filepath);
@@ -43,7 +43,11 @@ class Loader {
           mixin.startsWith('.') ? join(directory, mixin) : mixin
         );
       }
-      return merge(result, this.loadPresets(directory, config.presets), config);
+      return merge(
+        result,
+        this.loadPresets(directory, merge, config.presets),
+        config
+      );
     }, {});
   }
   loadSettings(context) {
@@ -75,7 +79,8 @@ exports.loadConfig = (namespace, pkgData, rootDir) => {
   const loader = new Loader(namespace, pkgData);
 
   const settings = loader.loadSettings(rootDir);
-  const presets = loader.loadPresets(rootDir, settings.presets);
+  const merge = mergeFactory(getMixinSortOrder(settings));
+  const presets = loader.loadPresets(rootDir, merge, settings.presets);
 
   // eslint-disable-next-line no-unused-vars
   const { presets: _, ...config } = merge(presets, settings);
