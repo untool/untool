@@ -76,15 +76,7 @@
     "timeout": "240s",
     "verbose": true,
     "files": [
-      "packages/**/*.test.js",
-      "tests/**/*",
-      "!tests/fixtures"
-    ],
-    "helpers": [
-      "tests/helpers/*"
-    ],
-    "source": [
-      "packages/**/*"
+      "!**/__tests__/**/fixtures/**"
     ]
   },
   "canarist": {
