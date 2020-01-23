@@ -61,6 +61,10 @@ module.exports = function getConfig(config, name) {
       {
         resourceQuery: /noinline/,
         ...fileLoaderConfig,
+        options: {
+          esModule: false,
+          ...fileLoaderConfig.options,
+        },
       },
       {
         loader: require.resolve('url-loader'),
