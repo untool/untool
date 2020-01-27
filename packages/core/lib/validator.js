@@ -1,3 +1,5 @@
+/* eslint no-unused-vars: ["error", { "varsIgnorePattern": "^_" }] */
+
 'use strict';
 
 const { isAbsolute } = require('path');
