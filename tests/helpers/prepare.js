@@ -1,7 +1,6 @@
 const { join } = require('path');
-const { writeFileSync } = require('fs');
+const { writeFileSync, mkdirSync } = require('fs');
 
-const { sync: mkdirp } = require('mkdirp');
 const supertest = require('supertest');
 
 const run = require('./run');
@@ -11,7 +10,7 @@ const { normalizeResponse, normalizeArgTypes } = require('./normalize');
 const prepareDir = (rootDir) => {
   const distDir = join(rootDir, 'dist');
   const indexFile = join(distDir, 'index.html');
-  mkdirp(distDir);
+  mkdirSync(distDir, { recursive: true });
   writeFileSync(indexFile, '<h3>meep</h3>');
 };
 
