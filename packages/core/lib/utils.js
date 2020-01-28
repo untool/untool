@@ -80,7 +80,7 @@ exports.placeholdify = (config) => {
         {}
       );
     }
-    if (regExp.test(item)) {
+    if (typeof item === 'string' && regExp.test(item)) {
       return item.replace(regExp, (_, key) =>
         replaceRecursive(flatConfig[key] || '')
       );
@@ -107,7 +107,7 @@ exports.environmentalize = (_config, whitelist = {}) => {
         {}
       );
     }
-    if (regExp.test(item)) {
+    if (typeof item === 'string' && regExp.test(item)) {
       return item.replace(regExp, (_, key, fallback) => {
         const replaced = env[key] || fallback || '';
         if (whitelist[path.join('.')]) {
