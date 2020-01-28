@@ -1,5 +1,6 @@
 const { join } = require('path');
 const test = require('ava');
+const sinon = require('sinon');
 const { initialize } = require('..');
 
 test('Should create a explicitly given mixin', (t) => {
@@ -105,6 +106,29 @@ test('Should allow env-vars in the configuration which are resolved', (t) => {
   t.is(config.result1, 'value');
   t.is(config.result2, 'default-value');
   t.is(config.result3, 'value');
+});
+
+test('Should ignore non-string values when checking for placeholders', (t) => {
+  const spy = sinon.spy(RegExp.prototype, 'test');
+  const preset = {
+    result1: () => '[SOME_ENV_VAR]',
+    result2: () => '<result1>',
+    result3: 'foobar',
+    result4: '<result3>',
+    result5: '[UNTOOL_TEST_KEY]',
+    mixins: [join(__dirname, 'fixtures', 'config-mixin')],
+  };
+  const instance = initialize(preset);
+  const config = instance.getConfig();
+
+  t.is(preset.result1, config.result1);
+  t.is(preset.result2, config.result2);
+  t.false(spy.calledWith(preset.result1));
+  t.false(spy.calledWith(preset.result2));
+  t.true(spy.calledWith('<result3>'));
+  t.true(spy.calledWith('[UNTOOL_TEST_KEY]'));
+
+  spy.restore();
 });
 
 test('Should support validate stategie decorator', (t) => {
