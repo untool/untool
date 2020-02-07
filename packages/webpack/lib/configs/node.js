@@ -72,6 +72,7 @@ module.exports = function getConfig(config, name) {
           limit: 10000,
           name: getAssetPath('[name]-[hash:16].[ext]'),
           emitFile: false,
+          esModule: false,
         },
       },
     ],
