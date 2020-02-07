@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.1](https://github.com/untool/untool/compare/v2.1.0...v2.1.1) (2020-02-07)
+
+
+### Bug Fixes
+
+* **webpack:** have url-loader emit CommonJS syntax ([1ee2b80](https://github.com/untool/untool/commit/1ee2b805f565f904a00511cccb038a3d93793cd2))
+
+
+
+
+
 # [2.1.0](https://github.com/untool/untool/compare/v2.0.1...v2.1.0) (2020-02-07)
 
 
