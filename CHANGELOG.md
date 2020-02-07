@@ -3,6 +3,23 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [2.1.0](https://github.com/untool/untool/compare/v2.0.1...v2.1.0) (2020-02-07)
+
+
+### Bug Fixes
+
+* update dependency file-loader to v5 (v2.x) ([#535](https://github.com/untool/untool/issues/535)) ([5cae573](https://github.com/untool/untool/commit/5cae57360a82e6efce000ebfe3da85980e54db60))
+* **core:** handle functions as config values appropriately ([4bcc49f](https://github.com/untool/untool/commit/4bcc49f85cc7851c55ca0c6496464f6507310ee8))
+
+
+### Features
+
+* support latest Node.js (v13) ([dbc3d1e](https://github.com/untool/untool/commit/dbc3d1e7e9c80a6b1ea736824252fafc03e7e754))
+
+
+
+
+
 ## [2.0.1](https://github.com/untool/untool/compare/v2.0.0...v2.0.1) (2020-01-20)
 
 
