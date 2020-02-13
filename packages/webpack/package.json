@@ -46,7 +46,7 @@
     "mixinable": "^4.0.0",
     "pathifist": "^1.0.0",
     "pretty-bytes": "^5.3.0",
-    "pretty-ms": "^5.0.0",
+    "pretty-ms": "^6.0.0",
     "regenerator-runtime": "^0.13.3",
     "require-from-string": "^2.0.2",
     "rimraf": "^3.0.0",
