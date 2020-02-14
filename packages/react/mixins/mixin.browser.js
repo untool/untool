@@ -37,20 +37,21 @@ class ReactMixin extends Mixin {
     );
   }
   render() {
-    const mountpoint = document.querySelector('[data-mountpoint]');
-    const isMounted = mountpoint.hasAttribute('data-mounted');
-    if (isMounted) {
-      unmountComponentAtNode(mountpoint);
-    } else {
-      mountpoint.setAttribute('data-mounted', '');
-    }
     Promise.resolve()
       .then(() => this.bootstrap())
       .then(() => this.enhanceElement(this.element))
       .then((element) =>
-        this.fetchData({}, element).then(() =>
-          (isMounted ? render : hydrate)(element, mountpoint)
-        )
+        this.fetchData({}, element).then(() => {
+          const mountpoint = document.querySelector('[data-mountpoint]');
+          const isMounted = mountpoint.hasAttribute('data-mounted');
+          if (isMounted) {
+            unmountComponentAtNode(mountpoint);
+            render(element, mountpoint);
+          } else {
+            hydrate(element, mountpoint);
+            mountpoint.setAttribute('data-mounted', '');
+          }
+        })
       );
   }
 }
