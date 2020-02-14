@@ -48,6 +48,7 @@ module.exports = function getConfig(config, name) {
     loader: require.resolve('file-loader'),
     options: {
       name: getAssetPath('[name]-[hash:16].[ext]'),
+      esModule: false,
     },
   };
 
@@ -57,10 +58,6 @@ module.exports = function getConfig(config, name) {
       {
         resourceQuery: /noinline/,
         ...fileLoaderConfig,
-        options: {
-          esModule: false,
-          ...fileLoaderConfig.options,
-        },
       },
       {
         loader: require.resolve('url-loader'),
