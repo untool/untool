@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [2.1.2](https://github.com/untool/untool/compare/v2.1.1...v2.1.2) (2020-02-14)
+
+
+### Bug Fixes
+
+* update dependency pretty-ms to v6 ([1f5ebb5](https://github.com/untool/untool/commit/1f5ebb536a6666b35f09572973ff359c1ffe6b07))
+
+
+
+
+
 ## [2.1.1](https://github.com/untool/untool/compare/v2.1.0...v2.1.1) (2020-02-07)
 
 **Note:** Version bump only for package @untool/express
