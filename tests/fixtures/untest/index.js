@@ -1,8 +1,9 @@
 /* eslint-disable no-unused-vars */
 import React, { Fragment } from 'react';
 import { Switch, Route, Link } from 'react-router-dom';
-
 import { Miss, render, importComponent } from 'untool';
+
+const logo = require('./logo.svg');
 
 const Home = importComponent('./components/home');
 const About = importComponent(
@@ -19,6 +20,7 @@ const preload = ({ Component, error, loading, ...props }) => {
 const App = () => (
   <Fragment>
     <Link to="/">Home</Link> <Link to="/about/">About</Link>
+    <img src={logo} width="200" height="200" alt="" />
     <Switch>
       <Route exact path="/" component={Home} />} />
       <Route path="/about/" render={() => <About render={preload} />} />
