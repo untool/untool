@@ -79,6 +79,9 @@ exports.loadConfig = (namespace, pkgData, rootDir) => {
   const loader = new Loader(namespace, pkgData);
 
   const settings = loader.loadSettings(rootDir);
+  settings.presets = settings.presets.filter(
+    (preset) => !(settings.ignoredPresets || []).includes(preset)
+  );
   const merge = mergeFactory(getMixinSortOrder(settings));
   const presets = loader.loadPresets(rootDir, merge, settings.presets);
 
