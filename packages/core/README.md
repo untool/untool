@@ -149,6 +149,18 @@ In preset packages, `@untool/core` will try to load a config from the same place
 
 If you want to not only override and extend config values, but rather provide actual features, you can include custom mixins directly in your preset. Some of `untool`'s default presets do just that.
 
+#### Ignoring a preset
+
+In rare cases it is necessary to ignore a certain preset, for example if a dependency contains a `preset.js` file but actually is not a preset. For these circumstances we have an escape hatch through the `ignoredPresets` property.
+
+```json
+{
+  "ignoredPresets": ["@storybook/addon-knobs"]
+}
+```
+
+Because of how the presets are loaded it is necessary to specify the `ignoredPresets` property directly in the root config (i.e. it cannot be pre-filled with values from other presets). This should only impact you if you are writing a preset yourself.
+
 ### Mixins
 
 Mixins are the primary mechanism in `untool` to extend and alter its features and behaviour. Using mixins, you can, for example, add your own Yargs commands, Express middlewares or React add-ons such as Redux.
