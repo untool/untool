@@ -20,7 +20,8 @@
 
 ## Docs
 
-[Read the docs here](https://github.com/untool/untool/tree/v1.x/DOCUMENTATION.md).
+- [untool v2 documentation](https://github.com/untool/untool/tree/v2.x/DOCUMENTATION.md).
+- [untool v1 documentation](https://github.com/untool/untool/tree/v1.x/DOCUMENTATION.md).
 
 ## Contribution
 
