@@ -17,7 +17,7 @@
   "homepage": "https://github.com/untool/untool#readme",
   "dependencies": {
     "@untool/core": "^0.0.0",
-    "chalk": "^3.0.0",
+    "chalk": "^4.0.0",
     "duplitect": "^2.0.1",
     "enhanced-resolve": "^4.1.1",
     "escape-string-regexp": "^2.0.0",
