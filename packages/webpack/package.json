@@ -25,7 +25,7 @@
     "babel-loader": "^8.0.6",
     "babel-plugin-dynamic-import-node": "^2.3.0",
     "caniuse-lite": "^1.0.30000898",
-    "chalk": "^3.0.0",
+    "chalk": "^4.0.0",
     "core-js": "^3.2.1",
     "debug": "^4.1.1",
     "depd": "^2.0.0",
