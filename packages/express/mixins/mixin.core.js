@@ -40,6 +40,7 @@ class ExpressMixin extends Mixin {
   configureServer(app, middlewares, mode) {
     if (mode !== 'static') {
       const helmet = require('helmet');
+      const nocache = require('nocache');
       const express = require('express');
       const mime = require('mime');
       const cookieParser = require('cookie-parser');
@@ -51,7 +52,7 @@ class ExpressMixin extends Mixin {
           setHeaders: (res, filePath) => {
             const { noCache } = res.locals || {};
             if (noCache || mime.getType(filePath) === 'text/html') {
-              helmet.noCache()(null, res, () => {});
+              nocache()(null, res, () => {});
             }
           },
           redirect: false,
