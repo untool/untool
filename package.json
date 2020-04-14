@@ -98,10 +98,19 @@
       },
       {
         "repository": "https://github.com/xing/hops.git",
-        "branch": "v11.x"
+        "branch": "v11.x",
+        "commands": [
+          "yarn test $npm_package_hopsTestIgnore_0 $npm_package_hopsTestIgnore_1 $npm_package_hopsTestIgnore_2"
+        ]
       }
     ]
   },
+  "hopsTestIgnoreComment": "REMOVE THIS WHEN CANARIST IS FIXED!!",
+  "hopsTestIgnore": [
+    "--testPathIgnorePatterns integration/graphql-mock-server",
+    "--testPathIgnorePatterns fixture",
+    "--testPathIgnorePatterns __tests__/setup"
+  ],
   "renovate": {
     "extends": [
       "@untool/renovate-config:base"
