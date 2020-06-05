@@ -50,7 +50,7 @@
     "regenerator-runtime": "^0.13.3",
     "require-from-string": "^2.0.2",
     "rimraf": "^3.0.0",
-    "serialize-error": "^6.0.0",
+    "serialize-error": "^7.0.0",
     "source-map-support": "^0.5.13",
     "strip-ansi": "^6.0.0",
     "supports-color": "^7.1.0",
