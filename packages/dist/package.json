@@ -32,8 +32,8 @@
     "mixinable": "^4.0.0"
   },
   "peerDependencies": {
-    "react": "^16.8.0",
-    "react-dom": "^16.8.0",
+    "react": "^16.8.0 || ^17.0.0",
+    "react-dom": "^16.8.0 || ^17.0.0",
     "react-helmet-async": "^1.0.4",
     "react-router-dom": "^5.0.0"
   },
